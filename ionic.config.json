@@ -1,0 +1,7 @@
+{
+  "name": "gym-king",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
