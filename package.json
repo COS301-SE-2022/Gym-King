@@ -5,15 +5,17 @@
   "repository": "https://github.com/DYL-WF/Gym-King.git",
   "author": "Dylan Whiteford <93826822+DYL-WF@users.noreply.github.com>",
   "license": "MIT",
-
   "private": true,
   "workspaces": [
-    "front-end", 
+    "front-end",
     "back-end",
     "packages/*"
   ],
-  "scripts": {      
-    "build": "yarn --cwd front-end build"  ,
+  "scripts": {
+    "build": "yarn --cwd front-end build",
     "start": "yarn --cwd front-end start"
+  },
+  "dependencies": {
+    "@ionic/cli": "^6.19.0"
   }
 }
