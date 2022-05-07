@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@ionic/cli": "^6.19.0",
+    "install-peers": "^1.0.3",
     "nx": "14.1.4",
     "tslib": "^2.3.1",
     "yarn": "^1.22.18"
