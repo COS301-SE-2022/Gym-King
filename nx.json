@@ -37,7 +37,7 @@
     ]
   },
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "develop"
   },
   "generators": {
     "@nrwl/eact:application": {

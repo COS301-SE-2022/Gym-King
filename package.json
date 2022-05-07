@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "start": "nx serve",
-    "start:client": "yarn serve front-end",
+    "start:client": "nx serve front-end",
     "start:api": "",
     "build": "nx build",
     "lint": "nx lint",
