@@ -48,7 +48,7 @@
   "scripts": {
     "serve": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns --watchAll",
+    "test": "react-scripts test --transformIgnorePatterns",
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",
