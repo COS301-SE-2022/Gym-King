@@ -13,7 +13,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^27.5.0",
     "@types/node": "^12.19.15",
     "@types/react": "^16.14.3",
     "@types/react-dom": "^16.9.10",
@@ -40,11 +40,19 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)"
+    ]
+  },
   "scripts": {
-    "start": "react-scripts start",
+    "serve": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --transformIgnorePatterns --watchAll",
+    "eject": "react-scripts eject",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "lint": "eslint src/**/*.ts",
+    "prettify": "prettier src/**/*.ts --write"
   },
   "eslintConfig": {
     "extends": [
@@ -65,7 +73,13 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.5.1"
+    "@babel/preset-typescript": "^7.16.7",
+    "@capacitor/cli": "3.5.1",
+    "@nxtend/ionic-react": "^13.0.0",
+    "@types/jest": "^27.5.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2"
   },
   "description": "An Ionic project"
 }
