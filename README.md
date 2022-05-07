@@ -1,4 +1,9 @@
 # Gym-King
+## Basic Commands
+- yarn run start
+- yarn run build
+- yarn run test
+- yarn run lint
 ## Codebusters - Gym King - Project Description
 
 ## Codebusters - Demo 1
