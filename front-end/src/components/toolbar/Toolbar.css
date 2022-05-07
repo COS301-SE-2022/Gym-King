@@ -1,0 +1,16 @@
+:root{
+    --ion-text-color: white;
+}
+
+.toolbar{
+    background-color: #0F005A;
+    color:white;
+}
+
+.profileImage
+{
+    background-color: gray;
+    border-radius: 50%;
+    width: 2em;
+    height:1em;;
+}
