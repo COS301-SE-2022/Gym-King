@@ -1,4 +1,4 @@
-import {IonContent, IonSelect, IonSelectOption} from '@ionic/react';
+import {IonSelect, IonSelectOption} from '@ionic/react';
 import React from 'react'
 import './dropdown.css'
 import '../../theme/variables.css'
@@ -9,8 +9,7 @@ export class DropDown extends React.Component<DropDownProps>{
     render(){
         const {list} = this.props;
         return(
-            <IonContent>
-                <IonSelect placeholder='Select One' class="dropDown centerLeft shadow">
+                <IonSelect placeholder='Select One' class="dropDown centerComp shadow">
                     {
                         list?.map(el =>{
                             console.log(el);
@@ -18,7 +17,6 @@ export class DropDown extends React.Component<DropDownProps>{
                         })
                     }
                 </IonSelect>
-            </IonContent>
         )
         
     }

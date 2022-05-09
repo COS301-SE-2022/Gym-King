@@ -1,4 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, } from '@ionic/react';
+import DropDown from '../components/dropdown/dropdown';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -10,6 +11,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <DropDown list={['Cardio', 'Strength']}></DropDown>
       </IonContent>
     </IonPage>
   );

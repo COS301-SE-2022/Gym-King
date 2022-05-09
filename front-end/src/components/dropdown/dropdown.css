@@ -10,16 +10,7 @@
     border-radius: 12px;
 }
 
-.shadow {
-    box-shadow: 2px 2px 2px 2px 2px 2px #0f005a;
-}
-   
 
-.centerLeft{
-    margin-left:10%;
-    margin-right:10%;
-
-}
 
 ion-select {
     color: white !important; 
