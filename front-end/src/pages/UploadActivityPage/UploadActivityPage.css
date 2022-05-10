@@ -4,30 +4,7 @@
     --ion-background-color: #220F7E;
 }
 
-.PageTitle
-{
-    font-size:2em;
-    font-family: 'Comfortaa', cursive;
-    padding:5%;
-}
 
-.Content
-{
-    padding:5em;
-}
-
-.grid
-{
-    width:75%;
-}
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    
-}
 
 .SmallDescription{
     font-family: 'Comfortaa', cursive;
