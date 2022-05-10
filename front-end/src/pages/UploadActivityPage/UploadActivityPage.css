@@ -4,6 +4,11 @@
     --ion-background-color: #220F7E;
 }
 
+.badge{
+    font-size:700%;
+    margin-left:35%;
+    margin-right:10%;
+}
 
 
 .SmallDescription{
@@ -11,11 +16,6 @@
     font-size:12px;
 }
 
-.Subheading
-{
-    font-family: 'Comfortaa', cursive;
-    font-size:1em;
-}
 
 .centerLeft{
     display: flex;

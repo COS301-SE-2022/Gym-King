@@ -127,6 +127,24 @@ http://ionicframework.com/docs/theming/ */
     padding:5%;
 }
 
+.Subheading
+{
+    font-family: 'Comfortaa', cursive;
+    font-size:1em;
+}
+
+
+.textInput{
+  background-color: #0f005a;
+  opacity: 64%;
+  border-radius: 6%;
+}
+
+.inputHeading{
+  font-family: 'Comfortaa', cursive;
+  font-size:22px;
+  margin-left:5%;
+}
 
 
 .grid
