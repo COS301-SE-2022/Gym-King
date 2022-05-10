@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, } from '@ionic/react';
 import './Home.css';
 import UploadActivityPage from './UploadActivityPage/UploadActivityPage';
-
+import MapView from '../components/map/MapView';
 const Home: React.FC = () => {
   return (
     <IonPage>
@@ -12,6 +12,11 @@ const Home: React.FC = () => {
       </IonHeader>
       <IonContent>
         <UploadActivityPage></UploadActivityPage>
+
+      </IonContent>
+      
+      <IonContent>
+        <MapView></MapView>
       </IonContent>
     </IonPage>
   );
