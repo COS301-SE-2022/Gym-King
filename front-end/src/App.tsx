@@ -26,7 +26,9 @@ import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
 
 setupIonicReact();
 
+
 const App: React.FC = () => (
+
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>

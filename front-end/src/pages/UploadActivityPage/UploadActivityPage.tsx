@@ -1,27 +1,40 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon} from '@ionic/react';
 import React from 'react'
-import DropDown from '../../components/dropdown/dropdown';
 import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
+import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
-
+import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 export type UploadActivityStates = {act?:any}
 
 export class UploadActivityPage extends React.Component<UploadActivityStates>{
 
     state= {activity:'none'};
     
-    
-    //list of cardio activities 
-    cardioActivities= ['Swimming', 'Treadmil', 'Rowing', 'Indoor Cyle', 'Stair Climber', 'Elliptical', 'Class']
-    //list of strength activities 
-    strenghtActivities = ['Power Rack', 'Squat Rack', 'Cable crossover', 'Power Tower', 'Weight Bench', 'Hammer Strength', 'Chest Press', 'Pec deck', 'Lat pulldown', 'Roman Chair', 'Leg Press', 'Leg Extension', 'Leg Curl', 'Calf Raise', 'Leg Abduction', 'Abdominal Bench', 'Bench Press', 'Weight plates']
+    //fake generic badge for testing 
+    badge1 = {
+        name:'Cycling Champ', 
+        description: 'Cycle 10km in 15 minutes to earn this badge!', 
+        activityCategory:'cardio',
+        activityType:'cycling',
+        input1:'00:14:45',
+        input2:'10km',
+        input3:'4'
+    };
 
-    handleCallback = (childData:any) =>{
-        this.setState({activity: childData})
-    }
+    /*
+        CARDIO:
+            input1: duration
+            input2: distance
+            input#: level of difficulty
+
+        STRENGTH:
+            input1: weight
+            input2: sets
+            input3: reps
+    */
+    
     render(){
-        const activityList = ['Cardio', 'Strength', 'Weights'];
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -29,19 +42,12 @@ export class UploadActivityPage extends React.Component<UploadActivityStates>{
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Upload Activity</IonText>
-                    <IonText className='SmallDescription center'>Show us what you've done and earn points!</IonText>
-
-                    <IonGrid className='centerLeft grid'>
-                        <IonRow className='left topMargin'>
-                            <IonText className='Subheading'>Activity</IonText>
-                        </IonRow>
-                    </IonGrid>
-                    
-                    <DropDown list={activityList}></DropDown>
-                    {
-                        
-                    }
+                    <IonIcon icon={shieldOutline} className='badge center shadow'></IonIcon>
+                    <IonText className='PageTitle center'>{this.badge1.name}</IonText>
+                    <IonText className='SmallDescription center'>{this.badge1.description}</IonText> <br></br>
+                    <IonText className='inputHeading'>Enter your activity details:</IonText>
+                    <ActivityInputs activityCategory={this.badge1.activityCategory}></ActivityInputs> <br></br>
+            
                     <IonGrid className='centerLeft grid'>
                         <IonRow className='left topMargin'>
                             <IonText className='Subheading'>Proof</IonText>
