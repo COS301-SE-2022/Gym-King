@@ -1,0 +1,29 @@
+:root{
+    --ion-text-color:white;
+}
+
+.fileCard{
+    background-color: #620DEC;
+    opacity: 64%;
+    width: 75%;
+    border-radius: 12px;
+    color:white;
+}
+
+ion-button{
+    width:100%;
+}
+
+
+:host {
+    --background: transparent;
+    display: block;
+    position: relative;
+    background: var(--background);
+    color: white;
+}
+
+
+*{
+    color: white;
+}
