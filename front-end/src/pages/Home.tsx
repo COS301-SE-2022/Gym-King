@@ -1,6 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, } from '@ionic/react';
 import './Home.css';
-import UploadActivityPage from './UploadActivityPage/UploadActivityPage';
 
 const Home: React.FC = () => {
   return (
@@ -11,7 +10,6 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <UploadActivityPage></UploadActivityPage>
       </IonContent>
     </IonPage>
   );
