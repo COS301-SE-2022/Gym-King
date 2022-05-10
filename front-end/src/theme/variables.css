@@ -2,7 +2,8 @@
 http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Roboto+Flex:opsz@8..144&display=swap');
+
 :root {
    /** primary **/
 	--ion-color-primary: #0F005A;
@@ -159,6 +160,8 @@ http://ionicframework.com/docs/theming/ */
     align-items: center;
     
 }
+
+
 
 .md body {
   --ion-background-color: var(--ion-color-secondary);
