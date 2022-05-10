@@ -39,6 +39,8 @@ const App: React.FC = () => (
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
         </Route>
+        <Route exact path='/PendingApprovals'>
+        </Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

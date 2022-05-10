@@ -5,8 +5,21 @@ import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './UploadActivityPage.css';
 
-export class UploadActivityPage extends React.Component{
+export type UploadActivityStates = {act?:any}
 
+export class UploadActivityPage extends React.Component<UploadActivityStates>{
+
+    state= {activity:'none'};
+    
+    
+    //list of cardio activities 
+    cardioActivities= ['Swimming', 'Treadmil', 'Rowing', 'Indoor Cyle', 'Stair Climber', 'Elliptical', 'Class']
+    //list of strength activities 
+    strenghtActivities = ['Power Rack', 'Squat Rack', 'Cable crossover', 'Power Tower', 'Weight Bench', 'Hammer Strength', 'Chest Press', 'Pec deck', 'Lat pulldown', 'Roman Chair', 'Leg Press', 'Leg Extension', 'Leg Curl', 'Calf Raise', 'Leg Abduction', 'Abdominal Bench', 'Bench Press', 'Weight plates']
+
+    handleCallback = (childData:any) =>{
+        this.setState({activity: childData})
+    }
     render(){
         const activityList = ['Cardio', 'Strength', 'Weights'];
         return(
@@ -24,8 +37,11 @@ export class UploadActivityPage extends React.Component{
                             <IonText className='Subheading'>Activity</IonText>
                         </IonRow>
                     </IonGrid>
+                    
                     <DropDown list={activityList}></DropDown>
-
+                    {
+                        
+                    }
                     <IonGrid className='centerLeft grid'>
                         <IonRow className='left topMargin'>
                             <IonText className='Subheading'>Proof</IonText>
