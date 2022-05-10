@@ -20,10 +20,12 @@
     "test": "nx test"
   },
   "dependencies": {
+    "@capacitor/core": "^3.5.1",
     "@ionic/cli": "^6.19.0",
     "add": "^2.0.6",
     "install-peers": "^1.0.3",
     "nx": "14.1.4",
+    "ol": "^6.14.1",
     "tslib": "^2.3.1",
     "use-file-picker": "^1.4.2",
     "yarn": "^1.22.18"
