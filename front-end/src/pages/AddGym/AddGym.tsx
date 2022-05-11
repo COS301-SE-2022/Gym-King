@@ -33,7 +33,7 @@ const AddGym: React.FC = () => {
               </IonRow>
 
               <IonRow className='left'>
-                <IonButton expand="block" class="flex-margin">
+                <IonButton expand="block" class="flex-margin" href="http://localhost:3000/AddGymLocation">
                   <IonIcon class="AddGymLocation" name="location-outline"></IonIcon>
                     <span>Address</span>
                    <IonIcon class="AddGymArrow" name="chevron-forward-outline"></IonIcon>
