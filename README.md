@@ -5,10 +5,11 @@
 - yarn run test
 - yarn run lint
 ## Codebusters - Gym King - Project Description
+Gym King is a product designed to use gamification to improve motivation with gym settings. Using open source and Augmented Reality (AR), Gym King aims to allow Gyms to issue badges to their users for achieving workout goals and allow them to work up the Gym leaderboard and become the ultimate Gym King.
 
 ## Codebusters - Demo 1
 
-## Functional Requirements
+## Functional Requirements (SRS Document)
 
 ## Github Project Board
 
