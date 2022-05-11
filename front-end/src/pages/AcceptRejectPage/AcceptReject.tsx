@@ -6,6 +6,7 @@ import './AcceptReject.css';
 
 export class AcceptRejectPage extends React.Component {
 
+  
     badge= {
         name:'Cycling Champ', 
         description: 'Cycle 10km in 15 minutes to earn this badge!', 
@@ -15,8 +16,9 @@ export class AcceptRejectPage extends React.Component {
         input2:'10km',
         input3:'4'
     };
+
     render(){
-        
+        let userID:number =Number(localStorage.getItem('user'));
         return (
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -25,7 +27,7 @@ export class AcceptRejectPage extends React.Component {
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
-                    <AcceptRejectCard userID={1} username='jadepeche' badge={this.badge}></AcceptRejectCard>
+                    <AcceptRejectCard userID={userID} username='jadepeche' badge={this.badge}></AcceptRejectCard>
                 </IonContent>
             </IonPage>
         )
