@@ -10,7 +10,7 @@ export type props = {userID:number, username:string};
 export class ApprovalButton extends React.Component<props>{
     render(){
         return(
-            <IonItem button detail class='btnApproval'  >
+            <IonItem button detail class='btnApproval' href="http://localhost:3000/AcceptReject" >
                 <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
                 <IonLabel>{this.props.username}</IonLabel>
             </IonItem>
