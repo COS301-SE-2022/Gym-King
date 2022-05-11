@@ -5,13 +5,17 @@ import { ToolBar } from '../../components/toolbar/Toolbar'
 const AddGym: React.FC = () => {
 
   //POST REQUEST
+  //commented out because it generates a warning (because addGym() not used yet)
+  /*
   let gymBrandName='';
   let gymAddress='';
   let gymCoordLong='';
   let gymCoordLat='';
   let gymIcon='';
-   
-  const acceptClaim=()=>{
+
+
+
+  const addGym=()=>{
       fetch(`https://gym-king.herokuapp.com/gyms/gym?bgn=${gymBrandName}&ga=${gymAddress}&gclo=${gymCoordLong}&gcla=${gymCoordLat}$gi=${gymIcon}`,{
           "method":"POST"
       })
@@ -20,7 +24,7 @@ const AddGym: React.FC = () => {
           console.log(response);
       })
       .catch(err => {console.log(err)})
-  }
+  } */
   return (
     <IonPage>
       <IonHeader>
