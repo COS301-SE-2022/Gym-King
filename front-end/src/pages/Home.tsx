@@ -9,6 +9,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        
       </IonContent>
     </IonPage>
   );

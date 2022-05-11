@@ -3,7 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import AddGym from './pages/AddGym/AddGym';
-
+import AddGymLocation from './pages/AddGymLocation/AddGymLocation';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -25,6 +25,10 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
 import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsPage';
+ /*Feature-PendingApprovalsPage*/
+
+import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
+/*develop*/
 
 
 setupIonicReact();
@@ -49,8 +53,15 @@ const App: React.FC = () => (
         <Route exact path='/AddGym'>
           <AddGym></AddGym>
         </Route>
+        <Route exact path='/AddGymLocation'>
+          <AddGymLocation></AddGymLocation>
+        </Route>
         <Route exact path='/PendingApprovals'>
-        </Route>        
+          <PendingApprovalsPage></PendingApprovalsPage>
+        </Route>   
+        <Route exact path='/AcceptReject'>
+          <AcceptRejectPage></AcceptRejectPage>
+        </Route>     
 
       </IonRouterOutlet>
     </IonReactRouter>

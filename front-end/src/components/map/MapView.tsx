@@ -7,8 +7,7 @@ import {RMap, ROSM, RLayerVector, RFeature, ROverlay, RStyle} from 'rlayers';
 import './MapView.css'
 const MapView: React.FC = () => {
     return(
-        <>
-    // Create a map, its size is set in the CSS class example-map
+    <>
     <RMap className='example-map' initial={{ center: [2.364,48.82], zoom: 11}}>
         {/* Use an OpenStreetMap background */}
         <ROSM />
