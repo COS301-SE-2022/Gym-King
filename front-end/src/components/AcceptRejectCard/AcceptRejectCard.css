@@ -1,0 +1,27 @@
+.username{
+    font-family: 'Roboto Flex', sans-serif;
+    padding-left: 3px;
+    align-items: left;
+    align-self: left;
+    justify-content: left;
+    padding-top: 20px;
+    vertical-align: center;
+    margin-bottom: 20px;
+}
+
+.txtBadge{
+    font-family: 'Comfortaa', cursive;
+    font-size:25px;
+    
+}
+
+.imgIcon{
+    font-size:60px;
+    margin-left:35%;
+    color:#220F7E;
+}
+
+.justify{
+    justify-content: center;
+    background-color: whitesmoke;
+}
