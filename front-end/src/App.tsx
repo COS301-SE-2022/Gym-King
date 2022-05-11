@@ -2,6 +2,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import AddGym from './pages/AddGym/AddGym';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -27,7 +28,9 @@ import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
 
 setupIonicReact();
 
+
 const App: React.FC = () => (
+
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
@@ -39,6 +42,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
+        </Route>
+        <Route exact path='/AddGym'>
+          <AddGym></AddGym>
         </Route>
         <Route exact path='/PendingApprovals'>
         </Route>        
