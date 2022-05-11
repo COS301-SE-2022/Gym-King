@@ -24,6 +24,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
+import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsPage';
+import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
 
 
 setupIonicReact();
@@ -50,7 +52,11 @@ const App: React.FC = () => (
           <AddGymLocation></AddGymLocation>
         </Route>
         <Route exact path='/PendingApprovals'>
-        </Route>        
+          <PendingApprovalsPage></PendingApprovalsPage>
+        </Route>   
+        <Route exact path='/AcceptReject'>
+          <AcceptRejectPage></AcceptRejectPage>
+        </Route>     
 
       </IonRouterOutlet>
     </IonReactRouter>

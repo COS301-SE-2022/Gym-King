@@ -1,12 +1,22 @@
-﻿import { IonContent, IonHeader, IonText, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonLabel, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonText, IonPage} from '@ionic/react';
 import React from 'react'
-import FileChooser from '../../components/filechooser/FileChooser';
+import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './AcceptReject.css';
 
-export class AcceptReject extends React.Component {
+export class AcceptRejectPage extends React.Component {
 
+    badge= {
+        name:'Cycling Champ', 
+        description: 'Cycle 10km in 15 minutes to earn this badge!', 
+        activityCategory:'cardio',
+        activityType:'cycling',
+        input1:'00:14:45',
+        input2:'10km',
+        input3:'4'
+    };
     render(){
+        
         return (
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -15,27 +25,11 @@ export class AcceptReject extends React.Component {
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
-                    <IonCard>
-                        <IonCardHeader>
-                            <IonToolbar>
-                                <IonTitle>UserName</IonTitle>
-                            </IonToolbar>
-                        </IonCardHeader>
-                        <IonCardContent>
-                            <IonText className='Subheading'>Activity</IonText>
-                            Core Circuit
-                            <IonText className='Subheading'>Proof</IonText>
-                            <IonCard>
-                            </IonCard>
-                        </IonCardContent>
-                        <IonButton color="success">Accept</IonButton>
-                        <IonButton color="warning">Reject</IonButton>
-                    </IonCard>
+                    <AcceptRejectCard userID={1} username='jadepeche' badge={this.badge}></AcceptRejectCard>
                 </IonContent>
             </IonPage>
         )
 
     }
 }
-
-export default AcceptReject;
+export default AcceptRejectPage;
