@@ -34,7 +34,7 @@ LinkedIn Profile: https://www.linkedin.com/in/jade-peche/
 ### Ryan Broemer
 I am Ryan Broemer, currently studying at the University of Pretoria. I am studying BSc Information and Knowledge Systems. I have a huge interest in anything related to data science as that is where I would like to find myself one day. I am good with learning new languages and really enjoy data management. I also like database related problems. Sometimes I run into thought issues. I cannot make certain next step decisions myself. Usually wait for my next task or job from our group leader. I believe I can put the knowledge I have learned to the test by hopefully working with you and my team to create an amazing product. <br>
 Github Profile: https://github.com/RyanBroemer <br>
-LinkedIn Profile:
+LinkedIn Profile: https://www.linkedin.com/in/ryan-broemer-49156823a/
 
 ### Thivessh Jhugroo
 A student at the University of Pretoria, currently studying for a BSc in Computer Science. I am born South African, hailed from Benoni. I am a creative thinker and a disciplined student, who takes pride in his work with great attention to detail. I can implement good front-end practices and often showcase my profound interest in machine learning and statistics. I might not be too familiar with some of the technologies out there, but I am more than willing to learn and work on my ever-growing knowledge, as this will only help me on my path to becoming a good computer scientist. <br>
