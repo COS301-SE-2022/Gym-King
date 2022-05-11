@@ -1,0 +1,9 @@
+.AddGymLocationFlexMargin{
+    --background:#0F005A !important;
+    width: min-content;
+    height: min-content;
+}
+.AddGymLocationMap{
+    height: 100em;
+    width: 100em;
+}

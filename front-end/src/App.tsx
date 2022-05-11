@@ -3,7 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import AddGym from './pages/AddGym/AddGym';
-
+import AddGymLocation from './pages/AddGymLocation/AddGymLocation';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -45,6 +45,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/AddGym'>
           <AddGym></AddGym>
+        </Route>
+        <Route exact path='/AddGymLocation'>
+          <AddGymLocation></AddGymLocation>
         </Route>
         <Route exact path='/PendingApprovals'>
         </Route>        
