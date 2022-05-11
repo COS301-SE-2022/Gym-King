@@ -1,7 +1,6 @@
 
-
 .userProfile{
-    font-size:350%;
+    font-size:300%;
     align-items: left;
     align-self: left;
     justify-content: left;
@@ -16,14 +15,14 @@
     align-self: left;
     justify-content: left;
     padding-top: 20px;
+    vertical-align: center;
 }
 
 .btnApproval{
     height: 4em;
-    width:90%;
-    margin-left: 5%;
-    margin-right:5%;
     justify-content: left;
+    display: flexbox;
+
   }
 
 
@@ -48,3 +47,4 @@
     justify-self: right;
     padding-left:49%;
 }
+
