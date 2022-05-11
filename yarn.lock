@@ -2370,6 +2370,13 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
+"@nxtend/capacitor@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@nxtend/capacitor/-/capacitor-13.0.0.tgz#614be64288a9e557e7f0ed4babfb94472148721d"
+  integrity sha512-Zax6HgLtIcdZ7WBbMKLuog0rjDRf/ZVtnmVSlUloVOejGuf4BBVfG35EQ/ccW6xb9ey7N1royTVxLmNwrdLHVw==
+  dependencies:
+    "@nrwl/devkit" "^13.0.0"
+
 "@nxtend/ionic-react@^13.0.0":
   version "13.0.0"
   resolved "https://registry.npmjs.org/@nxtend/ionic-react/-/ionic-react-13.0.0.tgz"
@@ -4134,9 +4141,9 @@ babel-jest@^27.2.2, babel-jest@^27.4.2, babel-jest@^27.5.1:
     graceful-fs "^4.2.9"
     slash "^3.0.0"
 
-babel-loader@^8.2.2, babel-loader@^8.2.3:
+babel-loader@^8.2.2, babel-loader@^8.2.3, babel-loader@^8.2.5:
   version "8.2.5"
-  resolved "https://registry.npmjs.org/babel-loader/-/babel-loader-8.2.5.tgz"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.2.5.tgz#d45f585e654d5a5d90f5350a779d7647c5ed512e"
   integrity sha512-OSiFfH89LrEMiWd4pLNqGz4CwJDtbs2ZVc+iGu2HrkRfPxId9F2anQj38IxWpmRfsUY0aBZYi1EFcd3mhtRMLQ==
   dependencies:
     find-cache-dir "^3.3.1"
@@ -4292,6 +4299,11 @@ babel-preset-react-app@^10.0.1:
     "@babel/runtime" "^7.16.3"
     babel-plugin-macros "^3.1.0"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
+
+babel@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel/-/babel-6.23.0.tgz#d0d1e7d803e974765beea3232d4e153c0efb90f4"
+  integrity sha1-0NHn2APpdHZb7qMjLU4VPA77kPQ=
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -7373,7 +7385,7 @@ inquirer@^7.0.0:
 
 install-peers@^1.0.3:
   version "1.0.3"
-  resolved "https://registry.npmjs.org/install-peers/-/install-peers-1.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/install-peers/-/install-peers-1.0.3.tgz#6348f8f67e6bc23c19ee78adb819c43f8d1dd7d7"
   integrity sha512-MAlSHlrn4p+g3fhx8ZVxQZXX+MkeinKLu/ThfAmrVnN5c2L8Vof7myb0UsgowJEiGcFNHYnTvo37r3uap5asYA==
   dependencies:
     executioner "^2.0.1"
@@ -10745,6 +10757,14 @@ react-dom@^17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
+react-dom@^18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"
+  integrity sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==
+  dependencies:
+    loose-envify "^1.1.0"
+    scheduler "^0.22.0"
+
 react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz"
@@ -10866,6 +10886,13 @@ react@^17.0.1:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+react@^18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.1.0.tgz#6f8620382decb17fdc5cc223a115e2adbf104890"
+  integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==
+  dependencies:
+    loose-envify "^1.1.0"
 
 read-cache@^1.0.0:
   version "1.0.0"
@@ -11135,6 +11162,13 @@ rimraf@3.0.2, rimraf@^3.0.0, rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
+rlayers@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/rlayers/-/rlayers-1.3.4.tgz#a4006f33d7371c1817ce0030594851f64ff38a4f"
+  integrity sha512-TjG2E1OrJZUs4pPuiVzKcDQxhAiI10khgdXRAAcS+E2QWsBNS1KCwAtTLyQIso/4/36qSWpvb5pPTQUjREMTwA==
+  dependencies:
+    lru-cache "^6.0.0"
+
 rollup-plugin-copy@^3.4.0:
   version "3.4.0"
   resolved "https://registry.npmjs.org/rollup-plugin-copy/-/rollup-plugin-copy-3.4.0.tgz"
@@ -11320,6 +11354,13 @@ scheduler@^0.20.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+scheduler@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.22.0.tgz#83a5d63594edf074add9a7198b1bae76c3db01b8"
+  integrity sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==
+  dependencies:
+    loose-envify "^1.1.0"
 
 schema-utils@2.7.0:
   version "2.7.0"
