@@ -1,5 +1,5 @@
 import {IonGrid, IonInput, IonRow, IonText, IonItem, IonList} from '@ionic/react';
-import React, { useState } from 'react'
+import React from 'react'
 
 
 //creating a type so props can be entered
@@ -15,11 +15,11 @@ export class  ActivityInputs extends React.Component<props, states>{
     handleChange = (e:any) =>{
         let input = e.target.name;
         let value = e.target.value;
-        if(input == 'i1')
+        if(input === 'i1')
             this.activityStates.i1=value;
-        else if(input == 'i2')
+        else if(input === 'i2')
             this.activityStates.i2=value;
-        else if (input=='i3')
+        else if (input==='i3')
             this.activityStates.i3=value;
     }
     
