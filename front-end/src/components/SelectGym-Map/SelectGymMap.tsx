@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Map, Overlay} from "pigeon-maps";
 import { IonFab, IonFabButton} from "@ionic/react";
 import "./SelectGymMap.css"
-
+import { stamenToner } from 'pigeon-maps/providers'
 export function SelectGymMap() {
 
 
@@ -32,6 +32,7 @@ export function SelectGymMap() {
   return (
     <div>
     <Map
+     provider={stamenToner}
      height={800}
      center={[center[0],center[1]]} 
      zoom={zoom} 

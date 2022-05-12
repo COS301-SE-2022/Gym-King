@@ -3,7 +3,7 @@ import './AddGym.css';
 import { ToolBar } from '../../components/toolbar/Toolbar'
 import { useState } from 'react';
 import { Map, Overlay} from "pigeon-maps";
-
+import { stamenToner } from 'pigeon-maps/providers'
 const AddGym: React.FC = () => {
 
 
@@ -76,12 +76,20 @@ const AddGym: React.FC = () => {
           <IonCardContent class="AddGymCardContent">
             <IonGrid class="AddGymGrid" className='grid'>
 
-              <IonRow class="AddGymRow" className='left topMargin'>
+            <IonRow class="AddGymRow" className='left topMargin'>
                 <IonText className='Subheading'>Name:</IonText>
               </IonRow>
 
               <IonRow className='left'>
                 <IonInput class="AddGymInput" placeholder='name' value={gymName} onIonChange={(e:any)=>{setGymName(e.target.value);setHref("http://localhost:3000/AddGymLocation?name="+e.target.value+"&latitude="+y+"&longitude="+x)}}> </IonInput>
+              </IonRow>
+              
+              <IonRow class="AddGymRow" className='left topMargin'>
+                <IonText className='Subheading'>Address:</IonText>
+              </IonRow>
+
+              <IonRow className='left'>
+                <IonInput class="AddGymInput" placeholder='address' onIonChange={(e:any)=>{setGymName(e.target.value);setHref("http://localhost:3000/AddGymLocation?name="+e.target.value+"&latitude="+y+"&longitude="+x)}}> </IonInput>
               </IonRow>
 
               <IonRow  className='left topMargin'>
@@ -91,20 +99,18 @@ const AddGym: React.FC = () => {
               <IonRow className='left'>
                 <IonButton expand="block" class="flex-margin" href={href}>
                   <IonIcon class="AddGymLocation" name="location-outline"></IonIcon>
-                    <span>Address</span>
+                    <span>Change Co-ordinates</span>
                    <IonIcon class="AddGymArrow" name="chevron-forward-outline"></IonIcon>
                 </IonButton>
               </IonRow>
               <IonRow>
                 <Map
-                  touchEvents={false}
-                  height={300}
+                  height={200}
                   center={[center[0],center[1]]} 
                   zoom={zoom}
-                  maxZoom={zoom}
-                  minZoom={zoom}
+                  provider={stamenToner}
                   > 
-                  <Overlay anchor={[center[0],center[1]]} offset={[30,30]} >
+                  <Overlay anchor={[y,x]} offset={[30,30]} >
                       <img src='https://icons-for-free.com/iconfiles/png/512/building-131994967665433893.png' width={50} height={50} alt='' />
                   </Overlay>
                 </Map>
