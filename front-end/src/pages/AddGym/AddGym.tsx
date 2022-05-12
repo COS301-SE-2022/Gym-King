@@ -21,16 +21,16 @@ const AddGym: React.FC = () => {
   { address="address"}
   const [gymAddress,setGymAddress]=useState<string>(address);
 
-  var y:number=urlParams.get('latitude')
-  var x:number=urlParams.get('longitude')
+  var y=urlParams.get('latitude')
+  var x=urlParams.get('longitude')
   if(!y&&!x)
-  { y=-25.7545;
-  x=28.2314 }
+  { y='-25.7545';
+  x='28.2314' }
 
-  const [coordinate,setCoordinate]=useState<[number,number]>([y,x]);
+  const [coordinate,setCoordinate]=useState<[number,number]>([parseFloat(y),parseFloat(x)]);
   const zoom:number =16
   const href:string="http://localhost:3000/AddGymLocation?name="+gymName+"&address="+gymAddress+"&latitude="+coordinate[0]+"&longitude="+coordinate[1]
-  
+
   let gymIcon:string="logo";
   const addGym=()=>{
       fetch(`https://gym-king.herokuapp.com/gyms/gym?gbn=${gymName}&ga=${gymAddress}&gclo=${x}&gcla=${y}&gi=${gymIcon}`,{
