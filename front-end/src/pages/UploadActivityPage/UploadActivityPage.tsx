@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast} from '@ionic/react';
 import React, { useState } from 'react'
 import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -68,7 +68,7 @@ const UploadActivityPage: React.FC = () =>{
     localStorage.setItem( 'e3', "");
     let formData: any
 
-
+    const [showToast1, setShowToast1] = useState(false);
    const handleSubmit = async (e:any) =>{
         e.preventDefault();
         formData={
@@ -92,6 +92,7 @@ const UploadActivityPage: React.FC = () =>{
             setIsValid(true);
             //handle post request 
             sendClaim();
+            setShowToast1(true);
 
         }
         
@@ -137,6 +138,13 @@ const UploadActivityPage: React.FC = () =>{
 
                         <IonButton class="btnSubmit" type='submit'>SUBMIT</IonButton>
                     </form>
+                    <IonToast
+                        isOpen={showToast1}
+                        onDidDismiss={() => setShowToast1(false)}
+                        message="Your claim has been uploaded."
+                        duration={500}
+                        color="success"
+                    />
                 </IonContent>
             </IonPage>
         )
