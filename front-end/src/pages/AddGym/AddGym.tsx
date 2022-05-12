@@ -2,8 +2,8 @@ import {  IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCo
 import './AddGym.css';
 import { ToolBar } from '../../components/toolbar/Toolbar'
 import { useState } from 'react';
-import { Map} from "pigeon-maps";
-
+import { Map, Overlay} from "pigeon-maps";
+import { stamenToner } from 'pigeon-maps/providers'
 const AddGym: React.FC = () => {
 
 
@@ -37,7 +37,7 @@ const AddGym: React.FC = () => {
   var name=urlParams.get('name')
   if(!name)
   { name="name"}
-
+  const [gymName,setGymName]=useState<string>(name);
   var y:number
   var x:number
   var latitude=urlParams.get('latitude')
@@ -52,11 +52,11 @@ const AddGym: React.FC = () => {
   else
   { x=parseFloat(longitude)}
 
-  const [gymName,setGymName]=useState<string>(name);
+
   const center:[number,number]=[y,x]
   const zoom:number =19
-  const href:string="http://localhost:3000/AddGymLocation?name="+name+"&latitude="+y+"&longitude="+x;
-
+  const[href,setHref]=useState<string>("http://localhost:3000/AddGymLocation?name="+name+"&latitude="+y+"&longitude="+x)
+  
 
 
   return (
@@ -76,12 +76,20 @@ const AddGym: React.FC = () => {
           <IonCardContent class="AddGymCardContent">
             <IonGrid class="AddGymGrid" className='grid'>
 
-              <IonRow class="AddGymRow" className='left topMargin'>
+            <IonRow class="AddGymRow" className='left topMargin'>
                 <IonText className='Subheading'>Name:</IonText>
               </IonRow>
 
               <IonRow className='left'>
-                <IonInput class="AddGymInput" placeholder='name' value={gymName} onIonChange={(e:any)=>setGymName(e.target.value)}> </IonInput>
+                <IonInput class="AddGymInput" placeholder='name' value={gymName} onIonChange={(e:any)=>{setGymName(e.target.value);setHref("http://localhost:3000/AddGymLocation?name="+e.target.value+"&latitude="+y+"&longitude="+x)}}> </IonInput>
+              </IonRow>
+              
+              <IonRow class="AddGymRow" className='left topMargin'>
+                <IonText className='Subheading'>Address:</IonText>
+              </IonRow>
+
+              <IonRow className='left'>
+                <IonInput class="AddGymInput" placeholder='address' onIonChange={(e:any)=>{setGymName(e.target.value);setHref("http://localhost:3000/AddGymLocation?name="+e.target.value+"&latitude="+y+"&longitude="+x)}}> </IonInput>
               </IonRow>
 
               <IonRow  className='left topMargin'>
@@ -91,28 +99,22 @@ const AddGym: React.FC = () => {
               <IonRow className='left'>
                 <IonButton expand="block" class="flex-margin" href={href}>
                   <IonIcon class="AddGymLocation" name="location-outline"></IonIcon>
-                    <span>Address</span>
+                    <span>Change Co-ordinates</span>
                    <IonIcon class="AddGymArrow" name="chevron-forward-outline"></IonIcon>
                 </IonButton>
               </IonRow>
               <IonRow>
                 <Map
-                  touchEvents={false}
-                  height={300}
+                  height={200}
                   center={[center[0],center[1]]} 
                   zoom={zoom}
-                  maxZoom={zoom}
-                  minZoom={zoom}
+                  provider={stamenToner}
                   > 
+                  <Overlay anchor={[y,x]} offset={[30,30]} >
+                      <img src='https://icons-for-free.com/iconfiles/png/512/building-131994967665433893.png' width={50} height={50} alt='' />
+                  </Overlay>
                 </Map>
-                <IonGrid class="SelectGymGrid" className='grid'>
-                    <IonRow>
-                      <IonIcon class="SelectGymMapIcon" name="barbell-outline"></IonIcon>
-                    </IonRow>
-                    <IonRow  >
-                      <IonIcon class="SelectGymMapIcon"  name="home-sharp"></IonIcon>
-                    </IonRow>
-                  </IonGrid>
+            
                 </IonRow>
               <IonButton class="AddGymAdd" color="tertiary">ADD</IonButton>
             </IonGrid>
