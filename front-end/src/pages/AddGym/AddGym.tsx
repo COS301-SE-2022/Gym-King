@@ -5,6 +5,30 @@ import { useState } from 'react';
 import { Map} from "pigeon-maps";
 
 const AddGym: React.FC = () => {
+
+
+  //POST REQUEST
+  //commented out because it generates a warning (because addGym() not used yet)
+  /*
+  let gymBrandName='';
+  let gymAddress='';
+  let gymCoordLong='';
+  let gymCoordLat='';
+  let gymIcon='';
+
+
+
+  const addGym=()=>{
+      fetch(`https://gym-king.herokuapp.com/gyms/gym?bgn=${gymBrandName}&ga=${gymAddress}&gclo=${gymCoordLong}&gcla=${gymCoordLat}$gi=${gymIcon}`,{
+          "method":"POST"
+      })
+      .then(response =>response.json())
+      .then(response =>{
+          console.log(response);
+      })
+      .catch(err => {console.log(err)})
+  } */
+
   
 
   const queryString=window.location.search
@@ -32,6 +56,7 @@ const AddGym: React.FC = () => {
   const center:[number,number]=[y,x]
   const zoom:number =19
   const href:string="http://localhost:3000/AddGymLocation?name="+name+"&latitude="+y+"&longitude="+x;
+
 
 
   return (
