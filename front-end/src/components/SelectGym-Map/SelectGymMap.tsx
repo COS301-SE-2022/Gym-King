@@ -3,10 +3,19 @@ import { Map, Overlay} from "pigeon-maps";
 import { IonFab, IonFabButton} from "@ionic/react";
 import "./SelectGymMap.css"
 import { stamenToner } from 'pigeon-maps/providers'
+
+import Geocoder from "react-native-geocoding";
+
+
+
 export function SelectGymMap() {
-
-
- 
+  Geocoder.init("AIzaSyD9pQDwcGJFK6NRGNj5-YwdJBx2PtERCTg")
+  Geocoder.from(41.89, 12.49)
+  .then(json => {
+          var addressComponent = json.results[0].formatted_address;
+    console.log(addressComponent);
+  })
+  .catch(error => console.warn(error));
   const queryString=window.location.search
   const urlParams = new URLSearchParams(queryString);
   const name=urlParams.get('name')
