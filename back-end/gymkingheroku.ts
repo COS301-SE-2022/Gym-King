@@ -37,8 +37,8 @@ const pool = (() => {
       return new Pool({
           connectionString: process.env.DATABASE_URL,
           ssl: {
-            rejectUnauthorized: false
-          }
+              rejectUnauthorized: false
+            }
       });
   } })
 ();
@@ -53,7 +53,11 @@ function createID(length: any) {
 express()
   .options('*', cors(corsOptions))
   .get('/', cors(corsOptions), async (req: any, res: any) => {
-    res.send(req.query);
+    const client = await pool.connect();
+    let result = await client.query(
+    "SELECT * FROM BADGE_OWNED "+
+    "WHERE B_ID = 'wTs' AND email = 'u20519517@tuks.co.za'");
+    res.json(result);
   })
   .get('/tables/table', cors(corsOptions), async (req: any, res: any) => {
     try {
@@ -284,29 +288,20 @@ express()
       result = await client.query(
       "DELETE FROM BADGE_CLAIM "+
       "WHERE B_ID = '"+query.bid+"' AND email = '"+query.email+"'");
-      result = await client.query("INSERT INTO BADGE_OWNED"+
-      "(b_id,email,username,input1,input2,input3) VALUES"+
-      "('"+ret.b_id+"','"+ret.email+"','"+ret.username+"','"+ret.input1+"','"+ret.input2+"','"+ret.input3+"')");
+      result = await client.query(
+      "SELECT * FROM BADGE_OWNED "+
+      "WHERE B_ID = '"+ret.b_id+"' AND email = '"+ret.email+"'");
+      if (result.rows.length > 0) {
+        result = await client.query("UPDATE BADGE_OWNED SET "+
+        "count = count+1 WHERE b_id = '"+ret.b_id+"' AND email = '"+ret.email+"'");
+      }
+      else {
+        result = await client.query("INSERT INTO BADGE_OWNED "+
+        "(B_ID,email,username,input1,input2,input3) VALUES"+
+        "('"+ret.b_id+"','"+ret.email+"','"+ret.username+"','"+ret.input1+"','"+ret.input2+"','"+ret.input3+"')");
+      }
       const results = { success: true, 'results': (result) ? result.rows : null};
       res.json( {ret,query} );
-      client.release();
-    } catch (err) {
-      const results = { success: false, 'results': err };
-      console.error(err);
-      res.json(results);
-    }
-  }).delete('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
-    try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-      "SELECT * FROM BADGE_CLAIM "+
-      "WHERE B_ID = '"+query.bid+"' AND email = '"+query.email+"'");
-      result = await client.query(
-      "DELETE FROM BADGE_CLAIM "+
-      "WHERE B_ID = '"+query.bid+"' AND email = '"+query.email+"'");
-      const results = { success: true, 'results': (result) ? result.rows : null};
-      res.json( {results,query} );
       client.release();
     } catch (err) {
       const results = { success: false, 'results': err };
