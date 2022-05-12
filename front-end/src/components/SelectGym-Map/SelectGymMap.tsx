@@ -3,7 +3,6 @@ import { Map, Overlay} from "pigeon-maps";
 import { IonFab, IonFabButton} from "@ionic/react";
 import "./SelectGymMap.css"
 import { stamenToner } from 'pigeon-maps/providers'
-
 //import Geocoder from "react-native-geocoding";
 
 
@@ -18,7 +17,7 @@ export function SelectGymMap() {
   //   console.log(addressComponent);
   // })
   // .catch(error => console.warn(error));
-
+  
 
   const image:string="https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png"
   
