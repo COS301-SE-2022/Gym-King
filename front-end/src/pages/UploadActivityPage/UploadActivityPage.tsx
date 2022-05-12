@@ -140,6 +140,8 @@ const UploadActivityPage: React.FC = () =>{
 
                         <IonButton class="btnSubmit" type='submit'>SUBMIT</IonButton>
                     </form>
+                    <br></br>
+                    <br></br>
                     <IonToast
                         isOpen={showToast1}
                         onDidDismiss={() => setShowToast1(false)}

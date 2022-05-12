@@ -4,6 +4,8 @@ import './AcceptRejectCard.css'
 import {personCircleOutline} from 'ionicons/icons';
 import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 //creating a type so props can be entered
 export type props = {userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any};
@@ -17,7 +19,10 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .then(response =>response.json())
         .then(response =>{
-            console.log(response.results);
+            //console.log(response.results);
+            //display toast 
+            //redirect to PendingApprovals
+            window.location.href = "http://localhost:3000/PendingApprovals";
         })
         .catch(err => {console.log(err)})
     } 
@@ -28,6 +33,9 @@ export class AcceptRejectCard extends React.Component<props>{
         .then(response =>response.json())
         .then(response =>{
             console.log(response.results);
+            //display toast 
+            //redirect to PendingApprovals
+            window.location.href = "http://localhost:3000/PendingApprovals";
         })
         .catch(err => {console.log(err)})
     }
