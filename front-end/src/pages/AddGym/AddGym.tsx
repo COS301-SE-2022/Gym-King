@@ -21,20 +21,15 @@ const AddGym: React.FC = () => {
   { address="address"}
   const [gymAddress,setGymAddress]=useState<string>(address);
 
-  const [latitude,setlatitude]=useState<number>(-25.7545);
   var y:number=urlParams.get('latitude')
-  if(y)
-  { setlatitude(y) }
-  
-  const [longitude,setlongitude]=useState<number>(28.2314);
   var x:number=urlParams.get('longitude')
-  if(x)
-  { setlongitude(x) }
+  if(!y&&!x)
+  { y=-25.7545;
+  x=28.2314 }
 
-
-  const center:[number,number]=[latitude,longitude]
+  const [coordinate,setCoordinate]=useState<[number,number]>([y,x]);
   const zoom:number =16
-  const href:string="http://localhost:3000/AddGymLocation?name="+gymName+"&address="+gymAddress+"&latitude="+latitude+"&longitude="+longitude
+  const href:string="http://localhost:3000/AddGymLocation?name="+gymName+"&address="+gymAddress+"&latitude="+coordinate[0]+"&longitude="+coordinate[1]
   
   let gymIcon:string="logo";
   const addGym=()=>{
@@ -47,6 +42,8 @@ const AddGym: React.FC = () => {
       })
       .catch(err => {console.log(err)})
     }
+
+    //HERES THE THE GEOCODING API CALL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     const handleKeyDown = (event: { key: string; }) => {
       if (event.key === 'Enter') {
         console.log("using geocoding api")
@@ -54,10 +51,8 @@ const AddGym: React.FC = () => {
         Geocoder.from(gymAddress)
         .then(json => {
         var addressComponent = json.results[0].geometry.location;
-           console.log(addressComponent);
-           setlatitude(addressComponent.lat)
-           setlongitude(addressComponent.lng)
-           
+          console.log(json.results); 
+           setCoordinate([addressComponent.lat,addressComponent.lng])
          })
         .catch(error => console.warn(error));
         
@@ -111,11 +106,11 @@ const AddGym: React.FC = () => {
               <IonRow>
                 <Map
                   height={200}
-                  center={[center[0],center[1]]} 
+                  center={[coordinate[0],coordinate[1]]} 
                   zoom={zoom}
                   provider={stamenToner}
                   > 
-                  <Overlay anchor={[latitude,longitude]} offset={[30,30]} >
+                  <Overlay anchor={[coordinate[0],coordinate[1]]} offset={[30,30]} >
                       <img width={60} height={50} src={image} alt="builing icon">
                       </img> 
                     </Overlay>
