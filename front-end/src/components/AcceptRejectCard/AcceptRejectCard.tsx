@@ -22,9 +22,17 @@ export class AcceptRejectCard extends React.Component<props>{
         .catch(err => {console.log(err)})
     } 
     rejectClaim = () =>{
-        
+        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.props.badgeId}&email=${this.props.userID}`,{
+            "method":"DELETE"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response.results);
+        })
+        .catch(err => {console.log(err)})
     }
     render(){
+        
         return(
             <IonCard>
                  <IonItem>
