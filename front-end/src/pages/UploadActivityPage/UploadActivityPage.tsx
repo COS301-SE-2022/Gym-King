@@ -1,5 +1,5 @@
 import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon} from '@ionic/react';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {shieldOutline} from 'ionicons/icons';
@@ -12,7 +12,7 @@ export type UploadActivityStates = {act?:any}
 const UploadActivityPage: React.FC = () =>{
     
 ///////////////////////GET REQUEST/////////////////////////
-    let badgeId= 'rAE';
+    let badgeId= 'wTs';
     const [b_id, setB_id] = useState('');
     const [badgename, setBadgename] = useState('');
     const [activitytype, setAT] = useState('');
@@ -25,6 +25,7 @@ const UploadActivityPage: React.FC = () =>{
         })
         .then(response =>response.json())
         .then(response =>{
+            console.log(response)
             setB_id(response.results[0].b_id)
             setAT( response.results[0].activitytype)
             setDescription(response.results[0].badgechallenge)
@@ -39,13 +40,14 @@ const UploadActivityPage: React.FC = () =>{
 
 //////////////////POST REQUEST/////////////////////////////
     let email = 'u20519517@tuks.co.za';
+    let username= 'Gates';
 
     const sendClaim=()=>{
         
         let i1= formData.i1;
         let i2= formData.i2;
         let i3= formData.i3;
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${b_id}&email=${email}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
+        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
             "method":"POST"
         })
         .then(response =>response.json())

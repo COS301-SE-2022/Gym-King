@@ -5,14 +5,16 @@ import {personCircleOutline} from 'ionicons/icons';
 
 
 //creating a type so props can be entered
-export type props = {userID:number, username:string};
+export type props = {userID:number, username:string, badgeId:string};
 
 
 export class ApprovalButton extends React.Component<props>{
 
     userId = (this.props.userID).toString();
     onClick= () =>{
-        localStorage.setItem('user', this.userId)
+        localStorage.setItem('email', this.userId);
+        localStorage.setItem('badgeId', this.props.badgeId);
+        localStorage.setItem('username', this.props.username);
     }
 
 

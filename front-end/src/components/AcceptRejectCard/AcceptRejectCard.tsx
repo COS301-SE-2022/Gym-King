@@ -6,10 +6,24 @@ import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 
 //creating a type so props can be entered
-export type props = {userID:number, username:string, badge:any};
+export type props = {userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any};
 
 
 export class AcceptRejectCard extends React.Component<props>{
+
+    acceptClaim= ()=>{
+        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.props.badgeId}&email=${this.props.userID}`,{
+            "method":"PUT"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response.results);
+        })
+        .catch(err => {console.log(err)})
+    } 
+    rejectClaim = () =>{
+        
+    }
     render(){
         return(
             <IonCard>
@@ -22,11 +36,10 @@ export class AcceptRejectCard extends React.Component<props>{
                         Badge:
                     </IonText><br></br>
                     <IonText className='txtBadge'>
-                        {this.props.badge.name}
+                        {this.props.badgename}
                     </IonText>
                     <br></br>
-                    <ActivityList  activityCategory={this.props.badge.activityCategory} i1={this.props.badge.input1} i2={this.props.badge.input2} i3={this.props.badge.input3}></ActivityList>
-                
+                    <ActivityList  activityCategory={this.props.activitytype} i1={this.props.i1} i2={this.props.i2} i3={this.props.i3}></ActivityList>
                     <br></br>
                     <IonText className='Subheading'>Proof:</IonText>
                     <IonCard className='justify'>
@@ -37,10 +50,10 @@ export class AcceptRejectCard extends React.Component<props>{
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-                                <IonButton color='primary'>Accept</IonButton>
+                                <IonButton color='primary' onClick={this.acceptClaim}>Accept</IonButton>
                             </IonCol>
                             <IonCol>
-                                <IonButton color='secondary'>Reject</IonButton>
+                                <IonButton color='secondary' onClick={this.rejectClaim}>Reject</IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
