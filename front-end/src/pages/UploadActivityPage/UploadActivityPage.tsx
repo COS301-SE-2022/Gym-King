@@ -12,9 +12,10 @@ export type UploadActivityStates = {act?:any}
 const UploadActivityPage: React.FC = () =>{
     
     
-    let badgeId= 1;
-    let  badgeInfo = null;
+    //let badgeId= 1;
+    //let  badgeInfo = null;
     //GET REQUEST:
+    /*
     const getBadges=()=>{
         fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
             "method":"GET"
@@ -25,7 +26,7 @@ const UploadActivityPage: React.FC = () =>{
             badgeInfo= response;
         })
         .catch(err => {console.log(err)})
-    }
+    } */
         
     //fake generic badge for testing 
     const badge1 = {
@@ -61,11 +62,11 @@ const UploadActivityPage: React.FC = () =>{
         };
         console.log(formData);
 
-        if(formData.i1 == null)
+        if(formData.i1 === null)
             localStorage.setItem( 'e1', "This field is required");
-        if(formData.i2 == null)
+        if(formData.i2 === null)
             localStorage.setItem( 'e2', "This field is required");
-        if(formData.i3 == null)
+        if(formData.i3 === null)
             localStorage.setItem( 'e3', "This field is required");
 
         const isValid = await claimSchema.isValid(formData);
@@ -81,11 +82,11 @@ const UploadActivityPage: React.FC = () =>{
     const updateInputs = (e:any) =>{
         let input = e.target.name;
         let value = e.target.value; 
-        if(input == 'i1')
+        if(input === 'i1')
             setInput1(input1 + value);
-        else if(input == 'i2')
+        else if(input === 'i2')
             setInput2(value);
-        else if (input=='i3')
+        else if (input==='i3')
             setInput3(value); 
 
             console.log(input1,input2,input3);
