@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Map} from "pigeon-maps";
+import { Map, Overlay} from "pigeon-maps";
 import { IonFab, IonFabButton} from "@ionic/react";
 import "./SelectGymMap.css"
 
@@ -39,6 +39,9 @@ export function SelectGymMap() {
        setCenter(center) 
        setZoom(zoom) 
      }} >
+       <Overlay anchor={[center[0],center[1]]} offset={[30,30]} >
+          <img src='https://icons-for-free.com/iconfiles/png/512/building-131994967665433893.png' width={50} height={50} alt='' />
+        </Overlay>
     </Map>
     <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton href={href} class="SelectGymMapButton">
@@ -47,4 +50,4 @@ export function SelectGymMap() {
         </IonFab>
     </div>
   );
-}
+} 

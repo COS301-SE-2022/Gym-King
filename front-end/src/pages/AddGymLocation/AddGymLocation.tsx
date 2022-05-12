@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonRow,  IonToolbar} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonToolbar} from '@ionic/react';
 import './AddGymLocation.css';
 import {SelectGymMap } from '../../components/SelectGym-Map/SelectGymMap';
 const AddGymLocation: React.FC = () => {
@@ -13,16 +13,7 @@ const AddGymLocation: React.FC = () => {
           </IonToolbar>
       </IonHeader>
       <IonContent>
-          <SelectGymMap></SelectGymMap> 
-          <IonGrid class="SelectGymGrid" className='grid'>
-              <IonRow>
-                <IonIcon class="SelectGymMapIcon" name="barbell-outline"></IonIcon>
-              </IonRow>
-              <IonRow  >
-                <IonIcon class="SelectGymMapIcon"  name="home-sharp"></IonIcon>
-              </IonRow>
-          </IonGrid>
-         
+          <SelectGymMap></SelectGymMap>     
       </IonContent>
            
     </IonPage>

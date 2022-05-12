@@ -7,19 +7,3 @@
     height: 100em;
     width: 100em;
 }
-.SelectGymGrid{
-    width: 100%;
-    position: fixed; /* or absolute */
-    top: 50%;
-    left: 45%;
-    z-index: 5;
-}
-.SelectGymGrid IonRow{
-   width: 100%;
-   
-}
-.SelectGymMapIcon{
-    color:red!important;
-    font-size: xx-large;
-    text-shadow: 50px 50px rgb(0, 0, 0);
-} 
