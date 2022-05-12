@@ -27,7 +27,7 @@ export class  ActivityInputs extends React.Component<props, states>{
     render(){
         
 
-        if(this.props.activityCategory === 'cardio'){
+        if(this.props.activityCategory === 'CARDIO'){
             return(
 
                 <IonList>

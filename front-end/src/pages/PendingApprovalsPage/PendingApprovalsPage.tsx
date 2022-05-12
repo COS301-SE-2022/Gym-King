@@ -10,7 +10,7 @@ export type UploadActivityStates = {act?:any}
 
 export class PendingApprovalsPage extends React.Component{
 
-    gymId= 0;
+    gymId= 'a7nw';
     claims: any;
 
     //GET REQUEST:
@@ -25,8 +25,10 @@ export class PendingApprovalsPage extends React.Component{
         })
         .catch(err => {console.log(err)})
     }
+
     
     render(){
+        this.getClaims()
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
