@@ -2,12 +2,14 @@ import { IonButton, IonLoading, IonToast } from "@ionic/react";
 import React, { useState } from "react"
 import { Geolocation } from '@ionic-native/geolocation'
 import { Map ,Overlay} from 'pigeon-maps'
+import { stamenToner } from 'pigeon-maps/providers'
 
 interface LocationError {
     showError: boolean;
     message?: String;
 
 }
+
 
 const MapView: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
@@ -55,6 +57,7 @@ const MapView: React.FC = () =>{
             <IonButton onClick={getLocation}>CLICK ME!</IonButton>
             
                 <Map 
+                    provider={stamenToner}
                     height={900}
                     center={[center[0],center[1]]}
                     zoom={zoom} 
