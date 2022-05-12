@@ -1,6 +1,6 @@
 import {IonGrid, IonRow, IonText, IonItem, IonList} from '@ionic/react';
 import React from 'react'
-
+import './ActivityList.css' ;
 
 //creating a type so props can be entered
 
