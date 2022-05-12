@@ -1,6 +1,6 @@
-import { IonButton, IonContent, IonLoading } from "@ionic/react";
+import { IonButton, IonLoading } from "@ionic/react";
 import React, { useState } from "react"
-import { Geolocation, Geoposition } from '@ionic-native/geolocation'
+import { Geolocation } from '@ionic-native/geolocation'
 import { Map ,Overlay} from 'pigeon-maps'
 
 const MapView: React.FC = () =>{
@@ -25,8 +25,6 @@ const MapView: React.FC = () =>{
     const [zoom, setZoom] = useState(10)
 
     const [userLocation, setUserLoc] = useState([0,0])
-    
-    const [hue, setHue] = useState(0)
 
     return (
         
