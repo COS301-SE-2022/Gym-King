@@ -53,11 +53,7 @@ function createID(length: any) {
 express()
   .options('*', cors(corsOptions))
   .get('/', cors(corsOptions), async (req: any, res: any) => {
-    const client = await pool.connect();
-    let result = await client.query(
-    "SELECT * FROM BADGE_OWNED "+
-    "WHERE B_ID = 'wTs' AND email = 'u20519517@tuks.co.za'");
-    res.json(result);
+    res.json({"hello":"There"});
   })
   .get('/tables/table', cors(corsOptions), async (req: any, res: any) => {
     try {
@@ -322,6 +318,22 @@ express()
       result = await client.query(
       "DELETE FROM BADGE "+
       "WHERE B_ID = '"+query.bid+"'");
+      const results = { success: true, 'results': (result) ? result.rows : null};
+      res.json( {results,query} );
+      client.release();
+    } catch (err) {
+      const results = { success: false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .delete('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      const client = await pool.connect();
+      let result = await client.query(
+      "DELETE FROM BADGE_CLAIM "+
+      "WHERE B_ID = '"+query.bid+"' AND email = '"+query.email+"'");
       const results = { success: true, 'results': (result) ? result.rows : null};
       res.json( {results,query} );
       client.release();

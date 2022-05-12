@@ -4,8 +4,8 @@
   "description": "",
   "main": "gymkingheroku.ts",
   "scripts": {
-    "serve": "heroku local web",
-    "start": "ts-node gymkingheroku.ts"
+    "start": "ts-node gymkingheroku.ts",
+    "test": "npx jest"
   },
   "keywords": [],
   "author": "Ryan Broemer - Codebusters @ University of Pretoria COS301",
@@ -17,5 +17,11 @@
     "pg": "^8.7.3",
     "ts-node": "^10.7.0"
   },
-  "repository": "https://git.heroku.com/gym-king.git"
+  "repository": "https://git.heroku.com/gym-king.git",
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "@types/supertest": "^2.0.12",
+    "supertest": "^6.2.3",
+    "ts-jest": "^28.0.2"
+  }
 }
