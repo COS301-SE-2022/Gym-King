@@ -6,10 +6,11 @@ import { stamenToner } from 'pigeon-maps/providers'
 export function SelectGymMap() {
 
 
- 
+  const image:string="https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png"
   const queryString=window.location.search
-  const urlParams = new URLSearchParams(queryString);
+  const   urlParams = new URLSearchParams(queryString);
   const name=urlParams.get('name')
+  const address=urlParams.get('address')
   var y:number
   var x:number
   var latitude=urlParams.get('latitude')
@@ -26,7 +27,7 @@ export function SelectGymMap() {
 
   const [center, setCenter] = useState([y,x])
   const [zoom, setZoom] = useState(19)
-  const href:string="http://localhost:3000/AddGym?name="+name+"&latitude="+center[0]+"&longitude="+center[1];
+  const href:string="http://localhost:3000/AddGym?name="+name+"&address="+address+"&latitude="+center[0]+"&longitude="+center[1];
 
 
   return (
@@ -41,7 +42,7 @@ export function SelectGymMap() {
        setZoom(zoom) 
      }} >
        <Overlay anchor={[center[0],center[1]]} offset={[30,30]} >
-          <img src='https://icons-for-free.com/iconfiles/png/512/building-131994967665433893.png' width={50} height={50} alt='' />
+          <img src={image} width={80} height={80} alt='building icon' />
         </Overlay>
     </Map>
     <IonFab vertical="bottom" horizontal="end" slot="fixed">
