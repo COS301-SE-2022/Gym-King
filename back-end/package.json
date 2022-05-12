@@ -1,13 +1,20 @@
 {
-  "name": "@yarn-monorepo/back-end",
+  "name": "gymkingserverheroku",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.18.1",
-    "@yarn-monorepo/config": "1.0.0"
-  },
+  "description": "",
+  "main": "gymkingheroku.ts",
   "scripts": {
-    "start": "node index.js"
-  }
+    "start": "ts-node gymkingheroku.ts"
+  },
+  "keywords": [],
+  "author": "Ryan Broemer - Codebusters @ University of Pretoria COS301",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "pg": "^8.7.3",
+    "ts-node": "^10.7.0"
+  },
+  "repository": "https://git.heroku.com/gym-king.git"
 }
