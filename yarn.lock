@@ -1309,6 +1309,20 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@ionic-native/core@^5.36.0":
+  version "5.36.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/core/-/core-5.36.0.tgz#712c40a530b119b0039e8d16cb577899f50541d4"
+  integrity sha512-lOrkktadlKYbYf1LrDyAtsu1JnQ0oCCdkOU7iHQ8oXnNOkMwobFfD2m62F1CoOr0u9LIkpYnZSPjng8lZbmbNw==
+  dependencies:
+    "@types/cordova" latest
+
+"@ionic-native/geolocation@^5.36.0":
+  version "5.36.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/geolocation/-/geolocation-5.36.0.tgz#c0ed319a4d6f4d4bcbe3789089aaeb3b02ff49b6"
+  integrity sha512-Fk7YXBn9/dOBGqtySSQgoCg7OLlmS8M6Y1Xa3hjgZBzFU0NPb9nnhVuMWI5Wp2qH/7cuzWRB7kEp4oN2tZ6fbw==
+  dependencies:
+    "@types/cordova" latest
+
 "@ionic/cli-framework-output@2.2.3", "@ionic/cli-framework-output@^2.2.1":
   version "2.2.3"
   resolved "https://registry.npmjs.org/@ionic/cli-framework-output/-/cli-framework-output-2.2.3.tgz"
@@ -3027,6 +3041,11 @@
   integrity sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==
   dependencies:
     "@types/node" "*"
+
+"@types/cordova@latest":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@types/cordova/-/cordova-0.0.34.tgz#ea7addf74ecec3d7629827a0c39e2c9addc73d04"
+  integrity sha1-6nrd907Ow9dimCegw54smt3HPQQ=
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.3"
@@ -9793,6 +9812,11 @@ pigeon-maps@^0.21.0:
   resolved "https://registry.yarnpkg.com/pigeon-maps/-/pigeon-maps-0.21.0.tgz#eb757acfe4b75234cba63c2c5e87e42c410de4b3"
   integrity sha512-p3GaGday5nmufHVGZW/36LnSXfYVh6qfzYisqcC87nqFr0eXIKkqQcDuPP9g4F1OXL1JeJe4x6JEnAE9HB+zWQ==
 
+pigeon-marker@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/pigeon-marker/-/pigeon-marker-0.3.4.tgz#bd00dd15a4e7622a77dc43fb746e256af5fa5f47"
+  integrity sha512-6sQoSI8Mii7eWWz3TorssbNmptVoP4heKMDt27AeU8I//MFQfQZS6JfCmW3zXF4a6dk4uisr4m26akUYSblfnQ==
+
 pirates@^4.0.4, pirates@^4.0.5:
   version "4.0.5"
   resolved "https://registry.npmjs.org/pirates/-/pirates-4.0.5.tgz"
@@ -10552,7 +10576,7 @@ prompts@^2.0.1, prompts@^2.3.2, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -10774,6 +10798,18 @@ react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
+
+react-geolocated@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-geolocated/-/react-geolocated-3.2.0.tgz#13caabaed7f35b899b542526d50058650d2b4c25"
+  integrity sha512-jfuCTK3XD/PE2yDVIq4j2fTQOSJOhb79LLrf8cQRQcyv3FhFarlfvAyqCHND1BcbXm0Zj305ZLQBEI5+8PVNwA==
+  dependencies:
+    prop-types "^15.5.8"
+
+react-geolocation@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-geolocation/-/react-geolocation-1.0.4.tgz#493f3ff1b8f89398cad0fb1001672a9611438e3d"
+  integrity sha512-4j5vejxE5wvELp/L+024FX9xYF6lC+gc/PPPsptHGQIJtrGYpvbAEOlmApwUlBV+H+1dG8CjL339kflXxBTBcg==
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"

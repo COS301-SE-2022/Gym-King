@@ -1,44 +1,57 @@
-import React, { FC }  from 'react';
-import {fromLonLat} from 'ol/proj';
-import {Point} from 'ol/geom';
-import 'ol/ol.css';
-import {RMap, ROSM, RLayerVector, RFeature, ROverlay, RStyle} from 'rlayers';
+import { IonButton, IonContent, IonLoading } from "@ionic/react";
+import React, { useState } from "react"
+import { Geolocation, Geoposition } from '@ionic-native/geolocation'
+import { Map ,Marker} from 'pigeon-maps'
 
-import './MapView.css'
-const MapView: React.FC = () => {
-    return(
-    <>
-    <RMap className='example-map' initial={{ center: [2.364,48.82], zoom: 11}}>
-        {/* Use an OpenStreetMap background */}
-        <ROSM />
-        {/* Create a single layer for holding vector features */}
-        <RLayerVector zIndex={10}>
-            {/* Create a style for rendering the features */}
-            <RStyle.RStyle>
-                {/* Consisting of a single icon, that is slightly offset
-                *so that its center falls over the center of the feature */}
-            </RStyle.RStyle>
-            {/* Create a single feature in the vector layer */}
-            <RFeature
-                geometry={new Point(fromLonLat([2.295, 48.8737]))}
-                onClick={(e: any) =>
-                    e.map.getView().fit(e.target.getGeometry().getExtent(), {
-                        duration: 250,
-                        maxZoom: 15
-                    })
-                }
-            >
-                {/* The icon is an SVG image that represents the feature on the map
-                while an overlay allows us to add a normal HTML element over the feature */}
-                <ROverlay className='example-overlay'>
-                    Arc de Triomphe
-                    <br />
-                    <em>&#11017; click to zoom</em>
-                </ROverlay>
-            </RFeature>
-        </RLayerVector>
-    </RMap>
-    </>
-    );
-};
+const MapView: React.FC = () =>{
+    const [loading, setLoading] = useState<boolean>(false);
+    const [position, setPosition] = useState<Geoposition>();
+
+    const getLocation = async() => {
+        setLoading(true);
+        try {
+            const position = await Geolocation.getCurrentPosition();
+            setPosition(position);
+            setLoading(false);
+            setCenter([Number(position?.coords.latitude), Number(position?.coords.longitude)]) 
+
+        } catch(e){
+            setLoading(false);
+        }
+    }
+    const [center, setCenter] = useState([-22, 28.2314])
+    const [zoom, setZoom] = useState(10)
+    
+    const [hue, setHue] = useState(0)
+
+    return (
+        
+        <>
+            <IonLoading 
+                isOpen={loading}
+                message={"Loading"}
+                onDidDismiss={() => setLoading(false)}
+            />
+            <IonButton onClick={getLocation}></IonButton>
+            <IonContent >
+                <Map 
+                    height={900}
+                    center={[center[0],center[1]]}
+                    zoom={zoom} 
+                    onBoundsChanged={({ center, zoom }) => { 
+                        setCenter(center) 
+                        setZoom(zoom) 
+                    }} 
+                    
+                >
+                    
+                        
+                </Map>
+                
+                
+            </IonContent>
+        </>
+    )
+}
+
 export default MapView;
