@@ -11,7 +11,7 @@ export type UploadActivityStates = {act?:any}
 
 const UploadActivityPage: React.FC = () =>{
     
-    
+
     //let badgeId= 1;
     //let  badgeInfo = null;
     //GET REQUEST:
@@ -62,11 +62,11 @@ const UploadActivityPage: React.FC = () =>{
         };
         console.log(formData);
 
-        if(formData.i1 === null)
+        if(formData.i1 == null)
             localStorage.setItem( 'e1', "This field is required");
-        if(formData.i2 === null)
+        if(formData.i2 == null)
             localStorage.setItem( 'e2', "This field is required");
-        if(formData.i3 === null)
+        if(formData.i3 == null)
             localStorage.setItem( 'e3', "This field is required");
 
         const isValid = await claimSchema.isValid(formData);
