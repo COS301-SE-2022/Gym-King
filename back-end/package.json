@@ -21,6 +21,8 @@
   "devDependencies": {
     "@types/jest": "^27.5.1",
     "@types/supertest": "^2.0.12",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.2"
   }
