@@ -4,6 +4,7 @@
   "description": "",
   "main": "gymkingheroku.ts",
   "scripts": {
+    "serve": "heroku local web",
     "start": "ts-node gymkingheroku.ts"
   },
   "keywords": [],
