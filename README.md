@@ -12,12 +12,13 @@ Gym King is a product designed to use gamification to improve motivation with gy
 ## Functional Requirements (SRS Document)
 
 ## Github Project Board
-https://github.com/COS301-SE-2022/Gym-King/projects/1
+[Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)
 
 ## Team Profile
 ### Robyn Hancock
 I am currently studying BSc Information and Knowledge Systems at the University of Pretoria. I was drawn to the field of Information Technology because of how dynamic it is. Whilst there have been times where I felt a little lost when learning new programming languages and concepts, I love a good challenge and learning more about something I enjoy. 
 I believe that the University of Pretoria gives its students a wonderful opportunity to be able to have a small taste of the industry before we dive in headfirst once we graduate, and I look forward to hopefully working with you and your company on this exciting project.<br>
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logoColor=white)](https://github.com/RobynHancock) <br>
 Github Profile: https://github.com/RobynHancock <br>
 LinkedIn Profile: https://www.linkedin.com/in/robyn-c-hancock/
 
