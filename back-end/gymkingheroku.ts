@@ -7,6 +7,9 @@ async function hashIt(password: any){
   const hashed = await bcrypt.hash(password, 10);
   return hashed;
 }
+if (!process.env.DATABASE_URL){
+  process.env.DATABASE_URL = "postgres://iaywkbttuwppmv:9ef916f869b5dbac0d5a1b0e48502104ac24e7260359da26602d9fc22094afc5@ec2-52-212-228-71.eu-west-1.compute.amazonaws.com:5432/d93uc45ua9re52";
+}
 let p1:any;
 let p2:any;
 const PORT = process.env.PORT || 8081
@@ -26,14 +29,16 @@ const pool = (() => {
   if (process.env.NODE_ENV !== 'production') {
       return new Pool({
           connectionString: process.env.DATABASE_URL,
-          ssl: false
+          ssl: {
+            rejectUnauthorized: false
+          }
       });
   } else {
       return new Pool({
           connectionString: process.env.DATABASE_URL,
           ssl: {
-              rejectUnauthorized: false
-            }
+            rejectUnauthorized: false
+          }
       });
   } })
 ();
