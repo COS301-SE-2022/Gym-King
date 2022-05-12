@@ -1,11 +1,21 @@
-import { IonButton, IonLoading } from "@ionic/react";
+import { IonButton, IonLoading, IonToast } from "@ionic/react";
 import React, { useState } from "react"
 import { Geolocation } from '@ionic-native/geolocation'
 import { Map ,Overlay} from 'pigeon-maps'
 
+interface LocationError {
+    showError: boolean;
+    message?: String;
+
+}
+
 const MapView: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
+    const [center, setCenter] = useState([0,0])
+    const [zoom, setZoom] = useState(10)
+
+    const [error, setError] = useState<LocationError>({showError: false});
     const getLocation = async() => {
         setLoading(true);
         try {
@@ -15,15 +25,15 @@ const MapView: React.FC = () =>{
             setLoading(false);
             setCenter([position?.coords.latitude, position?.coords.longitude]) 
             
+            setError({showError: false, message: "no error here"})
             setZoom(18) 
 
         } catch(e){
             setLoading(false);
+            
+            setError({showError: true, message: "Cannot get user location: Check Permissions"});
         }
     }
-    const [center, setCenter] = useState([0,0])
-    const [zoom, setZoom] = useState(10)
-
     const [userLocation, setUserLoc] = useState([0,0])
 
     return (
@@ -34,7 +44,15 @@ const MapView: React.FC = () =>{
                 message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
             />
-            <IonButton onClick={getLocation}></IonButton>
+            <IonToast
+                isOpen={error.showError}
+                message={String(error.message)}
+                
+                onDidDismiss={() => setError({showError: false, message: "no error here"})}
+                duration={3000}
+            />
+
+            <IonButton onClick={getLocation}>CLICK ME!</IonButton>
             
                 <Map 
                     height={900}
