@@ -9,13 +9,15 @@ import Geocoder from "react-native-geocoding";
 
 
 export function SelectGymMap() {
-  Geocoder.init("AIzaSyD9pQDwcGJFK6NRGNj5-YwdJBx2PtERCTg")
-  Geocoder.from(41.89, 12.49)
-  .then(json => {
-          var addressComponent = json.results[0].formatted_address;
-    console.log(addressComponent);
-  })
-  .catch(error => console.warn(error));
+
+  // !!!!! make sure this is only called when its needed. we only have 100 000 api calls
+  // Geocoder.init("AIzaSyD9pQDwcGJFK6NRGNj5-YwdJBx2PtERCTg")
+  // Geocoder.from(41.89, 12.49)
+  // .then(json => {
+  //         var addressComponent = json.results[0].formatted_address;
+  //   console.log(addressComponent);
+  // })
+  // .catch(error => console.warn(error));
 
 
   const image:string="https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png"
