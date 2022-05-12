@@ -6,38 +6,20 @@ import { Map, Overlay} from "pigeon-maps";
 import { stamenToner } from 'pigeon-maps/providers'
 const AddGym: React.FC = () => {
 
-
-  //POST REQUEST
-  //commented out because it generates a warning (because addGym() not used yet)
-  /*
-  let gymBrandName='';
-  let gymAddress='';
-  let gymCoordLong='';
-  let gymCoordLat='';
-  let gymIcon='';
-
-
-
-  const addGym=()=>{
-      fetch(`https://gym-king.herokuapp.com/gyms/gym?bgn=${gymBrandName}&ga=${gymAddress}&gclo=${gymCoordLong}&gcla=${gymCoordLat}$gi=${gymIcon}`,{
-          "method":"POST"
-      })
-      .then(response =>response.json())
-      .then(response =>{
-          console.log(response);
-      })
-      .catch(err => {console.log(err)})
-  } */
-
-  
+ 
+  const image:string="https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png"
 
   const queryString=window.location.search
   const urlParams = new URLSearchParams(queryString);
-
   var name=urlParams.get('name')
   if(!name)
   { name="name"}
   const [gymName,setGymName]=useState<string>(name);
+  var address=urlParams.get('address')
+  if(!address)
+  { address="address"}
+  const [gymAddress,setGymAddress]=useState<string>(address);
+
   var y:number
   var x:number
   var latitude=urlParams.get('latitude')
@@ -45,7 +27,6 @@ const AddGym: React.FC = () => {
   { y=-25.7545 }
   else
   { y=parseFloat(latitude) }
-
   var longitude=urlParams.get('longitude')
   if(!longitude)
   { x= 28.2314 }
@@ -55,9 +36,19 @@ const AddGym: React.FC = () => {
 
   const center:[number,number]=[y,x]
   const zoom:number =19
-  const[href,setHref]=useState<string>("http://localhost:3000/AddGymLocation?name="+name+"&latitude="+y+"&longitude="+x)
+  const href:string="http://localhost:3000/AddGymLocation?name="+gymName+"&address="+gymAddress+"&latitude="+y+"&longitude="+x
   
-
+  let gymIcon="logo";
+  const addGym=()=>{
+      fetch(`https://gym-king.herokuapp.com/gyms/gym?gbn=${gymName}&ga=${gymAddress}&gclo=${x}&gcla=${y}&gi=${gymIcon}`,{
+          "method":"POST"
+      })
+      .then(response =>response.json())
+      .then(response =>{
+          console.log(response);
+      })
+      .catch(err => {console.log(err)})
+    }
 
   return (
     <IonPage>
@@ -81,7 +72,7 @@ const AddGym: React.FC = () => {
               </IonRow>
 
               <IonRow className='left'>
-                <IonInput class="AddGymInput" placeholder='name' value={gymName} onIonChange={(e:any)=>{setGymName(e.target.value);setHref("http://localhost:3000/AddGymLocation?name="+e.target.value+"&latitude="+y+"&longitude="+x)}}> </IonInput>
+                <IonInput class="AddGymInput" placeholder='name' value={gymName} onIonChange={(e:any)=>{setGymName(e.target.value);}}> </IonInput>
               </IonRow>
               
               <IonRow class="AddGymRow" className='left topMargin'>
@@ -89,7 +80,7 @@ const AddGym: React.FC = () => {
               </IonRow>
 
               <IonRow className='left'>
-                <IonInput class="AddGymInput" placeholder='address' onIonChange={(e:any)=>{setGymName(e.target.value);setHref("http://localhost:3000/AddGymLocation?name="+e.target.value+"&latitude="+y+"&longitude="+x)}}> </IonInput>
+                <IonInput class="AddGymInput" placeholder='address' value={gymAddress} onIonChange={(e:any)=>{setGymAddress(e.target.value);}}> </IonInput>
               </IonRow>
 
               <IonRow  className='left topMargin'>
@@ -111,12 +102,13 @@ const AddGym: React.FC = () => {
                   provider={stamenToner}
                   > 
                   <Overlay anchor={[y,x]} offset={[30,30]} >
-                      <img src='https://icons-for-free.com/iconfiles/png/512/building-131994967665433893.png' width={50} height={50} alt='' />
-                  </Overlay>
+                      <img width={60} height={50} src={image} alt="builing icon">
+                      </img> 
+                    </Overlay>
                 </Map>
             
                 </IonRow>
-              <IonButton class="AddGymAdd" color="tertiary">ADD</IonButton>
+              <IonButton class="AddGymAdd" color="tertiary" onClick={()=>addGym()}>ADD</IonButton>
             </IonGrid>
          
             <IonButton>Next</IonButton>
