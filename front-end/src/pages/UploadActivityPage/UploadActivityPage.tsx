@@ -9,6 +9,23 @@ export type UploadActivityStates = {act?:any}
 
 export class UploadActivityPage extends React.Component<UploadActivityStates>{
 
+    badgeId= 1;
+    badgeInfo:any;
+
+    //GET REQUEST:
+    getBadges=()=>{
+        fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${this.badgeId}`,{
+            "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response);
+            this.badgeInfo= response;
+        })
+        .catch(err => {console.log(err)})
+    }
+    
+
     state= {activity:'none'};
     
     //fake generic badge for testing 

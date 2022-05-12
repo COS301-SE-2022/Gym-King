@@ -25,6 +25,11 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
 import UserMap from './pages/UserMap/UserMap';
+import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsPage';
+ /*Feature-PendingApprovalsPage*/
+
+import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
+/*develop*/
 
 
 setupIonicReact();
@@ -44,17 +49,26 @@ const App: React.FC = () => (
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
         </Route>
+        <Route exact path='/PendingApprovals'>
+          <PendingApprovalsPage></PendingApprovalsPage>
+        </Route>
         <Route exact path='/AddGym'>
           <AddGym></AddGym>
         </Route>
         <Route exact path='/AddGymLocation'>
           <AddGymLocation></AddGymLocation>
         </Route>
-        <Route exact path='/PendingApprovals'>
-        </Route>    
         <Route exact path='/UserMap'>
           <UserMap></UserMap>
         </Route>        
+        <Route exact path='/PendingApprovals'>
+  
+
+          <PendingApprovalsPage></PendingApprovalsPage>
+        </Route>   
+        <Route exact path='/AcceptReject'>
+          <AcceptRejectPage></AcceptRejectPage>
+        </Route>     
 
       </IonRouterOutlet>
     </IonReactRouter>

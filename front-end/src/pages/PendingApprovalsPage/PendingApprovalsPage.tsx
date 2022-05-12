@@ -10,6 +10,21 @@ export type UploadActivityStates = {act?:any}
 
 export class PendingApprovalsPage extends React.Component{
 
+    gymId= 0;
+    claims: any;
+
+    //GET REQUEST:
+    getClaims=()=>{
+        fetch(`https://gym-king.herokuapp.com/claims/claim?gid=${this.gymId}`,{
+            "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response);
+            this.claims= response;
+        })
+        .catch(err => {console.log(err)})
+    }
     
     render(){
         return(
