@@ -4,7 +4,7 @@ import { IonFab, IonFabButton} from "@ionic/react";
 import "./SelectGymMap.css"
 import { stamenToner } from 'pigeon-maps/providers'
 
-import Geocoder from "react-native-geocoding";
+//import Geocoder from "react-native-geocoding";
 
 
 
