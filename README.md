@@ -1,9 +1,9 @@
 # Gym-King
-![](https://img.shields.io/github/issues/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=3600)
-![](https://img.shields.io/github/issues-pr/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=3600)
-![](https://img.shields.io/github/issues-pr-closed/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=3600)
-![](https://img.shields.io/github/last-commit/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=3600)
-![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=3600)
+![](https://img.shields.io/github/issues/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+![](https://img.shields.io/github/issues-pr/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+![](https://img.shields.io/github/issues-pr-closed/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+![](https://img.shields.io/github/last-commit/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ## Basic Commands
 - yarn run start
 - yarn run build
