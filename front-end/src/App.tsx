@@ -24,6 +24,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
+import UserMap from './pages/UserMap/UserMap';
 import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsPage';
  /*Feature-PendingApprovalsPage*/
 
@@ -57,7 +58,12 @@ const App: React.FC = () => (
         <Route exact path='/AddGymLocation'>
           <AddGymLocation></AddGymLocation>
         </Route>
+        <Route exact path='/UserMap'>
+          <UserMap></UserMap>
+        </Route>        
         <Route exact path='/PendingApprovals'>
+  
+
           <PendingApprovalsPage></PendingApprovalsPage>
         </Route>   
         <Route exact path='/AcceptReject'>

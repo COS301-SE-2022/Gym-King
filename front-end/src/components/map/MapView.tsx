@@ -1,44 +1,82 @@
-import React, { FC }  from 'react';
-import {fromLonLat} from 'ol/proj';
-import {Point} from 'ol/geom';
-import 'ol/ol.css';
-import {RMap, ROSM, RLayerVector, RFeature, ROverlay, RStyle} from 'rlayers';
+import { IonButton, IonLoading, IonToast } from "@ionic/react";
+import React, { useState } from "react"
+import { Geolocation } from '@ionic-native/geolocation'
+import { Map ,Overlay} from 'pigeon-maps'
+import { stamenToner } from 'pigeon-maps/providers'
 
-import './MapView.css'
-const MapView: React.FC = () => {
-    return(
-    <>
-    <RMap className='example-map' initial={{ center: [2.364,48.82], zoom: 11}}>
-        {/* Use an OpenStreetMap background */}
-        <ROSM />
-        {/* Create a single layer for holding vector features */}
-        <RLayerVector zIndex={10}>
-            {/* Create a style for rendering the features */}
-            <RStyle.RStyle>
-                {/* Consisting of a single icon, that is slightly offset
-                *so that its center falls over the center of the feature */}
-            </RStyle.RStyle>
-            {/* Create a single feature in the vector layer */}
-            <RFeature
-                geometry={new Point(fromLonLat([2.295, 48.8737]))}
-                onClick={(e: any) =>
-                    e.map.getView().fit(e.target.getGeometry().getExtent(), {
-                        duration: 250,
-                        maxZoom: 15
-                    })
-                }
-            >
-                {/* The icon is an SVG image that represents the feature on the map
-                while an overlay allows us to add a normal HTML element over the feature */}
-                <ROverlay className='example-overlay'>
-                    Arc de Triomphe
-                    <br />
-                    <em>&#11017; click to zoom</em>
-                </ROverlay>
-            </RFeature>
-        </RLayerVector>
-    </RMap>
-    </>
-    );
-};
+interface LocationError {
+    showError: boolean;
+    message?: String;
+
+}
+
+
+const MapView: React.FC = () =>{
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const [center, setCenter] = useState([0,0])
+    const [zoom, setZoom] = useState(10)
+
+    const [error, setError] = useState<LocationError>({showError: false});
+    const getLocation = async() => {
+        setLoading(true);
+        try {
+            const position = await Geolocation.getCurrentPosition();
+          
+            setUserLoc([position?.coords.latitude, position?.coords.longitude]) 
+            setLoading(false);
+            setCenter([position?.coords.latitude, position?.coords.longitude]) 
+            
+            setError({showError: false, message: "no error here"})
+            setZoom(18) 
+
+        } catch(e){
+            setLoading(false);
+            
+            setError({showError: true, message: "Cannot get user location: Check Permissions"});
+        }
+    }
+    const [userLocation, setUserLoc] = useState([0,0])
+
+    return (
+        
+        <>
+            <IonLoading 
+                isOpen={loading}
+                message={"Loading"}
+                onDidDismiss={() => setLoading(false)}
+            />
+            <IonToast
+                isOpen={error.showError}
+                message={String(error.message)}
+                
+                onDidDismiss={() => setError({showError: false, message: "no error here"})}
+                duration={3000}
+            />
+
+            <IonButton onClick={getLocation}>CLICK ME!</IonButton>
+            
+                <Map 
+                    provider={stamenToner}
+                    height={900}
+                    center={[center[0],center[1]]}
+                    zoom={zoom} 
+                    
+                    onBoundsChanged={({ center, zoom }) => { 
+                        setCenter(center) 
+                        setZoom(zoom) 
+                    }} 
+                    
+                >
+                    
+                    <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
+                    <img src='https://icons-for-free.com/iconfiles/png/512/svg+location+locator+map+navigation+user+user+location+icon-1320184910707394703.png' width={50} height={50} alt='' />
+                    </Overlay>      
+                </Map>
+                
+                
+        </>
+    )
+}
+
 export default MapView;
