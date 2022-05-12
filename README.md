@@ -39,5 +39,5 @@ LinkedIn Profile: https://www.linkedin.com/in/ryan-broemer-49156823a/
 ### Thivessh Jhugroo
 A student at the University of Pretoria, currently studying for a BSc in Computer Science. I am born South African, hailed from Benoni. I am a creative thinker and a disciplined student, who takes pride in his work with great attention to detail. I can implement good front-end practices and often showcase my profound interest in machine learning and statistics. I might not be too familiar with some of the technologies out there, but I am more than willing to learn and work on my ever-growing knowledge, as this will only help me on my path to becoming a good computer scientist. <br>
 Github Profile: https://github.com/Thivesshj  <br>
-LinkedIn Profile:
+LinkedIn Profile: https://www.linkedin.com/in/thivessh-jhugroo-879a3b1b6/
 
