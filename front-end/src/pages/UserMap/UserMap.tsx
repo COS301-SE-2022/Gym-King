@@ -6,7 +6,9 @@ const UserMap: React.FC = () => {
       <IonHeader>
 
       </IonHeader>
+      <IonContent>
         <MapView/>
+      </IonContent>
     </IonPage>
   );
 };
