@@ -10,7 +10,7 @@ const AcceptRejectPage: React.FC = () =>{
     let badgeId = localStorage.getItem('badgeId');
     let email = localStorage.getItem('email');
     let username = localStorage.getItem('username');
-    const [claim, setClaim] = useState({b_id:'0', i1:'', i2:'', i3:''});
+    //const [claim, setClaim] = useState({b_id:'0', i1:'', i2:'', i3:''});
     const [i1, setI1] = useState('');
     const [i2, setI2] = useState('');
     const [i3, setI3] = useState('');
@@ -22,7 +22,7 @@ const AcceptRejectPage: React.FC = () =>{
         .then(response =>response.json())
         .then(response =>{
             //console.log();
-            setClaim(response.results[0]);
+            //setClaim(response.results[0]);
             setI1(response.results[0].input1);
             setI2(response.results[0].input2);
             setI3(response.results[0].input3);
