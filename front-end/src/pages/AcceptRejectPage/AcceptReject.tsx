@@ -23,22 +23,7 @@ export class AcceptRejectPage extends React.Component {
         .catch(err => {console.log(err)})
     }
 
-    //POST REQUEST:
-    input1="";
-    input2="";
-    input3="";
-    proof="";
-    acceptClaim=()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.badgeId}&email=${this.email}&input1=${this.input1}&input2=${this.input2}&input2=${this.input3}&proof=${this.proof}`,{
-            "method":"POST"
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            console.log(response);
-        })
-        .catch(err => {console.log(err)})
-    }
-  
+    
     badge= {
         name:'Cycling Champ', 
         description: 'Cycle 10km in 15 minutes to earn this badge!', 

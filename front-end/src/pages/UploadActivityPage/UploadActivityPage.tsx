@@ -11,34 +11,49 @@ export type UploadActivityStates = {act?:any}
 
 const UploadActivityPage: React.FC = () =>{
     
+///////////////////////GET REQUEST/////////////////////////
+    let badgeId= 'rAE';
+    const [b_id, setB_id] = useState('');
+    const [badgename, setBadgename] = useState('');
+    const [activitytype, setAT] = useState('');
+    const [badgedescription, setDescription] = useState('');
+    //const [g_id, setG_id] = useState(''); //commented because not used
 
-    //let badgeId= 1;
-    //let  badgeInfo = null;
-    //GET REQUEST:
-    /*
-    const getBadges=()=>{
+    const getBadges= ()=>{
         fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
             "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
-            console.log(response);
-            badgeInfo= response;
+            setB_id(response.results[0].b_id)
+            setAT( response.results[0].activitytype)
+            setDescription(response.results[0].badgechallenge)
+            setBadgename(response.results[0].badgename)
+            //setG_id(response.results[0].g_id)
         })
         .catch(err => {console.log(err)})
-    } */
-        
-    //fake generic badge for testing 
-    const badge1 = {
-        name:'Cycling Champ', 
-        description: 'Cycle 10km in 15 minutes to earn this badge!', 
-        activityCategory:'cardio',
-        activityType:'cycling',
-        input1:'00:14:45',
-        input2:'10km',
-        input3:'4'
-    };
+    } 
+    getBadges();
 
+///////////////////////////////////////////////////////////
+
+//////////////////POST REQUEST/////////////////////////////
+    let email = 'u20519517@tuks.co.za';
+
+    const sendClaim=()=>{
+        
+        let i1= formData.i1;
+        let i2= formData.i2;
+        let i3= formData.i3;
+        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${b_id}&email=${email}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
+            "method":"POST"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response);
+        })
+        .catch(err => {console.log(err)}) 
+    }
 
 
     //submit claim 
@@ -51,11 +66,12 @@ const UploadActivityPage: React.FC = () =>{
     localStorage.setItem( 'e1', "");
     localStorage.setItem( 'e2', "");
     localStorage.setItem( 'e3', "");
+    let formData: any
 
 
    const handleSubmit = async (e:any) =>{
         e.preventDefault();
-        let formData={
+        formData={
             i1: e.target.i1.value,
             i2: e.target.i2.value,
             i3: e.target.i3.value,
@@ -75,6 +91,8 @@ const UploadActivityPage: React.FC = () =>{
         {
             setIsValid(true);
             //handle post request 
+            sendClaim();
+
         }
         
    }
@@ -94,7 +112,7 @@ const UploadActivityPage: React.FC = () =>{
     
     
         return(
-            
+        
             <IonPage color='#220FE' >
                 <IonHeader>
                     <ToolBar></ToolBar>
@@ -102,11 +120,11 @@ const UploadActivityPage: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonIcon icon={shieldOutline} className='badge center shadow'></IonIcon>
-                    <IonText className='PageTitle center'>{badge1.name}</IonText>
-                    <IonText className='SmallDescription center'>{badge1.description}</IonText> <br></br>
+                    <IonText className='PageTitle center'>{badgename}</IonText>
+                    <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                     <form onSubmit={handleSubmit}>
                         <IonText className='inputHeading'>Enter your activity details:</IonText>
-                        <ActivityInputs activityCategory={badge1.activityCategory} inputs={updateInputs}></ActivityInputs> <br></br>
+                        <ActivityInputs activityCategory={activitytype} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }
