@@ -13,6 +13,7 @@
 Gym King is a product designed to use gamification to improve motivation with gym settings. Using open source and Augmented Reality (AR), Gym King aims to allow Gyms to issue badges to their users for achieving workout goals and allow them to work up the Gym leaderboard and become the ultimate Gym King.
 
 ## Codebusters - Demo 1
+[DEMO 1 video and Powerpoint](https://drive.google.com/file/d/1R6cd-c4VVcGHdae_j599cjW3gYeD1lOi/view?usp=sharing)
 
 ## Functional Requirements (SRS Document)
 [Gym King - Codebusters - Demo 1.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8682399/Gym.King.-.Codebusters.-.Demo.1.pdf)
