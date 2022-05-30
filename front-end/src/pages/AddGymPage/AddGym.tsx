@@ -15,11 +15,11 @@ import {
   IonToast,
 } from "@ionic/react";
 import "./AddGym.css";
-import { ToolBar } from "../../components/Toolbar/Toolbar";
 import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
 import { stamenToner } from "pigeon-maps/providers";
 import Geocoder from "react-native-geocoding";
+import ToolBar from "../../components/Toolbar/Toolbar";
 const AddGym: React.FC = () => {
 //###################################################################################################
 //# Initiaitng variables
