@@ -1,6 +1,6 @@
 import {IonSelect, IonSelectOption} from '@ionic/react';
 import React from 'react'
-import './dropdown.css'
+import './Dropdown.css'
 import '../../theme/variables.css'
 //creating a type so props can be entered
 export type DropDownProps = {list?:Array<string>,  value?:string, parentCallback?:any};

@@ -1,6 +1,6 @@
 import {IonIcon, IonItem, IonLabel} from '@ionic/react';
 import React from 'react'
-import './approvalButton.css'
+import './ApprovalButton.css'
 import {personCircleOutline} from 'ionicons/icons';
 
 

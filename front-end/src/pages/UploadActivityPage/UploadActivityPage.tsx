@@ -1,11 +1,11 @@
 import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
-import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
-import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
+import ActivityInputs from '../../components/ActivityInputs/ActivityInputs';
+import FileChooser from '../../components/FileChooser/FileChooser';
 
 export type UploadActivityStates = {act?:any}
 

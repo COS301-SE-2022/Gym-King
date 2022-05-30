@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
-import Toolbar from './Toolbar'
+import ToolBar from './Toolbar';
 
 test('renders without crashing', () => {
-    const { baseElement } = render(<Toolbar username='user'/>);
+    const { baseElement } = render(<ToolBar username='user'/>);
     expect(baseElement).toBeDefined();
   });
 
