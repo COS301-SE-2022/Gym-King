@@ -1,7 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader,IonButton, IonIcon} from '@ionic/react';
 import { informationCircleOutline } from 'ionicons/icons';
 import React, {useState} from 'react'
-import ApprovalButton from '../../components/ApprovalButton/ApprovalButton';
+import ApprovalButton from '../../components/ApprovalButton/approvalButton';
 import { ToolBar } from '../../components/Toolbar/Toolbar';
 import './PendingApprovals.css';
 
