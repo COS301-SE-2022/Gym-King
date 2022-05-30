@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonPage, } from '@ionic/react';
-import MapView from '../../components/map/MapView';
+import MapView from '../../components/MapView/MapView';
 const UserMap: React.FC = () => {
   return (
     <IonPage>

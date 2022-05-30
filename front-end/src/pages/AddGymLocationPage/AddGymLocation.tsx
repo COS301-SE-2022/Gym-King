@@ -1,6 +1,6 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonToolbar} from '@ionic/react';
 import './AddGymLocation.css';
-import {SelectGymMap } from '../../components/SelectGym-Map/SelectGymMap';
+import {SelectGymMap } from '../../components/SelectGymMap/SelectGymMap';
 const AddGymLocation: React.FC = () => {
   return (
     <IonPage>

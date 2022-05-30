@@ -15,7 +15,7 @@ import {
   IonToast,
 } from "@ionic/react";
 import "./AddGym.css";
-import { ToolBar } from "../../components/toolbar/Toolbar";
+import { ToolBar } from "../../components/Toolbar/Toolbar";
 import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
 import { stamenToner } from "pigeon-maps/providers";

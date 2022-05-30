@@ -1,15 +1,15 @@
 import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
-import FileChooser from '../../components/filechooser/FileChooser';
-import { ToolBar } from '../../components/toolbar/Toolbar';
+import FileChooser from '../../components/FileChooser/FileChooser';
+import { ToolBar } from '../../components/Toolbar/Toolbar';
 import {shieldOutline} from 'ionicons/icons';
-import './UploadActivityPage.css';
-import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
+import './UploadActivity.css';
+import {ActivityInputs} from '../../components/ActivityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 
 export type UploadActivityStates = {act?:any}
 
-const UploadActivityPage: React.FC = () =>{
+const UploadActivity: React.FC = () =>{
     
 ///////////////////////GET REQUEST/////////////////////////
     let badgeId= 'wTs';
@@ -155,4 +155,4 @@ const UploadActivityPage: React.FC = () =>{
         
 }
 
-export default UploadActivityPage;
+export default UploadActivity;

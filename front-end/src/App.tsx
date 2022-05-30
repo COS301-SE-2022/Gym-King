@@ -2,8 +2,8 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-import AddGym from './pages/AddGym/AddGym';
-import AddGymLocation from './pages/AddGymLocation/AddGymLocation';
+import AddGym from './pages/AddGymPage/AddGym';
+import AddGymLocation from './pages/AddGymLocationPage/AddGymLocation';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -23,9 +23,9 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
-import UserMap from './pages/UserMap/UserMap';
-import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsPage';
+import UploadActivityPage from './pages/UploadActivityPage/UploadActivity';
+import UserMap from './pages/UserMapPage/UserMap';
+import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovals';
  /*Feature-PendingApprovalsPage*/
 
 import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';

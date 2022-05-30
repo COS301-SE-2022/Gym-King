@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
-import UploadActivityPage from './UploadActivityPage'
+import UploadActivity from './UploadActivity'
 
 test('renders without crashing', () => {
-    const { baseElement } = render(<UploadActivityPage />);
+    const { baseElement } = render(<UploadActivity />);
     expect(baseElement).toBeDefined();
   });
 

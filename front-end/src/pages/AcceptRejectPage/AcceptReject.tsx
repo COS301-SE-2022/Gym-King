@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonText, IonPage} from '@ionic/react';
 import React, {useState} from 'react'
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
-import { ToolBar } from '../../components/toolbar/Toolbar';
+import { ToolBar } from '../../components/Toolbar/Toolbar';
 import './AcceptReject.css';
 
 const AcceptRejectPage: React.FC = () =>{
