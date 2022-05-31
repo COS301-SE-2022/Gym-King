@@ -112,7 +112,7 @@ http://ionicframework.com/docs/theming/ */
 }
 
 .centerComp{
-  margin-left: 10%;
+    margin-left: 10%;
     margin-right:10%;
 }
 
@@ -161,6 +161,14 @@ http://ionicframework.com/docs/theming/ */
     
 }
 
+.smallerTextBox {
+  width: 75%;
+  border-radius: 8px;
+}
+
+.textarea{
+  padding:2%;
+}
 
 
 .md body {
