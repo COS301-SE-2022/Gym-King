@@ -179,6 +179,9 @@ http://ionicframework.com/docs/theming/ */
   margin-right:10%;
 }
 
+.link{
+  color: #9350ff;
+}
 
 .md body {
   --ion-background-color: var(--ion-color-secondary);

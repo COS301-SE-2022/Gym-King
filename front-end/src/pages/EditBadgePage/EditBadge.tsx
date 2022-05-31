@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonIcon} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonIcon, IonRouterLink} from '@ionic/react';
 import { shieldOutline } from 'ionicons/icons';
 import DropDown from '../../components/dropdown/dropdown';
 import ToolBar from '../../components/toolbar/Toolbar';
@@ -18,6 +18,7 @@ const EditBadge: React.FC = () =>{
                     <IonText className='PageTitle center'>Editing Badge</IonText>
 
                     <IonIcon icon={shieldOutline} className='badge center shadow'></IonIcon>    
+                    <IonRouterLink className='center link'  >Change badge icon</IonRouterLink><br></br><br></br>
 
                     <IonText className='inputHeading'>Badge Name:</IonText> <br></br><br></br>
                     <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' placeholder='badge name'></IonInput><br></br><br></br>

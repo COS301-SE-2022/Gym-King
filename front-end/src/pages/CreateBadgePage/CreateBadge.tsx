@@ -16,7 +16,6 @@ const CreateBadge: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Creating Badge</IonText>
-
                     <IonText className='inputHeading'>Badge Name:</IonText> <br></br><br></br>
                     <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
