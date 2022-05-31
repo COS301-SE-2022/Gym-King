@@ -5,4 +5,3 @@ test('renders without crashing', () => {
     const { baseElement } = render(<FileChooser numFiles={0} />);
     expect(baseElement).toBeDefined();
   });
-

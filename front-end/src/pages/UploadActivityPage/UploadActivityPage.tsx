@@ -5,7 +5,7 @@ import './UploadActivityPage.css';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import ToolBar from '../../components/toolbar/Toolbar';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs'
-import {FileChooser} from '../../components/FileChooser/FileChooser'
+import {FileChooser} from '../../components/filechooser/FileChooser'
 export type UploadActivityStates = {act?:any}
 
 const UploadActivityPage: React.FC = () =>{
