@@ -90,6 +90,7 @@ const CreateBadge: React.FC = () =>{
                         <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
                         <DropDown list={['Strength', 'Cardio']} chosenValue={setChosenActivityType}></DropDown><br></br><br></br>
 
+
                         <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
                         <DropDown list={['List of gyms']} chosenValue={setChosenGymLocation}></DropDown><br></br><br></br>
 
