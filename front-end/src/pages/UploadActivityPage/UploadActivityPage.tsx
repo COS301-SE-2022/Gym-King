@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
 import {claimSchema} from '../../validation/UploadClaimValidation'
-import FileChooser from '../../components/FileChooser/FileChooser';
 import ToolBar from '../../components/toolbar/Toolbar';
 import {ActivityInputs} from '../../components/ActivityInputs/ActivityInputs'
+import {FileChooser} from '../../components/FileChooser/FileChooser'
 export type UploadActivityStates = {act?:any}
 
 const UploadActivityPage: React.FC = () =>{
