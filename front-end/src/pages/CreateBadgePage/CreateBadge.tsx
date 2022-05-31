@@ -1,5 +1,5 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea} from '@ionic/react';
-import DropDown from '../../components/Dropdown/dropdown';
+import DropDown from '../../components/dropdown/dropdown';
 import FileChooser from '../../components/filechooser/FileChooser';
 import ToolBar from '../../components/toolbar/Toolbar';
 
