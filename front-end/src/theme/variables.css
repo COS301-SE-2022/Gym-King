@@ -139,6 +139,7 @@ http://ionicframework.com/docs/theming/ */
   background-color: #0f005a;
   opacity: 64%;
   border-radius: 6%;
+  padding:2%;
 }
 
 .inputHeading{
@@ -164,10 +165,18 @@ http://ionicframework.com/docs/theming/ */
 .smallerTextBox {
   width: 75%;
   border-radius: 8px;
+  padding:2%;
 }
 
 .textarea{
   padding:2%;
+}
+
+
+.badge{
+  font-size:700%;
+  margin-left:35%;
+  margin-right:10%;
 }
 
 
