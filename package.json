@@ -14,7 +14,7 @@
   "scripts": {
     "start": "nx serve",
     "start:client": "nx serve front-end",
-    "start:api": "",
+    "start:api": "nx start gymkingserverheroku",
     "build": "nx build",
     "lint": "nx lint",
     "test": "nx test"
