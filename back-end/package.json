@@ -4,7 +4,8 @@
   "description": "",
   "main": "gymkingheroku.ts",
   "scripts": {
-    "start": "heroku local web",
+    "start": "ts-node index.ts",
+    "start:api": "heroku local web",
     "test": "npx jest"
   },
   "keywords": [],
