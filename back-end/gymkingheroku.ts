@@ -255,7 +255,7 @@ let server = express()
         "FOREIGN KEY (B_ID) REFERENCES BADGE(B_ID),"+
         "FOREIGN KEY (email) REFERENCES GYM_USER(email)"+  
       ")");
-      const results = { 'success': true };
+      const results = { 'success': true, 'results': result};
       res.json( results );
       client.release();
     } catch (err) {

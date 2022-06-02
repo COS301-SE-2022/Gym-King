@@ -74,4 +74,50 @@ describe('Testing POST API Calls', () => {
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
+    test('responds to POST create tables', async () => {
+        const res = await request(server).post('/tables/create');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+});
+describe('Testing PUT API Calls', () => {
+    test('responds to PUT update a claim to owned', async () => {
+        const res = await request(server).put('/claims/claim?bid=&email=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+});
+describe('Testing DELETE API Calls', () => {
+    test('responds to DELETE a badge', async () => {
+        const res = await request(server).delete('/badges/badge?bid=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+    test('responds to DELETE a claim', async () => {
+        const res = await request(server).delete('/claims/claim?bid=&email=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+    test('responds to DELETE drop all tables', async () => {
+        const res = await request(server).delete('/tables/drop');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+    test('responds to DELETE clear table', async () => {
+        const res = await request(server).delete('/tables/clear');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
 });
