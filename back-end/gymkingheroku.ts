@@ -49,6 +49,7 @@ let server = express()
       let query = req.query.table;
       const client = await pool.connect();
       let result = await client.query("SELECT * from "+query);
+
       const results = { 'success': true, 'results': (result) ? result.rows : null};
       res.json( results );
       client.release();
