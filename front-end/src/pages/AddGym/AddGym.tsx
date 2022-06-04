@@ -212,14 +212,14 @@ const AddGym: React.FC = () => {
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}
         message="Gym has been added successfully."
-        duration={500}
+        duration={1000}
         color="success"
       />
       <IonToast
         isOpen={showToast2}
         onDidDismiss={() => setShowToast2(false)}
         message="Error adding gym."
-        duration={500}
+        duration={1000}
         color="danger"
       />
       </IonContent>
