@@ -1,8 +1,7 @@
 import {IonButton, IonCard, IonCardTitle, IonGrid, IonRow, IonCol} from '@ionic/react';
 import './ViewBadgeCard.css'
 
-export function ViewBadgeCard(){
-
+export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID?:String;BadgeImg?:String })=>{
         return(
             <IonCard style={{ padding : 0}} >
                 <IonGrid style={{margin:0}} class="ViewBadgeGrid" className="grid">
@@ -18,14 +17,14 @@ export function ViewBadgeCard(){
                         <IonCol size="9"class='ColBadgeDetails'>
                             <IonRow class='BadgeDetails'>
                                 <IonCardTitle>
-                                    Sit UP Badge
+                                    {props.BadgeTitle}
                                 </IonCardTitle>
                             </IonRow>
                             <IonRow class='BadgeDetails'>
-                                this is a short description of the thing yo u need to do to earn the badge
+                                {props.BadgeDesc}
                             </IonRow>
                              <IonRow class='BadgeDetails' className="ion-justify-content-end">
-                                <IonButton class="ApplyButton" size="small" routerDirection='forward'>
+                                <IonButton href="http://localhost:300/UploadActivity?id=1"class="ApplyButton" size="small" routerDirection='forward'>
                                     Apply
                                 </IonButton>
                             </IonRow>
