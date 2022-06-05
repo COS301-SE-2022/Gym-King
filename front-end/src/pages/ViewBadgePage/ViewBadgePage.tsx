@@ -15,7 +15,9 @@ const ViewBadgePage: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
-                    <ViewBadgeCard BadgeTitle="this works" BadgeDesc="This is a short decription of what the user needs todo"></ViewBadgeCard>
+                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 30 pushups in one sitting" BadgeImg={0}></ViewBadgeCard>
+                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 20 pushups in one sitting" BadgeImg={1}></ViewBadgeCard>
+                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 10 pushups in one sitting" BadgeImg={2}></ViewBadgeCard>
             </IonContent>
         </IonPage>
     )

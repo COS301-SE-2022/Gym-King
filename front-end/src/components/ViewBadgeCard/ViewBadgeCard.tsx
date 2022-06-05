@@ -1,8 +1,9 @@
 import {IonButton, IonCard, IonCardTitle, IonGrid, IonRow, IonCol} from '@ionic/react';
 import './ViewBadgeCard.css'
 
-export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID?:String;BadgeImg?:String })=>{
-        return(
+export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID?:String;BadgeImg:number })=>{
+    let badge=require("../../utils/badges.json")    
+    return(
             <IonCard style={{ padding : 0}} >
                 <IonGrid style={{margin:0}} class="ViewBadgeGrid" className="grid">
                     <IonRow class="ViewBadgeRow" className="left">      
@@ -10,8 +11,8 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                             <img 
                                 width="100%" 
                                 height="100%"
-                                src="https://www.pngfind.com/pngs/m/156-1560504_golden-medal-png-clipart-image-medalja-png-transparent.png" 
-                                alt="badge"
+                                src={badge[props.BadgeImg].Base64} 
+                                alt={badge[props.BadgeImg].name}
                             />
                         </IonCol> 
                         <IonCol size="9"class='ColBadgeDetails'>
@@ -24,7 +25,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                                 {props.BadgeDesc}
                             </IonRow>
                              <IonRow class='BadgeDetails' className="ion-justify-content-end">
-                                <IonButton href="http://localhost:300/UploadActivity?id=1"class="ApplyButton" size="small" routerDirection='forward'>
+                                <IonButton href="http://localhost:3000/UploadActivity?id=1"class="ApplyButton" size="small" routerDirection='forward'>
                                     Apply
                                 </IonButton>
                             </IonRow>
