@@ -42,6 +42,13 @@ describe('Testing PUT API Calls', () => {
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
+    test('responds to PUT update a badge', async () => {
+        const res = await request(server).put('/badges/badge?bid=&gid=&bn=&bd=&bc=&bi=&at=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
 });
 describe('Testing DELETE API Calls', () => {
     test('responds to DELETE a badge', async () => {
