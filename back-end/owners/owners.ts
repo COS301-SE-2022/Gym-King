@@ -41,6 +41,38 @@ function createID(length: any) {
 }
 server
 .options('*', cors(corsOptions))
+.post('/owners/owner', cors(corsOptions), async (req: any, res: any) => {
+  try {
+    let query = req.query;
+    const client = await pool.connect();
+    let result = await client.query("INSERT INTO GYM_OWNER"+
+    "(email,name,surname,number,username,password) VALUES"+
+    "('"+query.email+"','"+query.name+"','"+query.surname+"','"+query.number+"','"+query.username+"','"+query.password+"')");
+    const results = { 'success': true, 'results': (result) ? result.rows : null};
+    res.json( {results,query} );
+    client.release();
+  } catch (err) {
+    const results = { 'success': false, 'results': err };
+    console.error(err);
+    res.json(results);
+  }
+})
+.post('/gyms/owned', cors(corsOptions), async (req: any, res: any) => {
+  try {
+    let query = req.query;
+    const client = await pool.connect();
+    let result = await client.query("INSERT INTO GYM_OWNED"+
+    "(email,g_id) VALUES"+
+    "('"+query.email+"','"+query.gid+"')");
+    const results = { 'success': true, 'results': (result) ? result.rows : null};
+    res.json( {results,query} );
+    client.release();
+  } catch (err) {
+    const results = { 'success': false, 'results': err };
+    console.error(err);
+    res.json(results);
+  }
+})
 .post('/gyms/gym', cors(corsOptions), async (req: any, res: any) => {
   try {
     let query = req.query;
