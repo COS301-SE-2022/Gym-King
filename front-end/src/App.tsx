@@ -31,6 +31,7 @@ import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsP
 import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
 import CreateBadge from './pages/CreateBadgePage/CreateBadge';
 import EditBadge from './pages/EditBadgePage/EditBadge';
+import ViewBadgePage from './pages/ViewBadgePage/ViewBadgePage';
 /*develop*/
 
 
@@ -77,7 +78,9 @@ const App: React.FC = () => (
         <Route exact path='/EditBadge'>
           <EditBadge></EditBadge>
         </Route>      
-
+        <Route exact path='/ViewBadges'>
+          <ViewBadgePage></ViewBadgePage>
+        </Route>  
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
