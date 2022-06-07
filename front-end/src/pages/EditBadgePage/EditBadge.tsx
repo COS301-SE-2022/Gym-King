@@ -4,13 +4,11 @@ import React, { useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 
-//export type CreateBadge = {act?:any}
 
 const EditBadge: React.FC = () =>{
 
+        //STATES
         const [gymName, setGymName] = useState('')
-        //const [submitted, setSubmitted] = useState(false);
-        //const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
 
         const [badgename, setBadgename] = useState('');
@@ -18,8 +16,21 @@ const EditBadge: React.FC = () =>{
         const [badgedescription, setDescription] = useState('');
         const [badgechallenge, setChallenge] = useState('');
 
-        //variables
+        //VARIABLES
         let formData:any;
+        let badgeId= 'wTs';
+        let count = 0;
+
+        //METHODS 
+        const setChosenActivityType = (e:any) =>{
+            localStorage.setItem('act', e);
+            console.log(activitytype);
+            setActivityType(e)
+        }
+
+        const setChosenGymLocation = (e:any) =>{
+            setGymName(e)
+        }
 
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
@@ -32,80 +43,64 @@ const EditBadge: React.FC = () =>{
                 gymName: gymName
             };
             
-            //console.log(formData);
             
             const isValid = await createBadgeSchema.isValid(formData);
-            //setSubmitted(true);
 
             if(isValid)
             {
-                //setIsValid(true);
-                //handle post request 
+                //handle put request 
                 updateBadge();
                 //show toast
                 setShowToast(true);
                 //redirect to home page 
-                //window.location.href = "http://localhost:3000/home";
+                window.location.href = "http://localhost:3000/home";
             }
         }
 
-
-
-        ///////////////////////////////////////////////////////////
-        let badgeId= 'wTs';
-        //let flag = false;
-        let count = 0
-        const getBadges= ()=>{
-            count++;
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                //console.log(response)
-                //setB_id(response.results[0].b_id)
-                setActivityType( response.results[0].activitytype)
-                setDescription(response.results[0].badgedescription)
-                setBadgename(response.results[0].badgename)
-                setChallenge(response.results[0].badgechallenge)
-                //setG_id(response.results[0].g_id)
-            })
-            .catch(err => {console.log(err)})
-        } 
-        if(count === 0)
-            getBadges();
-        ///////////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////////////
+        //API REQUESTS 
         
-        const updateBadge= ()=>{
-            let gymid= 'lttD'
-            let badgeicon = "BADGE ICON"
-            let at = localStorage.getItem('act');
-            let bn = formData.badgeName;
-            let bc = formData.badgeChallenge;
-            let bd = formData.badgeDescription;
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
-                "method":"PUT"
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                console.log(response)
-            })
-            .catch(err => {console.log(err)})
-        } 
-        ///////////////////////////////////////////////////////////
+            // GET BADGES REQUEST 
+            const getBadges= ()=>{
+                count++;
+                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                    "method":"GET"
+                })
+                .then(response =>response.json())
+                .then(response =>{
+                    //console.log(response)
+                    //setB_id(response.results[0].b_id)
+                    setActivityType( response.results[0].activitytype)
+                    setDescription(response.results[0].badgedescription)
+                    setBadgename(response.results[0].badgename)
+                    setChallenge(response.results[0].badgechallenge)
+                    //setG_id(response.results[0].g_id)
+                })
+                .catch(err => {console.log(err)})
+            } 
+            if(count === 0)
+                getBadges();
+        
+
+            // UPDATE BADGE PUT REQUEST 
+            const updateBadge= ()=>{
+                let gymid= 'lttD'
+                let badgeicon = "BADGE ICON"
+                let at = localStorage.getItem('act');
+                let bn = formData.badgeName;
+                let bc = formData.badgeChallenge;
+                let bd = formData.badgeDescription;
+                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
+                    "method":"PUT"
+                })
+                .then(response =>response.json())
+                .then(response =>{
+                    console.log(response)
+                })
+                .catch(err => {console.log(err)})
+            } 
 
 
-        const setChosenActivityType = (e:any) =>{
-            localStorage.setItem('act', e);
-            console.log(activitytype);
-            setActivityType(e)
-        }
-
-        const setChosenGymLocation = (e:any) =>{
-            setGymName(e)
-        }
+        
         
         return(
         
