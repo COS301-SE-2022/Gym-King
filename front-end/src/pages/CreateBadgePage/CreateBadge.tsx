@@ -68,7 +68,7 @@ const CreateBadge: React.FC = () =>{
             .catch(err => {console.log(err)}) 
         }
 
-        //////// GET DRESS //////////
+        //////// GET OWNED GYMS //////////
         const getOwnedGyms=()=>{
             let gymOwner = "u20519517@tuks.co.za"
             fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
