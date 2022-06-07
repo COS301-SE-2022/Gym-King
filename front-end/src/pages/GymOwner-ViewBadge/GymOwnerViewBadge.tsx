@@ -11,18 +11,42 @@ const GymOwnerViewBadge: React.FC = () =>{
         //GET REQUEST:
         useEffect(()=>
         {
-            var gymid="lttD"
+            var email="u20519517@tuks.co.za"
+            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${email}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log("fetching gyms")
+                console.log(response.results.length)
+                var arr:any=[];
+                for(let i=0;i<response.results.length;i++)
+                {
+                    arr.push(
+                        {
+                            'GymName':response.results[i].gym_brandname,
+                            'GymID':response.results[i].g_id,
+                            'GymDetails':fetchBadges(response.results[i].g_id)
+                        }
+                    )
+                }
+                console.log(arr)
+            })
+            .catch(err => {console.log(err)})
+        },[])
+
+        const fetchBadges=(gymid:string)=>{
+            
             fetch(`https://gym-king.herokuapp.com/badges/gym?gid=${gymid}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
-                console.log("this is the response")
-                console.log(response)
-                setBadges(response.results)
+                return response.results
             })
             .catch(err => {console.log(err)})
-        },[])
+
+        }
     return(
         <IonPage >
             <IonHeader>
