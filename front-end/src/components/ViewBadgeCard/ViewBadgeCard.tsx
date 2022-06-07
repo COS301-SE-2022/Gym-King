@@ -1,36 +1,30 @@
-import {IonButton, IonCard, IonCardTitle, IonGrid, IonRow, IonCol} from '@ionic/react';
+import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
 import './ViewBadgeCard.css'
 
-export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID?:String;BadgeImg:number })=>{
-    let badge=require("../../utils/badges.json")    
+export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number })=>{
+    let badge=require("../../utils/badges.json")  
+    let href="http://localhost:3000/UploadActivity"
     return(
-            <IonCard style={{ padding : 0}} >
-                <IonGrid style={{margin:0}} class="ViewBadgeGrid" className="grid">
-                    <IonRow class="ViewBadgeRow" className="left">      
-                        <IonCol size="3" class="ColBadgeImg">
+            <IonCard 
+                color="primary" 
+                class="ViewBadgeCard"  
+                style={{ padding : 0}} 
+                onClick={ () => {localStorage.setItem("badgeid",props.BadgeID);window.location.href=href} }>
+                <IonGrid class="ViewBadgeGrid" >
+                    <IonRow class="ViewBadgeImage">
                             <img 
-                                width="100%" 
+                                width="100px" 
                                 height="100%"
                                 src={badge[props.BadgeImg].Base64} 
                                 alt={badge[props.BadgeImg].name}
                             />
-                        </IonCol> 
-                        <IonCol size="9"class='ColBadgeDetails'>
-                            <IonRow class='BadgeDetails'>
-                                <IonCardTitle>
-                                    {props.BadgeTitle}
-                                </IonCardTitle>
-                            </IonRow>
-                            <IonRow class='BadgeDetails'>
-                                {props.BadgeDesc}
-                            </IonRow>
-                             <IonRow class='BadgeDetails' className="ion-justify-content-end">
-                                <IonButton href="http://localhost:3000/UploadActivity?id=1"class="ApplyButton" size="small" routerDirection='forward'>
-                                    Apply
-                                </IonButton>
-                            </IonRow>
-                        </IonCol>
                     </IonRow>
+                    <IonRow class='BadgeDetails'>
+                        <IonCardTitle class='ViewBadgeTitle' className='center ion-text-center'>
+                                    {props.BadgeTitle}
+                            </IonCardTitle>
+                    </IonRow>
+                            
                 </IonGrid>
             </IonCard>
         )

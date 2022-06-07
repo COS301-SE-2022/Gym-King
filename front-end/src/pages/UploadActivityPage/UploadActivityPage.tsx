@@ -12,7 +12,7 @@ export type UploadActivityStates = {act?:any}
 const UploadActivityPage: React.FC = () =>{
     
 ///////////////////////GET REQUEST/////////////////////////
-    let badgeId= 'wTs';
+    let badgeId= localStorage.getItem("badgeid");
     const [b_id, setB_id] = useState('');
     const [badgename, setBadgename] = useState('');
     const [activitytype, setAT] = useState('');
