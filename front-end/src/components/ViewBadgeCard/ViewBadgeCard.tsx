@@ -1,4 +1,4 @@
-import { IonCard, IonCardTitle, IonGrid, IonRow, IonCol} from '@ionic/react';
+import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
 import './ViewBadgeCard.css'
 
 export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID?:String;BadgeImg:number })=>{
@@ -20,7 +20,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                             />
                     </IonRow>
                     <IonRow class='BadgeDetails'>
-                        <IonCardTitle>
+                        <IonCardTitle class='ViewBadgeTitle' className='center ion-text-center'>
                                     {props.BadgeTitle}
                             </IonCardTitle>
                     </IonRow>

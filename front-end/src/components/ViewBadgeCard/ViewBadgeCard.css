@@ -1,12 +1,16 @@
 
 .BadgeDetails{
-    width:150%;
+    width:100%;
+}
+.ViewBadgeTitle{
+    font-size: small;
 }
 .ApplyButton{
     width: min-content;
 }
 .ViewBadgeCard{
     margin: 0;
+    height: 20vh;
     width: 29.8vw;
     background-color: rgba(1, 1,1, 0.4);
 }
