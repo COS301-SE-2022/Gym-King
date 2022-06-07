@@ -183,6 +183,10 @@ http://ionicframework.com/docs/theming/ */
   color: #9350ff;
 }
 
+.radioButton{
+  
+}
+
 .md body {
   --ion-background-color: var(--ion-color-secondary);
   --ion-background-color-rgb: 18,18,18;

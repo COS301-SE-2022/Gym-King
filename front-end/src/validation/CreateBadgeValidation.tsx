@@ -5,5 +5,4 @@ export const createBadgeSchema = yup.object().shape({
     badgeDescription:yup.string().required(),
     badgeChallenge: yup.string().required(),
     activityType: yup.string().required(),
-    gymName: yup.string().required()
 })
