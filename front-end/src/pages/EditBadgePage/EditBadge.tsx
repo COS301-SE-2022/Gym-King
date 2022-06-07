@@ -1,42 +1,114 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonIcon, IonRouterLink} from '@ionic/react';
-import { shieldOutline } from 'ionicons/icons';
-import { useState } from 'react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
 import DropDown from '../../components/dropdown/dropdown';
+import FileChooser from '../../components/filechooser/FileChooser';
 import ToolBar from '../../components/toolbar/Toolbar';
+import React, { useState } from 'react';
+import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
+import CreateBadge from '../CreateBadgePage/CreateBadge';
+import SegmentButton from '../../components/segmentButton/segmentButton';
 
 //export type CreateBadge = {act?:any}
 
 const EditBadge: React.FC = () =>{
+
+        const [gymName, setGymName] = useState('')
+        const [submitted, setSubmitted] = useState(false);
+        const [isValid, setIsValid] = useState(false);
+        const [showToast, setShowToast] = useState(false);
+
+        const [badgename, setBadgename] = useState('');
+        const [activitytype, setActivityType] = useState('');
+        const [badgedescription, setDescription] = useState('');
+        const [badgechallenge, setChallenge] = useState('');
+
+        //variables
+        let formData:any;
+
+        const handleSubmit = async (e:any) =>{
+            e.preventDefault();
+            //form validation 
+            formData={
+                badgeName: e.target.badgeName.value,
+                badgeDescription: e.target.badgeDescription.value,
+                badgeChallenge:e.target.badgeChallenge.value,
+                activityType: localStorage.getItem('act'),
+                gymName: gymName
+            };
+            
+            //console.log(formData);
+            
+            const isValid = await createBadgeSchema.isValid(formData);
+            setSubmitted(true);
+
+            if(isValid)
+            {
+                setIsValid(true);
+                //handle post request 
+                updateBadge();
+                //show toast
+                setShowToast(true);
+                //redirect to home page 
+                //window.location.href = "http://localhost:3000/home";
+            }
+        }
+
+
+
+        ///////////////////////////////////////////////////////////
+        let badgeId= 'wTs';
+        //let flag = false;
+        let count = 0
+        const getBadges= ()=>{
+            count++;
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response)
+                //setB_id(response.results[0].b_id)
+                setActivityType( response.results[0].activitytype)
+                setDescription(response.results[0].badgedescription)
+                setBadgename(response.results[0].badgename)
+                setChallenge(response.results[0].badgechallenge)
+                //setG_id(response.results[0].g_id)
+            })
+            .catch(err => {console.log(err)})
+        } 
+        if(count == 0)
+            getBadges();
+        ///////////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////////////
         
-///////////////////////GET REQUEST/////////////////////////
-    let badgeId= 'wTs';
-    //const [b_id, setB_id] = useState('');
-    const [badgename, setBadgename] = useState('');
-    //const [activitytype, setAT] = useState('');
-    const [badgedescription, setDescription] = useState('');
-    const [badgechallenge, setChallenge] = useState('');
+        const updateBadge= ()=>{
+            let gymid= 'lttD'
+            let badgeicon = "BADGE ICON"
+            let at = localStorage.getItem('act');
+            let bn = formData.badgeName;
+            let bc = formData.badgeChallenge;
+            let bd = formData.badgeDescription;
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
+                "method":"PUT"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+            })
+            .catch(err => {console.log(err)})
+        } 
+        ///////////////////////////////////////////////////////////
 
-    //const [g_id, setG_id] = useState(''); //commented because not used
 
-    const getBadges= ()=>{
-        fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            console.log(response)
-            //setB_id(response.results[0].b_id)
-            //setAT( response.results[0].activitytype)
-            setDescription(response.results[0].badgedescription)
-            setBadgename(response.results[0].badgename)
-            setChallenge(response.results[0].badgechallenge)
-            //setG_id(response.results[0].g_id)
-        })
-        .catch(err => {console.log(err)})
-    } 
-    getBadges();
+        const setChosenActivityType = (e:any) =>{
+            localStorage.setItem('act', e);
+            setActivityType(e)
+        }
 
-///////////////////////////////////////////////////////////
+        const setChosenGymLocation = (e:any) =>{
+            setGymName(e)
+        }
+        
         return(
         
             <IonPage color='#220FE' >
@@ -45,30 +117,35 @@ const EditBadge: React.FC = () =>{
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Editing Badge</IonText>
+                    <IonText className='PageTitle center'>Edit Badge</IonText>
+                    <form onSubmit={handleSubmit}>
+                        <IonText className='inputHeading'>Badge Name:</IonText> <br></br><br></br>
+                        <IonInput name='badgeName' type='text' value={badgename} className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
-                    <IonIcon icon={shieldOutline} className='badge center shadow'></IonIcon>    
-                    <IonRouterLink className='center link'  >Change badge icon</IonRouterLink><br></br><br></br>
 
-                    <IonText className='inputHeading'>Badge Name:</IonText> <br></br><br></br>
-                    <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' value={badgename}></IonInput><br></br><br></br>
+                        <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
-                    <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
-                    <DropDown list={['Strength', 'Cardio']}></DropDown><br></br><br></br>
+                        <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
+                        <SegmentButton list={['List of gyms']} chosenValue={setChosenGymLocation}></SegmentButton><br></br><br></br>
 
-                    <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
-                    <DropDown list={['List of gyms']}></DropDown><br></br><br></br>
+                        <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
+                        <IonTextarea name="badgeChallenge"  value={badgechallenge} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                    <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
-                    <IonTextarea className="centerComp textInput smallerTextBox textarea" value={badgechallenge}></IonTextarea><br></br><br></br>
+                        <IonText className='inputHeading'>Badge Description:</IonText> <br></br><br></br>
+                        <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                    <IonText className='inputHeading'>Badge Description:</IonText> <br></br><br></br>
-                    <IonTextarea className="centerComp textInput smallerTextBox textarea" value={badgedescription}></IonTextarea><br></br><br></br>
-
-                    <IonButton class=" btnFitWidth" color='success' type='submit'>SAVE CHANGES</IonButton>
-                    <IonButton class=" btnFitWidth" color='danger' type='submit'>DELETE BADGE</IonButton>
+                        <IonButton class=" btnFitWidth" color='success' type='submit' >SAVE CHANGES</IonButton>
+                        <IonButton class=" btnFitWidth" color='danger' type='submit'>DELETE BADGE</IonButton>
+                    </form>
                     <br></br><br></br>
-
+                    <IonToast
+                        isOpen={showToast}
+                        onDidDismiss={() => setShowToast(false)}
+                        message="Badge Updated"
+                        duration={500}
+                        color="success"
+                    />
                 </IonContent>
             </IonPage>
         )
