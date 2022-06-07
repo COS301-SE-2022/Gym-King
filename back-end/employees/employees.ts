@@ -208,6 +208,36 @@ server
       res.json(results);
     }
   })
+  .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      const client = await pool.connect();
+      let result = await client.query(
+        "UPDATE BADGE SET badgename='" +
+          query.bn +
+          "', badgedescription='" +
+          query.bd +
+          "',badgechallenge= '" +
+          query.bc +
+          "',badgeicon='" +
+          query.bi +
+          "',activitytype='" +
+          query.at +
+          "' WHERE b_id = '" +
+          query.bid +
+          "' AND g_id = '" +
+          query.gid +
+          "'"
+      );
+      const results = { success: true, results: result ? result.rows : null };
+      res.json(results);
+      client.release();
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   .delete("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;

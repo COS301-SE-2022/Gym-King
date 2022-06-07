@@ -99,6 +99,28 @@ server
           ")"
       );
       result = await client.query(
+        "CREATE TABLE IF NOT EXISTS GYM_OWNER(" +
+          "email VARCHAR(320)," +
+          "Name VARCHAR(100)," +
+          "Surname VARCHAR(100)," +
+          "Number VARCHAR(10)," +
+          "Username VARCHAR(50)," +
+          "Password VARCHAR(300)," +
+          "PRIMARY KEY(email)" +
+          ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS GYM_OWNED(" +
+          "email VARCHAR(320)," +
+          "G_ID VARCHAR(4)," +
+          "PRIMARY KEY(email,G_ID)," +
+          "FOREIGN KEY (G_ID)" +
+          "REFERENCES GYM(G_ID)," +
+          "FOREIGN KEY (email)" +
+          "REFERENCES GYM_OWNER(email)" +
+          ")"
+      );
+      result = await client.query(
         "CREATE TABLE IF NOT EXISTS BADGE(" +
           "B_ID VARCHAR(3)," +
           "G_ID VARCHAR(4)," +
