@@ -32,6 +32,7 @@ import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
 import CreateBadge from './pages/CreateBadgePage/CreateBadge';
 import EditBadge from './pages/EditBadgePage/EditBadge';
 import ViewBadgePage from './pages/ViewBadgePage/ViewBadgePage';
+import ARPage from './pages/ARPage/ARPage';
 /*develop*/
 
 
@@ -61,9 +62,13 @@ const App: React.FC = () => (
         <Route exact path='/AddGymLocation'>
           <AddGymLocation></AddGymLocation>
         </Route>
+
         <Route exact path='/UserMap'>
           <UserMap></UserMap>
-        </Route>        
+        </Route>            
+        <Route exact path='/AR'>
+          <ARPage></ARPage>
+        </Route>       
         <Route exact path='/PendingApprovals'>
   
 

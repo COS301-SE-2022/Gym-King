@@ -73,7 +73,7 @@ const AR: React.FC = () => {
         
         <>
             <IonCard>
-                <IonButton color='primary' onClick={ViewAR}>Accept</IonButton>
+                <IonButton color='primary' onClick={ViewAR}>View AR Test Model</IonButton>
             </IonCard>
         </>
     )
