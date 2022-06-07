@@ -1,4 +1,4 @@
-import {IonLabel, IonSegment, IonSegmentButton, IonSelect, IonSelectOption} from '@ionic/react';
+import {IonLabel, IonSegment, IonSegmentButton} from '@ionic/react';
 import React from 'react'
 import '../../theme/variables.css'
 //creating a type so props can be entered

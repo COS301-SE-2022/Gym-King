@@ -1,10 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
-import DropDown from '../../components/dropdown/dropdown';
-import FileChooser from '../../components/filechooser/FileChooser';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
-import CreateBadge from '../CreateBadgePage/CreateBadge';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 
 //export type CreateBadge = {act?:any}
@@ -12,8 +9,8 @@ import SegmentButton from '../../components/segmentButton/segmentButton';
 const EditBadge: React.FC = () =>{
 
         const [gymName, setGymName] = useState('')
-        const [submitted, setSubmitted] = useState(false);
-        const [isValid, setIsValid] = useState(false);
+        //const [submitted, setSubmitted] = useState(false);
+        //const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
 
         const [badgename, setBadgename] = useState('');
@@ -38,11 +35,11 @@ const EditBadge: React.FC = () =>{
             //console.log(formData);
             
             const isValid = await createBadgeSchema.isValid(formData);
-            setSubmitted(true);
+            //setSubmitted(true);
 
             if(isValid)
             {
-                setIsValid(true);
+                //setIsValid(true);
                 //handle post request 
                 updateBadge();
                 //show toast
@@ -75,7 +72,7 @@ const EditBadge: React.FC = () =>{
             })
             .catch(err => {console.log(err)})
         } 
-        if(count == 0)
+        if(count === 0)
             getBadges();
         ///////////////////////////////////////////////////////////
 
@@ -102,6 +99,7 @@ const EditBadge: React.FC = () =>{
 
         const setChosenActivityType = (e:any) =>{
             localStorage.setItem('act', e);
+            console.log(activitytype);
             setActivityType(e)
         }
 
