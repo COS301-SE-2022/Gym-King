@@ -31,6 +31,7 @@ const GymOwnerViewBadge: React.FC = () =>{
                     )
                 }
                 console.log(arr)
+                setBadges(arr)
             })
             .catch(err => {console.log(err)})
         },[])
@@ -56,6 +57,9 @@ const GymOwnerViewBadge: React.FC = () =>{
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
                     <IonButton>CREATE BADGE</IonButton>
+                    {badges.map(el => 
+                        
+                        el.GymName)}
             </IonContent>
         </IonPage>
     )
