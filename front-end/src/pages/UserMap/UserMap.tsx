@@ -1,5 +1,6 @@
 import { IonContent, IonHeader, IonPage, } from '@ionic/react';
-import MapView from '../../components/map/MapView';
+//import MapView from '../../components/map/MapView';
+import AR from '../../components/AR/AR';
 const UserMap: React.FC = () => {
   return (
     <IonPage>
@@ -7,7 +8,7 @@ const UserMap: React.FC = () => {
 
       </IonHeader>
       <IonContent>
-        <MapView/>
+        <AR></AR>
       </IonContent>
     </IonPage>
   );

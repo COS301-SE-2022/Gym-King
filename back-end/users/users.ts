@@ -79,4 +79,13 @@ let server = express()
       res.json(results);
     }
   })
+  .get('/Model/iOS/AR0', cors(corsOptions), async(req: any, res: any)=>{
+    const file = './Models/AR0.usdz';
+    res.download(file); 
+  })
+  .get('/Model/Android/AR0', cors(corsOptions), async(req: any, res: any)=>{
+    const file = './Models/AR0.glb';
+    res.download(file); 
+  });
+  
 export {server}
