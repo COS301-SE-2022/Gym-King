@@ -4072,6 +4072,11 @@ aproba@^1.0.3:
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-2.0.0.tgz#52520b8ae5b569215b354efc0caa3fe1e45a8adc"
   integrity sha512-lYe4Gx7QT+MKGbDsA+Z+he/Wtef0BiwDOlK/XkBrdfsh9J/jPPXbX0tE9x9cl27Tmu5gg3QUbUrQYa/y+KOHPQ==
 
+ar-core-react-native@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/ar-core-react-native/-/ar-core-react-native-1.2.4.tgz#45d054b92de709a911ae417e6eb2a51c005179c6"
+  integrity sha512-j7VBQhqSzjJvjX4aCog/h0Px51Fg1zZu2skxS+2RmgvUMf7eq/V9wIbgfYY7DR1Viawh8Tm6xRNlngekrV+rGA==
+
 arch@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/arch/-/arch-2.2.0.tgz"
