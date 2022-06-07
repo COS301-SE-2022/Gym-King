@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow} from '@ionic/react';
 import React from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
@@ -15,9 +15,22 @@ const ViewBadgePage: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
-                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 30 pushups in one sitting" BadgeImg={0}></ViewBadgeCard>
-                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 20 pushups in one sitting" BadgeImg={1}></ViewBadgeCard>
-                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 10 pushups in one sitting" BadgeImg={2}></ViewBadgeCard>
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol>
+                                 <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 30 pushups in one sitting" BadgeImg={0}></ViewBadgeCard>
+                            </IonCol>
+                            <IonCol>
+                               <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 20 pushups in one sitting" BadgeImg={1}></ViewBadgeCard>  </IonCol>
+                            <IonCol>
+                                <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 10 pushups in one sitting" BadgeImg={2}></ViewBadgeCard>
+                             </IonCol>
+                        </IonRow>
+
+                    </IonGrid>
+                    
+                    
+                   
             </IonContent>
         </IonPage>
     )

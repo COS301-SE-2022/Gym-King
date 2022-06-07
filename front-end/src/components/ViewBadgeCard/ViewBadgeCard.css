@@ -5,3 +5,16 @@
 .ApplyButton{
     width: min-content;
 }
+.ViewBadgeCard{
+    margin: 0;
+    width: 29.8vw;
+    background-color: rgba(1, 1,1, 0.4);
+}
+.ViewBadgeImage{
+ margin: 0;
+ width: 100%;
+}
+.ViewBadgeImage img{
+    height: 125px;
+    width: 125px;
+}
