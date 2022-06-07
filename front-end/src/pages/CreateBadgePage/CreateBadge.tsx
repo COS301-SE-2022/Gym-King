@@ -1,9 +1,9 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
-import DropDown from '../../components/dropdown/dropdown';
 import FileChooser from '../../components/filechooser/FileChooser';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
+import SegmentButton from '../../components/segmentButton/segmentButton';
 
 //export type CreateBadge = {act?:any}
 
@@ -40,7 +40,7 @@ const CreateBadge: React.FC = () =>{
                 //show toast
                 setShowToast(true);
                 //redirect to home page 
-                window.location.href = "http://localhost:3000/home";
+                //window.location.href = "http://localhost:3000/home";
             }
         }
 
@@ -88,11 +88,11 @@ const CreateBadge: React.FC = () =>{
                         <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
                         <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
-                        <DropDown list={['Strength', 'Cardio']} chosenValue={setChosenActivityType}></DropDown><br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
 
                         <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
-                        <DropDown list={['List of gyms']} chosenValue={setChosenGymLocation}></DropDown><br></br><br></br>
+                        <SegmentButton list={['List of gyms']} chosenValue={setChosenGymLocation}></SegmentButton><br></br><br></br>
 
                         <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeChallenge" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
