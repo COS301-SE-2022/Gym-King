@@ -6,3 +6,8 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
   });
 
+////TESTS TO BE PERFROMED////
+/*
+- Renders without crashing 
+
+*/
