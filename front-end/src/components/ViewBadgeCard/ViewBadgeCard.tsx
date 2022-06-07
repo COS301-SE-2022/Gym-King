@@ -1,15 +1,15 @@
 import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
 import './ViewBadgeCard.css'
 
-export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID?:String;BadgeImg:number })=>{
+export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number })=>{
     let badge=require("../../utils/badges.json")  
-    let href="http://localhost:3000/home"
+    let href="http://localhost:3000/UploadActivity"
     return(
             <IonCard 
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
-                onClick={ () => {window.location.href=href} }>
+                onClick={ () => {localStorage.setItem("badgeid",props.BadgeID);window.location.href=href} }>
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
                             <img 
