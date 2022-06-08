@@ -1,13 +1,14 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
+import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
+
 import './GymOwnerViewBadge.css';
 
 
 const GymOwnerViewBadge: React.FC = () =>{
     
-    const [badges, setBadges] = useState(new Array<any>());
-    
+    const [badgeList, setBadgeList] = useState(new Array<any>());
         //GET REQUEST:
         useEffect(()=>
         {
@@ -19,35 +20,22 @@ const GymOwnerViewBadge: React.FC = () =>{
             .then(response =>{
                 console.log("fetching gyms")
                 console.log(response.results.length)
-                var arr:any=[];
+                var arr=[];
                 for(let i=0;i<response.results.length;i++)
                 {
+                    
                     arr.push(
                         {
                             'GymName':response.results[i].gym_brandname,
                             'GymID':response.results[i].g_id,
-                            'GymDetails':fetchBadges(response.results[i].g_id)
                         }
                     )
                 }
-                console.log(arr)
-                setBadges(arr)
+                setBadgeList(arr)
             })
             .catch(err => {console.log(err)})
         },[])
 
-        const fetchBadges=(gymid:string)=>{
-            
-            fetch(`https://gym-king.herokuapp.com/badges/gym?gid=${gymid}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                return response.results
-            })
-            .catch(err => {console.log(err)})
-
-        }
     return(
         <IonPage >
             <IonHeader>
@@ -56,10 +44,19 @@ const GymOwnerViewBadge: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
-                    <IonButton>CREATE BADGE</IonButton>
-                    {badges.map(el => 
-                        
-                        el.GymName)}
+                    <IonButton href="http://localhost:3000/CreateBadge">CREATE BADGE</IonButton>
+                    <IonAccordionGroup>
+                    {badgeList.map(el => 
+                        <IonAccordion key={el.GymID} value={el.GymID}>
+                            <IonItem slot="header">
+                                <IonLabel>{el.GymName}</IonLabel>
+                             </IonItem>
+                             <IonList slot="content">
+                               <GymOwnerViewBadgeGrid gymID={el.GymID} ></GymOwnerViewBadgeGrid>
+                            </IonList>
+                        </IonAccordion>
+                    )}
+                    </IonAccordionGroup>    
             </IonContent>
         </IonPage>
     )
