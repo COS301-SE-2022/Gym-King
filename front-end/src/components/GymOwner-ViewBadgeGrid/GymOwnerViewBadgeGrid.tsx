@@ -27,7 +27,7 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         <IonRow  className="ion-align-items-start">
         {badges.map(el => 
         
-            <IonCol  key={el.b_id}>
+            <IonCol className='center' key={el.b_id}>
                 <ViewBadgeCard  BadgeID={el.b_id} BadgeTitle={el.badgename} BadgeDesc={el.badgedescription} BadgeImg={0}></ViewBadgeCard>
              </IonCol>)}
         </IonRow>
