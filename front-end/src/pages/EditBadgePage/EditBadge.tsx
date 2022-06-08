@@ -18,7 +18,6 @@ const EditBadge: React.FC = () =>{
         const [badgedescription, setDescription] = useState('');
         const [badgechallenge, setChallenge] = useState('');
         //const [ownedGyms, setOwnedGyms] = useState([]);
-        const [isDelete, setIsDelete] = useState(1);
 
         //VARIABLES
         let formData:any;
