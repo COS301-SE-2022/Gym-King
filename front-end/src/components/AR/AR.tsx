@@ -13,11 +13,11 @@ import './AR.css';
 const AR: React.FC = () => {
     var selectedARanimation = 0;
     var ar_Android_Links = [
-        "https://gym-king.herokuapp.com/Model/Android/AR0.glb"
+        "https://gym-king.herokuapp.com/Model/Android/AR0"
     ]
     
     var ar_iOS_Links = [
-        "https://gym-king.herokuapp.com/Model/iOS/AR0.usdz",
+        "https://gym-king.herokuapp.com/Model/iOS/AR0",
     ]
     
     const IsiOS = () =>{
