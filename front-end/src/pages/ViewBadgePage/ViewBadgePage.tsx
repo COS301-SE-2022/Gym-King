@@ -33,10 +33,10 @@ const ViewBadgePage: React.FC = () =>{
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
                     <IonGrid>
-                        <IonRow  className="ion-align-items-start">
+                        <IonRow  className="ion-align-items-center">
                         {badges.map(el => 
                         
-                            <IonCol  key={el.b_id}>
+                            <IonCol className="center" key={el.b_id}>
                                 <ViewBadgeCard  BadgeID={el.b_id} BadgeTitle={el.badgename} BadgeDesc={el.badgedescription} BadgeImg={0}></ViewBadgeCard>
                              </IonCol>)}
                         </IonRow>

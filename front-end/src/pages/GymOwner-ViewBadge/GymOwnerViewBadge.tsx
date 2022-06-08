@@ -19,7 +19,6 @@ const GymOwnerViewBadge: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log("fetching gyms")
-                console.log(response.results.length)
                 var arr=[];
                 for(let i=0;i<response.results.length;i++)
                 {

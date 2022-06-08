@@ -20,7 +20,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                             />
                     </IonRow>
                     <IonRow class='BadgeDetails'>
-                        <IonCardTitle class='ViewBadgeTitle' className='center ion-text-center'>
+                        <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
                                     {props.BadgeTitle}
                             </IonCardTitle>
                     </IonRow>
