@@ -9,6 +9,7 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         //GET REQUEST:
         useEffect(()=>
         {
+            
             fetch(`https://gym-king.herokuapp.com/badges/gym?gid=${props.gymID}`,{
                 "method":"GET"
             })
@@ -19,7 +20,8 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
                 setBadges(response.results)
             })
             .catch(err => {console.log(err)})
-        },[])
+        },[props.gymID])
+
     return(
         <IonGrid>
         <IonRow  className="ion-align-items-start">
