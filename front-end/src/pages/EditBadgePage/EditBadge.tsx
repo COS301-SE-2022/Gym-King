@@ -18,7 +18,7 @@ const EditBadge: React.FC = () =>{
 
         //VARIABLES
         let formData:any;
-        let badgeId= 'wTs';
+        let badgeId= localStorage.getItem("badgeid");
         let count = 0;
 
         //METHODS 
