@@ -35,6 +35,7 @@ import EditBadge from './pages/EditBadgePage/EditBadge';
 import ViewBadgePage from './pages/ViewBadgePage/ViewBadgePage';
 import ARPage from './pages/ARPage/ARPage';
 import GymOwnerViewBadge from './pages/GymOwner-ViewBadge/GymOwnerViewBadge'
+import Leaderboard from './pages/Leaderboard/Leaderboard'
 /*develop*/
 
 
@@ -90,6 +91,9 @@ const App: React.FC = () => (
         </Route>  
         <Route exact path='/GymOwner-ViewBadges'>
           <GymOwnerViewBadge></GymOwnerViewBadge>
+        </Route>  
+        <Route exact path='/Leaderboard'>
+          <Leaderboard></Leaderboard>
         </Route>  
       </IonRouterOutlet>
     </IonReactRouter>
