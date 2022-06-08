@@ -1,6 +1,6 @@
 import { IonCol, IonGrid, IonRow} from '@ionic/react';
 import { useEffect, useState } from 'react';
-import ViewBadgeCard from '../ViewBadgeCard/ViewBadgeCard';
+import ViewBadgeCard from './ViewBadgeCard/ViewBadgeCard';
 
 export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
      
