@@ -15,16 +15,14 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
             })
             .then(response =>response.json())
             .then(response =>{
-                console.log("this is the response")
-                console.log(response)
                 setBadges(response.results)
             })
             .catch(err => {console.log(err)})
         },[props.gymID])
 
     return(
-        <IonGrid>
-        <IonRow  className="ion-align-items-start">
+        <IonGrid  className="ion-align-items-center">
+        <IonRow  className="ion-align-items-center">
         {badges.map(el => 
         
             <IonCol className='center' key={el.b_id}>
