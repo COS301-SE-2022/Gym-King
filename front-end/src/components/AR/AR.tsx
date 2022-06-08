@@ -53,18 +53,15 @@ const AR: React.FC = () => {
             anchor.click(); 
         }
         else if (IsAndroid() && selectedARanimation>=0 && selectedARanimation<ar_Android_Links.length){
-            var href = "intent://arvr.google.com/scene-viewer/1.0?";
+            var href = "https://arvr.google.com/scene-viewer/1.0?";
             href+="file=" + ar_Android_Links[0];
             href+="&mode=ar_only#Intent;";
             href+="scheme=https;package=com.google.ar.core;";
             href+="action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;";
             href+="end;";
-    
+            window.location.replace(href );
             console.log("isAndroid:" + href);
-            const anchor = document.createElement('a');
-            anchor.appendChild(document.createElement('img'));
-            anchor.setAttribute('href', href);
-            anchor.click();
+            
         }
     }
 
