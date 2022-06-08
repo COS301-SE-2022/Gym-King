@@ -40,55 +40,107 @@ function createID(length: any) {
   return ID;
 }
 server
-.options('*', cors(corsOptions))
-.post('/owners/owner', cors(corsOptions), async (req: any, res: any) => {
-  try {
-    let query = req.query;
-    const client = await pool.connect();
-    let result = await client.query("INSERT INTO GYM_OWNER"+
-    "(email,name,surname,number,username,password) VALUES"+
-    "('"+query.email+"','"+query.name+"','"+query.surname+"','"+query.number+"','"+query.username+"','"+query.password+"')");
-    const results = { 'success': true, 'results': (result) ? result.rows : null};
-    res.json( {results,query} );
-    client.release();
-  } catch (err) {
-    const results = { 'success': false, 'results': err };
-    console.error(err);
-    res.json(results);
-  }
-})
-.post('/gyms/owned', cors(corsOptions), async (req: any, res: any) => {
-  try {
-    let query = req.query;
-    const client = await pool.connect();
-    let result = await client.query("INSERT INTO GYM_OWNED"+
-    "(email,g_id) VALUES"+
-    "('"+query.email+"','"+query.gid+"')");
-    const results = { 'success': true, 'results': (result) ? result.rows : null};
-    res.json( {results,query} );
-    client.release();
-  } catch (err) {
-    const results = { 'success': false, 'results': err };
-    console.error(err);
-    res.json(results);
-  }
-})
-.post('/gyms/gym', cors(corsOptions), async (req: any, res: any) => {
-  try {
-    let query = req.query;
-    const client = await pool.connect();
-    let ID = createID(4);
-    let result = await client.query("INSERT INTO GYM"+
-    "(G_ID,Gym_BrandName,Gym_Address,Gym_Coord_Long,Gym_Coord_Lat,Gym_Icon) VALUES"+
-    "('"+ID+"','"+query.gbn+"','"+query.ga+"','"+query.gclo+"','"+query.gcla+"','"+query.gi+"')");
-    const results = { 'success': true, 'results': (result) ? result.rows : null};
-    query.gid = ID;
-    res.json( query );
-    client.release();
-  } catch (err) {
-    const results = { 'success': false, 'results': err };
-    console.error(err);
-    res.json(results);
-  }
-})
-export {server}
+  .options("*", cors(corsOptions))
+  .get("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query.email;
+      const client = await pool.connect();
+      let result = await client.query(
+        "SELECT * from GYM WHERE G_ID IN (SELECT G_ID FROM GYM_OWNED WHERE email='" +
+          query +
+          "')"
+      );
+      const results = { success: true, results: result ? result.rows : null };
+      res.json(results);
+      client.release();
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      const client = await pool.connect();
+      let result = await client.query(
+        "INSERT INTO GYM_OWNER" +
+          "(email,name,surname,number,username,password) VALUES" +
+          "('" +
+          query.email +
+          "','" +
+          query.name +
+          "','" +
+          query.surname +
+          "','" +
+          query.number +
+          "','" +
+          query.username +
+          "','" +
+          query.password +
+          "')"
+      );
+      const results = { success: true, results: result ? result.rows : null };
+      res.json({ results, query });
+      client.release();
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .post("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      const client = await pool.connect();
+      let result = await client.query(
+        "INSERT INTO GYM_OWNED" +
+          "(email,g_id) VALUES" +
+          "('" +
+          query.email +
+          "','" +
+          query.gid +
+          "')"
+      );
+      const results = { success: true, results: result ? result.rows : null };
+      res.json({ results, query });
+      client.release();
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .post("/gyms/gym", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      const client = await pool.connect();
+      let ID = createID(4);
+      let result = await client.query(
+        "INSERT INTO GYM" +
+          "(G_ID,Gym_BrandName,Gym_Address,Gym_Coord_Long,Gym_Coord_Lat,Gym_Icon) VALUES" +
+          "('" +
+          ID +
+          "','" +
+          query.gbn +
+          "','" +
+          query.ga +
+          "','" +
+          query.gclo +
+          "','" +
+          query.gcla +
+          "','" +
+          query.gi +
+          "')"
+      );
+      const results = { success: true, results: result ? result.rows : null };
+      query.gid = ID;
+      res.json(query);
+      client.release();
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  });
+export { server };

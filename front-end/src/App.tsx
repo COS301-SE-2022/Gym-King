@@ -4,6 +4,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import AddGym from './pages/AddGym/AddGym';
 import AddGymLocation from './pages/AddGymLocation/AddGymLocation';
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -33,6 +34,7 @@ import CreateBadge from './pages/CreateBadgePage/CreateBadge';
 import EditBadge from './pages/EditBadgePage/EditBadge';
 import ViewBadgePage from './pages/ViewBadgePage/ViewBadgePage';
 import ARPage from './pages/ARPage/ARPage';
+import GymOwnerViewBadge from './pages/GymOwner-ViewBadge/GymOwnerViewBadge'
 /*develop*/
 
 
@@ -85,6 +87,9 @@ const App: React.FC = () => (
         </Route>      
         <Route exact path='/ViewBadges'>
           <ViewBadgePage></ViewBadgePage>
+        </Route>  
+        <Route exact path='/GymOwner-ViewBadges'>
+          <GymOwnerViewBadge></GymOwnerViewBadge>
         </Route>  
       </IonRouterOutlet>
     </IonReactRouter>

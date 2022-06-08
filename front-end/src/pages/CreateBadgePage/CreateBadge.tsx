@@ -4,16 +4,18 @@ import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
+import RadioGroup from '../../components/radioGroup/radioGroup';
 
 //export type CreateBadge = {act?:any}
 
 const CreateBadge: React.FC = () =>{
 
         const [activityType, setActivityType] = useState('');
-        const [gymName, setGymName] = useState('')
+        const [gymId, setGymId] = useState('')
         const [submitted, setSubmitted] = useState(false);
         const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
+        const [ownedGyms, setOwnedGyms] = useState([]);
 
         //variables
         let formData:any;
@@ -27,7 +29,7 @@ const CreateBadge: React.FC = () =>{
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
                 activityType: activityType,
-                gymName: gymName
+                gymId: gymId
             };
             const isValid = await createBadgeSchema.isValid(formData);
             setSubmitted(true);
@@ -47,7 +49,7 @@ const CreateBadge: React.FC = () =>{
 
         //////////////////POST REQUEST/////////////////////////////
         const createBadge=()=>{
-            let gid = 'lttD';   //temp value for testing 
+            let gid = gymId;   //temp value for testing 
             let at = activityType.toUpperCase();
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
@@ -66,12 +68,31 @@ const CreateBadge: React.FC = () =>{
             .catch(err => {console.log(err)}) 
         }
 
+        //////// GET DRESS //////////
+        const getOwnedGyms=()=>{
+            let gymOwner = "u20519517@tuks.co.za"
+            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //successful request
+                //console.log(response.results);
+                setOwnedGyms(response.results);
+
+            })
+            .catch(err => {console.log(err)}) 
+        }
+        getOwnedGyms();
+        //console.log(ownedGyms);
+
 
         const setChosenActivityType = (e:any) =>{
             setActivityType(e)
         }
         const setChosenGymLocation = (e:any) =>{
-            setGymName(e)
+            console.log(e);
+            setGymId(e)
         }
         
         return(
@@ -92,7 +113,7 @@ const CreateBadge: React.FC = () =>{
 
 
                         <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
-                        <SegmentButton list={['List of gyms']} chosenValue={setChosenGymLocation}></SegmentButton><br></br><br></br>
+                        <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
                         <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeChallenge" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
