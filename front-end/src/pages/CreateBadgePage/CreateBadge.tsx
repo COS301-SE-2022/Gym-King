@@ -8,7 +8,7 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
 
 //export type CreateBadge = {act?:any}
 
-const CreateBadge: React.FC = () =>{
+ export const CreateBadge: React.FC = () =>{
 
         //STATES AND VARIABLES 
         //const [activityType, setActivityType] = useState('');

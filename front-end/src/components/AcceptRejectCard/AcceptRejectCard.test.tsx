@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import ActivityList from '../ActivityList/ActivityList';
 import AcceptRejectCard from './AcceptRejectCard'
 
 
@@ -20,6 +21,7 @@ describe('Testing prop text values', () => {
   let username = "user1"
   let activitytype = "STRENGTH";
   let badgename = "Badge"
+
   test('correctly displays username', async () => {
       const {baseElement} = render(<AcceptRejectCard userID="" username={username} badgeId="" badgename="" i1="" i2="" i3="" activitytype="" />);
       expect (baseElement).toHaveTextContent(username);
@@ -49,3 +51,4 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("badge");
   });
 });
+
