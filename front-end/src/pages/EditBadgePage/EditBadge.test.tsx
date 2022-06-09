@@ -71,4 +71,19 @@ describe('Testing API calls', () => {
         })
     });
 
-  })
+})
+
+describe('Integration Tests', () => {
+    
+    test('sending in a list of activity types displays correctly as a segment button', async () => {
+        const {getByTestId } = render(<EditBadge />);
+    
+        expect(getByTestId('btnSeg').innerHTML).toBeDefined()
+    });
+/*
+    test('sending in a list of gym names displays correctly a radio group', async () => {
+        const {getByTestId } = render(<EditBadge />);
+    
+        expect (getByTestId('rg').innerHTML).toBeDefined()
+    }); */
+})

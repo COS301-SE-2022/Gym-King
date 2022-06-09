@@ -44,11 +44,9 @@ const PendingApprovalsPage: React.FC = () =>{
                     </IonButton>
                     {
                         claims?.map(el =>{
-                            //console.log('hello');
                             return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)
                         })
                     }
-                    
                 </IonContent>
             </IonPage>
         )
