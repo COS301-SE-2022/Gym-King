@@ -80,10 +80,5 @@ describe('Integration Tests', () => {
     
         expect(getByTestId('btnSeg').innerHTML).toBeDefined()
     });
-/*
-    test('sending in a list of gym names displays correctly a radio group', async () => {
-        const {getByTestId } = render(<EditBadge />);
-    
-        expect (getByTestId('rg').innerHTML).toBeDefined()
-    }); */
+
 })
