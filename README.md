@@ -20,7 +20,8 @@ Gym King is a product designed to use gamification to improve motivation with gy
 
 ## Demos
 ### Codebusters - Demo 1
-[DEMO 1](https://drive.google.com/drive/folders/1VpTER70Z11c56SIopSzqOxKkyGPETgnz?usp=sharing)
+[DEMO 1](https://drive.google.com/drive/folders/1VpTER70Z11c56SIopSzqOxKkyGPETgnz?usp=sharing) <br>
+[DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing)
 
 ## Functional Requirements (SRS Document)
 [Gym King - Codebusters - Demo 1.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8682399/Gym.King.-.Codebusters.-.Demo.1.pdf)
