@@ -1,0 +1,24 @@
+.FirstPlace{
+    border: 7px;
+    border-style: solid;
+    border-color: rgb(153, 153, 37);
+    border-radius: 5%;
+}
+.SecondPlace{
+    border: 5px;
+    border-style: solid;
+    border-color: rgb(133, 156, 153);
+    border-radius: 5%;
+}
+.ThirdPlace{
+    border: 3px;
+    border-style: solid;
+    border-color: rgb(110, 85, 39);
+    border-radius: 5%;
+}
+.You{
+    border: 3px;
+    border-style: solid;
+    border-color:white;
+    border-radius: 5%;
+}

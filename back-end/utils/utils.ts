@@ -179,8 +179,10 @@ server
       let result = await client.query("DROP TABLE BADGE_CLAIM");
       result = await client.query("DROP TABLE BADGE_OWNED");
       result = await client.query("DROP TABLE BADGE");
+      result = await client.query("DROP TABLE GYM_OWNED");
       result = await client.query("DROP TABLE GYM_USER");
       result = await client.query("DROP TABLE GYM_EMPLOYEE");
+      result = await client.query("DROP TABLE GYM_OWNER");
       result = await client.query("DROP TABLE GYM");
       const results = { success: true, results: result };
       res.json(results);
