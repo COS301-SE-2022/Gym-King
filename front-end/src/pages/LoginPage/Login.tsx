@@ -1,8 +1,7 @@
 
-import {IonButton, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonText} from '@ionic/react';
+import { IonButton, IonContent,  IonHeader, IonInput, IonPage, IonText} from '@ionic/react';
 import React from "react";
 import ToolBar from '../../components/toolbar/Toolbar';
-import ViewBadgeCard from '../../components/ViewBadgeCard/ViewBadgeCard';
 import './Login.css';
 
 
@@ -24,7 +23,13 @@ const Login: React.FC = () => {
             </IonHeader>
             <IonContent fullscreen className='Content'>
               
-                   
+                <IonText className='inputHeading'>Username:</IonText> <br></br><br></br>
+                <IonInput name='userName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+              
+                <IonText className='inputHeading'>Password:</IonText> <br></br><br></br>
+                <IonInput name='userPassword' type='password' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+
+                <IonButton class="btnSubmit" type='submit'>Login</IonButton>
             </IonContent>
         </IonPage>
     )
