@@ -1,13 +1,12 @@
 import { render } from '@testing-library/react';
-import MapView from './MapView'
-
+import GymOwnerViewBadgeGrid from './GymOwnerViewBadgeGrid';
 ////TESTS TO BE PERFORMED////
 /*
-
 */
 
+
 test('renders without crashing', () => {
-    const { baseElement } = render(<MapView />);
+    const { baseElement } = render(<GymOwnerViewBadgeGrid gymID=""/>);
     expect(baseElement).toBeDefined();
   });
 
