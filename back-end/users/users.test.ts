@@ -31,6 +31,13 @@ describe('Testing GET API Calls', () => {
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
+    test('responds to GET owned badges for leaderboard score', async () => {
+        const res = await request(server).get('/leaderboard/score?gid=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
 });
 describe('Testing POST API Calls', () => {
     test('responds to POST insert user', async () => {
@@ -42,6 +49,14 @@ describe('Testing POST API Calls', () => {
     });
     test('responds to POST insert claim', async () => {
         const res = await request(server).post('/claims/claim?bid=&email=&username=&input1=&input2=&input3=&proof=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+    
+    test('responds to POST login user', async () => {
+        const res = await request(server).post('/users/login?&username=&password=');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
