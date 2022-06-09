@@ -70,12 +70,8 @@ const App: React.FC = () => (
         </Route>            
         <Route exact path='/AR'>
           <ARPage></ARPage>
-        </Route>       
-        <Route exact path='/PendingApprovals'>
-  
-
-          <PendingApprovalsPage></PendingApprovalsPage>
-        </Route>   
+        </Route>     
+           
         <Route exact path='/AcceptReject'>
           <AcceptRejectPage></AcceptRejectPage>
         </Route>
