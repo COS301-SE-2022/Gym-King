@@ -10,13 +10,14 @@ const EditBadge: React.FC = () =>{
         //STATES
         //const [gymId, setGymId] = useState('')
         const [showToast, setShowToast] = useState(false);
+        const [showToastDelete, setShowToastDelete] = useState(false);
+
 
         const [badgename, setBadgename] = useState('');
         const [activitytype, setActivityType] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [badgechallenge, setChallenge] = useState('');
         //const [ownedGyms, setOwnedGyms] = useState([]);
-        const [isDelete, setIsDelete] = useState(1);
 
         //VARIABLES
         let formData:any;
@@ -24,13 +25,10 @@ const EditBadge: React.FC = () =>{
         let count = 0;
 
         //METHODS 
-        const onDelete=()=>{
-            setIsDelete(isDelete+1);
-        }
         const setChosenActivityType = (e:any) =>{
             localStorage.setItem('act', e);
             console.log(activitytype);
-            setActivityType(e)
+            //setActivityType(e)
         }
 
         /*const setChosenGymLocation = (e:any) =>{
@@ -93,17 +91,18 @@ const EditBadge: React.FC = () =>{
                 let bn = formData.badgeName;
                 let bc = formData.badgeChallenge;
                 let bd = formData.badgeDescription;
+                //console.log(formData);
                 
                 fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
                     "method":"PUT"
                 })
                 .then(response =>response.json())
                 .then(response =>{
-                    //console.log(response)
+                    console.log(response)
                     //show toast
                     setShowToast(true);
                     //redirect to home page 
-                    window.location.href = "http://localhost:3000/home";
+                    window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
                 })
                 .catch(err => {console.log(err)}) 
             } 
@@ -127,19 +126,21 @@ const EditBadge: React.FC = () =>{
             //getOwnedGyms();
             //console.log(ownedGyms);
             //////// GET OWNED GYMS //////////
-            
+            */
             const deleteBadge=()=>{
-                let id ='XoD'
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${id}`,{
+                
+                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
                     "method":"DELETE"
                 })
                 .then(response =>response.json())
                 .then(response =>{
                     //successful request
                     console.log(response);
+                    setShowToastDelete(true);
+                    window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
                 })
                 .catch(err => {console.log(err)}) 
-            } */
+            } 
         
         
         return(
@@ -157,7 +158,7 @@ const EditBadge: React.FC = () =>{
 
 
                         <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton list={['STRENGTH', 'CARDIO']} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
 
                         <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
@@ -167,13 +168,21 @@ const EditBadge: React.FC = () =>{
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
                         <IonButton class=" btnFitWidth" color='success' type='submit' >SAVE CHANGES</IonButton>
-                        <IonButton class=" btnFitWidth" color='danger' type='submit' onClick={onDelete}>DELETE BADGE</IonButton>
+                        
                     </form>
+                    <IonButton class=" btnFitWidth" color='danger' type='button' onClick={deleteBadge}>DELETE BADGE</IonButton>
                     <br></br><br></br>
                     <IonToast
                         isOpen={showToast}
                         onDidDismiss={() => setShowToast(false)}
                         message="Badge Updated"
+                        duration={500}
+                        color="success"
+                    />
+                    <IonToast
+                        isOpen={showToastDelete}
+                        onDidDismiss={() => setShowToast(false)}
+                        message="Badge Deleted"
                         duration={500}
                         color="success"
                     />
