@@ -1,16 +1,39 @@
 import { IonCol, IonRow} from '@ionic/react';
 import './LeaderboardValues.css'
 
-export const LeaderboardValues=()=>{
-    const list=[
-        {'pos':4,'name':'Tracy21','pts':98},
-        {'pos':5,'name':'Eliot25','pts':93},
-        {'pos':6,'name':'Brendan','pts':94},
-        {'pos':7,'name':'Lorolei','pts':92},
-        {'pos':8,'name':'Louis','pts':80},
-        {'pos':9,'name':'Dorris','pts':60},
-        {'pos':10,'name':'Mac','pts':10},
-      ]
+export const LeaderboardValues=(props:{scores:any[]})=>{
+    for(let i=props.scores.length;i<10+1;i++)
+    {
+      props.scores.push({
+        "username":"-",
+        "points":"-"
+      })
+    }
+    let FirstPlace:any=props.scores[0]
+    let SecondPlace:any=props.scores[1]
+    let ThirdPlace:any=props.scores[2]
+    let top10:any=[]
+    for(let i=3;i<10;i++){
+      top10.push(
+        { 
+          'pos':i+1,
+          'username':props.scores[i].username,
+          'points':props.scores[i].points
+          })
+    }
+
+    let username="Gates";
+    let yourscore:any=[]
+    let count=0;
+    for(let i=0;i<props.scores.length;i++)
+    {
+      count=count+1;
+      if(username===props.scores[i].username)
+      {
+        yourscore=props.scores[i];
+        break;
+      }
+    }
     return(
     <div>
        <IonRow >
@@ -29,10 +52,10 @@ export const LeaderboardValues=()=>{
             #1
           </IonCol>
           <IonCol>
-            DANNY
+            {FirstPlace.username}
           </IonCol>
           <IonCol>
-            125pts
+            {FirstPlace.points} pts
           </IonCol>
       </IonRow>
       <IonRow class="SecondPlace">
@@ -40,10 +63,10 @@ export const LeaderboardValues=()=>{
             #2
           </IonCol>
           <IonCol>
-            Jim
+            {SecondPlace.username}
           </IonCol>
           <IonCol>
-            120pts
+            {SecondPlace.points} pts
           </IonCol>
       </IonRow>
       <IonRow class="ThirdPlace">
@@ -51,22 +74,22 @@ export const LeaderboardValues=()=>{
             #3
           </IonCol>
           <IonCol>
-            Bob
+            {ThirdPlace.username}
           </IonCol>
           <IonCol>
-            115pts
+            {ThirdPlace.points} pts
           </IonCol>
       </IonRow>
-      {list.map(el=>
+      {top10.map((el:any)=>
          <IonRow key={el.pos} >
             <IonCol>
               {el.pos}
             </IonCol>
             <IonCol>
-              {el.name}
+              {el.username}
             </IonCol>
             <IonCol>
-              {el.pts}pts
+              {el.points}pts
             </IonCol>
          </IonRow>
         )}
@@ -74,13 +97,13 @@ export const LeaderboardValues=()=>{
         </br>
         <IonRow class="You">
           <IonCol>
-            #25
+            #{count}
           </IonCol>
           <IonCol>
-            YOU
+            {yourscore.username}
           </IonCol>
           <IonCol>
-            0pts
+            {yourscore.points}pts
           </IonCol>
       </IonRow>
         <br></br>
