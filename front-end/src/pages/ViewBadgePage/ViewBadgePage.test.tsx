@@ -1,7 +1,9 @@
-import {IonGrid } from '@ionic/react';
-import { render } from '@testing-library/react';
 
-import ViewBadgePage from './ViewBadgePage'
+import { IonGrid } from '@ionic/react';
+import { render} from '@testing-library/react';
+import ViewBadgePage from './ViewBadgePage';
+
+//data-testid="btnSeg"
 //testing API
 test("API fetch badges",()=>{
     let badge:any=[]    
@@ -27,10 +29,10 @@ test('renders without crashing', () => {
     const { baseElement } = render(<ViewBadgePage/>);
     expect(baseElement).toBeDefined();
 });
+
+
+
 test('creates badge Grid', () => {
     const { baseElement } = render(<IonGrid/>);
     expect(baseElement).toBeDefined();
 });
-
-
-
