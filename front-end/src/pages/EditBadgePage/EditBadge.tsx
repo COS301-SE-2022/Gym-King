@@ -8,7 +8,7 @@ import SegmentButton from '../../components/segmentButton/segmentButton';
 const EditBadge: React.FC = () =>{
 
         //STATES
-        //const [gymId, setGymId] = useState('')
+        const [gymId, setGymId] = useState('')
         const [showToast, setShowToast] = useState(false);
         const [showToastDelete, setShowToastDelete] = useState(false);
         const [badgename, setBadgename] = useState('');
@@ -38,7 +38,7 @@ const EditBadge: React.FC = () =>{
                     badgeDescription: e.target.badgeDescription.value,
                     badgeChallenge:e.target.badgeChallenge.value,
                     activityType: localStorage.getItem('act'),
-                    gymName: 'lttD'
+                    gymName: gymId
                 };
                 
                 
@@ -65,7 +65,7 @@ const EditBadge: React.FC = () =>{
                 setDescription(response.results[0].badgedescription)
                 setBadgename(response.results[0].badgename)
                 setChallenge(response.results[0].badgechallenge)
-                //setG_id(response.results[0].g_id)
+                setGymId(response.results[0].g_id)
             })
             .catch(err => {console.log(err)})
         } )
@@ -73,7 +73,7 @@ const EditBadge: React.FC = () =>{
 
         // UPDATE BADGE PUT REQUEST 
         const updateBadge= ()=>{
-            let gymid= 'lttD'
+            let gymid= gymId
             let badgeicon = "BADGE ICON"
             let at = localStorage.getItem('act');
             let bn = formData.badgeName;
