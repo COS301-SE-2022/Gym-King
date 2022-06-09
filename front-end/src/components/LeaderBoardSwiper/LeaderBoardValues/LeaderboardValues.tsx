@@ -46,7 +46,8 @@ export const LeaderboardValues=(props:{scores:any[]})=>{
           <IonCol>
             <strong>points</strong>
           </IonCol>
-        </IonRow>    
+        </IonRow> 
+        <br></br>   
       <IonRow class="FirstPlace">
           <IonCol>
             #1
@@ -58,6 +59,7 @@ export const LeaderboardValues=(props:{scores:any[]})=>{
             {FirstPlace.points} pts
           </IonCol>
       </IonRow>
+      <br></br>
       <IonRow class="SecondPlace">
           <IonCol>
             #2
@@ -69,6 +71,7 @@ export const LeaderboardValues=(props:{scores:any[]})=>{
             {SecondPlace.points} pts
           </IonCol>
       </IonRow>
+      <br></br>
       <IonRow class="ThirdPlace">
           <IonCol>
             #3
@@ -80,6 +83,7 @@ export const LeaderboardValues=(props:{scores:any[]})=>{
             {ThirdPlace.points} pts
           </IonCol>
       </IonRow>
+      <br></br>
       {top10.map((el:any)=>
          <IonRow key={el.pos} >
             <IonCol>

@@ -11,7 +11,7 @@ export const LeaderboardSwiper=(props: {overall:any[],cardio:any[],strength:any[
         direction:"horizontal"
       };
     return(
-        <IonSlides pager={true} options={slideOpts}>
+        <IonSlides class="swiper" pager={true} options={slideOpts}>
         <IonSlide>
           <IonGrid class='LeaderboardGrid'>
               <IonRow  class="LeaderboardHeader">
