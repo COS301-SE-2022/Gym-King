@@ -1,5 +1,5 @@
 const request = require('supertest');
-import { server } from "../extras/extras";
+import { server } from "../utils/utils";
 describe('Extras server should exist!', () => {
     test('Testing Extras server', async () => {
         expect(server).toBe(server)
