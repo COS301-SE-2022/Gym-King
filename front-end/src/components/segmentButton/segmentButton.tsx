@@ -2,7 +2,7 @@ import {IonLabel, IonSegment, IonSegmentButton} from '@ionic/react';
 import React from 'react'
 import '../../theme/variables.css'
 //creating a type so props can be entered
-export type SegmentButtonProps = {list?:Array<string>, chosenValue?:any, val?:any};
+export type SegmentButtonProps = {list?:any, chosenValue?:any, val?:any};
 export type SegmentButtonStates = { selectedValue: string };
 
 export class SegmentButton extends React.Component<SegmentButtonProps, SegmentButtonStates>{
@@ -11,6 +11,7 @@ export class SegmentButton extends React.Component<SegmentButtonProps, SegmentBu
 
     onChange = (e: any)=>{
         this.props.chosenValue(e.target.value);
+
         e.preventDefault()
     }
 
@@ -18,9 +19,9 @@ export class SegmentButton extends React.Component<SegmentButtonProps, SegmentBu
     render(){
         const {list} = this.props;
         return(
-            <IonSegment onIonChange={this.onChange}>
+            <IonSegment value={this.props.val} onIonChange={this.onChange}>
                 {
-                    list?.map(el =>{
+                    list?.map((el:any) =>{
                         return (<IonSegmentButton value={el} key={el}>
                                     <IonLabel>{el}</IonLabel>
                                 </IonSegmentButton>)

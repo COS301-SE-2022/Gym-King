@@ -1,17 +1,16 @@
 import { IonContent, IonHeader, IonPage, } from '@ionic/react';
-import MapView from '../../components/map/MapView';
-
-const UserMap: React.FC = () => {
+import AR from '../../components/AR/AR';
+const ARPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
 
       </IonHeader>
       <IonContent>
-        <MapView></MapView>
+        <AR></AR>
       </IonContent>
     </IonPage>
   );
 };
 
-export default UserMap;
+export default ARPage;

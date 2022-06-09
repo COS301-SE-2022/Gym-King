@@ -2,8 +2,8 @@ import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
 import './ViewBadgeCard.css'
 
 export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number })=>{
-    let badge=require("../../utils/badges.json")  
-    let href="http://localhost:3000/UploadActivity"
+    let badge=require("../../../utils/badges.json")  
+    let href="http://localhost:3000/EditBadge"
     return(
             <IonCard 
                 color="primary" 

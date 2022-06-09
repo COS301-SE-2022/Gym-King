@@ -4,6 +4,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import AddGym from './pages/AddGym/AddGym';
 import AddGymLocation from './pages/AddGymLocation/AddGymLocation';
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -32,6 +33,9 @@ import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
 import CreateBadge from './pages/CreateBadgePage/CreateBadge';
 import EditBadge from './pages/EditBadgePage/EditBadge';
 import ViewBadgePage from './pages/ViewBadgePage/ViewBadgePage';
+import ARPage from './pages/ARPage/ARPage';
+import GymOwnerViewBadge from './pages/GymOwner-ViewBadge/GymOwnerViewBadge'
+import Leaderboard from './pages/Leaderboard/Leaderboard'
 /*develop*/
 
 
@@ -61,9 +65,13 @@ const App: React.FC = () => (
         <Route exact path='/AddGymLocation'>
           <AddGymLocation></AddGymLocation>
         </Route>
+
         <Route exact path='/UserMap'>
           <UserMap></UserMap>
-        </Route>        
+        </Route>            
+        <Route exact path='/AR'>
+          <ARPage></ARPage>
+        </Route>       
         <Route exact path='/PendingApprovals'>
   
 
@@ -80,6 +88,12 @@ const App: React.FC = () => (
         </Route>      
         <Route exact path='/ViewBadges'>
           <ViewBadgePage></ViewBadgePage>
+        </Route>  
+        <Route exact path='/GymOwner-ViewBadges'>
+          <GymOwnerViewBadge></GymOwnerViewBadge>
+        </Route>  
+        <Route exact path='/Leaderboard'>
+          <Leaderboard></Leaderboard>
         </Route>  
       </IonRouterOutlet>
     </IonReactRouter>
