@@ -9,7 +9,7 @@ export class ToolBar extends React.Component<ToolBarProps>{
     render(){
         let username = this.props.username;
         return(
-                <IonToolbar mode='ios' class="toolbar" color="#0F005A">
+                <IonToolbar mode='ios' class="toolbar" color="#0F005A" data-testid="tb">
                     <IonButtons slot="start">
                         <IonButton shape='round' className='profileImage'>
                         </IonButton>

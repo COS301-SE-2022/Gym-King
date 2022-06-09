@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import { useEffect } from 'react';
 import AcceptRejectPage from './AcceptReject'
 const request = require('supertest');
@@ -48,3 +48,17 @@ describe('Testing API calls', () => {
         })
     });
   })
+
+
+////////// INTEGRATION TESTS //////////
+
+describe('Integration Tests', () => {
+    
+    test('sending in a list of claims displays it in the ActivityList component', async () => {
+        const {getByTestId } = render(<AcceptRejectPage />);
+    
+        // make sure the accept reject cards are displayed 
+        expect(getByTestId('ARC').innerHTML).toBeDefined()
+    
+    });
+})

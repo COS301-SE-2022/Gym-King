@@ -42,7 +42,7 @@ export class AcceptRejectCard extends React.Component<props>{
     render(){
         
         return(
-            <IonCard>
+            <IonCard data-testid="ARC">
                  <IonItem>
                     <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
                     <IonText className='username'>{this.props.username}</IonText>

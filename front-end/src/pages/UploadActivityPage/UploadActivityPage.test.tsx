@@ -47,3 +47,15 @@ test('renders without crashing', () => {
       });
 
   })
+
+
+describe('Integration Tests', () => {
+
+    test('displays activity inputs when it is passed in as a list', async () => {
+        const {getByTestId } = render(<UploadActivityPage />);
+
+        expect (getByTestId('ai').innerHTML).toBeDefined()
+    });
+
+})
+

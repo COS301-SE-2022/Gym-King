@@ -25,5 +25,20 @@ describe('Testing API calls', () => {
         })
     });
 
-
 })
+
+describe('Integration Tests', () => {
+    
+    test('displays toolbar', async () => {
+        const {getByTestId } = render(<PendingApprovalsPage />);
+    
+        expect(getByTestId('tb').innerHTML).toBeDefined()
+    });
+/*
+    test('sending in a list of claims loads approval buttons', async () => {
+        const {getByTestId } = render(<PendingApprovalsPage />);
+        
+        expect(getByTestId('ab')).toBeDefined()
+    }); */
+})
+
