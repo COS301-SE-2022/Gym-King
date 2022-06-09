@@ -111,7 +111,7 @@ const Leaderboard: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>Leaderboard</IonText>
-                <LeaderboardSwiper overall={overall} cardio={cardio} strength={strength} ></LeaderboardSwiper>  
+                <LeaderboardSwiper   overall={overall} cardio={cardio} strength={strength} ></LeaderboardSwiper>  
             </IonContent>
         </IonPage>
     )

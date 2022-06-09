@@ -11,9 +11,9 @@ export const LeaderboardSwiper=(props: {overall:any[],cardio:any[],strength:any[
         direction:"horizontal"
       };
     return(
-        <IonSlides class="swiper" pager={true} options={slideOpts}>
-        <IonSlide>
-          <IonGrid class='LeaderboardGrid'>
+        <IonSlides pager={true} options={slideOpts}>
+        <IonSlide >
+          <IonGrid  class='LeaderboardGrid'>
               <IonRow  class="LeaderboardHeader">
                 <IonCol>  
                 </IonCol>
@@ -50,7 +50,7 @@ export const LeaderboardSwiper=(props: {overall:any[],cardio:any[],strength:any[
                 <IonIcon className="end"class="iconRight" name="chevron-back-outline"></IonIcon>
                 </IonCol>
                 <IonCol>
-                  STRENGHT
+                  STRENGTH
                 </IonCol>
                 <IonCol>
                  </IonCol>

@@ -6,6 +6,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
     let href="http://localhost:3000/UploadActivity"
     return(
             <IonCard 
+                data-testid="viewbadgegrid"
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
