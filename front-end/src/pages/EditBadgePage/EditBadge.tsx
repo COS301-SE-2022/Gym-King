@@ -1,6 +1,6 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 
@@ -11,8 +11,6 @@ const EditBadge: React.FC = () =>{
         //const [gymId, setGymId] = useState('')
         const [showToast, setShowToast] = useState(false);
         const [showToastDelete, setShowToastDelete] = useState(false);
-
-
         const [badgename, setBadgename] = useState('');
         const [activitytype, setActivityType] = useState('');
         const [badgedescription, setDescription] = useState('');
@@ -22,7 +20,6 @@ const EditBadge: React.FC = () =>{
         //VARIABLES
         let formData:any;
         let badgeId= localStorage.getItem("badgeid");
-        let count = 0;
 
         //METHODS 
         const setChosenActivityType = (e:any) =>{
@@ -31,9 +28,6 @@ const EditBadge: React.FC = () =>{
             //setActivityType(e)
         }
 
-        /*const setChosenGymLocation = (e:any) =>{
-            setGymId(e)
-        } */
 
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
@@ -59,88 +53,68 @@ const EditBadge: React.FC = () =>{
     
         }
 
-        //API REQUESTS 
         
-            // GET BADGES REQUEST 
-            const getBadges= ()=>{
-                count++;
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-                    "method":"GET"
-                })
-                .then(response =>response.json())
-                .then(response =>{
-                    //console.log(response)
-                    //setB_id(response.results[0].b_id)
-                    setActivityType( response.results[0].activitytype)
-                    setDescription(response.results[0].badgedescription)
-                    setBadgename(response.results[0].badgename)
-                    setChallenge(response.results[0].badgechallenge)
-                    //setG_id(response.results[0].g_id)
-                })
-                .catch(err => {console.log(err)})
-            } 
-            if(count === 0)
-                getBadges();
-        
+        // GET BADGES REQUEST 
+        useEffect( ()=>{
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                setActivityType( response.results[0].activitytype)
+                setDescription(response.results[0].badgedescription)
+                setBadgename(response.results[0].badgename)
+                setChallenge(response.results[0].badgechallenge)
+                //setG_id(response.results[0].g_id)
+            })
+            .catch(err => {console.log(err)})
+        } )
+    
 
-            // UPDATE BADGE PUT REQUEST 
-            const updateBadge= ()=>{
-                let gymid= 'lttD'
-                let badgeicon = "BADGE ICON"
-                let at = localStorage.getItem('act');
-                let bn = formData.badgeName;
-                let bc = formData.badgeChallenge;
-                let bd = formData.badgeDescription;
-                //console.log(formData);
+        // UPDATE BADGE PUT REQUEST 
+        const updateBadge= ()=>{
+            let gymid= 'lttD'
+            let badgeicon = "BADGE ICON"
+            let at = localStorage.getItem('act');
+            let bn = formData.badgeName;
+            let bc = formData.badgeChallenge;
+            let bd = formData.badgeDescription;
+            //console.log(formData);
+            
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
+                "method":"PUT"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response)
+
+                //show toast
+                setShowToast(true);
+
+                //redirect to view badges  
+                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+            })
+            .catch(err => {console.log(err)}) 
+        } 
+
+        // DELETE BADGE DELETE REQUEST 
+        const deleteBadge=()=>{
+            
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                "method":"DELETE"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response);
                 
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
-                    "method":"PUT"
-                })
-                .then(response =>response.json())
-                .then(response =>{
-                    console.log(response)
-                    //show toast
-                    setShowToast(true);
-                    //redirect to home page 
-                    window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
-                })
-                .catch(err => {console.log(err)}) 
-            } 
+                //show toast 
+                setShowToastDelete(true);
 
-            //////// GET OWNED GYMS //////////
-            /*
-            const getOwnedGyms=()=>{
-                let gymOwner = "u20519517@tuks.co.za"
-                fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
-                    "method":"GET"
-                })
-                .then(response =>response.json())
-                .then(response =>{
-                    //successful request
-                    //console.log(response.results);
-                    setOwnedGyms(response.results);
-
-                })
-                .catch(err => {console.log(err)}) 
-            }
-            //getOwnedGyms();
-            //console.log(ownedGyms);
-            //////// GET OWNED GYMS //////////
-            */
-            const deleteBadge=()=>{
-                
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-                    "method":"DELETE"
-                })
-                .then(response =>response.json())
-                .then(response =>{
-                    //successful request
-                    console.log(response);
-                    setShowToastDelete(true);
-                    window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
-                })
-                .catch(err => {console.log(err)}) 
-            } 
+                //redirect to view badges 
+                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+            })
+            .catch(err => {console.log(err)}) 
+        } 
         
         
         return(
