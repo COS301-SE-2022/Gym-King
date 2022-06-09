@@ -15,13 +15,13 @@ export const LeaderboardValues=()=>{
     <div>
        <IonRow >
           <IonCol>
-            pos
+           <strong> pos</strong>
           </IonCol>
           <IonCol>
-            username
+            <strong>username</strong>
           </IonCol>
           <IonCol>
-            points
+            <strong>points</strong>
           </IonCol>
         </IonRow>    
       <IonRow class="FirstPlace">
@@ -58,7 +58,7 @@ export const LeaderboardValues=()=>{
           </IonCol>
       </IonRow>
       {list.map(el=>
-         <IonRow >
+         <IonRow key={el.pos} >
             <IonCol>
               {el.pos}
             </IonCol>
