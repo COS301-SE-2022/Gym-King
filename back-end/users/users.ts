@@ -81,12 +81,28 @@ let server = express()
       res.json(results);
     }
   })
+  .get('/leaderboard/score', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query.gid;
+      const client = await pool.connect();
+      let result = await client.query("SELECT iv.B_id, b.Badgename, iv.Username, iv.Count, b.Activitytype FROM BADGE as b "+ 
+      "inner join ( SELECT B_ID, Username, Count FROM BADGE_OWNED WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '"+query+"' ) ) as iv "+
+      "on b.B_id = iv.B_id");
+      const results = { 'success': true, 'results': (result) ? result.rows : null};
+      res.json( results );
+      client.release();
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   .get('/Model/iOS/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    const file = './Models/AR0.usdz';
-    res.download(file); 
+    const file = './Models/melee.usdz';
+    res.download(file);  
   })
   .get('/Model/Android/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    const file = './Models/AR0.glb';
+    const file = './Models/concept.glb';
     res.download(file); 
   })
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {

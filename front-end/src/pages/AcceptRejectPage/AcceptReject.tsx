@@ -4,7 +4,7 @@ import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './AcceptReject.css';
 
-const AcceptRejectPage: React.FC = () =>{
+export const AcceptRejectPage: React.FC = () =>{
 
     //STATES AND VARIABLES 
     let badgeId = localStorage.getItem('badgeId');
@@ -15,6 +15,7 @@ const AcceptRejectPage: React.FC = () =>{
     const [i3, setI3] = useState('');
     const [badgename, setBadgename] = useState('');
     const [activitytype, setActivityType] = useState('');
+
 
     //GET THE CLAIM 
     useEffect(()=>{
@@ -31,22 +32,21 @@ const AcceptRejectPage: React.FC = () =>{
     })
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
-    useEffect(()=>
-        {
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-            "method":"GET"
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                console.log(response.results[0]);
+        useEffect(()=>
+            {
+                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                "method":"GET"
+                })
+                .then(response =>response.json())
+                .then(response =>{
+                    console.log(response.results[0]);
 
-                setBadgename(response.results[0].badgename)
-                setActivityType(response.results[0].activitytype)
-                //setG_id(response.results[0].g_id)
+                    setBadgename(response.results[0].badgename)
+                    setActivityType(response.results[0].activitytype)
+                    //setG_id(response.results[0].g_id)
+                })
+                .catch(err => {console.log(err)})
             })
-            .catch(err => {console.log(err)})
-        })
-
         return (
             <IonPage color='#220FE' >
                 <IonHeader>
