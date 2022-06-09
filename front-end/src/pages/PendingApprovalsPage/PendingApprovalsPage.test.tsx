@@ -38,7 +38,7 @@ describe('Integration Tests', () => {
     test('sending in a list of claims loads approval buttons', async () => {
         const {getByTestId } = render(<PendingApprovalsPage />);
         
-        expect(getByTestId('ab')).toBeDefined()
+        expect(getByTestId('aB')).toBeDefined()
     }); */
 })
 
