@@ -21,7 +21,7 @@ export class ApprovalButton extends React.Component<props>{
     render(){
         //console.log(this.userId);
         return(
-            <IonItem button detail class='btnApproval' onClick={this.onClick} href='http://localhost:3000/AcceptReject' data-testid="ab">
+            <IonItem button detail class='btnApproval' onClick={this.onClick} href='http://localhost:3000/AcceptReject' data-testid="aB">
                 <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
                 <IonLabel>{this.props.username}</IonLabel>
             </IonItem>
