@@ -121,4 +121,38 @@ let server = express()
       res.json(results);
     }
   })
+  .post('/users/login', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      const client = await pool.connect();
+      
+      if (req.query.username != null && req.query.password != null) {
+        var result = await client.query(
+          "SELECT * FROM GYM_USER " +
+            "WHERE Username = '" +
+            query.username +
+            "' and "+
+            "Password = '" +
+            query.password +"'"
+            
+        );
+        if(result.rows == null) {
+           throw "404 - invalid username or password";
+        }
+        else {
+          if(result.rows.length==0) throw "404 - invalid username or password";
+        }
+    }else throw "400 - missing username or password";
+
+
+      const results = { 'success': true, 'results': (result) ? result.rows : null};
+      res.json( {results,query} );
+      client.release();
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+      
+    }
+  })
 export {server}

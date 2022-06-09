@@ -47,4 +47,11 @@ describe('Testing POST API Calls', () => {
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
+    test('responds to POST login user', async () => {
+        const res = await request(server).post('/users/login?&username=&password=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
 });
