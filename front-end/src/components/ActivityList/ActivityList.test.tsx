@@ -34,3 +34,4 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("4");
   }); 
 });
+
