@@ -37,6 +37,7 @@ import ARPage from './pages/ARPage/ARPage';
 import GymOwnerViewBadge from './pages/GymOwner-ViewBadge/GymOwnerViewBadge'
 import Leaderboard from './pages/Leaderboard/Leaderboard'
 import LoginPage from './pages/LoginPage/Login';
+import CreateUserPage from './pages/CreateUserPage/CreateUserPage';
 /*develop*/
 
 
@@ -75,6 +76,10 @@ const App: React.FC = () => (
         </Route>     
         <Route exact path='/Login'>
           <LoginPage></LoginPage>
+        </Route>
+           
+        <Route exact path='/CreateUser'>
+          <CreateUserPage></CreateUserPage>
         </Route>
            
         <Route exact path='/AcceptReject'>
