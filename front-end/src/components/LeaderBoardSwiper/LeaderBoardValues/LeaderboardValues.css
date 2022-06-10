@@ -1,24 +1,42 @@
+
 .FirstPlace{
-    border: 7px;
+    border: 1px;
     border-style: solid;
     border-color: rgb(153, 153, 37);
-    border-radius: 5%;
+    box-shadow:
+    0px 0px  4px 4px rgb(153, 153, 37),  /* inner white */
+    0px 0px 6px 6px  rgb(173, 173, 89), /* middle magenta */
+    0px 0px 10px 10px rgb(209, 209, 174); /* outer cyan */
+    
+
 }
 .SecondPlace{
-    border: 5px;
+    border: 1px;
     border-style: solid;
     border-color: rgb(133, 156, 153);
-    border-radius: 5%;
+    box-shadow:
+    0px 0px  3px 3px  rgb(133, 156, 153),  /* inner white */
+    0px 0px 4px 4px  rgb(192, 206, 204), /* middle magenta */
+    0px 0px 6px 6px rgb(220, 226, 225); /* outer cyan */
+    
 }
 .ThirdPlace{
-    border: 3px;
+    border: 1px;
     border-style: solid;
-    border-color: rgb(110, 85, 39);
-    border-radius: 5%;
+    border-color: rgb(190, 101, 28);
+    box-shadow:
+    0px 0px  2px 2px  rgb(190, 101, 28),  /* inner white */
+    0px 0px 3px 3px rgb(184, 120, 67), /* middle magenta */
+    0px 0px 5px 5px rgb(221, 187, 159); /* outer cyan */
+    
 }
 .You{
-    border: 3px;
+    border: 1px;
     border-style: solid;
     border-color:white;
     border-radius: 5%;
+    box-shadow:
+    0 0 2px 2px #fff,  /* inner white */
+    0 0 5px 5px #fff, /* middle magenta */
+    0 0 8px 8px #fff; /* outer cyan */
 }

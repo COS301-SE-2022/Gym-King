@@ -12,11 +12,16 @@
 ## Codebusters - Gym King - Project Description
 Gym King is a product designed to use gamification to improve motivation with gym settings. Using open source and Augmented Reality (AR), Gym King aims to allow Gyms to issue badges to their users for achieving workout goals and allow them to work up the Gym leaderboard and become the ultimate Gym King.
 
-## Codebusters - Demo 1
-[DEMO 1 video and Powerpoint](https://drive.google.com/drive/folders/1VpTER70Z11c56SIopSzqOxKkyGPETgnz?usp=sharing)
+## Documentation
+[SRS.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8874193/GYM.KING.-.Codebusters.-.SRS.-.Demo.2.pdf) <br>
+[Coding Standards.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8874194/GYM.KING.-.Codebusters.-.Coding.Standards.-.Demo.2.pdf) <br>
+[User Manual.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8874196/GYM.KING.-.Codebusters.-.User.Manual.-.Demo.2.pdf) <br>
+[Architecture.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8874197/GYM.KING.-.Codebusters.-.Architecture.-.Demo.2.pdf) <br>
 
-## Functional Requirements (SRS Document)
-[Gym King - Codebusters - Demo 1.pdf](https://github.com/COS301-SE-2022/Gym-King/files/8682399/Gym.King.-.Codebusters.-.Demo.1.pdf)
+## Demos
+### Codebusters - Demo 1
+[DEMO 1](https://drive.google.com/drive/folders/1VpTER70Z11c56SIopSzqOxKkyGPETgnz?usp=sharing) <br>
+[DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing)
 
 ## Github Project Board
 [Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)

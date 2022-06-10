@@ -30,7 +30,7 @@ export class  ActivityInputs extends React.Component<props, states>{
         if(this.props.activityCategory === 'CARDIO'){
             return(
 
-                <IonList>
+                <IonList data-testid="ai">
                     <IonItem>
                         <IonGrid className='centerLeft grid'>
                             <IonRow className='left topMargin'>
@@ -63,7 +63,7 @@ export class  ActivityInputs extends React.Component<props, states>{
         }
         else{
             return(
-                <IonList>
+                <IonList data-testid="ai">
                     <IonItem>
                         <IonGrid className='centerLeft grid'>
                             <IonRow className='left topMargin'>

@@ -14,11 +14,3 @@ test('renders without crashing', () => {
   });
 
 
-describe('Testing prop values', () => {
-
-    test('correctly displays list buttons ', async () => {
-        const {baseElement} = render(<ViewBadgeCard BadgeTitle="cardio champion" BadgeDesc="" BadgeID='123' BadgeImg={1}/>);
-        expect (baseElement).toHaveTextContent("cardio champion");        
-    }); 
-
-});
