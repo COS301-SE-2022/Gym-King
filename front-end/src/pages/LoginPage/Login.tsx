@@ -1,6 +1,7 @@
 
-import { IonButton, IonContent, IonInput, IonItem, IonLabel, IonPage, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
+import ToolBar from '../../components/toolbar/Toolbar';
 import './Login.css';
 
 
@@ -46,8 +47,13 @@ export const Login: React.FC = () =>{
     
     
     return (
+        
             <IonPage >
+                <IonHeader>
+                    <ToolBar></ToolBar>
+                </IonHeader>
                 <IonContent fullscreen className='Content'>
+                    <IonText className='PageTitle center'>Create User</IonText>
                     <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST">
                     <IonItem>
                         <IonLabel position="floating">Username</IonLabel>

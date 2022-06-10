@@ -1,7 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useState } from 'react';
-import { createUerSchema } from '../../validation/CreateBadgeValidation';
+import { createUerSchema } from '../../validation/CreateUserValidation';
 
 
  export const CreateUserPage: React.FC = () =>{
@@ -12,8 +12,7 @@ import { createUerSchema } from '../../validation/CreateBadgeValidation';
         const [isValid, setIsValid] = useState(false);
         let formData:any;
 
-        
-        //SUBMIT THE FORM
+      
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
 
@@ -78,7 +77,7 @@ import { createUerSchema } from '../../validation/CreateBadgeValidation';
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Creating User</IonText>
+                    <IonText className='PageTitle center'>Create User</IonText>
                     <form onSubmit={handleSubmit}>
                         <IonText className='inputHeading'>Email:</IonText> <br></br><br></br>
                         <IonInput name='email' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>

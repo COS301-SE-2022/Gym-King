@@ -77,7 +77,6 @@ const App: React.FC = () => (
         <Route exact path='/Login'>
           <LoginPage></LoginPage>
         </Route>
-           
         <Route exact path='/CreateUser'>
           <CreateUserPage></CreateUserPage>
         </Route>
