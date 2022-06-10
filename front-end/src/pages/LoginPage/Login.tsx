@@ -1,38 +1,80 @@
 
-import { IonButton, IonContent,  IonHeader, IonInput, IonPage, IonText} from '@ionic/react';
-import React from "react";
-import ToolBar from '../../components/toolbar/Toolbar';
+import { IonButton, IonContent, IonInput, IonItem, IonLabel, IonPage, IonToast} from '@ionic/react';
+import React, { useState } from "react";
 import './Login.css';
 
 
-
-//===============================================================================================================================================//
-//DEVICE TYPE FUNCTIONS
-//===============================================================================================================================================//
-
-
-const Login: React.FC = () => {
-
-
-    return (
-        
+export const Login: React.FC = () =>{
+    let formData:any;
     
-        <IonPage >
-            <IonHeader>
-                <ToolBar></ToolBar>
-            </IonHeader>
-            <IonContent fullscreen className='Content'>
-              
-                <IonText className='inputHeading'>Username:</IonText> <br></br><br></br>
-                <IonInput name='userName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
-              
-                <IonText className='inputHeading'>Password:</IonText> <br></br><br></br>
-                <IonInput name='userPassword' type='password' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+    const [showToast, setShowToast] = useState(false);
+    const loginSubmit= ()=>{
+        
+        console.log(formData.username)
+            fetch('https://gym-king.herokuapp.com/users/login',{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    username: formData.username,
+                    password: formData.password
+                 })
+                })
+            .then(response =>response.json())
+            .then(response =>{
+                if(response.success){
+                    window.location.href = "http://"+window.location.host+"/home";
+                }else{
+                    
+                    setShowToast(true);
+                    console.log(response.success)
+                    console.log(response.results)
+                }
+            })
+            .catch(err => {console.log(err)})
+    } 
 
-                <IonButton class="btnSubmit" type='submit'>Login</IonButton>
-            </IonContent>
-        </IonPage>
-    )
-}
+    const handleSubmit = async (e:any) =>{
+        e.preventDefault();
+        formData={
+            username: e.target.userName.value,
+            password: e.target.userPassword.value
+        };
+        loginSubmit();
+    }
+    
+    
+    return (
+            <IonPage >
+                <IonContent fullscreen className='Content'>
+                    <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST">
+                    <IonItem>
+                        <IonLabel position="floating">Username</IonLabel>
+                        <IonInput name='userName' type='text' ></IonInput>
+                    </IonItem>
+                    <IonItem>
+                        <IonLabel position="floating">Password</IonLabel>
+                        <IonInput name='userPassword' type='password'  ></IonInput>
+                    </IonItem>
+                    <IonButton className="ion-margin-top" type="submit" expand="block">Login</IonButton>
+                    </form>
+                </IonContent>
+
+                <IonToast
+                isOpen={showToast}
+                onDidDismiss={() => setShowToast(false)}
+                message="login failed"
+                duration={1000}
+                color="danger"
+                />
+            </IonPage>
+
+            
+
+        )
+    }
+
 
 export default Login;
