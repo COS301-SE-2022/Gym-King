@@ -10,7 +10,6 @@ export const Login: React.FC = () =>{
     const [showToast, setShowToast] = useState(false);
     const loginSubmit= ()=>{
         
-        console.log(formData.username)
             fetch('https://gym-king.herokuapp.com/users/login',{
                 method: 'POST',
                 headers: {
