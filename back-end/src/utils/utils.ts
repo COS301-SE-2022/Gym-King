@@ -1,9 +1,10 @@
 const express = require("express");
-const path = require("path");
 const cors = require("cors");
 const { Pool } = require("pg");
-const allowedOrigins = ["http://localhost:3000"];
-import { server } from "../owners/owners";
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:8100'
+];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
     if (allowedOrigins.includes(origin) || !origin) {
@@ -30,16 +31,7 @@ const pool = (() => {
     });
   }
 })();
-function createID(length: any) {
-  let ID = "";
-  let characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < length; i++) {
-    ID += characters.charAt(Math.floor(Math.random() * 62));
-  }
-  return ID;
-}
-server
+const utils = express.Router()
   .options("*", cors(corsOptions))
   .get("/", cors(corsOptions), async (req: any, res: any) => {
     res.send("GymKing");
@@ -49,7 +41,6 @@ server
       let query = req.query.table;
       const client = await pool.connect();
       let result = await client.query("SELECT * from " + query);
-
       const results = { success: true, results: result ? result.rows : null };
       res.json(results);
       client.release();
@@ -207,4 +198,4 @@ server
       res.json(results);
     }
   });
-export { server };
+export {utils};

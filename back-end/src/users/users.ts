@@ -1,9 +1,10 @@
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const { Pool } = require('pg');
+const bodyParser = require('body-parser');
 const allowedOrigins = [
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'http://localhost:8100'
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -31,7 +32,7 @@ const pool = (() => {
       });
   } })
 ();
-let server = express()
+const users = express.Router()
   .options('*', cors(corsOptions))
   .get('/badges/badge', cors(corsOptions), async (req: any, res: any) => {
     try {
@@ -98,28 +99,12 @@ let server = express()
     }
   })
   .get('/Model/iOS/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    const file = './Models/melee.usdz';
+    const file = './src/Models/melee.usdz';
     res.download(file);  
   })
   .get('/Model/Android/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    const file = './Models/concept.glb';
+    const file = './src/Models/concept.glb';
     res.download(file); 
-  })
-  .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
-    try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query("INSERT INTO GYM_USER"+
-      "(email,name,surname,number,username,password) VALUES"+
-      "('"+query.email+"','"+query.name+"','"+query.surname+"','"+query.number+"','"+query.username+"','"+query.password+"')");
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results,query} );
-      client.release();
-    } catch (err) {
-      const results = { 'success': false, 'results': err };
-      console.error(err);
-      res.json(results);
-    }
   })
   .post('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
     try {
@@ -137,33 +122,59 @@ let server = express()
       res.json(results);
     }
   })
+  
+
+  users
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .post('/users/login', cors(corsOptions), async (req: any, res: any) => {
     try {
+      const bcrypt = require('bcryptjs')
+
       let query = req.query;
       const client = await pool.connect();
       
-      if (req.query.username != null && req.query.password != null) {
+      if (req.body.username != null && req.body.password != null) {
+        let uN=req.body.username;
+        let uP = req.body.password;
         var result = await client.query(
           "SELECT * FROM GYM_USER " +
             "WHERE Username = '" +
-            query.username +
-            "' and "+
-            "Password = '" +
-            query.password +"'"
+            uN +"'"
             
         );
         if(result.rows == null) {
-           throw "404 - invalid username or password";
+          res.status(404); 
+          res.json( { 'success': false, 'results':'invalid username or password'} );
+          client.release();
         }
         else {
-          if(result.rows.length==0) throw "404 - invalid username or password";
+          if(result.rows.length==0) {
+            res.status(404);
+            res.json( { 'success': false, 'results':'invalid username or password'} );
+            client.release();
+          }
+          else{
+            let hashPass = result.rows[0].password;
+            if(!bcrypt.compareSync(uP, hashPass)) {
+              res.status(400);
+              res.json( { 'success': false, 'results':"invalid password" } );
+              client.release();
+            }else{
+              const results = { 'success': true, 'results': (result) ? result.rows : null};
+              res.json( results );
+              client.release();
+            }
+          }
+        
         }
-    }else throw "400 - missing username or password";
-
-
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results,query} );
+    }else {
+      res.status(400);
+      res.json(  { 'success': false, 'results':'missing username or password'} );
       client.release();
+    }
+
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -171,4 +182,26 @@ let server = express()
       
     }
   })
-export {server}
+  users
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
+  .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const client = await pool.connect();
+      let result = await client.query("INSERT INTO GYM_USER"+
+      "(email,name,surname,number,username,password) VALUES"+
+      "('"+query.email+"','"+query.name+"','"+query.surname+"','"+query.number+"','"+query.username+"','"+bcrypt.hashSync(query.password, bcrypt.genSaltSync())+"')");
+      const results = { 'success': true, 'results': (result) ? result.rows : null};
+      res.json( {results,query} );
+      client.release();
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+export {users}

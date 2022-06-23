@@ -1,16 +1,22 @@
 const request = require('supertest');
-import { server } from "../owners/owners";
-describe('Owners server should exist!', () => {
-    test('Testing Owners server', async () => {
+import {server} from "../server";
+describe('Extras server should exist!', () => {
+    test('Testing Extras server', async () => {
         expect(server).toBe(server)
     });
-    test('Test if Owners server is defined', async () => {
+    test('Test if Extras server is defined', async () => {
         expect(server).toBeDefined()
     });
 });
 describe('Testing GET API Calls', () => {
-    test('responds to GET gyms owned by an owner', async () => {
-        const res = await request(server).get('/gyms/owned?email=');
+    test('responds to GET /', async () => {
+        const res = await request(server).get('/');
+        expect(res.header['content-type']).toBe('text/html; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.text).toEqual('GymKing');
+    });
+    test('responds to GET tables', async () => {
+        const res = await request(server).get('/tables/table?table=');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
@@ -18,22 +24,24 @@ describe('Testing GET API Calls', () => {
     });
 });
 describe('Testing POST API Calls', () => {
-    test('responds to POST insert owner', async () => {
-        const res = await request(server).post('/owners/owner?email=&name=&surname=&number=&username=&password=');
+    test('responds to POST create tables', async () => {
+        const res = await request(server).post('/tables/create');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
-    test('responds to POST insert owned gym', async () => {
-        const res = await request(server).post('/gyms/owned?email=&gid=');
+});
+describe('Testing DELETE API Calls', () => {
+    test('responds to DELETE drop all tables', async () => {
+        const res = await request(server).delete('/tables/drop');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
-    test('responds to POST insert gym', async () => {
-        const res = await request(server).post('/gyms/gym?gbn=&ga=&gclo=&gcla=&gi=');
+    test('responds to DELETE clear table', async () => {
+        const res = await request(server).delete('/tables/clear');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');

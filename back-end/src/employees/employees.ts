@@ -1,9 +1,10 @@
 const express = require("express");
-const path = require("path");
 const cors = require("cors");
 const { Pool } = require("pg");
-const allowedOrigins = ["http://localhost:3000"];
-import { server } from "../users/users";
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:8100'
+];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
     if (allowedOrigins.includes(origin) || !origin) {
@@ -39,7 +40,7 @@ function createID(length: any) {
   }
   return ID;
 }
-server
+const employees = express.Router()
   .options("*", cors(corsOptions))
   .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
@@ -281,4 +282,4 @@ server
       res.json(results);
     }
   });
-export { server };
+export {employees};
