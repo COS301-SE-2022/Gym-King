@@ -1,38 +1,16 @@
 const request = require('supertest');
-import { server } from "../users/users";
-
-describe('User server should exist!', () => {
-    test('Testing user server', async () => {
+import {server} from "../server";
+describe('Employee server should exist!', () => {
+    test('Testing Employee server', async () => {
         expect(server).toBe(server)
     });
-    test('Test if user server is defined', async () => {
+    test('Test if Employee server is defined', async () => {
         expect(server).toBeDefined()
     });
 });
 describe('Testing GET API Calls', () => {
-    test('responds to GET badges', async () => {
-        const res = await request(server).get('/badges/badge?badge=');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('success');
-        expect(res.body).toHaveProperty('results');
-    });
-    test('responds to GET badges of a gym by gid', async () => {
-        const res = await request(server).get('/badges/gym?gid=');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('success');
-        expect(res.body).toHaveProperty('results');
-    });
-    test('responds to GET gyms by id', async () => {
-        const res = await request(server).get('/gyms/gym?gid=');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('success');
-        expect(res.body).toHaveProperty('results');
-    });
-    test('responds to GET owned badges for leaderboard score', async () => {
-        const res = await request(server).get('/leaderboard/score?gid=');
+    test('responds to GET claims', async () => {
+        const res = await request(server).get('/claims/claim?bid=&gid=');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
@@ -40,23 +18,47 @@ describe('Testing GET API Calls', () => {
     });
 });
 describe('Testing POST API Calls', () => {
-    test('responds to POST insert user', async () => {
-        const res = await request(server).post('/users/user?email=&name=&surname=&number=&username=&password=');
+    test('responds to POST insert employee', async () => {
+        const res = await request(server).post('/users/useremp?email=&name=&surname=&gid=&number=&username=&password=');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
-    test('responds to POST insert claim', async () => {
-        const res = await request(server).post('/claims/claim?bid=&email=&username=&input1=&input2=&input3=&proof=');
+    test('responds to POST insert badge', async () => {
+        const res = await request(server).post('/badges/badge?gid=&bn=&bd=&bc=&bi=&at=');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
-    
-    test('responds to POST login user', async () => {
-        const res = await request(server).post('/users/login?&username=&password=');
+});
+describe('Testing PUT API Calls', () => {
+    test('responds to PUT update a claim to owned', async () => {
+        const res = await request(server).put('/claims/claim?bid=&email=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+    test('responds to PUT update a badge', async () => {
+        const res = await request(server).put('/badges/badge?bid=&gid=&bn=&bd=&bc=&bi=&at=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+});
+describe('Testing DELETE API Calls', () => {
+    test('responds to DELETE a badge', async () => {
+        const res = await request(server).delete('/badges/badge?bid=');
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('success');
+        expect(res.body).toHaveProperty('results');
+    });
+    test('responds to DELETE a claim', async () => {
+        const res = await request(server).delete('/claims/claim?bid=&email=');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
