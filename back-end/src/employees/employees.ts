@@ -42,6 +42,12 @@ function createID(length: any) {
 }
 const employees = express.Router()
   .options("*", cors(corsOptions))
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       if (req.query.gid != null) {
@@ -78,6 +84,12 @@ const employees = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -110,6 +122,12 @@ const employees = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -143,6 +161,12 @@ const employees = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .put("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -209,6 +233,12 @@ const employees = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -239,6 +269,12 @@ const employees = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .delete("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -261,6 +297,12 @@ const employees = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .delete("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
