@@ -37,7 +37,7 @@ import ARPage from './pages/ARPage/ARPage';
 import GymOwnerViewBadge from './pages/GymOwner-ViewBadge/GymOwnerViewBadge'
 import Leaderboard from './pages/Leaderboard/Leaderboard'
 import LoginPage from './pages/LoginPage/Login';
-import CreateUserPage from './pages/CreateUserPage/CreateUserPage';
+import { RegisterPage } from './pages/CreateUserPage/Register';
 /*develop*/
 
 
@@ -47,6 +47,7 @@ setupIonicReact();
 const App: React.FC = () => (
 
   <IonApp>
+
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/home">
@@ -77,8 +78,8 @@ const App: React.FC = () => (
         <Route exact path='/Login'>
           <LoginPage></LoginPage>
         </Route>
-        <Route exact path='/CreateUser'>
-          <CreateUserPage></CreateUserPage>
+        <Route exact path='/Register'>
+          <RegisterPage></RegisterPage>
         </Route>
            
         <Route exact path='/AcceptReject'>

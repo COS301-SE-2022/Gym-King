@@ -136,9 +136,8 @@ http://ionicframework.com/docs/theming/ */
 
 
 .textInput{
-  background-color: #0f005a;
-  opacity: 64%;
-  border-radius: 6%;
+  background-color: rgba(255,255,255,0.07);
+  border-radius: 7%;
   padding:2%;
 }
 
@@ -147,11 +146,24 @@ http://ionicframework.com/docs/theming/ */
   font-size:22px;
   margin-left:5%;
 }
-
+.smallHeading{
+  font-family: 'Comfortaa', cursive;
+  font-size:16px;
+  margin-left:5%;
+  margin-bottom: 20px;
+}
 
 .grid
 {
     width:75%;
+}
+.linkLabel{
+  font-size: 12px;
+  font-weight: 10;
+}
+.link{
+  font-size:12px;
+  font-weight: bold;
 }
 
 .center {
@@ -183,9 +195,6 @@ http://ionicframework.com/docs/theming/ */
   color: #9350ff;
 }
 
-.radioButton{
-  
-}
 
 .md body {
   --ion-background-color: var(--ion-color-secondary);
@@ -219,7 +228,9 @@ http://ionicframework.com/docs/theming/ */
   --ion-toolbar-background: var(--ion-color-primary);
   --ion-tab-bar-background: var(--ion-color-primary);
   --ion-card-background: var(--ion-color-tertiary);
+
 }
+
   /*
    * Dark Colors
    * -------------------------------------------

@@ -1,7 +1,6 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
-import ToolBar from '../../components/toolbar/Toolbar';
 import './Login.css';
 
 
@@ -48,22 +47,26 @@ export const Login: React.FC = () =>{
     
     return (
         
-            <IonPage >
+            <IonPage>
                 <IonHeader>
-                    <ToolBar></ToolBar>
                 </IonHeader>
-                <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Create User</IonText>
-                    <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST">
-                    <IonItem>
-                        <IonLabel position="floating">Username</IonLabel>
-                        <IonInput name='userName' type='text' ></IonInput>
-                    </IonItem>
-                    <IonItem>
-                        <IonLabel position="floating">Password</IonLabel>
-                        <IonInput name='userPassword' type='password'  ></IonInput>
-                    </IonItem>
-                    <IonButton className="ion-margin-top" type="submit" expand="block">Login</IonButton>
+                <IonContent  fullscreen className='grad loginPage'>
+                    <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST" className='loginForm'>
+                        <IonText className='center inputHeading'>Login</IonText>
+                            <br></br><br></br>
+                            <IonLabel className="smallHeading" position="floating">Username</IonLabel>
+                            <IonInput className='textInput' name='userName' type='text' ></IonInput>
+                            
+                            <br></br>
+                            <IonLabel className="smallHeading" position="floating">Password</IonLabel>
+                            <IonInput className='textInput' name='userPassword' type='password'  ></IonInput>
+
+                            <br></br>
+                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
+                            <br></br>
+                            <div className='center'>
+                            <IonText className="linkLabel">Don't have an account?</IonText><a href="http://localhost:3000/Register" color="secondary" className='linkLabel'>Register</a>
+                            </div>
                     </form>
                 </IonContent>
 

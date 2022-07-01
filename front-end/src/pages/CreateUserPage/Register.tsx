@@ -1,10 +1,10 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
-import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useState } from 'react';
 import { createUerSchema } from '../../validation/CreateUserValidation';
+import './Register.css';
 
 
- export const CreateUserPage: React.FC = () =>{
+ export const RegisterPage: React.FC = () =>{
 
         
         const [showToast, setShowToast] = useState(false);
@@ -73,37 +73,37 @@ import { createUerSchema } from '../../validation/CreateUserValidation';
         
             <IonPage color='#220FE' >
                 <IonHeader>
-                    <ToolBar></ToolBar>
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Create User</IonText>
-                    <form onSubmit={handleSubmit}>
-                        <IonText className='inputHeading'>Email:</IonText> <br></br><br></br>
-                        <IonInput name='email' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                    <form onSubmit={handleSubmit} className="registerForm" >
+                        <IonText className='center inputHeading'>Register</IonText>
+                        <br></br><br></br>
 
-                        <IonText className='inputHeading'>Name:</IonText> <br></br><br></br>
-                        <IonInput name='name' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                        <IonText className="smallHeading">Email:</IonText>
+                        <IonInput name='email' type='text' className='textInput' ></IonInput><br></br>
 
+                        <IonText className="smallHeading">Name:</IonText>
+                        <IonInput name='name' type='text' className='textInput' ></IonInput><br></br>
 
-                        <IonText className='inputHeading'>Surname:</IonText> <br></br><br></br>
-                        <IonInput name='surname' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                        <IonText className="smallHeading">Username:</IonText>
+                        <IonInput name='username' type='text' className='textInput   ' ></IonInput><br></br>
 
+                        <IonText className="smallHeading">Phone Number:</IonText>
+                        <IonInput name='number' type='number' className='textInput   ' ></IonInput><br></br>
 
-                        <IonText className='inputHeading'>Nuber:</IonText> <br></br><br></br>
-                        <IonInput name='number' type='number' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
-
-                        <IonText className='inputHeading'>Username:</IonText> <br></br><br></br>
-                        <IonInput name='username' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
-
-                        <IonText className='inputHeading'>Password:</IonText> <br></br><br></br>
-                        <IonInput name='password' type='password' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                    
+                        <IonText className="smallHeading">Password:</IonText>
+                        <IonInput name='password' type='password' className='textInput   ' ></IonInput><br></br>
 
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }
-
-                        <IonButton class="btnSubmit" type='submit'>CREATE</IonButton>
+                        <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Register</IonButton>
+                        <br></br>
+                        <div className='center'>
+                        <IonText className="linkLabel">Already have an account?</IonText><a href="http://localhost:3000/Login" color="secondary" className='linkLabel'>Login</a>
+                        </div>
                     </form>
                     <br></br><br></br>
                     <IonToast
@@ -119,4 +119,4 @@ import { createUerSchema } from '../../validation/CreateUserValidation';
         
 }
 
-export default CreateUserPage;
+export default RegisterPage;
