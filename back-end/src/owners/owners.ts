@@ -42,6 +42,12 @@ function createID(length: any) {
 }
 const owners = express.Router()
   .options("*", cors(corsOptions))
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query.email;
@@ -60,6 +66,12 @@ const owners = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -90,6 +102,12 @@ const owners = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -112,6 +130,12 @@ const owners = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post("/gyms/gym", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;

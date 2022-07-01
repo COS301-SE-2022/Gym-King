@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const bodyParser = require('body-parser');
+
+const fs = require('fs');
+
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:8100'
@@ -54,6 +57,12 @@ const users = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get('/badges/gym', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query.gid;
@@ -68,6 +77,12 @@ const users = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get('/gyms/gym', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query.gid;
@@ -82,6 +97,12 @@ const users = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get('/leaderboard/score', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query.gid;
@@ -98,14 +119,60 @@ const users = express.Router()
       res.json(results);
     }
   })
-  .get('/Model/iOS/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    const file = './src/Models/melee.usdz';
-    res.download(file);  
+  //=========================================================================================================//
+  /**
+   * GET to get badge model by its name for IOS
+   * @param {string} id The name of the badge model
+   * @returns {USDZ file}
+   */
+  .get('/Model/iOS', cors(corsOptions), async(req: any, res: any)=>{
+    if(req.query.id){
+      const file = './src/assets/models/'+req.query.id+'.usdz';
+      fs.access(file, fs.F_OK, (err: any) => {
+        if (err) {
+          
+          const results = { success: false, results: "404 Badge model not found" };
+          res.json(results);
+          return
+        }
+        res.download(file); 
+      })
+    }
+    else{
+      const results = { success: false, results: "400 bad request" };
+      res.json(results);
+    }
   })
+  //=========================================================================================================//
+  /**
+   * GET to get badge model by its name for Android
+   * @param {string} id The name of the badge model
+   * @returns {GLB file}
+   */
   .get('/Model/Android/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    const file = './src/Models/concept.glb';
-    res.download(file); 
+    if(req.query.id){
+      const file = './src/assets/models/'+req.query.id+'.glb';
+      fs.access(file, fs.F_OK, (err: any) => {
+        if (err) {
+          
+          const results = { success: false, results: "404 Badge model not found" };
+          res.json(results);
+          return
+        }
+        res.download(file); 
+      })
+    }
+    else{
+      const results = { success: false, results: "400 bad request" };
+      res.json(results);
+    }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
@@ -122,8 +189,12 @@ const users = express.Router()
       res.json(results);
     }
   })
-  
-
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   users
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
@@ -182,6 +253,12 @@ const users = express.Router()
       
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   users
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
