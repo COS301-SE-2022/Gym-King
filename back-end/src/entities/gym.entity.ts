@@ -2,21 +2,21 @@ import { Entity, Column, PrimaryColumn } from "typeorm"
 
 @Entity()
 export class gym {
-    @PrimaryColumn()
+    @PrimaryColumn({length : 4})
     G_ID : string
 
-    @Column()
+    @Column({length : 50})
     Gym_Brandname : string
 
-    @Column()
+    @Column("varchar", { length: 200 })
     Gym_Address : string
 
-    @Column()
+    @Column({type:"float4",length : 10})
     Gym_Coord_Lat : number
 
-    @Column()
+    @Column({type:"float4",length : 10})
     Gym_Coord_Long : number
 
-    @Column()
+    @Column({length : 65535})
     Gym_Icon : string
 }
