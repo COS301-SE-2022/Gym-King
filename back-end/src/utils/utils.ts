@@ -1,5 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+
+const fs = require('fs');
+
 const { Pool } = require("pg");
 const allowedOrigins = [
   'http://localhost:3000',
@@ -33,9 +36,21 @@ const pool = (() => {
 })();
 const utils = express.Router()
   .options("*", cors(corsOptions))
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get("/", cors(corsOptions), async (req: any, res: any) => {
     res.send("GymKing");
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .get("/tables/table", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query.table;
@@ -50,6 +65,12 @@ const utils = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .post("/tables/create", cors(corsOptions), async (req: any, res: any) => {
     try {
       const client = await pool.connect();
@@ -164,6 +185,12 @@ const utils = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .delete("/tables/drop", async (req: any, res: any) => {
     try {
       const client = await pool.connect();
@@ -184,6 +211,12 @@ const utils = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * ...
+   * @param 
+   * @returns 
+   */
   .delete("/tables/clear", async (req: any, res: any) => {
     try {
       const client = await pool.connect();
@@ -197,5 +230,33 @@ const utils = express.Router()
       console.error(err);
       res.json(results);
     }
-  });
+  })
+  //=========================================================================================================//
+  /**
+   * GET to get badge image by its ID
+   * @param {string} id The id of the badge image
+   * @returns {JPEG file}
+   */
+  .get("/badgeicon", cors(corsOptions), async (req: any, res: any) => {
+    if(req.query.id){
+
+
+      const file = './src/assets/badges/'+req.query.id+'.png';
+      fs.access(file, fs.F_OK, (err: any) => {
+        if (err) {
+          
+          const results = { success: false, results: "404 Badge icon not found" };
+          res.json(results);
+          return
+        }
+        res.download(file); 
+      })
+    }
+    else{
+      const results = { success: false, results: "400 bad request" };
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  ;
 export {utils};
