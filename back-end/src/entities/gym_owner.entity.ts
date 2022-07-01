@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from "typeorm"
+import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm"
+import { gym_owned } from "./gym_owned.entity"
 
 @Entity()
 export class gym_owner {
@@ -19,4 +20,7 @@ export class gym_owner {
 
     @Column({length : 300})
     Password : string
+
+    @OneToMany(() => gym_owned, (gym_owned) => gym_owned.email)
+    gyms_owned : gym_owned[]
 }
