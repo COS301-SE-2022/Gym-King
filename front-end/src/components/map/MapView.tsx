@@ -48,7 +48,6 @@ const MapView: React.FC = () =>{
             
             setError({showError: false, message: "no error here"})
             setZoom(15) 
-
             getNearbyGyms();
 
         } catch(e){
@@ -64,6 +63,8 @@ const MapView: React.FC = () =>{
      * @returns all nearby gyms
      */
     const getNearbyGyms = async () => {
+        
+        setGyms([]);
         //=========================================================================================================//
         /**
          * POST request to get nearby gyms
@@ -132,15 +133,6 @@ const MapView: React.FC = () =>{
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
                 <img src='https://icons-for-free.com/iconfiles/png/512/svg+location+locator+map+navigation+user+user+location+icon-1320184910707394703.png' width={50} height={50} alt='' />
                 </Overlay>      
-
-                <Overlay 
-                    anchor={[userLocation[0]*0.9995,userLocation[1]*0.9997]} 
-                    offset={[30,30]} 
-                    
-                    >
-                        
-                        <img onClick={gymButtonClick} id = "GymPicture" src='https://www.seekpng.com/png/full/309-3093415_gym-building-sport-training-svg-png-icon-free.png' width={50} height={50} alt='' />
-                </Overlay> 
 
                 {gyms.map(item => {
                     return (
