@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from "typeorm"
+import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm"
+import { gym_employee } from "./gym_employee.entity"
 
 @Entity()
 export class gym {
@@ -19,4 +20,7 @@ export class gym {
 
     @Column({length : 65535})
     Gym_Icon : string
+
+    @OneToMany(() => gym_employee, (gym_employee) => gym_employee.G_ID)
+    gym_employees : gym_employee[]
 }
