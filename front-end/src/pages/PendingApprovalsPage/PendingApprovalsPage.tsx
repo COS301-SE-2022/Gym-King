@@ -1,6 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader,IonButton, IonIcon} from '@ionic/react';
 import { informationCircleOutline } from 'ionicons/icons';
 import React, {useState} from 'react'
+import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
@@ -10,12 +11,13 @@ export type UploadActivityStates = {act?:any}
 
 const PendingApprovalsPage: React.FC = () =>{
 
-    let gymId= 'lttD';
+    //STATES AND VARIABLES 
+    let gymId= 'lttD';  //temp value for testing 
     // eslint-disable-next-line
     const [claims, setClaims] = useState(new Array());
 
     //GET REQUEST:
-    const getClaims=()=>{
+    useEffect(()=>{
         fetch(`https://gym-king.herokuapp.com/claims/claim?gid=${gymId}`,{
             "method":"GET"
         })
@@ -26,12 +28,8 @@ const PendingApprovalsPage: React.FC = () =>{
             
         })
         .catch(err => {console.log(err)})
-    }
+    })
 
-    
-    
-        getClaims();
-        //console.log(claims);
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -46,11 +44,9 @@ const PendingApprovalsPage: React.FC = () =>{
                     </IonButton>
                     {
                         claims?.map(el =>{
-                            //console.log('hello');
-                            return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email}></ApprovalButton>)
+                            return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)
                         })
                     }
-                    
                 </IonContent>
             </IonPage>
         )

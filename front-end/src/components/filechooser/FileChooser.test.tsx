@@ -6,3 +6,8 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
   });
 
+////TESTS TO BE PERFROMED////
+/*
+- tests that is sends the file back to the parent component
+- tests that is encode the files to be sent in an API request 
+*/

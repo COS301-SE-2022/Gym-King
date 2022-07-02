@@ -19,7 +19,7 @@ export class SegmentButton extends React.Component<SegmentButtonProps, SegmentBu
     render(){
         const {list} = this.props;
         return(
-            <IonSegment onIonChange={this.onChange}>
+            <IonSegment value={this.props.val} onIonChange={this.onChange} data-testid="btnSeg">
                 {
                     list?.map((el:any) =>{
                         return (<IonSegmentButton value={el} key={el}>

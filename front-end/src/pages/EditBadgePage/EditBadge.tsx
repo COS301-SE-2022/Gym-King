@@ -1,6 +1,6 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 
@@ -8,98 +8,113 @@ import SegmentButton from '../../components/segmentButton/segmentButton';
 const EditBadge: React.FC = () =>{
 
         //STATES
-        const [gymName, setGymName] = useState('')
+        const [gymId, setGymId] = useState('')
         const [showToast, setShowToast] = useState(false);
-
+        const [showToastDelete, setShowToastDelete] = useState(false);
         const [badgename, setBadgename] = useState('');
         const [activitytype, setActivityType] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [badgechallenge, setChallenge] = useState('');
+        //const [ownedGyms, setOwnedGyms] = useState([]);
 
         //VARIABLES
         let formData:any;
-        let badgeId= 'wTs';
-        let count = 0;
+        let badgeId= localStorage.getItem("badgeid");
 
         //METHODS 
         const setChosenActivityType = (e:any) =>{
             localStorage.setItem('act', e);
             console.log(activitytype);
-            setActivityType(e)
+            //setActivityType(e)
         }
 
-        const setChosenGymLocation = (e:any) =>{
-            setGymName(e)
-        }
 
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
-            //form validation 
-            formData={
-                badgeName: e.target.badgeName.value,
-                badgeDescription: e.target.badgeDescription.value,
-                badgeChallenge:e.target.badgeChallenge.value,
-                activityType: localStorage.getItem('act'),
-                gymName: gymName
-            };
-            
-            
-            const isValid = await createBadgeSchema.isValid(formData);
 
-            if(isValid)
-            {
-                //handle put request 
-                updateBadge();
-                //show toast
-                setShowToast(true);
-                //redirect to home page 
-                window.location.href = "http://localhost:3000/home";
-            }
+                //form validation 
+                formData={
+                    badgeName: e.target.badgeName.value,
+                    badgeDescription: e.target.badgeDescription.value,
+                    badgeChallenge:e.target.badgeChallenge.value,
+                    activityType: localStorage.getItem('act'),
+                    gymName: gymId
+                };
+                
+                
+                const isValid = await createBadgeSchema.isValid(formData);
+
+                if(isValid)
+                {
+                    //handle put request 
+                    updateBadge();
+                    
+                }
+    
         }
 
-        //API REQUESTS 
         
-            // GET BADGES REQUEST 
-            const getBadges= ()=>{
-                count++;
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-                    "method":"GET"
-                })
-                .then(response =>response.json())
-                .then(response =>{
-                    //console.log(response)
-                    //setB_id(response.results[0].b_id)
-                    setActivityType( response.results[0].activitytype)
-                    setDescription(response.results[0].badgedescription)
-                    setBadgename(response.results[0].badgename)
-                    setChallenge(response.results[0].badgechallenge)
-                    //setG_id(response.results[0].g_id)
-                })
-                .catch(err => {console.log(err)})
-            } 
-            if(count === 0)
-                getBadges();
-        
+        // GET BADGES REQUEST 
+        useEffect( ()=>{
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                setActivityType( response.results[0].activitytype)
+                setDescription(response.results[0].badgedescription)
+                setBadgename(response.results[0].badgename)
+                setChallenge(response.results[0].badgechallenge)
+                setGymId(response.results[0].g_id)
+            })
+            .catch(err => {console.log(err)})
+        } )
+    
 
-            // UPDATE BADGE PUT REQUEST 
-            const updateBadge= ()=>{
-                let gymid= 'lttD'
-                let badgeicon = "BADGE ICON"
-                let at = localStorage.getItem('act');
-                let bn = formData.badgeName;
-                let bc = formData.badgeChallenge;
-                let bd = formData.badgeDescription;
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
-                    "method":"PUT"
-                })
-                .then(response =>response.json())
-                .then(response =>{
-                    console.log(response)
-                })
-                .catch(err => {console.log(err)})
-            } 
+        // UPDATE BADGE PUT REQUEST 
+        const updateBadge= ()=>{
+            let gymid= gymId
+            let badgeicon = "BADGE ICON"
+            let at = localStorage.getItem('act');
+            let bn = formData.badgeName;
+            let bc = formData.badgeChallenge;
+            let bd = formData.badgeDescription;
+            //console.log(formData);
+            
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
+                "method":"PUT"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response)
 
+                //show toast
+                setShowToast(true);
 
+                //redirect to view badges  
+                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+            })
+            .catch(err => {console.log(err)}) 
+        } 
+
+        // DELETE BADGE DELETE REQUEST 
+        const deleteBadge=()=>{
+            
+            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                "method":"DELETE"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response);
+                
+                //show toast 
+                setShowToastDelete(true);
+
+                //redirect to view badges 
+                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+            })
+            .catch(err => {console.log(err)}) 
+        } 
         
         
         return(
@@ -117,10 +132,8 @@ const EditBadge: React.FC = () =>{
 
 
                         <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton list={['STRENGTH', 'CARDIO']} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
-                        <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
-                        <SegmentButton list={['List of gyms']} chosenValue={setChosenGymLocation}></SegmentButton><br></br><br></br>
 
                         <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeChallenge"  value={badgechallenge} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
@@ -129,13 +142,21 @@ const EditBadge: React.FC = () =>{
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
                         <IonButton class=" btnFitWidth" color='success' type='submit' >SAVE CHANGES</IonButton>
-                        <IonButton class=" btnFitWidth" color='danger' type='submit'>DELETE BADGE</IonButton>
+                        
                     </form>
+                    <IonButton class=" btnFitWidth" color='danger' type='button' onClick={deleteBadge}>DELETE BADGE</IonButton>
                     <br></br><br></br>
                     <IonToast
                         isOpen={showToast}
                         onDidDismiss={() => setShowToast(false)}
                         message="Badge Updated"
+                        duration={500}
+                        color="success"
+                    />
+                    <IonToast
+                        isOpen={showToastDelete}
+                        onDidDismiss={() => setShowToast(false)}
+                        message="Badge Deleted"
                         duration={500}
                         color="success"
                     />

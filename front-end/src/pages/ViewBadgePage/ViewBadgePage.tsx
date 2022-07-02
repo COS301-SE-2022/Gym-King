@@ -1,23 +1,50 @@
-import {IonContent, IonPage, IonHeader, IonText} from '@ionic/react';
-import React from 'react';
+import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow} from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
 import './ViewBadgePage.css';
 
 
 const ViewBadgePage: React.FC = () =>{
-
+    
+    const [badges, setBadges] = useState(new Array<any>());
+    
+        //GET REQUEST:
+        useEffect(()=>
+        {
+            var gymid="lttD"
+            fetch(`https://gym-king.herokuapp.com/badges/gym?gid=${gymid}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log("this is the response")
+                console.log(response)
+                setBadges(response.results)
+            })
+            .catch(err => {console.log(err)})
+        },[])
     return(
-        <IonPage>
+        <IonPage >
             <IonHeader>
                 <ToolBar></ToolBar>
             </IonHeader>
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
-                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 30 pushups in one sitting" BadgeImg={0}></ViewBadgeCard>
-                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 20 pushups in one sitting" BadgeImg={1}></ViewBadgeCard>
-                    <ViewBadgeCard BadgeTitle="Push ups" BadgeDesc="Complete 10 pushups in one sitting" BadgeImg={2}></ViewBadgeCard>
+                    <IonGrid>
+                        <IonRow  className="ion-align-items-center">
+                        {badges.map(el => 
+                        
+                            <IonCol className="center" key={el.b_id}>
+                                <ViewBadgeCard  BadgeID={el.b_id} BadgeTitle={el.badgename} BadgeDesc={el.badgedescription} BadgeImg={0}></ViewBadgeCard>
+                             </IonCol>)}
+                        </IonRow>
+
+                    </IonGrid>
+                    
+                    
+                   
             </IonContent>
         </IonPage>
     )

@@ -1,56 +1,64 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
 import FileChooser from '../../components/filechooser/FileChooser';
 import ToolBar from '../../components/toolbar/Toolbar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
 
 //export type CreateBadge = {act?:any}
 
-const CreateBadge: React.FC = () =>{
+ export const CreateBadge: React.FC = () =>{
 
-        const [activityType, setActivityType] = useState('');
+        //STATES AND VARIABLES 
+        //const [activityType, setActivityType] = useState('');
         const [gymId, setGymId] = useState('')
         const [submitted, setSubmitted] = useState(false);
         const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
         const [ownedGyms, setOwnedGyms] = useState([]);
-
-        //variables
         let formData:any;
 
+
+        //METHODS
+        const setChosenActivityType = (e:any) =>{
+            localStorage.setItem('act', e);
+            //setActivityType(e)
+        }
+        const setChosenGymLocation = (e:any) =>{
+            console.log(e);
+            setGymId(e)
+        }
+        
+        //SUBMIT THE FORM
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
-                       
+
             //form validation 
             formData={
                 badgeName: e.target.badgeName.value,
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
-                activityType: activityType,
                 gymId: gymId
             };
-            const isValid = await createBadgeSchema.isValid(formData);
             setSubmitted(true);
+            const isValid = await createBadgeSchema.isValid(formData);
 
             if(isValid)
             {
+                //valid form 
                 setIsValid(true);
-                //handle post request 
+
+                //post request
                 createBadge();
-                //show toast
-                setShowToast(true);
-                //redirect to home page 
-                //window.location.href = "http://localhost:3000/home";
             }
         }
 
 
-        //////////////////POST REQUEST/////////////////////////////
+        // CREATE BADGE POST REQUEST 
         const createBadge=()=>{
             let gid = gymId;   //temp value for testing 
-            let at = activityType.toUpperCase();
+            let at = localStorage.getItem('act')
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
@@ -60,40 +68,29 @@ const CreateBadge: React.FC = () =>{
             })
             .then(response =>response.json())
             .then(response =>{
-                //successful request
-                console.log(response);
+                //show toast
+                setShowToast(true);
 
-
+                //redirect to view badges (gym owner) 
+                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
             })
             .catch(err => {console.log(err)}) 
         }
 
-        //////// GET DRESS //////////
-        const getOwnedGyms=()=>{
+        // OWNED GYMS GET REQUEST 
+        useEffect(()=>{
             let gymOwner = "u20519517@tuks.co.za"
             fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
-                //successful request
-                //console.log(response.results);
                 setOwnedGyms(response.results);
 
             })
             .catch(err => {console.log(err)}) 
-        }
-        getOwnedGyms();
-        //console.log(ownedGyms);
+        })
 
-
-        const setChosenActivityType = (e:any) =>{
-            setActivityType(e)
-        }
-        const setChosenGymLocation = (e:any) =>{
-            console.log(e);
-            setGymId(e)
-        }
         
         return(
         
@@ -109,7 +106,7 @@ const CreateBadge: React.FC = () =>{
                         <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
                         <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton list={['STRENGTH', 'CARDIO']} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
 
                         <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
