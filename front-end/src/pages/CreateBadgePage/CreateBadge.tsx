@@ -1,10 +1,16 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
-import FileChooser from '../../components/filechooser/FileChooser';
+
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
+
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+
+import 'swiper/swiper.min.css';
+import '@ionic/react/css/ionic-swiper.css';
+
 
 //export type CreateBadge = {act?:any}
 
@@ -29,6 +35,7 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
             console.log(e);
             setGymId(e)
         }
+
         
         //SUBMIT THE FORM
         const handleSubmit = async (e:any) =>{
@@ -119,9 +126,13 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
 
-                        <IonText className='inputHeading'>Upload Badge Icon:</IonText> <br></br><br></br>
-                        <FileChooser numFiles={0}></FileChooser>
+                        <IonText className='inputHeading'>Create Badge Icon:</IonText> <br></br><br></br>
 
+                        <Swiper>
+                        <SwiperSlide>Slide 1</SwiperSlide>
+                        <SwiperSlide>Slide 2</SwiperSlide>
+                        <SwiperSlide>Slide 3</SwiperSlide>
+                        </Swiper>
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }
