@@ -14,8 +14,8 @@ interface LocationError {
 
 const MapView: React.FC = () =>{
 
-    const [gyms, setGyms] = useState([{
-        key: 0,
+    const [gyms, setGyms] = useState<{[key: string]: any}>([{
+        key: "0",
         g_id: "gS8C",
         gym_brandname: "",
         gym_address: "",
@@ -80,7 +80,7 @@ const MapView: React.FC = () =>{
             body: JSON.stringify({ 
                 latCoord: userLocation[0],
                 longCoord: userLocation[1],
-                radius: 2
+                radius: 10
             })
         })
         .then(response =>response.json())
@@ -134,9 +134,10 @@ const MapView: React.FC = () =>{
                 <img src='https://icons-for-free.com/iconfiles/png/512/svg+location+locator+map+navigation+user+user+location+icon-1320184910707394703.png' width={50} height={50} alt='' />
                 </Overlay>      
 
-                {gyms.map(item => {
+                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; }) => {
                     return (
                         <Overlay 
+                            key="{item}"
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[30,30]} 
                         > 
