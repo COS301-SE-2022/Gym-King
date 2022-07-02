@@ -13,6 +13,10 @@ build
 android
 ios
 
+/build
+/android
+/ios
+
 # misc
 .DS_Store
 .env.local
