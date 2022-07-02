@@ -10,8 +10,6 @@ export const Login: React.FC = () =>{
     
     const [showToast, setShowToast] = useState(false);
     const [userType, setUserType] = useState('user');
-    const [submitted, setSubmitted] = useState(false)
-    const [isValid, setIsValid] = useState(false);
 
     const loginSubmit= ()=>{
         
@@ -50,15 +48,8 @@ export const Login: React.FC = () =>{
             usertype: userType
         };
         console.log(formData)
-        const isValid = await claimSchema.isValid(formData);
-        setSubmitted(true);
-        if(isValid)
-        {
-            setIsValid(true);
-            //handle post request 
+        const isValid = await claimSchema.isValid(formData); 
             loginSubmit();
-            
-        }
         
     }
      const segmentChanged = (e: any)=>{
