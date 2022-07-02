@@ -1,27 +1,22 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import  './OTP.css';
 import OtpInput from 'react-otp-input';
-import { enter } from 'ionicons/icons';
 
 
 export const OTP: React.FC = () =>{
-    let formData:any;
     
     const [showToast, setShowToast] = useState(false);
-    const [userType, setUserType] = useState('user');
-    const [submitted, setSubmitted] = useState(false)
-    const [isValid, setIsValid] = useState(false);
-    const [correctOTP, setCorrectOTP]= useState("");
+    //const [correctOTP, setCorrectOTP]= useState("");
     const [enteredOTP, setEnteredOTP] = useState("");
 
     const generateOTP = () =>{
-        let otp = (Math.floor(1000 + Math.random() * 9000)).toString();
-        setCorrectOTP(otp);
+        //let otp = (Math.floor(1000 + Math.random() * 9000)).toString();
+        //setCorrectOTP(otp);
         //SAVE IT SOMEWHERE
     }
-    //generateOTP();
+    generateOTP();
 
 
     const verifyOTP = async (e:any) =>{
@@ -31,10 +26,7 @@ export const OTP: React.FC = () =>{
     const handleChange = async (e:any) =>{
         setEnteredOTP(e);
     }
-     const segmentChanged = (e: any)=>{
-        setUserType(e.detail.value);
-     }
-    
+
     
     return (
         
@@ -73,7 +65,7 @@ export const OTP: React.FC = () =>{
                             <br></br>
                             <IonButton onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Submit</IonButton>
                             <br></br>
-                            <a  color="secondary" className='linkLabel center'>Resend OTP</a>
+                            <a href="http://localhost:3000/home" color="secondary" className='linkLabel center'>Resend OTP</a>
                     </form>
                 </IonContent>
 
