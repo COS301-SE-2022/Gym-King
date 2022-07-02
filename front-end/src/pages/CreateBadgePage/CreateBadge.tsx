@@ -6,11 +6,7 @@ import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
 
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
-
-import 'swiper/swiper.min.css';
-import '@ionic/react/css/ionic-swiper.css';
-
+import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 
 //export type CreateBadge = {act?:any}
 
@@ -125,14 +121,11 @@ import '@ionic/react/css/ionic-swiper.css';
                         <IonText className='inputHeading'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-
                         <IonText className='inputHeading'>Create Badge Icon:</IonText> <br></br><br></br>
 
-                        <Swiper>
-                        <SwiperSlide>Slide 1</SwiperSlide>
-                        <SwiperSlide>Slide 2</SwiperSlide>
-                        <SwiperSlide>Slide 3</SwiperSlide>
-                        </Swiper>
+
+                        <BadgeSlider name = "badgeRank"></BadgeSlider>
+
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }

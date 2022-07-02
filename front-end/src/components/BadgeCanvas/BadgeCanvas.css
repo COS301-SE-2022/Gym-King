@@ -1,0 +1,19 @@
+.container {
+    width:50%;
+    margin:auto;
+    position:relative;
+  }
+  
+  .container img.under {
+    width:100%;
+    height:auto;
+  }
+  .container img.over {
+    position:absolute;
+    top:5%;
+    left:5%;
+    z-index:1;
+    width:90%;
+    margin:auto;
+    height:auto;
+  }

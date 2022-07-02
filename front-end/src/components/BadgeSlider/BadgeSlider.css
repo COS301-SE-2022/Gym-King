@@ -1,0 +1,20 @@
+.swiper-slide img {
+    width: auto;
+    max-width: 50%;
+    height: auto;
+    max-height: 50%;
+    
+}
+
+ion-slides {
+    margin-top: 20px;
+    height: 200px;
+    background-color: blueviolet;
+    border: 1px;
+    border-top: black;
+  }
+
+  ion-slide {
+    padding: 30px 30px 30px 30px;
+  }
+
