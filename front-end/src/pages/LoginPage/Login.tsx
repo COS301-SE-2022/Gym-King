@@ -2,7 +2,6 @@
 import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './Login.css';
-import {claimSchema} from '../../validation/LoginValidation'
 
 
 export const Login: React.FC = () =>{
@@ -48,7 +47,6 @@ export const Login: React.FC = () =>{
             usertype: userType
         };
         console.log(formData)
-        const isValid = await claimSchema.isValid(formData); 
             loginSubmit();
         
     }
