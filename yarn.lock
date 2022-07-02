@@ -11661,6 +11661,11 @@ react-native-geocoding@^0.5.0:
   resolved "https://registry.npmjs.org/react-native-geocoding/-/react-native-geocoding-0.5.0.tgz"
   integrity sha512-peTXRpRxPLiZpbTW43AOvoXXAEoS+eLnSo4KRY0hcL9F2hulWE5r7o5KiaLx8AWj35c6EJP3fdGHe754q2Gd2Q==
 
+react-otp-input@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-otp-input/-/react-otp-input-2.4.0.tgz#0f0a3de1d8c8d564e2e4fbe5d6b7b56e29e3a6e6"
+  integrity sha512-AIgl7u4sS9BTNCxX1xlaS5fPWay/Zml8Ho5LszXZKXrH1C/TiFsTQGmtl13UecQYO3mSF3HUzG2rrDf0sjEFmg==
+
 react-refresh@^0.10.0:
   version "0.10.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.10.0.tgz"

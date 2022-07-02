@@ -7,7 +7,9 @@ import './Register.css';
  export const RegisterPage: React.FC = () =>{
 
         
-        const [showToast, setShowToast] = useState(false);
+        const [showSuccessToast, setShowSuccessToast] = useState(false);
+        const [showError1Toast, setShowError1Toast] = useState(false);
+        const [showError2Toast, setShowError2Toast] = useState(false);
         const [submitted, setSubmitted] = useState(false);
         const [isValid, setIsValid] = useState(false);
         let formData:any;
@@ -58,17 +60,30 @@ import './Register.css';
             .then(response =>{
                 //show toast
                 if(response.results.success){
-                  setShowToast(true);
+                  setShowSuccessToast(true);
 
                   //redirect to login
                   window.location.href = "http://localhost:3000/Login";
                 }else{
-                  console.log(response.results);
+                  console.log( response.results);
+                  //code:23505 = user already exists 
+                  if(response.results.code =="23505")
+                  {
+                    setShowError1Toast(true);
+                  }
+                  else
+                  {
+                    setShowError2Toast(true);
+                  }
                 }
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => { 
+                console.log(err)
+                setShowError2Toast(true);
+            }) 
         }
         
+
         return(
         
             <IonPage color='#220FE' >
@@ -78,40 +93,52 @@ import './Register.css';
                 <IonContent fullscreen className='Content'>
                     <form onSubmit={handleSubmit} className="registerForm" >
                         <IonText className='center inputHeading'>Register</IonText>
-                        <br></br><br></br>
-
-                        <IonText className="smallHeading">Email:</IonText>
-                        <IonInput name='email' type='text' className='textInput' ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Name:</IonText>
-                        <IonInput name='name' type='text' className='textInput' ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Username:</IonText>
-                        <IonInput name='username' type='text' className='textInput   ' ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Phone Number:</IonText>
-                        <IonInput name='number' type='number' className='textInput   ' ></IonInput><br></br>
-
-                    
-                        <IonText className="smallHeading">Password:</IonText>
-                        <IonInput name='password' type='password' className='textInput   ' ></IonInput><br></br>
-
-                        {
-                            !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
-                        }
-                        <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Register</IonButton>
                         <br></br>
+
+                        <IonText className="smallHeading">Email*</IonText>
+                        <IonInput name='email' type='text' className='textInput' required></IonInput><br></br>
+
+                        <IonText className="smallHeading">Name*</IonText>
+                        <IonInput name='name' type='text' className='textInput' required ></IonInput><br></br>
+
+                        <IonText className="smallHeading">Surname*</IonText>
+                        <IonInput name='surname' type='text' className='textInput' required ></IonInput><br></br>
+
+                        <IonText className="smallHeading">Username*</IonText>
+                        <IonInput name='username' type='text' className='textInput' required ></IonInput><br></br>
+
+                        <IonText className="smallHeading">Phone Number*</IonText>
+                        <IonInput name='number' type='number' className='textInput' required ></IonInput><br></br>
+
+                        <IonText className="smallHeading">Password*</IonText>
+                        <IonInput name='password' type='password' className='textInput' required></IonInput>
+
+                        <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Register</IonButton>
                         <div className='center'>
                         <IonText className="linkLabel">Already have an account?</IonText><a href="http://localhost:3000/Login" color="secondary" className='linkLabel'>Login</a>
                         </div>
                     </form>
                     <br></br><br></br>
                     <IonToast
-                        isOpen={showToast}
-                        onDidDismiss={() => setShowToast(false)}
-                        message="User Created"
+                        isOpen={showSuccessToast}
+                        onDidDismiss={() => setShowSuccessToast(false)}
+                        message= "Account created successfully!"
                         duration={1000}
                         color="success"
+                    />
+                    <IonToast
+                        isOpen={showError1Toast}
+                        onDidDismiss={() => setShowError1Toast(false)}
+                        message="User Already Exists."
+                        duration={1000}
+                        color="danger"
+                    />
+                    <IonToast
+                        isOpen={showError2Toast}
+                        onDidDismiss={() => setShowError2Toast(false)}
+                        message="Internal Error. Please try again later."
+                        duration={1000}
+                        color="danger"
                     />
                 </IonContent>
             </IonPage>
