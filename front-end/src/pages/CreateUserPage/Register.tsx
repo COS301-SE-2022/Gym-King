@@ -1,6 +1,5 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
-import { createUerSchema } from '../../validation/CreateUserValidation';
 import './Register.css';
 
 
@@ -10,8 +9,6 @@ import './Register.css';
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
         const [showError2Toast, setShowError2Toast] = useState(false);
-        const [submitted, setSubmitted] = useState(false);
-        const [isValid, setIsValid] = useState(false);
         let formData:any;
 
       
@@ -27,14 +24,8 @@ import './Register.css';
                 username: e.target.username.value,
                 password:e.target.password.value,
             };
-            const isValid = await createUerSchema.isValid(formData);
-
-            setSubmitted(true);
-            if(isValid)
-            {
-                setIsValid(true);
                 createUser();
-            }
+        
         }
 
 
@@ -67,7 +58,7 @@ import './Register.css';
                 }else{
                   console.log( response.results);
                   //code:23505 = user already exists 
-                  if(response.results.code =="23505")
+                  if(response.results.code ==="23505")
                   {
                     setShowError1Toast(true);
                   }
