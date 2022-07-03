@@ -1,5 +1,5 @@
 import { IonButton, IonLoading, IonToast } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
@@ -11,15 +11,14 @@ interface LocationError {
 
 }
 
-
 const MapView: React.FC = () =>{
 
     const [gyms, setGyms] = useState<{[key: string]: any}>([{
-        key: "0",
-        g_id: "gS8C",
+        key: "",
+        g_id: "",
         gym_brandname: "",
         gym_address: "",
-        gym_coord_lat: -0,
+        gym_coord_lat: 0,
         gym_coord_long: 0,
         gym_icon: ".."
     }]);
@@ -27,6 +26,7 @@ const MapView: React.FC = () =>{
 
     const [center, setCenter] = useState([0,0])
     const [zoom, setZoom] = useState(10)
+    const [first, setFirst] = useState(true)
 
     const [error, setError] = useState<LocationError>({showError: false});
     const [userLocation, setUserLoc] = useState([0,0])
@@ -37,18 +37,22 @@ const MapView: React.FC = () =>{
      * makes use of google API
      * saves users location to a var
      */
-    const getLocation = async() => {
-        setLoading(true);
+    const getLocation = async(load: boolean) => {
         try {
+            
+        if(load) {setLoading(true)};
             const position = await Geolocation.getCurrentPosition();
           
-            setUserLoc([position?.coords.latitude, position?.coords.longitude]) 
-            setLoading(false);
-            setCenter([position?.coords.latitude, position?.coords.longitude]) 
-            
+            setUserLoc([position.coords.latitude, position.coords.longitude]) 
+
+            if(load){
+                setCenter([position?.coords.latitude, position?.coords.longitude]) 
+                setZoom(15) 
+            }
+
             setError({showError: false, message: "no error here"})
-            setZoom(15) 
-            getNearbyGyms();
+     
+            setLoading(false);
 
         } catch(e){
             setLoading(false);
@@ -64,7 +68,7 @@ const MapView: React.FC = () =>{
      */
     const getNearbyGyms = async () => {
         
-        setGyms([]);
+        
         //=========================================================================================================//
         /**
          * POST request to get nearby gyms
@@ -87,18 +91,39 @@ const MapView: React.FC = () =>{
         .then(response =>{
             if(response.success){
                 setGyms(response.results);
+
             }else{
                 console.log(response.success)
                 console.log(response.results)
             }
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {
+            console.log(err);
+        })
     }
     const gymButtonClick=()=>{
-        console.log("CLICKED")
         window.alert("The Gyms Menu will open Up");
+        window.location.href = "http://localhost:3000/Login";
 
     }
+
+    const MINUTE_MS = 1000;
+    useEffect(() => {
+        if(first)getLocation(true);
+        const interval = setInterval(() => {
+            if(first){setFirst(false)}
+            console.log("Map Refresh")
+
+            getLocation(false);
+            
+            getNearbyGyms();
+        }, MINUTE_MS);
+        
+        return () => 
+        {
+            clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+        }
+    }, [userLocation,center,first])
     return (
         
         <>
@@ -114,8 +139,6 @@ const MapView: React.FC = () =>{
                 onDidDismiss={() => setError({showError: false, message: "no error here"})}
                 duration={3000}
             />
-
-            <IonButton onClick={getLocation}>CLICK ME!</IonButton>
             
             <Map 
                 provider={stamenToner}
