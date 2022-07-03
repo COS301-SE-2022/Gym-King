@@ -29,19 +29,30 @@ const slideOpts = {
   
 };
 
+export const value={
+    value: "bronze-bicep"
+}
 export interface BadgeInputProps {
     name: string;
     component?: JSX.Element;
   }
+
 export const BadgeSlider: React.FC<BadgeInputProps> = () => {
+    
     const mySlides1 = useRef<any>(null);
     const mySlides2 = useRef<any>(null);
 
     const [activeRank,setActvieRank] = useState(Bronze);
     const [activeEmblem,setActvieEmblem] = useState(bicep);
-    
+
+    const [activeRankId,setActvieRankId] = useState(0);
+    const [activeEmblemId,setActvieEmblemId] = useState(0);
+    const setBadgeIcon = async () => {
+        localStorage.setItem('badgeIcon', activeRankId+"-"+activeEmblemId);
+    }
     const handleRankChange = async () => {
         const swiper = await mySlides1.current.getSwiper();
+        await setActvieRankId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieRank(Bronze);
         }else if(swiper.activeIndex===1){
@@ -49,11 +60,13 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         }else{
             setActvieRank(Gold);
         }
+
+        await setBadgeIcon();
     };
 
     const handleEmblemChange = async () => {
         const swiper = await mySlides2.current.getSwiper();
-
+        await setActvieEmblemId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieEmblem(bicep);
         }else if(swiper.activeIndex===1){
@@ -73,8 +86,11 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         }else{
             setActvieEmblem(treadmill);
         }
+
+        await setBadgeIcon();
     };
 
+    setBadgeIcon();
     return (
         <>
         

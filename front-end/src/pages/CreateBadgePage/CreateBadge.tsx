@@ -8,6 +8,8 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
 
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 
+
+
 //export type CreateBadge = {act?:any}
 
  export const CreateBadge: React.FC = () =>{
@@ -36,13 +38,13 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
         //SUBMIT THE FORM
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
-
+            console.log(localStorage.getItem('badgeIcon'))
             //form validation 
             formData={
                 badgeName: e.target.badgeName.value,
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
-                gymId: gymId
+                gymId: gymId,
             };
             setSubmitted(true);
             const isValid = await createBadgeSchema.isValid(formData);
@@ -65,8 +67,10 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
+            let bi = localStorage.getItem('badgeIcon');
 
-            fetch(`https://gym-king.herokuapp.com/badges/badge?gid=${gid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${'BADGE ICON'}&at=${at}`,{
+ 
+            fetch(`https://gym-king.herokuapp.com/badges/badge?gid=${gid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${bi}&at=${at}`,{
                 "method":"POST"
             })
             .then(response =>response.json())
@@ -122,7 +126,7 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
 
-                        <BadgeSlider name = "badgeRank"></BadgeSlider>
+                        <BadgeSlider name = "badgeIcon"></BadgeSlider>
 
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
