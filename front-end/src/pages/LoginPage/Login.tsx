@@ -1,5 +1,5 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './Login.css';
 
@@ -8,6 +8,8 @@ export const Login: React.FC = () =>{
     let formData:any;
     
     const [showToast, setShowToast] = useState(false);
+    const [userType, setUserType] = useState('user');
+
     const loginSubmit= ()=>{
         
             fetch('https://gym-king.herokuapp.com/users/login',{
@@ -32,17 +34,25 @@ export const Login: React.FC = () =>{
                     console.log(response.results)
                 }
             })
-            .catch(err => {console.log(err)})
+            .catch(err => {
+                console.log(err)
+            })
     } 
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
         formData={
             username: e.target.userName.value,
-            password: e.target.userPassword.value
+            password: e.target.userPassword.value,
+            usertype: userType
         };
-        loginSubmit();
+        console.log(formData)
+            loginSubmit();
+        
     }
+     const segmentChanged = (e: any)=>{
+        setUserType(e.detail.value);
+     }
     
     
     return (
@@ -54,26 +64,43 @@ export const Login: React.FC = () =>{
                     <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST" className='loginForm'>
                         <IonText className='center inputHeading'>Login</IonText>
                             <br></br><br></br>
-                            <IonLabel className="smallHeading" position="floating">Username</IonLabel>
-                            <IonInput className='textInput' name='userName' type='text' ></IonInput>
+                            <IonLabel className="smallHeading" position="floating">Username*</IonLabel>
+                            <IonInput className='textInput' name='userName' type='text' required></IonInput>
                             
                             <br></br>
-                            <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                            <IonInput className='textInput' name='userPassword' type='password'  ></IonInput>
+                            <IonLabel className="smallHeading" position="floating">Password*</IonLabel>
+                            <IonInput className='textInput' name='userPassword' type='password' required ></IonInput>
+
+                            <br></br>
+
+                            <IonLabel className="smallHeading" position="floating">User type</IonLabel>
+                            <IonSegment onIonChange={segmentChanged}  >
+                                <IonSegmentButton value="user">
+                                    <IonLabel>User</IonLabel>
+                                </IonSegmentButton>
+                                <IonSegmentButton value="employee">
+                                    <IonLabel>Employee</IonLabel>
+                                </IonSegmentButton>
+                                <IonSegmentButton value="owner">
+                                    <IonLabel>Owner</IonLabel>
+                                </IonSegmentButton>
+                            </IonSegment>
 
                             <br></br>
                             <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
                             <br></br>
                             <div className='center'>
-                            <IonText className="linkLabel">Don't have an account?</IonText><a href="http://localhost:3000/Register" color="secondary" className='linkLabel'>Register</a>
+                                <IonText className="linkLabel">Don't have an account?</IonText><a href="http://localhost:3000/Register" color="secondary" className='linkLabel'>Register</a>
                             </div>
+                            <br></br>
+                            <a href="http://localhost:3000/OTP" color="secondary" className='linkLabel center'>Forgot Password?</a>
                     </form>
                 </IonContent>
 
                 <IonToast
                 isOpen={showToast}
                 onDidDismiss={() => setShowToast(false)}
-                message="login failed"
+                message="Invalid user details."
                 duration={1000}
                 color="danger"
                 />
@@ -86,3 +113,5 @@ export const Login: React.FC = () =>{
 
 
 export default Login;
+
+
