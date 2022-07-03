@@ -35,8 +35,8 @@ export const BadgeCanvas: React.FC<BadgeCanvasInputProps> = ({
                 ref={slidesEl}
             >
                 <div className="container">
-                <img className="over" src={emblem} />  
-                <img className="under" src={rank} />  
+                <img className="over" src={emblem} alt = ''/>  
+                <img className="under" src={rank} alt = ''/>  
                 </div>
             </IonSlides>
 

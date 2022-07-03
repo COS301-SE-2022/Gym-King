@@ -1,5 +1,5 @@
 
-import { IonSlides, IonSlide, IonCard, IonText, IonCardHeader, IonCardTitle, IonItem, IonLabel } from "@ionic/react";
+import { IonSlides, IonSlide, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
 import React, {  useRef, useState } from 'react';
 
 import Bronze from '../../badges/rank/bronze.png'
