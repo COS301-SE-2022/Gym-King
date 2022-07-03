@@ -1,10 +1,14 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
-import FileChooser from '../../components/filechooser/FileChooser';
+
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, { useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
+
+import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
+
+
 
 //export type CreateBadge = {act?:any}
 
@@ -29,17 +33,18 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
             console.log(e);
             setGymId(e)
         }
+
         
         //SUBMIT THE FORM
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
-
+            console.log(localStorage.getItem('badgeIcon'))
             //form validation 
             formData={
                 badgeName: e.target.badgeName.value,
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
-                gymId: gymId
+                gymId: gymId,
             };
             setSubmitted(true);
             const isValid = await createBadgeSchema.isValid(formData);
@@ -62,8 +67,10 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
+            let bi = localStorage.getItem('badgeIcon');
 
-            fetch(`https://gym-king.herokuapp.com/badges/badge?gid=${gid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${'BADGE ICON'}&at=${at}`,{
+ 
+            fetch(`https://gym-king.herokuapp.com/badges/badge?gid=${gid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${bi}&at=${at}`,{
                 "method":"POST"
             })
             .then(response =>response.json())
@@ -119,8 +126,7 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
 
-                        <IonText className='inputHeading'>Upload Badge Icon:</IonText> <br></br><br></br>
-                        <FileChooser numFiles={0}></FileChooser>
+                        <BadgeSlider name = "badgeIcon"></BadgeSlider>
 
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>

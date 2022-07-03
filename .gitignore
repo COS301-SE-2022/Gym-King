@@ -40,3 +40,6 @@ testem.log
 
 # NPM
 /package-lock.json
+
+#back-end
+back-end/node_modules
