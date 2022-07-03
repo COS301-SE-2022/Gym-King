@@ -10,9 +10,13 @@
 /coverage
 
 # production
-/build
-/android
-/ios
+build
+android
+ios
+
+build
+android
+ios
 
 # misc
 .DS_Store
