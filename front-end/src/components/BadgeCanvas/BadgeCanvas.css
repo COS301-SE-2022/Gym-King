@@ -2,13 +2,28 @@
     width:50%;
     margin:auto;
     position:relative;
+    height: auto;
+
+    
+    
   }
   
+ion-slides {
+    align-self:center;
+    margin-top: 20px;
+    height: 100%;
+    background-color:inherit;
+    border-color:indigo;
+    border-style:solid;
+  }
   .container img.under {
+    padding: 3% 3% 3% 3%;
+      
     width:100%;
     height:auto;
   }
   .container img.over {
+    padding: 3% 3% 3% 3%;
     position:absolute;
     top:5%;
     left:5%;

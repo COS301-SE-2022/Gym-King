@@ -121,8 +121,6 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
                         <IonText className='inputHeading'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <IonText className='inputHeading'>Create Badge Icon:</IonText> <br></br><br></br>
-
 
                         <BadgeSlider name = "badgeRank"></BadgeSlider>
 

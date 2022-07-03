@@ -1,5 +1,5 @@
 
-import { IonSlides, IonSlide } from "@ionic/react";
+import { IonSlides, IonSlide, IonCard, IonText, IonCardHeader, IonCardTitle, IonItem, IonLabel } from "@ionic/react";
 import React, {  useRef, useState } from 'react';
 
 import Bronze from '../../badges/rank/bronze.png'
@@ -77,32 +77,41 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
 
     return (
         <>
-        <IonSlides 
-            options={slideOpts}
-            ref={mySlides1}
-            onIonSlideDidChange={handleRankChange} 
-        >
-        <IonSlide><img id = "Bronze" src={Bronze} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "Silver"  src={Silver} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "Gold"  src={Gold} width={10} height={10} alt='' /></IonSlide>
-        </IonSlides>
+        
+        <IonCard>
+        <IonCardHeader>
+            <IonCardTitle className='inputHeading' class ="ion-text-center">Create Badge Icon</IonCardTitle> 
 
-        <IonSlides
-            options={slideOpts}
-            ref={mySlides2}
-            onIonSlideDidChange={handleEmblemChange}
-        >
-        <IonSlide><img id = "bicep"  src={bicep} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "clean"  src={clean} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "cycle"  src={cycle} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "dumbell"  src={dumbell} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "gym"  src={gym} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "pullup"  src={pullup} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "running"  src={running} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "situp"  src={situp} width={10} height={10} alt='' /></IonSlide>
-        <IonSlide><img id = "treadmill"  src={treadmill} width={10} height={10} alt='' /></IonSlide>
-        </IonSlides>
 
+        </IonCardHeader>
+        
+            <IonSlides 
+                options={slideOpts}
+                ref={mySlides1}
+                onIonSlideDidChange={handleRankChange} 
+            >
+            <IonSlide><img id = "Bronze" src={Bronze} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "Silver"  src={Silver} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "Gold"  src={Gold} width={10} height={10} alt='' /></IonSlide>
+            </IonSlides>
+        
+
+            <IonSlides
+                options={slideOpts}
+                ref={mySlides2}
+                onIonSlideDidChange={handleEmblemChange}
+            >
+            <IonSlide><img id = "bicep"  src={bicep} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "clean"  src={clean} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "cycle"  src={cycle} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "dumbell"  src={dumbell} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "gym"  src={gym} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "pullup"  src={pullup} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "running"  src={running} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "situp"  src={situp} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "treadmill"  src={treadmill} width={10} height={10} alt='' /></IonSlide>
+            </IonSlides>
+        </IonCard>
         <BadgeCanvas rank={activeRank} emblem = {activeEmblem}/>
 
     </>
