@@ -60,47 +60,8 @@ const MapView: React.FC = () =>{
             setError({showError: true, message: "Cannot get userlocation: Check Permissions"});
         }
     }    
-    //=========================================================================================================//
-    /**
-     * Function that gets the location of nearby gyms
-     * @requires position users coordinates
-     * @returns all nearby gyms
-     */
-    const getNearbyGyms = async () => {
-        
-        
-        //=========================================================================================================//
-        /**
-         * POST request to get nearby gyms
-         * makes use of gym-king API
-         * @param userLocation
-         */
-        fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
-            method: 'POST',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                latCoord: userLocation[0],
-                longCoord: userLocation[1],
-                radius: 10
-            })
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            if(response.success){
-                setGyms(response.results);
 
-            }else{
-                console.log(response.success)
-                console.log(response.results)
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
+    
     const gymButtonClick=()=>{
         window.alert("The Gyms Menu will open Up");
         window.location.href = "http://localhost:3000/Login";
@@ -109,6 +70,51 @@ const MapView: React.FC = () =>{
 
     const MINUTE_MS = 1000;
     useEffect(() => {
+
+        //=========================================================================================================//
+        /**
+         * Function that gets the location of nearby gyms
+         * @requires position users coordinates
+         * @returns all nearby gyms
+         */
+        const getNearbyGyms = async () => {
+        
+        
+            //=========================================================================================================//
+            /**
+             * POST request to get nearby gyms
+             * makes use of gym-king API
+             * @param userLocation
+             */
+            fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    latCoord: userLocation[0],
+                    longCoord: userLocation[1],
+                    radius: 10
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                if(response.success){
+                    setGyms(response.results);
+    
+                }else{
+                    console.log(response.success)
+                    console.log(response.results)
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+
+
+
         if(first)getLocation(true);
         const interval = setInterval(() => {
             if(first){setFirst(false)}
