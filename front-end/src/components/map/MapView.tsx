@@ -1,4 +1,4 @@
-import { IonButton, IonLoading, IonToast } from "@ionic/react";
+import { IonLoading, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
