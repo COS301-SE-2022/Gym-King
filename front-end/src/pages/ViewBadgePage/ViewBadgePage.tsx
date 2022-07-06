@@ -7,7 +7,10 @@ import './ViewBadgePage.css';
 
 
 const ViewBadgePage: React.FC = () =>{
-    
+    var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/profile'},
+                     {'caption':'Map','icon':'book','route':'/userMap'},
+                     {'caption':'My Badges','icon':'trophy','route':'/myBadges'},
+                     {'caption':'Settings','icon':'cog','route':'/Settings'}] 
     const [badges, setBadges] = useState(new Array<any>());
     
         //GET REQUEST:
@@ -31,7 +34,7 @@ const ViewBadgePage: React.FC = () =>{
                 <ToolBar></ToolBar>
             </IonHeader>
             <br></br>
-            <BurgerMenu/>
+            <BurgerMenu listItems={Menulist}/>
             <IonContent fullscreen className='Content' id="main">
                     <IonText className='PageTitle center'>View Badges</IonText>
                     <IonGrid>
