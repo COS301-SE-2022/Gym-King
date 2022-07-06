@@ -1,5 +1,6 @@
 import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
+import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
 import './ViewBadgePage.css';
@@ -30,7 +31,8 @@ const ViewBadgePage: React.FC = () =>{
                 <ToolBar></ToolBar>
             </IonHeader>
             <br></br>
-            <IonContent fullscreen className='Content'>
+            <BurgerMenu/>
+            <IonContent fullscreen className='Content' id="main">
                     <IonText className='PageTitle center'>View Badges</IonText>
                     <IonGrid>
                         <IonRow  className="ion-align-items-center">
