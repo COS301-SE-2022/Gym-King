@@ -29,6 +29,7 @@ const MapView: React.FC = () =>{
     }]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const [postWaiting, setPostWaiting] = useState<boolean>(false);
     const [center, setCenter] = useState([0,0])
     const [zoom, setZoom] = useState(10)
     const [first, setFirst] = useState(true)
@@ -74,7 +75,7 @@ const MapView: React.FC = () =>{
     
     const gymButtonClick=async ()=>{
         window.alert("The Gyms Menu will open Up");
-        window.location.href = "http://localhost:3000/Login";
+        //window.location.href = "http://localhost:3000/Login";
 
     }
     
@@ -93,34 +94,39 @@ const MapView: React.FC = () =>{
          * makes use of gym-king API
          * @param userLocation
          */
-        fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
-            method: 'POST',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                latCoord: center[0],
-                longCoord: center[1],
-                radius: Math.pow(1.5,(18-zoom))
+        if(!postWaiting){
+            setPostWaiting(true);
+            fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    latCoord: center[0],
+                    longCoord: center[1],
+                    radius: Math.pow(1.5,(18-zoom))
+                })
             })
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            
-            if(response.success){
-                console.info(Math.pow(1.5,(18-zoom)))
-                console.info(response.results)
-                setGyms(response.results);
+            .then(response =>response.json())
+            .then(response =>{
+                
+                if(response.success){
+                    console.info(Math.pow(1.5,(18-zoom)))
+                    console.info(response.results)
+                    setGyms(response.results);
+                    setPostWaiting(false);
 
-            }else{
-                console.log(response.success)
-                console.log(response.results)
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
+                }else{
+                    console.log(response.success)
+                    console.log(response.results)
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+        
     }
     
     useEffect(() => {
@@ -182,18 +188,18 @@ const MapView: React.FC = () =>{
                     <i id="fa fa-plus my-float"></i>
                     <img src={recenter} alt =""></img>
                 </button>
-                <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
+                <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; }) => {
+                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:number}) => {
                     return (
                         <Overlay 
-                            key="{item}"
+                            key={item.gid}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
-                            offset={[30,30]} 
-            
+                            offset={[15,30]} 
+                            
                         > 
-                            <img onClick={gymButtonClick} id = "GymPicture" src={gym} width={50} height={50} alt='' />
+                            <img onClick={gymButtonClick} id = "GymPicture" src={gym} alt='' />
                         </Overlay> 
                     )                 
                 })}
