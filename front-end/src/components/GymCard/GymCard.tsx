@@ -1,5 +1,5 @@
 import { IonActionSheet, IonCard, IonCardSubtitle, IonCardTitle, useIonAlert} from '@ionic/react';
-import { caretForwardCircle, create, heart, share, trash } from 'ionicons/icons';
+import { create, trash } from 'ionicons/icons';
 import { useState } from 'react';
 import './GymCard.css'
 
@@ -24,8 +24,10 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
                 isOpen={showActionSheet}
                 onDidDismiss={()=>setShowActionSheet(false)}
                 cssClass="my-custom-class"
+               
                 buttons={[{
                     text: 'Edit',
+                    id:'edit-button',
                     icon: create,
                     handler: () => {
                       console.log('edit clicked');
@@ -41,16 +43,19 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
                     handler: () => {
                       console.log('Delete clicked');
                       presentAlert({
+                        cssClass:'custom-alert',
                         header:'delete:',
                         subHeader:prop.name,
                         message:'delete cannot be undone',
                         buttons:[
                             {
                                 text:'YES',
+                                cssClass:"alert-button-yes",
                                 handler:()=>{console.log("yes")}
                             },
                             {
                                 text:'NO',
+                                cssClass:"alert-button-no",
                                 handler:()=>{console.log("no")}
                             },
                         ]
