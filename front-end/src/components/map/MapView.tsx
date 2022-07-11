@@ -1,11 +1,11 @@
-import { IonButton, IonLoading, IonToast } from "@ionic/react";
+import { IonLoading, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
 
-import { DeviceMotion, DeviceMotionAccelerationData } from '@awesome-cordova-plugins/device-motion/ngx';
-
+import gym from '../../icons/gym.png'
+import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
 interface LocationError {
@@ -14,10 +14,9 @@ interface LocationError {
 
 }
 
-
 const MapView: React.FC = () =>{
 
-    const maxZoom = 17
+    const maxZoom = 17.4
     const minZoom = 13
     const [gyms, setGyms] = useState<{[key: string]: any}>([{
         key: "",
@@ -58,7 +57,7 @@ const MapView: React.FC = () =>{
 
             if(load){
                 setCenter([position?.coords.latitude, position?.coords.longitude]) 
-                setZoom(15) 
+                setZoom(17.4) 
             }
 
             setError({showError: false, message: "no error here"})
@@ -186,10 +185,10 @@ const MapView: React.FC = () =>{
                     getNearbyGyms()
                 }}>
                     <i id="fa fa-plus my-float"></i>
-                    <img src={recenter}></img>
+                    <img src={recenter} alt =""></img>
                 </button>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
-                <img src='https://icons-for-free.com/iconfiles/png/512/svg+location+locator+map+navigation+user+user+location+icon-1320184910707394703.png' width={50} height={50} alt='' />
+                <img src={location} width={60} height={60} alt='' />
                 </Overlay>      
                 {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; }) => {
                     return (
@@ -197,9 +196,9 @@ const MapView: React.FC = () =>{
                             key="{item}"
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[30,30]} 
-                            
+            
                         > 
-                            <img onClick={gymButtonClick} id = "GymPicture" src='https://www.seekpng.com/png/full/309-3093415_gym-building-sport-training-svg-png-icon-free.png' width={50} height={50} alt='' />
+                            <img onClick={gymButtonClick} id = "GymPicture" src={gym} width={50} height={50} alt='' />
                         </Overlay> 
                     )                 
                 })}

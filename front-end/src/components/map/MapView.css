@@ -14,3 +14,21 @@
     align-content: center;
 
 }
+  
+
+#float{
+	position:fixed;
+	width:60px;
+	height: 60px;
+	bottom:40px;
+	right:45%;
+	background-color:#3d1edb;
+	color:#FFF;
+	border-radius:50px;
+	box-shadow: 2px 2px 3px #999;
+}
+
+
+#my-float{
+	margin-top:22px;
+}
