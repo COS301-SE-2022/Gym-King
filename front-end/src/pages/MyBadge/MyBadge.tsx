@@ -1,6 +1,7 @@
 import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox} from '@ionic/react';
 import { arrowDown, arrowUp, funnel, swapVertical } from 'ionicons/icons';
 import React, { useState } from 'react';
+import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 
@@ -80,6 +81,7 @@ const MyBadge: React.FC = () =>{
                              ))}
                         </IonPopover>
                     </IonToolbar>
+                    <MyBadgeGrid></MyBadgeGrid>
             </IonContent>
         </IonPage>
     )
