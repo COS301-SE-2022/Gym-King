@@ -1,10 +1,11 @@
-import { IonActionSheet, IonCard, IonCardSubtitle, IonCardTitle} from '@ionic/react';
+import { IonActionSheet, IonCard, IonCardSubtitle, IonCardTitle, useIonAlert} from '@ionic/react';
 import { caretForwardCircle, create, heart, share, trash } from 'ionicons/icons';
 import { useState } from 'react';
 import './GymCard.css'
 
 export const GymCard=(prop:{id:any,name:string,address:string})=>{
     const [showActionSheet, setShowActionSheet] = useState(false);
+    const [presentAlert] = useIonAlert();
     return(
         <div>
             <IonCard
@@ -39,6 +40,22 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
                     },
                     handler: () => {
                       console.log('Delete clicked');
+                      presentAlert({
+                        header:'delete:',
+                        subHeader:prop.name,
+                        message:'delete cannot be undone',
+                        buttons:[
+                            {
+                                text:'YES',
+                                handler:()=>{console.log("yes")}
+                            },
+                            {
+                                text:'NO',
+                                handler:()=>{console.log("no")}
+                            },
+                        ]
+                        
+                      })
                     }
                   },{ 
                     text: 'Cancel',
