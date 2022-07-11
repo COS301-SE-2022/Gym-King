@@ -342,7 +342,7 @@ const users = express.Router()
         // SQL statement to get all gyms
 
         let outGyms = [];
-        var gyms = await client.query("SELECT * FROM GYM ");
+        var gyms = await gymRepository.findAll();
         console.log(gyms.rows)
 
         gyms.rows.forEach(element => {
