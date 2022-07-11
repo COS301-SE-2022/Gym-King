@@ -4,6 +4,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
 
+import { DeviceMotion, DeviceMotionAccelerationData } from '@awesome-cordova-plugins/device-motion/ngx';
+
+
 import './MapView.css';
 interface LocationError {
     showError: boolean;
@@ -11,8 +14,8 @@ interface LocationError {
 
 }
 
-const MapView: React.FC = () =>{
 
+const MapView: React.FC = () =>{
     const [gyms, setGyms] = useState<{[key: string]: any}>([{
         key: "",
         g_id: "",
@@ -62,14 +65,20 @@ const MapView: React.FC = () =>{
     }    
 
     
-    const gymButtonClick=()=>{
+    const gymButtonClick=async ()=>{
         window.alert("The Gyms Menu will open Up");
         window.location.href = "http://localhost:3000/Login";
+
+
 
     }
 
     const MINUTE_MS = 1000;
     useEffect(() => {
+
+
+
+
 
         //=========================================================================================================//
         /**
@@ -93,8 +102,8 @@ const MapView: React.FC = () =>{
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    latCoord: userLocation[0],
-                    longCoord: userLocation[1],
+                    latCoord: center[0],
+                    longCoord: center[1],
                     radius: 10
                 })
             })
@@ -115,7 +124,7 @@ const MapView: React.FC = () =>{
 
 
 
-        if(first)getLocation(true);
+        if(first) getLocation(true);
         const interval = setInterval(() => {
             if(first){setFirst(false)}
             console.log("Map Refresh")
@@ -145,7 +154,6 @@ const MapView: React.FC = () =>{
                 onDidDismiss={() => setError({showError: false, message: "no error here"})}
                 duration={3000}
             />
-            
             <Map 
                 provider={stamenToner}
                 height={900}
