@@ -1,3 +1,8 @@
+import { badgeRepository } from "../repositories/badge.repository";
+import { badgeClaimRepository } from "../repositories/badge_claim.repository";
+import { gymRepository } from "../repositories/gym.repository";
+import { userRepository } from "../repositories/gym_user.repository";
+
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
@@ -5,6 +10,49 @@ const bodyParser = require('body-parser');
 
 const fs = require('fs');
 
+//=============================================================================================//
+//Helper Functions 
+//=============================================================================================//
+
+  //=========================================================================================================//
+  /**
+   * Helper functions to get the distance between two coordinates
+   * @param {float} lat1
+   * @param {float} lon1
+   * @param {float} lat2
+   * @param {float} lon2
+   * @returns {float} distance between points 
+   */
+  function calcCrow(lat1: number, lon1: number, lat2: number, lon2: number)  
+  {
+    var R = 6371; // km
+    var dLat = toRad(lat2-lat1);
+    var dLon = toRad(lon2-lon1);
+    var latNew1 = toRad(lat1);
+    var latNew2 = toRad(lat2);
+
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latNew1) * Math.cos(latNew2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c;
+    return d;
+  }
+  //=========================================================================================================//
+  /**
+   * Converts numeric degrees to radians
+   * @param {float} Value a value in degree format
+   * @returns {float} value in radians
+   */
+  function toRad(Value) 
+  {
+      return Value * Math.PI / 180;
+  }
+
+
+
+//=============================================================================================//
+// USER API
+//=============================================================================================//
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:8100'
@@ -37,20 +85,22 @@ const pool = (() => {
 ();
 const users = express.Router()
   .options('*', cors(corsOptions))
-  .get('/badges/badge', cors(corsOptions), async (req: any, res: any) => {
+  //=========================================================================================================//
+  /**
+   * GET - returns all badges with input of * or returns the specific badge from b_id.
+   * @param {string} bid give badge ID for specific badge or * for all badges.
+   * @returns A list with information on all badges or specific badge.
+   */
+  .get('/badges/badge/:bid', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query.bid;
-      const client = await pool.connect();
+      let query = req.params.bid;
       if (query == "*") {
-        let result = await client.query("SELECT * from BADGE");
-        const results = { 'success': true, 'results': (result) ? result.rows : null};
-        res.json( results );
+        const result = await badgeRepository.findAll();
+        res.json( result );
       } else {
-        let result = await client.query("SELECT * from BADGE where B_ID = '"+query+"'");
-        const results = { 'success': true, 'results': (result) ? result.rows : null};
-        res.json( results );
+        const result = await badgeRepository.findByBID(query);
+        res.json( result );
       }
-      client.release();
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -59,18 +109,15 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET - returns all badges that belong to a specific gym.
+   * @param {string} gid input of the gym ID to find all badges that belong to gym.
+   * @returns A list with information on all badges that belong to gym.
    */
-  .get('/badges/gym', cors(corsOptions), async (req: any, res: any) => {
+  .get('/badges/gym/:gid', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query.gid;
-      const client = await pool.connect();
-      let result = await client.query("SELECT * from BADGE WHERE G_ID = '"+query+"'");
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( results );
-      client.release();
+      let query = req.params.gid;
+      const result = await badgeRepository.findByGID(query)
+      res.json( result );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -79,18 +126,15 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET - return gym information from giving its gym ID
+   * @param {string} gid input of the gym ID to find gym.
+   * @return Information on gym found by ID.
    */
-  .get('/gyms/gym', cors(corsOptions), async (req: any, res: any) => {
+  .get('/gyms/gym/:gid', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query.gid;
-      const client = await pool.connect();
-      let result = await client.query("SELECT * from GYM WHERE G_ID = '"+query+"'");
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( results );
-      client.release();
+      let query = req.params.gid;
+      const result = await gymRepository.findByGID(query)
+      res.json( result );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -125,9 +169,8 @@ const users = express.Router()
    * @param {string} id The name of the badge model
    * @returns {USDZ file}
    */
-  .get('/Model/iOS', cors(corsOptions), async(req: any, res: any)=>{
-    if(req.query.id){
-      const file = './src/assets/models/'+req.query.id+'.usdz';
+  .get('/Model/iOS/AR0', cors(corsOptions), async(req: any, res: any)=>{
+      const file = './src/assets/models/AR0.usdz';
       fs.access(file, fs.F_OK, (err: any) => {
         if (err) {
           
@@ -137,11 +180,7 @@ const users = express.Router()
         }
         res.download(file); 
       })
-    }
-    else{
-      const results = { success: false, results: "400 bad request" };
-      res.json(results);
-    }
+    
   })
   //=========================================================================================================//
   /**
@@ -150,8 +189,8 @@ const users = express.Router()
    * @returns {GLB file}
    */
   .get('/Model/Android/AR0', cors(corsOptions), async(req: any, res: any)=>{
-    if(req.query.id){
-      const file = './src/assets/models/'+req.query.id+'.glb';
+
+      const file = './src/assets/models/concept.glb';
       fs.access(file, fs.F_OK, (err: any) => {
         if (err) {
           
@@ -161,28 +200,27 @@ const users = express.Router()
         }
         res.download(file); 
       })
-    }
-    else{
-      const results = { success: false, results: "400 bad request" };
-      res.json(results);
-    }
+
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * POST save a users claim for a badge to database.
+   * @param {string} bid The badge ID of the badge.
+   * @param {string} email The email of the user who claims they completed it.
+   * @param {string} username The username of the user who claims they completed it.
+   * @param {string} input1 The first input 
+   * @param {string} input2 The second input 
+   * @param {string} input3 The third input 
+   * @param {string} proof The code of the image used to find the proof.
+   * @returns Returns params of completed insertion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
   .post('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query("INSERT INTO BADGE_CLAIM"+
-      "(B_ID,email,username,input1,input2,input3,proof) VALUES"+
-      "('"+query.bid+"','"+query.email+"','"+query.username+"','"+query.input1+"','"+query.input2+"','"+query.input3+"','"+query.proof+"')");
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results,query} );
-      client.release();
+      let query = req.body;
+      let result = await badgeClaimRepository.saveClaim(query.bid, query.email, query.username, query.input1, query.input2, query.input3, query.proof)
+      res.json( result );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -203,15 +241,20 @@ const users = express.Router()
     try {
       const bcrypt = require('bcryptjs')
 
-      let query = req.query;
+      let query = req.body;
       const client = await pool.connect();
       
-      if (req.body.username != null && req.body.password != null) {
-        let uN=req.body.username;
-        let uP = req.body.password;
+      if (query.username != null && query.password != null && query.usertype != null) {
+        
+        let uT = query.usertype;
+        if(query.usertype !== "gym_owner" && query.usertype !== "gym_employee"){
+          uT="gym_user";
+        }
+        let uN=query.username;
+        let uP = query.password;
         var result = await client.query(
-          "SELECT * FROM GYM_USER " +
-            "WHERE Username = '" +
+          "SELECT * FROM "+uT +
+            " WHERE Username = '" +
             uN +"'"
             
         );
@@ -265,20 +308,76 @@ const users = express.Router()
   .use(bodyParser.raw())
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
     try {
-      
-      const bcrypt = require('bcryptjs')
-      let query = req.body;
-      const client = await pool.connect();
-      let result = await client.query("INSERT INTO GYM_USER"+
-      "(email,name,surname,number,username,password) VALUES"+
-      "('"+query.email+"','"+query.name+"','"+query.surname+"','"+query.number+"','"+query.username+"','"+bcrypt.hashSync(query.password, bcrypt.genSaltSync())+"')");
+      const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
       const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results,query} );
-      client.release();
+      res.json( {results, body: req.body} );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * POST - returns all gyms within a certain radius of the user
+   * @param {string} latCoord latitude of user
+   * @param {string} longCoord longitude of user
+   * @param {string} radius circle radius in KM to check for gyms
+   * @returns a list of gyms and their locations
+   */
+  users
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
+  .post('/gyms/aroundme', cors(corsOptions), async (req: any, res: any) => {
+    
+    try {
+      const client = await pool.connect();
+      if (req.body.latCoord != null && req.body.longCoord != null) {
+        let lat = parseFloat(req.body.latCoord);
+        let long = parseFloat(req.body.longCoord);
+        let rad = 20.0;
+        if(req.body.radius != null) {rad = parseFloat(req.body.radius) }
+
+        // SQL statement to get all gyms
+
+        let outGyms = [];
+        var gyms = await client.query("SELECT * FROM GYM ");
+        console.log(gyms.rows)
+
+        gyms.rows.forEach(element => {
+          // get magnitde between user and each gym coordinate
+
+          let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
+
+          // If magnitude is within radius then add it to the results
+          if(magnitude <= rad){
+            outGyms.push(element);
+          }
+          console.log(magnitude);
+          
+          
+        });
+        const results = { 'success': true, 'results': outGyms };
+        res.json(results);
+      }else {
+        res.status(400);
+        res.json(  { 'success': false, 'results':'user coordinates not given'} );
+      }
+      client.release();
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+
+    
+  })
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
+    const result = await userRepository.deleteUser(req.body.email)  
+    res.json(result)
+  })
+  
 export {users}

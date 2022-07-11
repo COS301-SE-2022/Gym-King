@@ -1,9 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+
+const bodyParser = require('body-parser');
+
 const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:8100'
+  'http://localhost:8100',
+  'http://localhost:5000'
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -84,44 +88,7 @@ const employees = express.Router()
       res.json(results);
     }
   })
-  //=========================================================================================================//
-  /**
-   * ...
-   * @param 
-   * @returns 
-   */
-  .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
-    try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "INSERT INTO GYM_EMPLOYEE" +
-          "(email,g_id,name,surname,number,username,password) VALUES" +
-          "('" +
-          query.email +
-          "','" +
-          query.gid +
-          "','" +
-          query.name +
-          "','" +
-          query.surname +
-          "','" +
-          query.number +
-          "','" +
-          query.username +
-          "','" +
-          query.password +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
-    } catch (err) {
-      const results = { success: false, results: err };
-      console.error(err);
-      res.json(results);
-    }
-  })
+  
   //=========================================================================================================//
   /**
    * ...
@@ -324,4 +291,50 @@ const employees = express.Router()
       res.json(results);
     }
   });
+  //=========================================================================================================//
+  /**
+   * POST request to add an employee to the db
+   * encrypts user's password
+   * 
+   * @param {Employee Info}
+   * @returns http response packet
+   */
+  employees
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
+
+   .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const client = await pool.connect();
+      let result = await client.query(
+        "INSERT INTO GYM_EMPLOYEE" +
+          "(email,g_id,name,surname,number,username,password) VALUES" +
+          "('" +
+          query.email +
+          "','" +
+          query.gid +
+          "','" +
+          query.name +
+          "','" +
+          query.surname +
+          "','" +
+          query.number +
+          "','" +
+          query.username +
+          "','" +
+          bcrypt.hashSync(query.password, bcrypt.genSaltSync()) +
+          "')"
+      );
+      const results = { success: true, results: result ? result.rows : null };
+      res.json({ results, query });
+      client.release();
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
 export {employees};

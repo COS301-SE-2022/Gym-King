@@ -10,21 +10,19 @@ describe('User server should exist!', () => {
 });
 describe('Testing GET API Calls', () => {
     test('responds to GET badges', async () => {
-        const res = await request(server).get('/badges/badge?bid=');
+        const res = await request(server).get('/badges/badge/:bid');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('success');
-        expect(res.body).toHaveProperty('results');
     });
     test('responds to GET badges of a gym by gid', async () => {
-        const res = await request(server).get('/badges/gym?gid=');
+        const res = await request(server).get('/badges/gym/:gid');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
     test('responds to GET gyms by id', async () => {
-        const res = await request(server).get('/gyms/gym?gid=');
+        const res = await request(server).get('/gyms/gym/:gid');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
