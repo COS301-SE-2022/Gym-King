@@ -16,6 +16,27 @@ export const MyBadgeGrid=(prop:{badges:any[],filters:any[],sort:string})=>{
             }
         }
     }
+    if(prop.sort!=="none")
+    {
+        if(prop.sort==="AscName")
+        {
+            arr.sort((a:any,b:any)=>a.name.localeCompare(b.name))
+        }
+        else if(prop.sort==="DescName")
+        {
+            arr.sort((a:any,b:any)=>a.name.localeCompare(b.name))
+            arr.reverse();
+        }
+        else if(prop.sort==="AscQty")
+        {
+            arr.sort((a:any,b:any)=>{ return a.qty-b.qty})
+        }
+        else if(prop.sort==="DescQty")
+        {
+            arr.sort((a:any,b:any)=>{ return b.qty-a.qty})
+        }
+    
+    }
     return(
         
         <IonGrid>
