@@ -172,14 +172,9 @@ const MapView: React.FC = () =>{
                     getLocation(false)
                     getNearbyGyms()
                 }} 
-                onClick={() =>{
-                    getLocation(false)
-                    getNearbyGyms()
-                }}
                 
             >
                 <button id="float" onClick={() => { 
-                    setZoom(15) ;
                     
                     getLocation(true)
                     getNearbyGyms()
@@ -188,7 +183,7 @@ const MapView: React.FC = () =>{
                     <img src={recenter} alt =""></img>
                 </button>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
-                <img src={location} width={60} height={60} alt='' />
+                <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
                 {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; }) => {
                     return (
