@@ -16,6 +16,9 @@ interface LocationError {
 
 
 const MapView: React.FC = () =>{
+
+    const maxZoom = 18
+    const minZoom = 13
     const [gyms, setGyms] = useState<{[key: string]: any}>([{
         key: "",
         g_id: "",
@@ -69,16 +72,10 @@ const MapView: React.FC = () =>{
         window.alert("The Gyms Menu will open Up");
         window.location.href = "http://localhost:3000/Login";
 
-
-
     }
 
-    const MINUTE_MS = 1000;
+    const MINUTE_MS = 1333;
     useEffect(() => {
-
-
-
-
 
         //=========================================================================================================//
         /**
@@ -104,12 +101,15 @@ const MapView: React.FC = () =>{
                 body: JSON.stringify({ 
                     latCoord: center[0],
                     longCoord: center[1],
-                    radius: 10
+                    radius: Math.pow(1.5,(18-zoom))
                 })
             })
             .then(response =>response.json())
             .then(response =>{
+                
                 if(response.success){
+                    console.info(Math.pow(1.5,(18-zoom)))
+                    console.info(response.results)
                     setGyms(response.results);
     
                 }else{
@@ -159,10 +159,12 @@ const MapView: React.FC = () =>{
                 height={900}
                 center={[center[0],center[1]]}
                 zoom={zoom} 
-                
+                maxZoom={17}
+                minZoom={11}
+                zoomSnap={false}
                 onBoundsChanged={({ center, zoom }) => { 
-                    setCenter(center) 
-                    setZoom(zoom) 
+                    setCenter(center) ;
+                    setZoom(zoom) ;
                 }} 
                 
             >
