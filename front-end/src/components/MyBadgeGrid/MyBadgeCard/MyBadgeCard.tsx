@@ -1,7 +1,7 @@
 import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
 import './MyBadgeCard.css'
 
-export const MyBadgeCard=()=>{
+export const MyBadgeCard=(prop:{id:any,name:string,qty:number})=>{
     return(
             <IonCard 
                 data-testid="viewbadgegrid"
@@ -20,10 +20,10 @@ export const MyBadgeCard=()=>{
                     </IonRow>
                     <IonRow class='BadgeDetails'>
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
-                                    gold running badge
+                                    {prop.name}
                         </IonCardTitle>
                         <IonCardTitle style={{width:100}}  class='ViewBadgeTitle' className='center ion-text-center'>
-                            QTY:3
+                            QTY:{prop.qty}
                         </IonCardTitle>
                     </IonRow>
                             

@@ -5,7 +5,18 @@ import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 
-
+const badges=[
+    { id:1,name:'gold running',qty:5},
+    { id:2,name:'aerobics silver',qty:6},
+    { id:3,name:'weight bronze',qty:10},
+    { id:4,name:'silver running',qty:1},
+    { id:5,name:'plank bronze',qty:2},
+    { id:6,name:'jog bronze',qty:11},
+    { id:7,name:'jog silver',qty:3},
+    { id:8,name:'weight silver',qty:4},
+    { id:9,name:'plank silver',qty:2},
+    { id:10,name:'jog gold',qty:1},
+]
 const MyBadge: React.FC = () =>{
     const [checkboxList,setCheckboxList]=useState([
         { val: 'Gold', isChecked: true },
@@ -81,7 +92,7 @@ const MyBadge: React.FC = () =>{
                              ))}
                         </IonPopover>
                     </IonToolbar>
-                    <MyBadgeGrid></MyBadgeGrid>
+                    <MyBadgeGrid badges={badges} filters={checkboxList} sort={sort}></MyBadgeGrid>
             </IonContent>
         </IonPage>
     )
