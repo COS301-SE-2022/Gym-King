@@ -1,6 +1,4 @@
 import { IonCol, IonGrid, IonRow} from '@ionic/react';
-import { filterSharp } from 'ionicons/icons';
-import { useState } from 'react';
 import MyBadgeCard from './MyBadgeCard/MyBadgeCard';
 import './MyBadgeGrid.css'
 

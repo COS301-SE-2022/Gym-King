@@ -42,8 +42,7 @@ const MyBadge: React.FC = () =>{
         setCheckboxList(arr)
     }
     const [sort,setSort]=useState("none")
-    console.log(sort)
-    console.log(checkboxList)
+
     return(
         <IonPage >
             <IonHeader>
