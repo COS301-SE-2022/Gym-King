@@ -13,13 +13,14 @@ import cycle from '../../badges/emblem/cycle.png'
 import dumbell from '../../badges/emblem/dumbell.png'
 import gym from '../../badges/emblem/gym.png'
 import pullup from '../../badges/emblem/pullup.png'
-import running from '../../badges/emblem/running.png'
+import running from '../../badges/emblem/run.png'
 import situp from '../../badges/emblem/situp.png'
 import treadmill from '../../badges/emblem/treadmill.png'
 
 import BadgeCanvas from "../BadgeCanvas/BadgeCanvas";
 
 import './BadgeSlider.css';
+import AR from "../AR/AR";
 // Optional parameters to pass to the swiper instance.
 // See http://idangero.us/swiper/api/ for valid options.
 const slideOpts = {
@@ -45,6 +46,10 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
     const [activeRank,setActvieRank] = useState(Bronze);
     const [activeEmblem,setActvieEmblem] = useState(bicep);
 
+    
+    const [activeARRank,setActvieARRank] = useState("b");
+    const [activeAREmblem,setActvieAREmblem] = useState("bicep");
+
     const [activeRankId,setActvieRankId] = useState(0);
     const [activeEmblemId,setActvieEmblemId] = useState(0);
     const setBadgeIcon = async () => {
@@ -60,7 +65,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         }else{
             setActvieRank(Gold);
         }
-
+        await setActvieARRank( encodeRank() )
         await setBadgeIcon();
     };
 
@@ -86,10 +91,43 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         }else{
             setActvieEmblem(treadmill);
         }
-
+        await setActvieAREmblem( encodeEmblem() )
         await setBadgeIcon();
     };
 
+    const encodeRank=() =>{
+        const swiper =  mySlides1.current.getSwiper();
+        if(swiper.activeIndex===0){
+            return "b"
+        }else if(swiper.activeIndex===1){
+            return "s"
+        }else{
+            return "g"
+        }
+
+    }    
+    const encodeEmblem=() =>{
+        const swiper =  mySlides2.current.getSwiper();
+        if(swiper.activeIndex===0){
+            return "bicep"
+        }else if(swiper.activeIndex===1){
+            return "clean"
+        }else if(swiper.activeIndex===2){
+            return "cycle"
+        }else if(swiper.activeIndex===3){
+            return "dumbell"
+        }else if(swiper.activeIndex===4){
+            return "gym"
+        }else if(swiper.activeIndex===5){
+            return "pullup"
+        }else if(swiper.activeIndex===6){
+            return "run"
+        }else if(swiper.activeIndex===7){
+            return "situp"
+        }else{
+            return "treadmill"
+        }
+    }
     setBadgeIcon();
     return (
         <>
@@ -123,12 +161,13 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             <IonSlide><img id = "dumbell"  src={dumbell} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "gym"  src={gym} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "pullup"  src={pullup} width={10} height={10} alt='' /></IonSlide>
-            <IonSlide><img id = "running"  src={running} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "run"  src={running} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "situp"  src={situp} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "treadmill"  src={treadmill} width={10} height={10} alt='' /></IonSlide>
             </IonSlides>
         </IonCard>
         <BadgeCanvas rank={activeRank} emblem = {activeEmblem}/>
+        <AR rank={activeARRank} emblem={activeAREmblem} ></AR>
 
     </>
     );
