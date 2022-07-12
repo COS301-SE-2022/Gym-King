@@ -1,25 +1,52 @@
 
-import {IonButton, IonCard} from '@ionic/react';
-import React from "react";
+import {IonButton, IonCard, IonToast} from '@ionic/react';
+import React, { useState } from "react";
 import './AR.css';
 
+interface inputError {
+    showError: boolean;
+    message?: String;
+
+}
+export interface ARInputProps {
+    rank: string,
+    emblem: string    
+}
 
 
-//===============================================================================================================================================//
-//DEVICE TYPE FUNCTIONS
-//===============================================================================================================================================//
 
-
-const AR: React.FC = () => {
-    var selectedARanimation = 0;
-    var ar_Android_Links = [
-        "https://gym-king.herokuapp.com/Model/Android/AR0"
-    ]
+const AR: React.FC<ARInputProps> = ( inp ) => {
+ 
+    const [error, setError] = useState<inputError>({showError: false});
     
-    var ar_iOS_Links = [
-        "https://gym-king.herokuapp.com/Model/iOS/AR0",
-    ]
+    const AndroidLink = () =>{
+            return "https://gym-king.herokuapp.com/Model/Android%3Frank%3D"+inp.rank  +"%26emblem%3D"  + inp.emblem;
+    }
+   
+    const IosLink = () =>{
+        return "https://gym-king.herokuapp.com/Model/iOS?rank="+inp.rank  +"&emblem="  + inp.emblem;
+    }
     
+    const validInputs = () =>{
+        const embID:string[] = ["bicep","clean","cycle","dumbell","gym","pullup","run", "situp","treadmill"];
+        const rankID:string[] = ["b","s","g"];
+
+        let valid = false;
+
+        embID.forEach(element => {
+            if(inp.emblem === element) valid = true
+        });
+
+        if(!valid) return false
+
+        valid = false
+        rankID.forEach(element => {
+            if(inp.rank === element) valid = true
+        });
+
+        return valid
+    }
+
     const IsiOS = () =>{
         return [
             'iPad Simulator',
@@ -38,30 +65,45 @@ const AR: React.FC = () => {
         return ua.indexOf("android") > -1;
     }
     
-    
-    
-    
-    const ViewAR = () =>{  
-        console.log("ViewAR Clicked") ;                 
-        if(IsiOS() && selectedARanimation>=0 && selectedARanimation<ar_iOS_Links.length){
-            const anchor = document.createElement('a');
-            anchor.setAttribute('rel', 'ar');
-            anchor.appendChild(document.createElement('img'));
-            
-            console.log("isiOS:");
-            anchor.setAttribute('href', ar_iOS_Links[0] + "#canonicalWebPageURL=https://link.to.website.html");
-            anchor.click(); 
+    //=========================================================================================================//
+    /**
+     * Function that determines phone device an calls AR intent
+     * @requires rank a valid badge rank Identifier
+     * @requires emblem a valid badge emblem Identifier
+     * saves users location to a var
+     */    
+    const ViewAR = () =>{
+        console.log(AndroidLink());
+        if(validInputs()){
+
+            console.log("ViewAR Clicked") ; 
+            console.log(AndroidLink())                
+            if(IsiOS()){
+                const anchor = document.createElement('a');
+                anchor.setAttribute('rel', 'ar');
+                anchor.appendChild(document.createElement('img'));
+                
+                console.log("isiOS:");
+                anchor.setAttribute('href', IosLink()+ "#canonicalWebPageURL=https://link.to.website.html");
+                anchor.click(); 
+            }
+            else if (IsAndroid() ){
+                var href = "https://arvr.google.com/scene-viewer/1.0?";
+                href+="file="+AndroidLink();
+                href+="&mode=ar_preferred#Intent;";
+                href+="scheme=https;package=com.google.ar.core;";
+                href+="action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;";
+                href+="end;";
+                window.location.replace(href );
+                console.log("isAndroid:" + href);
+                
+            }
+            else{
+                setError({showError: true, message: "Your device is not AR compatible"});
+            }
         }
-        else if (IsAndroid() && selectedARanimation>=0 && selectedARanimation<ar_Android_Links.length){
-            var href = "https://arvr.google.com/scene-viewer/1.0?";
-            href+="file=" + ar_Android_Links[0];
-            href+="&mode=ar_only#Intent;";
-            href+="scheme=https;package=com.google.ar.core;";
-            href+="action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;";
-            href+="end;";
-            window.location.replace(href );
-            console.log("isAndroid:" + href);
-            
+        else{
+            setError({showError: true, message: "Badge-Model inputs are invalid"});
         }
     }
 
@@ -69,8 +111,16 @@ const AR: React.FC = () => {
     return (
         
         <>
+
+            <IonToast
+                isOpen={error.showError}
+                message={String(error.message)}
+                
+                onDidDismiss={() => setError({showError: false, message: "no error here"})}
+                duration={3000}
+            />
             <IonCard>
-                <IonButton color='primary' onClick={ViewAR}>View AR Test Model</IonButton>
+                <IonButton color='primary' onClick={ViewAR}>View Model</IonButton>
             </IonCard>
         </>
     )
