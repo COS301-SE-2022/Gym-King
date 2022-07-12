@@ -1,4 +1,4 @@
-import {IonButtons, IonToolbar, IonTitle, IonButton} from '@ionic/react';
+import {IonButtons, IonToolbar, IonTitle, IonButton, IonMenuButton} from '@ionic/react';
 import React from 'react'
 import './Toolbar.css'
 
@@ -10,15 +10,13 @@ export class ToolBar extends React.Component<ToolBarProps>{
         let username = this.props.username;
         return(
                 <IonToolbar mode='ios' class="toolbar" color="#0F005A" data-testid="tb">
-                    <IonButtons slot="start">
+                    <IonButtons slot="end">
                         <IonButton shape='round' className='profileImage'>
                         </IonButton>
                     </IonButtons>
                     <IonTitle>{username}</IonTitle>
-                    <IonButtons slot='end'>
-                        <button >
-                           
-                        </button>
+                    <IonButtons slot='start'>
+                             <IonMenuButton />
                     </IonButtons>
                 </IonToolbar>
         )
