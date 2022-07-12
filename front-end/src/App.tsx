@@ -39,6 +39,7 @@ import Leaderboard from './pages/Leaderboard/Leaderboard'
 import LoginPage from './pages/LoginPage/Login';
 import { RegisterPage } from './pages/CreateUserPage/Register';
 import {OTP} from './pages/OTP/OTP';
+import MyBadge from './pages/MyBadge/MyBadge'
 /*develop*/
 
 
@@ -103,6 +104,9 @@ const App: React.FC = () => (
         </Route>  
         <Route exact path='/OTP'>
           <OTP></OTP>
+        </Route>
+        <Route exact path ='/MyBadge'>
+          <MyBadge></MyBadge>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
