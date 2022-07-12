@@ -298,9 +298,14 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * POST save a gym user to the database.
+   * @param {string} email The email of the user.
+   * @param {string} name The name of the user.
+   * @param {string} surname The surname of the user. 
+   * @param {string} number The phone number of the user. 
+   * @param {string} username The username the user created.
+   * @param {string} password The password the user created (NOT ecrypted).
+   * @returns Returns params of completed insertion.
    */
   users
   .use(bodyParser.urlencoded({ extended: true }))
@@ -375,8 +380,8 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * DELETE - Delete a user from the database.
-   * @param {string} email email of user that is to be deleted.
+   * DELETE - Delete a user.
+   * @param {string} email unique email used to delete the user.
    * @returns message confirming deletion.
    */
   .use(bodyParser.urlencoded({ extended: true }))

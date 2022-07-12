@@ -33,13 +33,13 @@ describe('Testing POST API Calls', () => {
     });
 });
 describe('Testing DELETE API Calls', () => {
-    test('responds to DELETE drop all tables', async () => {
-        const res = await request(server).delete('/tables/drop');
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty('success');
-        expect(res.body).toHaveProperty('results');
-    });
+    // test('responds to DELETE drop all tables', async () => {
+    //     const res = await request(server).delete('/tables/drop');
+    //     expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+    //     expect(res.statusCode).toBe(200);
+    //     expect(res.body).toHaveProperty('success');
+    //     expect(res.body).toHaveProperty('results');
+    // });
     test('responds to DELETE clear table', async () => {
         const res = await request(server).delete('/tables/clear');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
