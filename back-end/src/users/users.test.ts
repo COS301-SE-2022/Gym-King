@@ -38,14 +38,14 @@ describe('Testing GET API Calls', () => {
 });
 describe('Testing POST API Calls', () => {
     test('responds to POST insert user', async () => {
-        const res = await request(server).post('/users/user?email=&name=&surname=&number=&username=&password=');
+        const res = await request(server).post('/users/user');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
         expect(res.body).toHaveProperty('results');
     });
     test('responds to POST insert claim', async () => {
-        const res = await request(server).post('/claims/claim?bid=&email=&username=&input1=&input2=&input3=&proof=');
+        const res = await request(server).post('/claims/claim');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');
@@ -53,7 +53,7 @@ describe('Testing POST API Calls', () => {
     });
     
     test('responds to POST login user', async () => {
-        const res = await request(server).post('/users/login?&username=&password=');
+        const res = await request(server).post('/users/login');
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('success');

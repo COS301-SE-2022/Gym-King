@@ -373,6 +373,12 @@ const users = express.Router()
 
     
   })
+  //=========================================================================================================//
+  /**
+   * DELETE - Delete a user from the database.
+   * @param {string} email email of user that is to be deleted.
+   * @returns message confirming deletion.
+   */
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
