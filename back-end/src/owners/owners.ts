@@ -52,9 +52,9 @@ const owners = express.Router()
    * @param 
    * @returns 
    */
-  .get("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
+  .get("/gyms/owned/:email", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query.email;
+      let query = req.params.email;
       const client = await pool.connect();
       let result = await client.query(
         "SELECT * from GYM WHERE G_ID IN (SELECT G_ID FROM GYM_OWNED WHERE email='" +

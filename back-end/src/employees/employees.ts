@@ -1,3 +1,5 @@
+import { badgeClaimRepository } from "../repositories/badge_claim.repository";
+
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
@@ -48,47 +50,39 @@ const employees = express.Router()
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET - returns all claims from a specific gym.
+   * @param {string} gid gym ID used to find claims.
+   * @returns list of claims belonging to a gym.
    */
-  .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
+  .get("/claims/gym/:gid", cors(corsOptions), async (req: any, res: any) => {
     try {
-      if (req.query.gid != null) {
-        let query = req.query.gid;
-        const client = await pool.connect();
-        let result = await client.query(
-          "SELECT * FROM BADGE_CLAIM " +
-            "WHERE B_ID IN (SELECT B_ID FROM BADGE " +
-            "WHERE G_ID = '" +
-            query +
-            "')"
-        );
-        const results = { success: true, results: result ? result.rows : null };
-        res.json(results);
-        client.release();
-      } else if (req.query.bid != null && req.query.email != null) {
-        let query = req.query;
-        const client = await pool.connect();
-        let result = await client.query(
-          "SELECT * FROM BADGE_CLAIM " +
-            "WHERE B_ID = '" +
-            query.bid +
-            "' AND email = '" +
-            query.email +
-            "'"
-        );
-        const results = { success: true, results: result ? result.rows : null };
-        res.json(results);
-        client.release();
-      }
+      let query = req.params.gid;
+      let result = await badgeClaimRepository.findByGID(query);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
       res.json(results);
     }
   })
-  
+  //=========================================================================================================//
+  /**
+   * GET - return claim of a user and a badge.
+   * @param {string} bid badge ID used to find claim.
+   * @param {string} email email used to find claim.
+   * @returns A claim made by user for badge.
+   */
+   .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.query;
+      let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+      res.json(result);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   //=========================================================================================================//
   /**
    * ...
@@ -266,25 +260,19 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * DELETE - Delete a claim.
+   * @param {string} bid unique bid used to delete the claim.
+   * @param {string} email unique email used to delete the claim.
+   * @returns message confirming deletion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .delete("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "DELETE FROM BADGE_CLAIM " +
-          "WHERE B_ID = '" +
-          query.bid +
-          "' AND email = '" +
-          query.email +
-          "'"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let query = req.body;
+      let result = await badgeClaimRepository.deleteClaim(query.bid,query.email);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);

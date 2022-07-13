@@ -18,6 +18,23 @@ export const badgeClaimRepository = GymKingDataSource.getRepository(badge_claim)
     findByBIDandEmail(bid: string, email:string) {
         return this.findOneBy({b_id: bid,email: email });
     },
+    async findByGID(gid: string){
+        const badge_claims = await GymKingDataSource
+        .getRepository(badge_claim)
+        .createQueryBuilder("badge_claim")
+        .where((qb) => {
+            const subQuery = qb
+                .subQuery()
+                .select("badge.b_id")
+                .from(badge, "badge")
+                .where("badge.g_id = :gid")
+                .getQuery()
+            return "badge_claim.b_id IN " + subQuery
+        })
+        .setParameter("gid", gid)
+        .getMany()
+        return badge_claims
+    },
     async saveClaim(bid: string, email: string, username: string, input1: string, input2: string, input3: string, proof: string) {
         const badgeEntity = new badge();
         const b = await badgeRepository.findByBID(bid);

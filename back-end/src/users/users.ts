@@ -335,33 +335,22 @@ const users = express.Router()
   .use(bodyParser.json())
   .use(bodyParser.raw())
   .post('/gyms/aroundme', cors(corsOptions), async (req: any, res: any) => {
-    
     try {
-      const client = await pool.connect();
       if (req.body.latCoord != null && req.body.longCoord != null) {
         let lat = parseFloat(req.body.latCoord);
         let long = parseFloat(req.body.longCoord);
         let rad = 20.0;
         if(req.body.radius != null) {rad = parseFloat(req.body.radius) }
-
         // SQL statement to get all gyms
-
         let outGyms = [];
         var gyms = await gymRepository.findAll();
-        console.log(gyms.rows)
-
-        gyms.rows.forEach(element => {
+        gyms.forEach(element => {
           // get magnitde between user and each gym coordinate
-
           let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
-
           // If magnitude is within radius then add it to the results
           if(magnitude <= rad){
             outGyms.push(element);
           }
-          console.log(magnitude);
-          
-          
         });
         const results = { 'success': true, 'results': outGyms };
         res.json(results);
@@ -369,14 +358,11 @@ const users = express.Router()
         res.status(400);
         res.json(  { 'success': false, 'results':'user coordinates not given'} );
       }
-      client.release();
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);
     }
-
-    
   })
   //=========================================================================================================//
   /**
