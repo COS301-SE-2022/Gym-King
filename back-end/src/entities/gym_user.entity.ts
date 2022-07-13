@@ -1,22 +1,29 @@
-import { Entity, Column, PrimaryColumn } from "typeorm"
-
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { badge_claim } from "./badge_claim.entity";
+import { badge_owned } from "./badge_owned.entity";
 @Entity()
 export class gym_user {
-    @PrimaryColumn({length : 320})
-    email : string
+    @PrimaryColumn({length: 320})
+    email: string
 
-    @Column({length : 100})
-    Name : string
+    @Column({length: 100})
+    name: string
 
-    @Column({length : 100})
-    Surname : string
+    @Column({length: 100})
+    surname: string
 
-    @Column({length : 10})
-    Number : string
+    @Column({length: 10})
+    number: string
 
-    @Column({length : 50})
-    Username : string
+    @Column({length: 50})
+    username: string
 
-    @Column({length : 300})
-    Password : string
+    @Column({length: 300})
+    password: string
+
+    @OneToMany(() => badge_claim, (badge_claim) => badge_claim.email)
+    claim_emails: badge_claim[]
+
+    @OneToMany(() => badge_owned, (badge_owned) => badge_owned.email)
+    owned_emails: badge_owned[]
 }
