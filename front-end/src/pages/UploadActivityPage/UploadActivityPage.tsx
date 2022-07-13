@@ -64,20 +64,20 @@ const UploadActivityPage: React.FC = () =>{
 
         // GET BADGES GET REQUEST 
         useEffect(()=>{
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
                 //console.log(response)
-                setB_id(response.results[0].b_id)
-                setAT( response.results[0].activitytype)
-                setDescription(response.results[0].badgechallenge)
-                setBadgename(response.results[0].badgename)
-                //setG_id(response.results[0].g_id)
+                setB_id(response.b_id)
+                setAT( response.activitytype)
+                setDescription(response.badgechallenge)
+                setBadgename(response.badgename)
+                //setG_id(response.g_id)
             })
             .catch(err => {console.log(err)})
-        } )
+        } ,[badgeId])
 
 
         // SEND CLAIM POST REQUEST 
@@ -86,8 +86,21 @@ const UploadActivityPage: React.FC = () =>{
             let i1= formData.i1;
             let i2= formData.i2;
             let i3= formData.i3;
-            fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
-                "method":"POST"
+            fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+                "method":"POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    bid: b_id,
+                    email: email,
+                    username: username,
+                    input1: i1,
+                    input2: i2,
+                    input3: i3,
+                    proof: "PROOF"
+                })
             })
             .then(response =>response.json())
             .then(response =>{

@@ -56,19 +56,19 @@ const EditBadge: React.FC = () =>{
         
         // GET BADGES REQUEST 
         useEffect( ()=>{
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
-                setActivityType( response.results[0].activitytype)
-                setDescription(response.results[0].badgedescription)
-                setBadgename(response.results[0].badgename)
-                setChallenge(response.results[0].badgechallenge)
-                setGymId(response.results[0].g_id)
+                setActivityType( response.activitytype)
+                setDescription(response.badgedescription)
+                setBadgename(response.badgename)
+                setChallenge(response.badgechallenge)
+                setGymId(response.g_id)
             })
             .catch(err => {console.log(err)})
-        } )
+        },[badgeId])
     
 
         // UPDATE BADGE PUT REQUEST 

@@ -10,12 +10,12 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         useEffect(()=>
         {
             
-            fetch(`https://gym-king.herokuapp.com/badges/gym?gid=${props.gymID}`,{
+            fetch(`https://gym-king.herokuapp.com/badges/gym/${props.gymID}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
-                setBadges(response.results)
+                setBadges(response)
             })
             .catch(err => {console.log(err)})
         },[props.gymID])
