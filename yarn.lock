@@ -47,6 +47,13 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
+"@awesome-cordova-plugins/device-motion@^5.44.0":
+  version "5.44.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/device-motion/-/device-motion-5.44.0.tgz#87e74cd6310a4f356752f7172c256646df919eae"
+  integrity sha512-43w64Pq/lTpeOK5oRLEbDfAm1OXNlWojm2TKRDYHlOfENXMwKI6le7zeXGv44TvJP29JgKYn4TyyaDF1nV5mFA==
+  dependencies:
+    "@types/cordova" latest
+
 "@axe-core/playwright@^4.4.2":
   version "4.4.2"
   resolved "https://registry.npmjs.org/@axe-core/playwright/-/playwright-4.4.2.tgz"
@@ -1106,10 +1113,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@capacitor/android@3.5.1":
-  version "3.5.1"
-  resolved "https://registry.npmjs.org/@capacitor/android/-/android-3.5.1.tgz"
-  integrity sha512-rjehS0+BQBlwoN8hUyrMuzexn/9QJsONb1kmN5uXcL8JuTEbv35fa7z0tSD4x1LKwUFd+3Zeuwt60QRuwijlmw==
+"@capacitor/android@^3.5.1", "@capacitor/android@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-3.6.0.tgz#60438a0614415c7c242dda48a031cd45335e067a"
+  integrity sha512-X6n0OLy7BE3c6qfVuL7UYyq/aIwEsqIAqtyDOwMdj5k+P1rLQVsGaWERXUtC0BGeoKBD5YgbWiyKwAwg5Spjdg==
 
 "@capacitor/app@1.1.1":
   version "1.1.1"
@@ -1352,6 +1359,13 @@
   version "5.36.0"
   resolved "https://registry.npmjs.org/@ionic-native/core/-/core-5.36.0.tgz"
   integrity sha512-lOrkktadlKYbYf1LrDyAtsu1JnQ0oCCdkOU7iHQ8oXnNOkMwobFfD2m62F1CoOr0u9LIkpYnZSPjng8lZbmbNw==
+  dependencies:
+    "@types/cordova" latest
+
+"@ionic-native/device-motion@^5.36.0":
+  version "5.36.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/device-motion/-/device-motion-5.36.0.tgz#36e8901dd611ac31d3e826b87da091eb43d30a58"
+  integrity sha512-+NVc4QCoEPlkd2ndrYIlTvZhGCUN/7cmPRmsj6i1yjBhxORk3Tr6mqdH2disVvVAngBKblHn6Eogj4+iHuj1Sg==
   dependencies:
     "@types/cordova" latest
 
@@ -5440,6 +5454,11 @@ copy-webpack-plugin@^9.0.1:
     normalize-path "^3.0.0"
     schema-utils "^3.1.1"
     serialize-javascript "^6.0.0"
+
+cordova-plugin-device-motion@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-device-motion/-/cordova-plugin-device-motion-2.0.1.tgz#7f6d974c4eb8fc5ae58e9aadd63d9fa502edec6d"
+  integrity sha512-MEsF8HBLYGZCXjRZ3mNqrLZensxBC6FZAuxwbW/7NeIBNoutwpN5hho7/p9JUISDYacQge4K2ahbnQyN4IUZNA==
 
 core-js-compat@^3.21.0, core-js-compat@^3.22.1:
   version "3.22.4"
@@ -11590,6 +11609,13 @@ react-dev-utils@^12.0.1:
     shell-quote "^1.7.3"
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
+
+react-device-motion@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-device-motion/-/react-device-motion-0.1.0.tgz#e99e7012c01e24692a429ec4a823306b03557b1f"
+  integrity sha512-Xjo9tyohTaSr3z7z3AzUT3fTbNVR5benEGwP3LgXmA8aMB0ZTDNT4NzRHmayE0Wo9pm3arJEWd0FrFh0iQFX+w==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-dom@^17.0.1:
   version "17.0.2"

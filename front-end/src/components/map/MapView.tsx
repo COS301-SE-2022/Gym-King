@@ -4,6 +4,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
 
+import gym from '../../icons/gym.png'
+import location from '../../icons/location.png'
+import recenter from '../../icons/recenter.png'
 import './MapView.css';
 interface LocationError {
     showError: boolean;
@@ -13,6 +16,8 @@ interface LocationError {
 
 const MapView: React.FC = () =>{
 
+    const maxZoom = 17.4
+    const minZoom = 13
     const [gyms, setGyms] = useState<{[key: string]: any}>([{
         key: "",
         g_id: "",
@@ -24,9 +29,12 @@ const MapView: React.FC = () =>{
     }]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const [postWaiting, setPostWaiting] = useState<boolean>(false);
     const [center, setCenter] = useState([0,0])
     const [zoom, setZoom] = useState(10)
     const [first, setFirst] = useState(true)
+
+    const [refresh, setRefresh] = useState(10)
 
     const [error, setError] = useState<LocationError>({showError: false});
     const [userLocation, setUserLoc] = useState([0,0])
@@ -40,14 +48,17 @@ const MapView: React.FC = () =>{
     const getLocation = async(load: boolean) => {
         try {
             
-        if(load) {setLoading(true)};
+        if(load) {
+            setLoading(true)
+            
+        };
             const position = await Geolocation.getCurrentPosition();
           
             setUserLoc([position.coords.latitude, position.coords.longitude]) 
 
             if(load){
                 setCenter([position?.coords.latitude, position?.coords.longitude]) 
-                setZoom(15) 
+                setZoom(17.4) 
             }
 
             setError({showError: false, message: "no error here"})
@@ -62,30 +73,29 @@ const MapView: React.FC = () =>{
     }    
 
     
-    const gymButtonClick=()=>{
+    const gymButtonClick=async ()=>{
         window.alert("The Gyms Menu will open Up");
-        window.location.href = "http://localhost:3000/Login";
+        //window.location.href = "http://localhost:3000/Login";
 
     }
-
-    const MINUTE_MS = 1000;
-    useEffect(() => {
-
+    
+    //=========================================================================================================//
+    /**
+     * Function that gets the location of nearby gyms
+     * @requires position users coordinates
+     * @returns all nearby gyms
+     */    
+    const getNearbyGyms = async () => {
+        
+        
         //=========================================================================================================//
         /**
-         * Function that gets the location of nearby gyms
-         * @requires position users coordinates
-         * @returns all nearby gyms
+         * POST request to get nearby gyms
+         * makes use of gym-king API
+         * @param userLocation
          */
-        const getNearbyGyms = async () => {
-        
-        
-            //=========================================================================================================//
-            /**
-             * POST request to get nearby gyms
-             * makes use of gym-king API
-             * @param userLocation
-             */
+        if(!postWaiting){
+            setPostWaiting(true);
             fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
                 method: 'POST',
                 headers: {
@@ -93,16 +103,20 @@ const MapView: React.FC = () =>{
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    latCoord: userLocation[0],
-                    longCoord: userLocation[1],
-                    radius: 10
+                    latCoord: center[0],
+                    longCoord: center[1],
+                    radius: Math.pow(1.5,(18-zoom))
                 })
             })
             .then(response =>response.json())
             .then(response =>{
+                
                 if(response.success){
+                    console.info(Math.pow(1.5,(18-zoom)))
+                    console.info(response.results)
                     setGyms(response.results);
-    
+                    setPostWaiting(false);
+
                 }else{
                     console.log(response.success)
                     console.log(response.results)
@@ -112,24 +126,28 @@ const MapView: React.FC = () =>{
                 console.log(err);
             })
         }
+        
+    }
+    
+    useEffect(() => {
 
-
-
-        if(first)getLocation(true);
         const interval = setInterval(() => {
-            if(first){setFirst(false)}
+            getLocation(first);
+            if(first){
+                setFirst(false)
+                setRefresh(10000)
+            }
             console.log("Map Refresh")
 
-            getLocation(false);
             
             getNearbyGyms();
-        }, MINUTE_MS);
+        }, refresh);
         
         return () => 
         {
             clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
         }
-    }, [userLocation,center,first])
+    })
     return (
         
         <>
@@ -145,38 +163,51 @@ const MapView: React.FC = () =>{
                 onDidDismiss={() => setError({showError: false, message: "no error here"})}
                 duration={3000}
             />
-            
+
             <Map 
                 provider={stamenToner}
-                height={900}
                 center={[center[0],center[1]]}
                 zoom={zoom} 
-                
+                maxZoom={maxZoom}
+                minZoom={minZoom}
+                zoomSnap={false}
                 onBoundsChanged={({ center, zoom }) => { 
-                    setCenter(center) 
-                    setZoom(zoom) 
+                    setCenter(center) ;
+                    setZoom(zoom) ;
+                    
+                    getLocation(false)
+                    getNearbyGyms()
                 }} 
                 
             >
-                
-                <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
-                <img src='https://icons-for-free.com/iconfiles/png/512/svg+location+locator+map+navigation+user+user+location+icon-1320184910707394703.png' width={50} height={50} alt='' />
+                <button id="float" onClick={() => { 
+                    
+                    getLocation(true)
+                    getNearbyGyms()
+                }}>
+                    <i id="fa fa-plus my-float"></i>
+                    <img src={recenter} alt =""></img>
+                </button>
+                <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
+                <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-
-                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; }) => {
+                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:number}) => {
                     return (
                         <Overlay 
-                            key="{item}"
+                            key={item.gid}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
-                            offset={[30,30]} 
+                            offset={[15,30]} 
+                            
                         > 
-                            <img onClick={gymButtonClick} id = "GymPicture" src='https://www.seekpng.com/png/full/309-3093415_gym-building-sport-training-svg-png-icon-free.png' width={50} height={50} alt='' />
+                            <img onClick={gymButtonClick} id = "GymPicture" src={gym} alt='' />
                         </Overlay> 
                     )                 
                 })}
 
+            
+
             </Map>
-                
+            
                 
         </>
     )
