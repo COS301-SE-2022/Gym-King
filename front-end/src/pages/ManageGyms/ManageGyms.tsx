@@ -1,5 +1,5 @@
 import {IonContent, IonPage, IonHeader, IonText, IonButton} from '@ionic/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './ManageGyms.css';
@@ -10,10 +10,22 @@ const gymList=[
     { id:4,name:'planet fitness 4',address:"126 street"},
 ]
 const ManageGyms: React.FC = () =>{
+    useEffect(()=>
+        {
+            var email="u20519517@tuks.co.za"
+            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${email}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+            })
+            .catch(err => {console.log(err)})
+        },[])
     return(
         <IonPage >
             <IonHeader>
-                <ToolBar></ToolBar>
+                <ToolBar menu={false}></ToolBar>
             </IonHeader>
             <br></br>
             <IonContent fullscreen className='Content'>
