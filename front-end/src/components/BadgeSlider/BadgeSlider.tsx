@@ -6,7 +6,6 @@ import Bronze from '../../badges/rank/bronze.png'
 import Gold from '../../badges/rank/gold.png'
 import Silver from '../../badges/rank/silver.png'
 
-
 import bicep from '../../badges/emblem/bicep.png'
 import clean from '../../badges/emblem/clean.png'
 import cycle from '../../badges/emblem/cycle.png'
@@ -60,12 +59,14 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         await setActvieRankId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieRank(Bronze);
+            setActvieARRank("b");
         }else if(swiper.activeIndex===1){
             setActvieRank(Silver);
+            setActvieARRank("s");
         }else{
             setActvieRank(Gold);
+            setActvieARRank("g");
         }
-        await setActvieARRank( encodeRank() )
         await setBadgeIcon();
     };
 
@@ -74,60 +75,36 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         await setActvieEmblemId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieEmblem(bicep);
+            setActvieAREmblem("bicep");
         }else if(swiper.activeIndex===1){
             setActvieEmblem(clean);
+            setActvieAREmblem("clean");
         }else if(swiper.activeIndex===2){
             setActvieEmblem(cycle);
+            setActvieAREmblem("cycle");
         }else if(swiper.activeIndex===3){
             setActvieEmblem(dumbell);
+            setActvieAREmblem("dumbell");
         }else if(swiper.activeIndex===4){
             setActvieEmblem(gym);
+            setActvieAREmblem("gym");
         }else if(swiper.activeIndex===5){
             setActvieEmblem(pullup);
+            setActvieAREmblem("pullup");
         }else if(swiper.activeIndex===6){
             setActvieEmblem(running);
+            setActvieAREmblem("running");
         }else if(swiper.activeIndex===7){
             setActvieEmblem(situp);
+            setActvieAREmblem("situp");
         }else{
             setActvieEmblem(treadmill);
+            setActvieAREmblem("treadmill");
         }
-        await setActvieAREmblem( encodeEmblem() )
         await setBadgeIcon();
     };
 
-    const encodeRank=() =>{
-        const swiper =  mySlides1.current.getSwiper();
-        if(swiper.activeIndex===0){
-            return "b"
-        }else if(swiper.activeIndex===1){
-            return "s"
-        }else{
-            return "g"
-        }
 
-    }    
-    const encodeEmblem=() =>{
-        const swiper =  mySlides2.current.getSwiper();
-        if(swiper.activeIndex===0){
-            return "bicep"
-        }else if(swiper.activeIndex===1){
-            return "clean"
-        }else if(swiper.activeIndex===2){
-            return "cycle"
-        }else if(swiper.activeIndex===3){
-            return "dumbell"
-        }else if(swiper.activeIndex===4){
-            return "gym"
-        }else if(swiper.activeIndex===5){
-            return "pullup"
-        }else if(swiper.activeIndex===6){
-            return "run"
-        }else if(swiper.activeIndex===7){
-            return "situp"
-        }else{
-            return "treadmill"
-        }
-    }
     setBadgeIcon();
     return (
         <>
