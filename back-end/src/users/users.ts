@@ -1,19 +1,19 @@
+import { gym_owner } from "../entities/gym_owner.entity";
 import { badgeRepository } from "../repositories/badge.repository";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { gymRepository } from "../repositories/gym.repository";
+import { employeeRepository } from "../repositories/gym_employee.repository";
+import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
 
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
 const bodyParser = require('body-parser');
-
 const fs = require('fs');
 
 //=============================================================================================//
 //Helper Functions 
 //=============================================================================================//
-
   //=========================================================================================================//
   /**
    * Helper functions to get the distance between two coordinates
@@ -48,8 +48,6 @@ const fs = require('fs');
       return Value * Math.PI / 180;
   }
 
-
-
 //=============================================================================================//
 // USER API
 //=============================================================================================//
@@ -66,23 +64,10 @@ const corsOptions = {
     }
   },
 };
-const pool = (() => {
-  if (process.env.NODE_ENV !== 'production') {
-      return new Pool({
-          connectionString: process.env.DATABASE_URL,
-          ssl: {
-            rejectUnauthorized: false
-          }
-      });
-  } else {
-      return new Pool({
-          connectionString: process.env.DATABASE_URL,
-          ssl: {
-              rejectUnauthorized: false
-            }
-      });
-  } })
-();
+
+//=============================================================================================//
+// USER ROUTER
+//=============================================================================================//
 const users = express.Router()
   .options('*', cors(corsOptions))
   //=========================================================================================================//
@@ -143,20 +128,15 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET to return all owned badges from gym users who own gyms badges.
+   * @param {string} gid gym ID.
+   * @returns List of all badges, with usersnames and amount of times they earned that badge.
    */
-  .get('/leaderboard/score', cors(corsOptions), async (req: any, res: any) => {
+  .get('/leaderboard/score/:gid', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query.gid;
-      const client = await pool.connect();
-      let result = await client.query("SELECT iv.B_id, b.Badgename, iv.Username, iv.Count, b.Activitytype FROM BADGE as b "+ 
-      "inner join ( SELECT B_ID, Username, Count FROM BADGE_OWNED WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '"+query+"' ) ) as iv "+
-      "on b.B_id = iv.B_id");
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( results );
-      client.release();
+      let query = req.params.gid;
+      const result = await badgeRepository.getLeaderboardByGID(query);
+      res.json(result)
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -165,42 +145,41 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * GET to get badge model by its name for IOS
-   * @param {string} id The name of the badge model
+   * GET to get badge model by its name for iOS.
+   * @param {string} rank rank of badge. g b or s.
+   * @param {string} emblem emblem name of badge.
    * @returns {USDZ file}
    */
-  .get('/Model/iOS/AR0', cors(corsOptions), async(req: any, res: any)=>{
-      const file = './src/assets/models/AR0.usdz';
-      fs.access(file, fs.F_OK, (err: any) => {
-        if (err) {
-          
-          const results = { success: false, results: "404 Badge model not found" };
-          res.json(results);
-          return
-        }
-        res.download(file); 
-      })
-    
+  .get('/Model/iOS/', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.query;
+    const file = './src/assets/models/IOS/'+query.rank+'_'+query.emblem+'.usdz';
+    fs.access(file, fs.F_OK, (err: any) => {
+      if (err) {
+        const results = { success: false, results: "404 Badge model not found" };
+        res.json(results);
+        return
+      }
+      res.download(file); 
+    }) 
   })
   //=========================================================================================================//
   /**
-   * GET to get badge model by its name for Android
-   * @param {string} id The name of the badge model
+   * GET to get badge model by its name for Android.
+   * @param {string} rank rank of badge. g b or s.
+   * @param {string} emblem emblem name of badge.
    * @returns {GLB file}
    */
-  .get('/Model/Android/AR0', cors(corsOptions), async(req: any, res: any)=>{
-
-      const file = './src/assets/models/concept.glb';
+  .get('/Model/Android/', cors(corsOptions), async(req: any, res: any)=>{
+      const query = req.query
+      const file = './src/assets/models/ANDROID/'+query.rank+'_'+query.emblem+'.glb';
       fs.access(file, fs.F_OK, (err: any) => {
         if (err) {
-          
           const results = { success: false, results: "404 Badge model not found" };
           res.json(results);
           return
         }
         res.download(file); 
       })
-
   })
   //=========================================================================================================//
   /**
@@ -229,9 +208,11 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * POST user login.
+   * @param {string} username Username of the user.
+   * @param {string} password Password of the user.
+   * @param {string} usertype Type of user.
+   * @returns A message saying success true.
    */
   users
   .use(bodyParser.urlencoded({ extended: true }))
@@ -239,61 +220,53 @@ const users = express.Router()
   .use(bodyParser.raw())
   .post('/users/login', cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
-
+      const bcrypt = require('bcryptjs');
       let query = req.body;
-      const client = await pool.connect();
-      
       if (query.username != null && query.password != null && query.usertype != null) {
-        
         let uT = query.usertype;
         if(query.usertype !== "gym_owner" && query.usertype !== "gym_employee"){
           uT="gym_user";
         }
         let uN=query.username;
-        let uP = query.password;
-        var result = await client.query(
-          "SELECT * FROM "+uT +
-            " WHERE Username = '" +
-            uN +"'"
-            
-        );
-        if(result.rows == null) {
-          res.status(404); 
-          res.json( { 'success': false, 'results':'invalid username or password'} );
-          client.release();
+        let uP=query.password;
+        let result:any;
+        if (uT == "gym_employee") {
+          result = await employeeRepository.findByUsername(uN);
+        }
+        else if (uT == "gym_owner") {
+          result = await ownerRepository.findByUsername(uN);
         }
         else {
-          if(result.rows.length==0) {
+          result = await userRepository.findByUsername(uN);
+        }
+        if(result == null) {
+          res.status(404); 
+          res.json( { 'success': false, 'results':'invalid username or password'} );
+        }
+        else {
+          if(result.length==0) {
             res.status(404);
             res.json( { 'success': false, 'results':'invalid username or password'} );
-            client.release();
           }
           else{
-            let hashPass = result.rows[0].password;
+            let hashPass = result.password;
             if(!bcrypt.compareSync(uP, hashPass)) {
               res.status(400);
               res.json( { 'success': false, 'results':"invalid password" } );
-              client.release();
             }else{
-              const results = { 'success': true, 'results': (result) ? result.rows : null};
+              const results = { 'success': true };
               res.json( results );
-              client.release();
             }
           }
-        
         }
-    }else {
-      res.status(400);
-      res.json(  { 'success': false, 'results':'missing username or password'} );
-      client.release();
-    }
-
+      }else {
+        res.status(400);
+        res.json(  { 'success': false, 'results':'missing username or password'} );
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);
-      
     }
   })
   //=========================================================================================================//
@@ -376,5 +349,4 @@ const users = express.Router()
     const result = await userRepository.deleteUser(req.body.email)  
     res.json(result)
   })
-  
 export {users}

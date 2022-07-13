@@ -1,5 +1,6 @@
 import { GymKingDataSource } from "../datasource";
 import { badge } from "../entities/badge.entity";
+import { badge_owned } from "../entities/badge_owned.entity";
 import { gym } from "../entities/gym.entity";
 import { gymRepository } from "./gym.repository";
 
@@ -18,6 +19,11 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
     },
     findByGID(gid: string) {
         return this.find({ g_id: gid });
+    },
+    async getLeaderboardByGID(gid: string){
+        return badgeRepository.query(`SELECT iv.B_id, b.Badgename, iv.Username, iv.Count, b.Activitytype FROM BADGE as b  
+        inner join (SELECT B_ID, Username, Count FROM BADGE_OWNED WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '${gid}')) as iv 
+        on b.B_id = iv.B_id`)
     },
     async saveBadge(bid: string, gid: string, badgename: string, badgedescription: string, badgechallenge: string, at: string, badgeicon: string) {
         const result = await gymRepository.findByGID(gid);
@@ -39,6 +45,6 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
         return this.manager.save(badge);
     },
     deleteBadge(bid: string) {
-        return this.manager.delete(badge, bid)
+        return this.manager.delete(badge, {b_id: bid})
     }
 })
