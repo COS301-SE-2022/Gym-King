@@ -46,7 +46,7 @@ const MyBadge: React.FC = () =>{
     return(
         <IonPage >
             <IonHeader>
-                <ToolBar></ToolBar>
+                <ToolBar menu={false}></ToolBar>
             </IonHeader>
             <br></br>
             <IonContent fullscreen class="MyBadgeContent" className='Content'>

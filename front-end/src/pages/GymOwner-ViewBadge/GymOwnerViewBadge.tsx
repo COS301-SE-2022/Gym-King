@@ -13,7 +13,7 @@ const GymOwnerViewBadge: React.FC = () =>{
         useEffect(()=>
         {
             var email="u20519517@tuks.co.za"
-            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${email}`,{
+            fetch(`https://gym-king.herokuapp.com/gyms/owned/email=${email}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -43,7 +43,7 @@ const GymOwnerViewBadge: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>View Badges</IonText>
-                    <IonButton href="http://localhost:3000/CreateBadge">CREATE BADGE</IonButton>
+                    <IonButton href={"http://"+window.location.host+"/CreateBadge"}>CREATE BADGE</IonButton>
                     <IonAccordionGroup>
                     {badgeList.map(el => 
                         <IonAccordion key={el.GymID} value={el.GymID}>
