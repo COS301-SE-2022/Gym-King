@@ -64,12 +64,12 @@ const Leaderboard: React.FC = () =>{
                 }
             return bflag;
         }
-        fetch(`https://gym-king.herokuapp.com/leaderboard/score?gid=${gymid}`,{
+        fetch(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`,{
             "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
-            let results=response.results;
+            let results=response;
             
             console.log(results)
 
