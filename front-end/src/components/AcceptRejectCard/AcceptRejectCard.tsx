@@ -15,7 +15,15 @@ export class AcceptRejectCard extends React.Component<props>{
 
     acceptClaim= ()=>{
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.props.badgeId}&email=${this.props.userID}`,{
-            "method":"PUT"
+            "method":"PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                bid: this.props.badgeId,
+                email: this.props.userID
+            })
         })
         .then(response =>response.json())
         .then(response =>{

@@ -13,7 +13,7 @@ const ManageGyms: React.FC = () =>{
     useEffect(()=>
         {
             var email="u20519517@tuks.co.za"
-            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${email}`,{
+            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
