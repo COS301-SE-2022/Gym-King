@@ -1,7 +1,7 @@
 import { GymKingDataSource } from "../datasource";
-import { gym_user } from "../entities/gym_user.entity";
+import { gym_owner } from "../entities/gym_owner.entity";
 
-export const userRepository = GymKingDataSource.getRepository(gym_user).extend({
+export const ownerRepository = GymKingDataSource.getRepository(gym_owner).extend({
     findAll() {
         return this.find();
     },
@@ -23,18 +23,18 @@ export const userRepository = GymKingDataSource.getRepository(gym_user).extend({
     findByUsername(username: string) {
         return this.findOneBy({ username: username });
     },
-    saveUser(email: string, name: string, surname: string, number: string, username: string, password: string) {
+    saveOwner(email: string, name: string, surname: string, number: string, username: string, password: string) {
         const bcrypt = require('bcryptjs')
-        const user = new gym_user();
-        user.email = email;
-        user.name = name;
-        user.surname = surname;
-        user.number = number;
-        user.username = username;
-        user.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
-        return this.manager.save(user);
+        const owner = new gym_owner();
+        owner.email = email;
+        owner.name = name;
+        owner.surname = surname;
+        owner.number = number;
+        owner.username = username;
+        owner.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
+        return this.manager.save(owner);
     },
-    deleteUser(email: string) {
-        return this.manager.delete(gym_user, {email: email})
+    deleteOwner(email: string) {
+        return this.manager.delete(gym_owner, {email: email})
     }
 })

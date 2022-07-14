@@ -22,6 +22,6 @@ export const gymRepository = GymKingDataSource.getRepository(gym).extend({
         return this.manager.save(newGym);
     },
     deleteGym(gid: string) {
-        return this.manager.delete(gym, gid)
+        return this.manager.delete(gym, {g_id: gid})
     }
 })

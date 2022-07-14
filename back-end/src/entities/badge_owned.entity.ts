@@ -29,5 +29,5 @@ export class badge_owned {
     @PrimaryColumn({type: "varchar",length: 320})
     @ManyToOne(() => gym_user, (gym_user) => gym_user.email)
     @JoinColumn({name: "email"})
-    email: badge
+    email: gym_user
 }
