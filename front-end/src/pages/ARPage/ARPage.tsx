@@ -7,7 +7,7 @@ const ARPage: React.FC = () => {
 
       </IonHeader>
       <IonContent>
-        <AR rank ="g" emblem = "cycle"></AR>
+        <AR rank ="b" emblem = "bicep"></AR>
       </IonContent>
     </IonPage>
   );

@@ -13,8 +13,6 @@ export interface ARInputProps {
     emblem: string    
 }
 
-
-
 const AR: React.FC<ARInputProps> = ( inp ) => {
  
     const [error, setError] = useState<inputError>({showError: false});
@@ -77,7 +75,9 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
         if(validInputs()){
 
             console.log("ViewAR Clicked") ; 
-            console.log(AndroidLink())                
+            console.log(AndroidLink())     
+            
+            console.log(IosLink())            
             if(IsiOS()){
                 const anchor = document.createElement('a');
                 anchor.setAttribute('rel', 'ar');
@@ -107,11 +107,8 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
         }
     }
 
-
     return (
-        
         <>
-
             <IonToast
                 isOpen={error.showError}
                 message={String(error.message)}
