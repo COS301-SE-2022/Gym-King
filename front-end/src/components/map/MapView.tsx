@@ -1,4 +1,4 @@
-import { IonLoading, IonToast } from "@ionic/react";
+import { CreateAnimation, IonBadge, IonButton,  IonLoading, IonText, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -8,6 +8,7 @@ import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
+import { infinite } from "ionicons/icons";
 interface LocationError {
     showError: boolean;
     message?: String;
@@ -15,7 +16,10 @@ interface LocationError {
 }
 
 const MapView: React.FC = () =>{
-
+    
+    //=========================================================================================================//
+    //                                                       MAP                                               //
+    //=========================================================================================================//
     const maxZoom = 17.4
     const minZoom = 13
     const [gyms, setGyms] = useState<{[key: string]: any}>([{
@@ -37,7 +41,10 @@ const MapView: React.FC = () =>{
     const [refresh, setRefresh] = useState(10)
 
     const [error, setError] = useState<LocationError>({showError: false});
-    const [userLocation, setUserLoc] = useState([0,0])
+    const [userLocation, setUserLoc] = useState([0,0]);
+
+    // Gym Menu
+    const [hidden, setHidden] = useState<boolean>(true);
 
     //=========================================================================================================//
     /**
@@ -48,10 +55,10 @@ const MapView: React.FC = () =>{
     const getLocation = async(load: boolean) => {
         try {
             
-        if(load) {
-            setLoading(true)
-            
-        };
+            if(load) {
+                setLoading(true)
+                
+            };
             const position = await Geolocation.getCurrentPosition();
           
             setUserLoc([position.coords.latitude, position.coords.longitude]) 
@@ -74,9 +81,11 @@ const MapView: React.FC = () =>{
 
     
     const gymButtonClick=async ()=>{
+        
         window.alert("The Gyms Menu will open Up");
         //window.location.href = "http://localhost:3000/Login";
-
+        
+        setHidden(false)
     }
     
     //=========================================================================================================//
@@ -148,9 +157,11 @@ const MapView: React.FC = () =>{
             clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
         }
     })
+
     return (
         
         <>
+            
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}
@@ -177,7 +188,13 @@ const MapView: React.FC = () =>{
                     
                     getLocation(false)
                     getNearbyGyms()
+                    setHidden(true);
                 }} 
+                onAnimationStart={()=>{
+                    setHidden(true);
+                    
+                }}
+                
                 
             >
                 <button id="float" onClick={() => { 
@@ -204,10 +221,37 @@ const MapView: React.FC = () =>{
                     )                 
                 })}
 
+                
             
 
             </Map>
+            <CreateAnimation
+                duration={500}
+                fromTo={    {
+                    property: 'transform',
+                    fromValue: 'translateY(0) rotate(0)',
+                    toValue: `translateY(-20vh) rotate(0)`,
+                }}
+                easing="ease-in"
+                play={!hidden}
+                
+                stop={hidden}
+                
+                
+                
+            >
+
+                
+                
+                
+            <IonBadge id = "overlay">
+                
+                <IonText className='center inputHeading'>Gym Name</IonText>
+                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">View Gym</IonButton>
+
+            </IonBadge>
             
+            </CreateAnimation>
                 
         </>
     )
