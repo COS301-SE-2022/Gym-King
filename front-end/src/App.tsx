@@ -41,6 +41,7 @@ import { RegisterPage } from './pages/CreateUserPage/Register';
 import {OTP} from './pages/OTP/OTP';
 import MyBadge from './pages/MyBadge/MyBadge'
 import ManageGyms from './pages/ManageGyms/ManageGyms';
+import UserProfilePage from './pages/Profile/UserProfile';
 /*develop*/
 
 
@@ -109,6 +110,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/ManageGyms">
           <ManageGyms></ManageGyms>
+        </Route>
+        <Route exact path="/UserProfile">
+          <UserProfilePage></UserProfilePage>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
