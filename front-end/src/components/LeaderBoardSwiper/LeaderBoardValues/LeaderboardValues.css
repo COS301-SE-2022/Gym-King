@@ -1,34 +1,14 @@
 
 .FirstPlace{
-    border: 1px;
-    border-style: solid;
-    border-color: rgb(153, 153, 37);
-    box-shadow:
-    0px 0px  4px 4px rgb(153, 153, 37),  /* inner white */
-    0px 0px 6px 6px  rgb(173, 173, 89), /* middle magenta */
-    0px 0px 10px 10px rgb(209, 209, 174); /* outer cyan */
-    
-
+    background-color:#2fe9f7;
 }
 .SecondPlace{
-    border: 1px;
-    border-style: solid;
-    border-color: rgb(133, 156, 153);
-    box-shadow:
-    0px 0px  3px 3px  rgb(133, 156, 153),  /* inner white */
-    0px 0px 4px 4px  rgb(192, 206, 204), /* middle magenta */
-    0px 0px 6px 6px rgb(220, 226, 225); /* outer cyan */
+    background-color:#ffc409;
+
     
 }
 .ThirdPlace{
-    border: 1px;
-    border-style: solid;
-    border-color: rgb(190, 101, 28);
-    box-shadow:
-    0px 0px  2px 2px  rgb(190, 101, 28),  /* inner white */
-    0px 0px 3px 3px rgb(184, 120, 67), /* middle magenta */
-    0px 0px 5px 5px rgb(221, 187, 159); /* outer cyan */
-    
+    background-color:#ff38bd;    
 }
 .You{
     border: 1px;
@@ -36,7 +16,22 @@
     border-color:white;
     border-radius: 5%;
     box-shadow:
-    0 0 2px 2px #fff,  /* inner white */
-    0 0 5px 5px #fff, /* middle magenta */
-    0 0 8px 8px #fff; /* outer cyan */
+    0 0 1px 1px #fff,  /* inner white */
+    0 0 1px 1px #fff, /* middle magenta */
+    0 0 5px 5px #fff; /* outer cyan */
+}
+
+.Leaderboard{
+    width:100%
+}
+
+ion-row{
+    padding:4px;
+    border-radius: 7px;
+    margin:0;
+}
+
+.light{
+    font-style: italic;
+    opacity: 80%;
 }

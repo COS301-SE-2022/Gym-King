@@ -11,9 +11,9 @@ export class  ActivityList extends React.Component<props>{
         if(this.props.activityCategory === 'cardio'){
             return(
                 <IonList>
-                    <IonItem>
-                        <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
+                    <IonItem >
+                        <IonGrid className='centerLeft grid'  >
+                            <IonRow className='left topMargin' style={{backgroundColor:'#'}}>
                                 <IonText className='Subheading'>Duration:</IonText>
                             </IonRow>
                         </IonGrid>
