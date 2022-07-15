@@ -8,7 +8,6 @@ import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
-import { infinite } from "ionicons/icons";
 interface LocationError {
     showError: boolean;
     message?: String;
