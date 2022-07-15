@@ -1,6 +1,5 @@
 import { GymKingDataSource } from "../datasource";
 import { badge } from "../entities/badge.entity";
-import { badge_owned } from "../entities/badge_owned.entity";
 import { gym } from "../entities/gym.entity";
 import { gymRepository } from "./gym.repository";
 
@@ -20,7 +19,10 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
     findByGID(gid: string) {
         return this.find({ g_id: gid });
     },
-    async getLeaderboardByGID(gid: string){
+    async updateBadge(bid: string, gid: string, badgename: string, badgedescription: string, badgechallenge: string, at: string, badgeicon: string) {
+        return await this.manager.update(badge, {b_id: bid, g_id: gid}, {badgename: badgename, badgedescription: badgedescription, badgechallenge: badgechallenge, activitytype: at, badgeicon: badgeicon})
+    },
+    async getLeaderboardByGID(gid: string) {
         return badgeRepository.query(`SELECT iv.B_id, b.Badgename, iv.Username, iv.Count, b.Activitytype FROM BADGE as b  
         inner join (SELECT B_ID, Username, Count FROM BADGE_OWNED WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '${gid}')) as iv 
         on b.B_id = iv.B_id`)
