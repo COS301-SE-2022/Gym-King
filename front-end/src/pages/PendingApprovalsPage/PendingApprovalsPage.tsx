@@ -1,5 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader,IonButton, IonIcon} from '@ionic/react';
-import { informationCircleOutline } from 'ionicons/icons';
+import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';

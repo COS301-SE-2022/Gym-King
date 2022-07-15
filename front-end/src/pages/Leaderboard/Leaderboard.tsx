@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
 import './Leaderboard.css';
-import {LeaderboardSwiper} from '../../components/LeaderBoardSwiper/LeaderboardSwiper'
 import LeaderboardValues from '../../components/LeaderBoardSwiper/LeaderBoardValues/LeaderboardValues';
 
 const Leaderboard: React.FC = () =>{
