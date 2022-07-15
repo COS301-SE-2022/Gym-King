@@ -1,4 +1,4 @@
-import { createAnimation, CreateAnimation, IonBadge, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonHeader,  IonLoading, IonModal, IonText, IonTitle, IonToast } from "@ionic/react";
+import { createAnimation,  IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonLoading, IonModal, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -44,7 +44,7 @@ const MapView: React.FC = () =>{
     const [userLocation, setUserLoc] = useState([0,0]);
 
     // Gym Menu Vars -----------------------------------------------------------------------------------------------//
-    const [hidden, setHidden] = useState<boolean>(true);
+
     const [gymMenuName, setgymMenuName] = useState<string>("");
 
     //=========================================================================================================//
@@ -86,9 +86,6 @@ const MapView: React.FC = () =>{
 
         setgymMenuName(name)
         setShowModal(true)
-        // 
-        setHidden(false)
-        setTimeout(() => {  }, 100);
     }
     
     //=========================================================================================================//
