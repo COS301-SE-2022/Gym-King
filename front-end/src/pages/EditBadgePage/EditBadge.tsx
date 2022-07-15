@@ -82,7 +82,20 @@ const EditBadge: React.FC = () =>{
             //console.log(formData);
             
             fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
-                "method":"PUT"
+                "method":"PUT",
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    bid: badgeId,
+                    gid: gymid,
+                    badgename: bn,
+                    badgedescription: bd,
+                    badgechallenge: bc,
+                    badgeicon: badgeicon,
+                    activitytype: at
+                 })
             })
             .then(response =>response.json())
             .then(response =>{
