@@ -20,7 +20,8 @@ export const Login: React.FC = () =>{
                 },
                 body: JSON.stringify({ 
                     username: formData.username,
-                    password: formData.password
+                    password: formData.password,
+                    usertype: formData.usertype
                  })
                 })
             .then(response =>response.json())
@@ -38,6 +39,7 @@ export const Login: React.FC = () =>{
                 console.log(err)
             })
     } 
+    
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
@@ -47,7 +49,7 @@ export const Login: React.FC = () =>{
             usertype: userType
         };
         console.log(formData)
-            loginSubmit();
+        loginSubmit();
         
     }
      const segmentChanged = (e: any)=>{
