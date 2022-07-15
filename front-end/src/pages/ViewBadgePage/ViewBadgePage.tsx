@@ -16,15 +16,15 @@ const ViewBadgePage: React.FC = () =>{
         //GET REQUEST:
         useEffect(()=>
         {
-            var gymid="lttD"
-            fetch(`https://gym-king.herokuapp.com/badges/gym?gid=${gymid}`,{
+            var gymid="wSek"
+            fetch(`https://gym-king.herokuapp.com/badges/gym/${gymid}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
                 console.log("this is the response")
                 console.log(response)
-                setBadges(response.results)
+                setBadges(response)
             })
             .catch(err => {console.log(err)})
         },[])

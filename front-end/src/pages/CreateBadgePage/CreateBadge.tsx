@@ -62,7 +62,7 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 
         // CREATE BADGE POST REQUEST 
         const createBadge=()=>{
-            let gid = gymId;   //temp value for testing 
+            let gid = 'uU3p';   //temp value for testing 
             let at = localStorage.getItem('act')
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
@@ -70,8 +70,20 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
             let bi = localStorage.getItem('badgeIcon');
 
  
-            fetch(`https://gym-king.herokuapp.com/badges/badge?gid=${gid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${bi}&at=${at}`,{
-                "method":"POST"
+            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+                "method":"POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    gid: gid,
+                    badgename: bn,
+                    badgedescription: bd,
+                    badgechallenge: bc,
+                    badgeicon: bi,
+                    activitytype: at,
+                })
             })
             .then(response =>response.json())
             .then(response =>{
@@ -87,12 +99,12 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
         // OWNED GYMS GET REQUEST 
         useEffect(()=>{
             let gymOwner = "u20519517@tuks.co.za"
-            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
+            fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
-                setOwnedGyms(response.results);
+                setOwnedGyms(response);
 
             })
             .catch(err => {console.log(err)}) 

@@ -6,20 +6,20 @@ import Bronze from '../../badges/rank/bronze.png'
 import Gold from '../../badges/rank/gold.png'
 import Silver from '../../badges/rank/silver.png'
 
-
 import bicep from '../../badges/emblem/bicep.png'
 import clean from '../../badges/emblem/clean.png'
 import cycle from '../../badges/emblem/cycle.png'
 import dumbell from '../../badges/emblem/dumbell.png'
 import gym from '../../badges/emblem/gym.png'
 import pullup from '../../badges/emblem/pullup.png'
-import running from '../../badges/emblem/running.png'
+import running from '../../badges/emblem/run.png'
 import situp from '../../badges/emblem/situp.png'
 import treadmill from '../../badges/emblem/treadmill.png'
 
 import BadgeCanvas from "../BadgeCanvas/BadgeCanvas";
 
 import './BadgeSlider.css';
+import AR from "../AR/AR";
 // Optional parameters to pass to the swiper instance.
 // See http://idangero.us/swiper/api/ for valid options.
 const slideOpts = {
@@ -45,6 +45,10 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
     const [activeRank,setActvieRank] = useState(Bronze);
     const [activeEmblem,setActvieEmblem] = useState(bicep);
 
+    
+    const [activeARRank,setActvieARRank] = useState("b");
+    const [activeAREmblem,setActvieAREmblem] = useState("bicep");
+
     const [activeRankId,setActvieRankId] = useState(0);
     const [activeEmblemId,setActvieEmblemId] = useState(0);
     const setBadgeIcon = async () => {
@@ -55,12 +59,14 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         await setActvieRankId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieRank(Bronze);
+            setActvieARRank("b");
         }else if(swiper.activeIndex===1){
             setActvieRank(Silver);
+            setActvieARRank("s");
         }else{
             setActvieRank(Gold);
+            setActvieARRank("g");
         }
-
         await setBadgeIcon();
     };
 
@@ -69,26 +75,35 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
         await setActvieEmblemId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieEmblem(bicep);
+            setActvieAREmblem("bicep");
         }else if(swiper.activeIndex===1){
             setActvieEmblem(clean);
+            setActvieAREmblem("clean");
         }else if(swiper.activeIndex===2){
             setActvieEmblem(cycle);
+            setActvieAREmblem("cycle");
         }else if(swiper.activeIndex===3){
             setActvieEmblem(dumbell);
+            setActvieAREmblem("dumbell");
         }else if(swiper.activeIndex===4){
             setActvieEmblem(gym);
+            setActvieAREmblem("gym");
         }else if(swiper.activeIndex===5){
             setActvieEmblem(pullup);
+            setActvieAREmblem("pullup");
         }else if(swiper.activeIndex===6){
             setActvieEmblem(running);
+            setActvieAREmblem("running");
         }else if(swiper.activeIndex===7){
             setActvieEmblem(situp);
+            setActvieAREmblem("situp");
         }else{
             setActvieEmblem(treadmill);
+            setActvieAREmblem("treadmill");
         }
-
         await setBadgeIcon();
     };
+
 
     setBadgeIcon();
     return (
@@ -123,12 +138,13 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             <IonSlide><img id = "dumbell"  src={dumbell} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "gym"  src={gym} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "pullup"  src={pullup} width={10} height={10} alt='' /></IonSlide>
-            <IonSlide><img id = "running"  src={running} width={10} height={10} alt='' /></IonSlide>
+            <IonSlide><img id = "run"  src={running} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "situp"  src={situp} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "treadmill"  src={treadmill} width={10} height={10} alt='' /></IonSlide>
             </IonSlides>
         </IonCard>
         <BadgeCanvas rank={activeRank} emblem = {activeEmblem}/>
+        <AR rank={activeARRank} emblem={activeAREmblem} ></AR>
 
     </>
     );

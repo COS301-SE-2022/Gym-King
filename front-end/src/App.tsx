@@ -39,6 +39,8 @@ import Leaderboard from './pages/Leaderboard/Leaderboard'
 import LoginPage from './pages/LoginPage/Login';
 import { RegisterPage } from './pages/CreateUserPage/Register';
 import {OTP} from './pages/OTP/OTP';
+import MyBadge from './pages/MyBadge/MyBadge'
+import ManageGyms from './pages/ManageGyms/ManageGyms';
 /*develop*/
 
 
@@ -55,7 +57,7 @@ const App: React.FC = () => (
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/home" />
+          <Redirect to="/Login" />
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
@@ -69,7 +71,6 @@ const App: React.FC = () => (
         <Route exact path='/AddGymLocation'>
           <AddGymLocation></AddGymLocation>
         </Route>
-
         <Route exact path='/UserMap'>
           <UserMap></UserMap>
         </Route>            
@@ -81,8 +82,7 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/Register'>
           <RegisterPage></RegisterPage>
-        </Route>
-           
+        </Route>         
         <Route exact path='/AcceptReject'>
           <AcceptRejectPage></AcceptRejectPage>
         </Route>
@@ -103,6 +103,12 @@ const App: React.FC = () => (
         </Route>  
         <Route exact path='/OTP'>
           <OTP></OTP>
+        </Route>
+        <Route exact path ='/MyBadge'>
+          <MyBadge></MyBadge>
+        </Route>
+        <Route exact path="/ManageGyms">
+          <ManageGyms></ManageGyms>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

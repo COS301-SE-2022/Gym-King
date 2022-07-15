@@ -1,4 +1,4 @@
-import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText} from '@ionic/react';
+import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import {personCircleOutline} from 'ionicons/icons';
@@ -15,7 +15,15 @@ export class AcceptRejectCard extends React.Component<props>{
 
     acceptClaim= ()=>{
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.props.badgeId}&email=${this.props.userID}`,{
-            "method":"PUT"
+            "method":"PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                bid: this.props.badgeId,
+                email: this.props.userID
+            })
         })
         .then(response =>response.json())
         .then(response =>{
@@ -27,8 +35,16 @@ export class AcceptRejectCard extends React.Component<props>{
         .catch(err => {console.log(err)})
     } 
     rejectClaim = () =>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.props.badgeId}&email=${this.props.userID}`,{
-            "method":"DELETE"
+        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+            "method":"DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                bid: this.props.badgeId,
+                email: this.props.userID
+            })
         })
         .then(response =>response.json())
         .then(response =>{
@@ -42,11 +58,11 @@ export class AcceptRejectCard extends React.Component<props>{
     render(){
         
         return(
-            <IonCard data-testid="ARC">
-                 <IonItem>
+            <IonCard data-testid="ARC" className="glass arCard">
+                 <div style={{backgroundColor: "#321E93"}}>
                     <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
                     <IonText className='username'>{this.props.username}</IonText>
-                </IonItem>
+                </div>
                 <IonCardContent>
                     <IonText className='Subheading'>
                         Badge:
@@ -66,7 +82,7 @@ export class AcceptRejectCard extends React.Component<props>{
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-                                <IonButton color='primary' onClick={this.acceptClaim}>Accept</IonButton>
+                                <IonButton color='warning' onClick={this.acceptClaim}>Accept</IonButton>
                             </IonCol>
                             <IonCol>
                                 <IonButton color='secondary' onClick={this.rejectClaim}>Reject</IonButton>
@@ -75,6 +91,7 @@ export class AcceptRejectCard extends React.Component<props>{
                     </IonGrid>
                 </IonCardContent>
             </IonCard>
+            
         )
         
     }

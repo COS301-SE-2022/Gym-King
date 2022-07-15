@@ -1,26 +1,26 @@
-import { Entity, Column, PrimaryColumn, ManyToOne } from "typeorm"
-import { gym } from "./gym.entity"
-
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { gym } from "./gym.entity";
 @Entity()
 export class gym_employee {
-    @PrimaryColumn({length : 320})
-    email : string
+    @PrimaryColumn({length: 320})
+    email: string
 
-    @ManyToOne(() => gym, (gym) => gym.G_ID)
-    G_ID : gym
+    @Column({length: 100})
+    name: string
 
-    @Column({length : 100})
-    Name : string
+    @Column({length: 100})
+    surname: string
 
-    @Column({length : 100})
-    Surname : string
+    @Column({length: 10})
+    number: string
 
-    @Column({length : 10})
-    Number : string
+    @Column({length: 50})
+    username: string
 
-    @Column({length : 50})
-    Username : string
+    @Column({length: 300})
+    password: string
 
-    @Column({length : 300})
-    Password : string
+    @ManyToOne(() => gym, (gym) => gym.g_id)
+    @JoinColumn({name: "g_id"})
+    g_id: gym
 }

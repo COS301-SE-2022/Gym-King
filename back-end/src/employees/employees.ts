@@ -1,9 +1,17 @@
+import { badgeRepository } from "../repositories/badge.repository";
+import { badgeClaimRepository } from "../repositories/badge_claim.repository";
+import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
+
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+
+const bodyParser = require('body-parser');
+
 const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:8100'
+  'http://localhost:8100',
+  'http://localhost:5000'
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -31,6 +39,15 @@ const pool = (() => {
     });
   }
 })();
+//=============================================================================================//
+//Helper Functions 
+//=============================================================================================//
+//=========================================================================================================//
+  /**
+   * Makes a generated ID given a size input.
+   * @param {number} size of the generated ID.
+   * @returns {string} Generated ID.
+   */
 function createID(length: any) {
   let ID = "";
   let characters =
@@ -40,44 +57,22 @@ function createID(length: any) {
   }
   return ID;
 }
+//=============================================================================================//
+// EMPLOYEE ROUTER
+//=============================================================================================//
 const employees = express.Router()
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET - returns all claims from a specific gym.
+   * @param {string} gid gym ID used to find claims.
+   * @returns list of claims belonging to a gym.
    */
-  .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
+  .get("/claims/gym/:gid", cors(corsOptions), async (req: any, res: any) => {
     try {
-      if (req.query.gid != null) {
-        let query = req.query.gid;
-        const client = await pool.connect();
-        let result = await client.query(
-          "SELECT * FROM BADGE_CLAIM " +
-            "WHERE B_ID IN (SELECT B_ID FROM BADGE " +
-            "WHERE G_ID = '" +
-            query +
-            "')"
-        );
-        const results = { success: true, results: result ? result.rows : null };
-        res.json(results);
-        client.release();
-      } else if (req.query.bid != null && req.query.email != null) {
-        let query = req.query;
-        const client = await pool.connect();
-        let result = await client.query(
-          "SELECT * FROM BADGE_CLAIM " +
-            "WHERE B_ID = '" +
-            query.bid +
-            "' AND email = '" +
-            query.email +
-            "'"
-        );
-        const results = { success: true, results: result ? result.rows : null };
-        res.json(results);
-        client.release();
-      }
+      let query = req.params.gid;
+      let result = await badgeClaimRepository.findByGID(query);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -86,36 +81,16 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET - return claim of a user and a badge.
+   * @param {string} bid badge ID used to find claim.
+   * @param {string} email email used to find claim.
+   * @returns A claim made by user for badge.
    */
-  .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
+   .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "INSERT INTO GYM_EMPLOYEE" +
-          "(email,g_id,name,surname,number,username,password) VALUES" +
-          "('" +
-          query.email +
-          "','" +
-          query.gid +
-          "','" +
-          query.name +
-          "','" +
-          query.surname +
-          "','" +
-          query.number +
-          "','" +
-          query.username +
-          "','" +
-          query.password +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -124,37 +99,24 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * POST - Insert a badge into the database.
+   * @param {string} gid email used to find claim.
+   * @param {string} badgename badge ID used to find claim.
+   * @param {string} badgedescription email used to find claim.
+   * @param {string} badgechallenge badge ID used to find claim.
+   * @param {string} badgeicon email used to find claim.
+   * @param {string} activitytype email used to find claim.
+   * @returns A claim made by user for badge.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .post("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
+      let query = req.body;
       let ID = createID(3);
-      let result = await client.query(
-        "INSERT INTO BADGE" +
-          "(B_ID,G_ID,BadgeName,BadgeDescription,BadgeChallenge,BadgeIcon,ActivityType) VALUES" +
-          "('" +
-          ID +
-          "','" +
-          query.gid +
-          "','" +
-          query.bn +
-          "','" +
-          query.bd +
-          "','" +
-          query.bc +
-          "','" +
-          query.bi +
-          "','" +
-          query.at +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let result = await badgeRepository.saveBadge(ID,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -163,70 +125,32 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * PUT - Update accepted badge_claim to badge_owned.
+   * @param {string} bid badge ID used to find badge.
+   * @param {string} email email used to find the user.
+   * @returns The badge_owned inserted or error message.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .put("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "SELECT * FROM BADGE_CLAIM " +
-          "WHERE B_ID = '" +
-          query.bid +
-          "' AND email = '" +
-          query.email +
-          "'"
-      );
-      const ret = result.rows[0];
-      result = await client.query(
-        "DELETE FROM BADGE_CLAIM " +
-          "WHERE B_ID = '" +
-          query.bid +
-          "' AND email = '" +
-          query.email +
-          "'"
-      );
-      result = await client.query(
-        "SELECT * FROM BADGE_OWNED " +
-          "WHERE B_ID = '" +
-          ret.b_id +
-          "' AND email = '" +
-          ret.email +
-          "'"
-      );
-      if (result.rows.length > 0) {
-        result = await client.query(
-          "UPDATE BADGE_OWNED SET " +
-            "count = count+1 WHERE b_id = '" +
-            ret.b_id +
-            "' AND email = '" +
-            ret.email +
-            "'"
-        );
-      } else {
-        result = await client.query(
-          "INSERT INTO BADGE_OWNED " +
-            "(B_ID,email,username,input1,input2,input3) VALUES" +
-            "('" +
-            ret.b_id +
-            "','" +
-            ret.email +
-            "','" +
-            ret.username +
-            "','" +
-            ret.input1 +
-            "','" +
-            ret.input2 +
-            "','" +
-            ret.input3 +
-            "')"
-        );
+      let query = req.body;
+      let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+      const ret = result;
+      if (ret != null){
+        result = await badgeClaimRepository.deleteClaim(ret.b_id, ret.email);
+        result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id,ret.email);
+        if (result != null) {
+          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+        } else {
+          result = await badgeOwnedRepository.saveOwned(ret.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+        }
+        res.json(result);
       }
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ ret, query });
-      client.release();
+      else {
+        res.status(404).json({'message': 'Claim does not exist.'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -235,34 +159,21 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * PUT - Update a badge.
+   * @param {string} bid badge ID used to find badge.
+   * @param {string} gid gym ID of the badge.
+   * @param {string} badgename edited badgename.
+   * @param {string} badgedescription edited badgedescription.
+   * @param {string} badgechallenge edited badgechallenge.
+   * @param {string} activitytype edited activitytype.
+   * @param {string} badgeicon edited badgeicon.
+   * @returns Message confirming update.
    */
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "UPDATE BADGE SET badgename='" +
-          query.bn +
-          "', badgedescription='" +
-          query.bd +
-          "',badgechallenge= '" +
-          query.bc +
-          "',badgeicon='" +
-          query.bi +
-          "',activitytype='" +
-          query.at +
-          "' WHERE b_id = '" +
-          query.bid +
-          "' AND g_id = '" +
-          query.gid +
-          "'"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json(results);
-      client.release();
+      let query = req.body;
+      let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -299,21 +210,61 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * DELETE - Delete a claim.
+   * @param {string} bid unique bid used to delete the claim.
+   * @param {string} email unique email used to delete the claim.
+   * @returns message confirming deletion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .delete("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
+      let query = req.body;
+      let result = await badgeClaimRepository.deleteClaim(query.bid,query.email);
+      res.json(result);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  });
+  //=========================================================================================================//
+  /**
+   * POST request to add an employee to the db
+   * encrypts user's password
+   * 
+   * @param {Employee Info}
+   * @returns http response packet
+   */
+  employees
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
+
+   .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
       const client = await pool.connect();
       let result = await client.query(
-        "DELETE FROM BADGE_CLAIM " +
-          "WHERE B_ID = '" +
-          query.bid +
-          "' AND email = '" +
+        "INSERT INTO GYM_EMPLOYEE" +
+          "(email,g_id,name,surname,number,username,password) VALUES" +
+          "('" +
           query.email +
-          "'"
+          "','" +
+          query.gid +
+          "','" +
+          query.name +
+          "','" +
+          query.surname +
+          "','" +
+          query.number +
+          "','" +
+          query.username +
+          "','" +
+          bcrypt.hashSync(query.password, bcrypt.genSaltSync()) +
+          "')"
       );
       const results = { success: true, results: result ? result.rows : null };
       res.json({ results, query });
@@ -323,5 +274,5 @@ const employees = express.Router()
       console.error(err);
       res.json(results);
     }
-  });
+  })
 export {employees};

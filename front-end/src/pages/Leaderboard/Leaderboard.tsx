@@ -1,14 +1,29 @@
-import {IonContent, IonHeader, IonPage, IonText} from '@ionic/react';
+import {IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
 import './Leaderboard.css';
-import {LeaderboardSwiper} from '../../components/LeaderBoardSwiper/LeaderboardSwiper'
+import LeaderboardValues from '../../components/LeaderBoardSwiper/LeaderBoardValues/LeaderboardValues';
 
 const Leaderboard: React.FC = () =>{
     const [overall, setOverall] = useState(new Array<any>());
     const [cardio, setcardio] = useState(new Array<any>());
     const [strength, setstrength] = useState(new Array<any>());
+    const [type, setType] = useState('overall');
+
+
+    const choosePage = () => {
+        switch(type) {
+    
+            case "overall":   return <LeaderboardValues scores={overall} ></LeaderboardValues>
+            case "cardio":   return <LeaderboardValues scores={cardio}></LeaderboardValues>
+            case "strength": return <LeaderboardValues scores={strength}></LeaderboardValues>    
+            default:      return <LeaderboardValues scores={overall}></LeaderboardValues>
+        }
+    }
+    const segmentChanged = (e: any)=>{
+        setType(e.detail.value);
+     }
     useEffect(()=>
     {
         var gymid="lttD"
@@ -16,6 +31,9 @@ const Leaderboard: React.FC = () =>{
         var Overall:any=[];
         var Cardio:any=[];
         var Strenght:any=[];
+
+        
+
         function assign(username:string,points:number,flag:boolean,i:number,arr:any[])
         {
             if(flag)
@@ -64,12 +82,12 @@ const Leaderboard: React.FC = () =>{
                 }
             return bflag;
         }
-        fetch(`https://gym-king.herokuapp.com/leaderboard/score?gid=${gymid}`,{
+        fetch(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`,{
             "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
-            let results=response.results;
+            let results=response;
             
             console.log(results)
 
@@ -111,11 +129,28 @@ const Leaderboard: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>Leaderboard</IonText>
-                <LeaderboardSwiper   overall={overall} cardio={cardio} strength={strength} ></LeaderboardSwiper>  
+                <IonSegment onIonChange={segmentChanged} value={type}>
+                    <IonSegmentButton value="overall" >
+                        <IonLabel>Overall</IonLabel>
+                        
+                    </IonSegmentButton>
+                    <IonSegmentButton value="cardio">
+                        <IonLabel>Cardio</IonLabel>
+                    </IonSegmentButton>
+                    <IonSegmentButton value="strength">
+                        <IonLabel>Strength</IonLabel>
+                    </IonSegmentButton>
+                </IonSegment>
+                <br></br>
+                <div>
+                {
+                   choosePage()
+                }
+                </div>
+                
             </IonContent>
         </IonPage>
     )
-        
 
 }
 

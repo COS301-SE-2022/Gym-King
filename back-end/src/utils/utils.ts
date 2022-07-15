@@ -185,32 +185,32 @@ const utils = express.Router()
       res.json(results);
     }
   })
-  //=========================================================================================================//
-  /**
-   * ...
-   * @param 
-   * @returns 
-   */
-  .delete("/tables/drop", async (req: any, res: any) => {
-    try {
-      const client = await pool.connect();
-      let result = await client.query("DROP TABLE BADGE_CLAIM");
-      result = await client.query("DROP TABLE BADGE_OWNED");
-      result = await client.query("DROP TABLE BADGE");
-      result = await client.query("DROP TABLE GYM_OWNED");
-      result = await client.query("DROP TABLE GYM_USER");
-      result = await client.query("DROP TABLE GYM_EMPLOYEE");
-      result = await client.query("DROP TABLE GYM_OWNER");
-      result = await client.query("DROP TABLE GYM");
-      const results = { success: true, results: result };
-      res.json(results);
-      client.release();
-    } catch (err) {
-      const results = { success: false, results: err };
-      console.error(err);
-      res.json(results);
-    }
-  })
+  // //=========================================================================================================//
+  // /**
+  //  * ...
+  //  * @param 
+  //  * @returns 
+  //  */
+  // .delete("/tables/drop", async (req: any, res: any) => {
+  //   try {
+  //     const client = await pool.connect();
+  //     let result = await client.query("DROP TABLE BADGE_CLAIM");
+  //     result = await client.query("DROP TABLE BADGE_OWNED");
+  //     result = await client.query("DROP TABLE BADGE");
+  //     result = await client.query("DROP TABLE GYM_OWNED");
+  //     result = await client.query("DROP TABLE GYM_USER");
+  //     result = await client.query("DROP TABLE GYM_EMPLOYEE");
+  //     result = await client.query("DROP TABLE GYM_OWNER");
+  //     result = await client.query("DROP TABLE GYM");
+  //     const results = { success: true, results: result };
+  //     res.json(results);
+  //     client.release();
+  //   } catch (err) {
+  //     const results = { success: false, results: err };
+  //     console.error(err);
+  //     res.json(results);
+  //   }
+  // })
   //=========================================================================================================//
   /**
    * ...

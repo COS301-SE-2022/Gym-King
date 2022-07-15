@@ -24,29 +24,29 @@ export const AcceptRejectPage: React.FC = () =>{
         })
         .then(response =>response.json())
         .then(response =>{
-            setI1(response.results[0].input1);
-            setI2(response.results[0].input2);
-            setI3(response.results[0].input3);
+            setI1(response.input1);
+            setI2(response.input2);
+            setI3(response.input3);
         })
         .catch(err => {console.log(err)})
-    })
+    },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
         useEffect(()=>
             {
-                fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+                fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
                 })
                 .then(response =>response.json())
                 .then(response =>{
-                    console.log(response.results[0]);
+                    console.log(response);
 
-                    setBadgename(response.results[0].badgename)
-                    setActivityType(response.results[0].activitytype)
+                    setBadgename(response.badgename)
+                    setActivityType(response.activitytype)
                     //setG_id(response.results[0].g_id)
                 })
                 .catch(err => {console.log(err)})
-            })
+            },[badgeId])
         return (
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -56,7 +56,10 @@ export const AcceptRejectPage: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
                     <AcceptRejectCard userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype}></AcceptRejectCard>
+
+
                 </IonContent>
+                
             </IonPage>
         )
 

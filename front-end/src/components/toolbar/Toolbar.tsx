@@ -1,9 +1,9 @@
-import {IonButtons, IonToolbar, IonTitle, IonButton, IonMenuButton} from '@ionic/react';
+import {IonButtons, IonToolbar, IonTitle, IonButton, IonMenuButton, IonBackButton} from '@ionic/react';
 import React from 'react'
 import './Toolbar.css'
 
 //creating a type so props can be entered
-export type ToolBarProps = {username?:string};
+export type ToolBarProps = {username?:string,menu?:boolean};
 
 export class ToolBar extends React.Component<ToolBarProps>{
     render(){
@@ -16,7 +16,9 @@ export class ToolBar extends React.Component<ToolBarProps>{
                     </IonButtons>
                     <IonTitle>{username}</IonTitle>
                     <IonButtons slot='start'>
-                             <IonMenuButton />
+                        {this.props.menu && this.props.menu===true ?(<IonMenuButton />)
+                        :(<IonBackButton text="Back"/>)}
+                             
                     </IonButtons>
                 </IonToolbar>
         )
