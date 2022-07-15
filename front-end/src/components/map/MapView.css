@@ -1,3 +1,4 @@
+
 #GymButton {
     width: 50px;
     height: 50px;
@@ -21,7 +22,7 @@
 	width:60px;
 	height: 60px;
 	bottom:40px;
-	right:45%;
+	left:45vw;
 	background-color:#3d1edb;
 	color:#FFF;
 	border-radius:50px;
@@ -31,4 +32,28 @@
 
 #my-float{
 	margin-top:22px;
+}
+
+
+main {
+    background-image: linear-gradient(to bottom right, #321E93, #873CFF);
+}
+
+ion-content {
+    --background: linear-gradient(to bottom right, #321E93, #a974ff) no-repeat center/cover fixed;
+  }
+
+ion-input{
+    display: block;
+    background-color: rgba(255,255,255,0.07)
+}
+
+#overlay{
+    left: 10%;
+    bottom:-20vh;
+    width: 80%;
+    height: 20vh;
+	position:absolute;
+    
+	border-radius:5px !important; 
 }

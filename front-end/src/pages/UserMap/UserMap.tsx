@@ -3,6 +3,7 @@ import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import MapView from '../../components/map/MapView';
 import ToolBar from '../../components/toolbar/Toolbar';
 
+import './UserMap.css'
 const UserMap: React.FC = () => {
   var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/profile'},
                      {'caption':'My Badges','icon':'trophy','route':'/MyBadge'},
