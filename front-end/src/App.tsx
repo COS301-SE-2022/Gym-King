@@ -41,7 +41,7 @@ import { RegisterPage } from './pages/CreateUserPage/Register';
 import {OTP} from './pages/OTP/OTP';
 import MyBadge from './pages/MyBadge/MyBadge'
 import ManageGyms from './pages/ManageGyms/ManageGyms';
-import UserProfilePage from './pages/Profile/UserProfile';
+import UserProfilePage from './pages/UserProfile/UserProfile';
 import OwnerProfilePage from './pages/OwnerProfile/OwnerProfile';
 import EmployeeProfilePage from './pages/EmployeeProfile/EmployeeProfile';
 /*develop*/
