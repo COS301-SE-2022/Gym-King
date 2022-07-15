@@ -113,8 +113,15 @@ const EditBadge: React.FC = () =>{
         // DELETE BADGE DELETE REQUEST 
         const deleteBadge=()=>{
             
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-                "method":"DELETE"
+            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+                "method":"DELETE",
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    bid: badgeId
+                 })
             })
             .then(response =>response.json())
             .then(response =>{
