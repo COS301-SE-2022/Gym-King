@@ -1,4 +1,4 @@
-import { CreateAnimation, IonBadge, IonButton,  IonLoading, IonText, IonToast } from "@ionic/react";
+import { createAnimation, CreateAnimation, IonBadge, IonButton,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonHeader,  IonLoading, IonModal, IonText, IonTitle, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -85,7 +85,7 @@ const MapView: React.FC = () =>{
         // Set Pop Menus data
 
         setgymMenuName(name)
-
+        setShowModal(true)
         // 
         setHidden(false)
         setTimeout(() => {  }, 100);
@@ -161,6 +161,34 @@ const MapView: React.FC = () =>{
         }
     })
 
+
+    const [showModal, setShowModal] = useState(false);
+
+    const enterAnimation = (baseEl: any) => {
+        const root = baseEl.shadowRoot;
+
+        const backdropAnimation = createAnimation()
+        .addElement(root.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+        const wrapperAnimation = createAnimation()
+        .addElement(root.querySelector('.modal-wrapper')!)
+        .keyframes([
+            { offset: 0, opacity: '0', transform: 'scale(0)' },
+            { offset: 1, opacity: '0.99', transform: 'scale(1)' }
+        ]);
+
+        return createAnimation()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(500)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    }
+
+    const leaveAnimation = (baseEl: any) => {
+        return enterAnimation(baseEl).direction('reverse');
+    }
+
     return (
         
         <>
@@ -191,11 +219,15 @@ const MapView: React.FC = () =>{
                     
                     getLocation(false)
                     getNearbyGyms()
-                    setHidden(true);
+                    setShowModal(false)
                 }} 
                 onAnimationStart={()=>{
-                    setHidden(true);
-                    
+                                
+                    setShowModal(false)
+                }}
+                onClick={()=>{
+                                
+                    setShowModal(false)
                 }}
                 
                 
@@ -228,31 +260,21 @@ const MapView: React.FC = () =>{
             
 
             </Map>
-            <CreateAnimation
-                duration={500}
-                fromTo={    {
-                    property: 'transform',
-                    fromValue: 'translateY(0) rotate(0)',
-                    toValue: `translateY(-20vh) rotate(0)`,
-                }}
-                easing="ease-in"
-                play={!hidden}
-                
-                stop={hidden}
-                
-                
-                
-            >
-     
-            <IonBadge id = "overlay">
-                
-                <IonText className='center inputHeading'>{gymMenuName}</IonText>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">View Gym</IonButton>
 
-            </IonBadge>
+            <IonModal id = "overlay" isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+        
+            {/* //<IonBadge > */}
+                <IonCard>
+                    <IonCardHeader>
+                        <IonCardTitle className='center '>{gymMenuName}</IonCardTitle>
+                    </IonCardHeader>
+                    <IonCardContent>
+                        <IonButton  className=" btnLogin ion-margin-top" type="submit" expand="block">View Gym</IonButton>
+                    </IonCardContent>
+                </IonCard>
+            {/* </IonBadge> */}
             
-            </CreateAnimation>
-                
+            </IonModal>      
         </>
     )
 }
