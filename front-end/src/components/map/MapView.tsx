@@ -32,6 +32,7 @@ const MapView: React.FC = () =>{
     }]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    // Location Vars------------------------------------------------------------------------------------------//
     const [postWaiting, setPostWaiting] = useState<boolean>(false);
     const [center, setCenter] = useState([0,0])
     const [zoom, setZoom] = useState(10)
@@ -42,8 +43,9 @@ const MapView: React.FC = () =>{
     const [error, setError] = useState<LocationError>({showError: false});
     const [userLocation, setUserLoc] = useState([0,0]);
 
-    // Gym Menu
+    // Gym Menu Vars -----------------------------------------------------------------------------------------------//
     const [hidden, setHidden] = useState<boolean>(true);
+    const [gymMenuName, setgymMenuName] = useState<string>("");
 
     //=========================================================================================================//
     /**
@@ -79,12 +81,14 @@ const MapView: React.FC = () =>{
     }    
 
     
-    const gymButtonClick=async ()=>{
-        
-        window.alert("The Gyms Menu will open Up");
-        //window.location.href = "http://localhost:3000/Login";
-        
+    const gymButtonClick=async (name:string)=>{
+        // Set Pop Menus data
+
+        setgymMenuName(name)
+
+        // 
         setHidden(false)
+        setTimeout(() => {  }, 100);
     }
     
     //=========================================================================================================//
@@ -207,15 +211,15 @@ const MapView: React.FC = () =>{
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:number}) => {
+                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
                     return (
                         <Overlay 
                             key={item.gid}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
-                            offset={[15,30]} 
+                            offset={[15,31]} 
                             
                         > 
-                            <img onClick={gymButtonClick} id = "GymPicture" src={gym} alt='' />
+                            <img onClick={() => {gymButtonClick(item.gym_brandname)}} id ="GymPicture" src={gym} alt='' />
                         </Overlay> 
                     )                 
                 })}
@@ -239,13 +243,10 @@ const MapView: React.FC = () =>{
                 
                 
             >
-
-                
-                
-                
+     
             <IonBadge id = "overlay">
                 
-                <IonText className='center inputHeading'>Gym Name</IonText>
+                <IonText className='center inputHeading'>{gymMenuName}</IonText>
                             <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">View Gym</IonButton>
 
             </IonBadge>
