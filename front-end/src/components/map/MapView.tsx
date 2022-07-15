@@ -1,4 +1,4 @@
-import { createAnimation, CreateAnimation, IonBadge, IonButton,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonHeader,  IonLoading, IonModal, IonText, IonTitle, IonToast } from "@ionic/react";
+import { createAnimation, CreateAnimation, IonBadge, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonHeader,  IonLoading, IonModal, IonText, IonTitle, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -267,9 +267,13 @@ const MapView: React.FC = () =>{
                 <IonCard>
                     <IonCardHeader>
                         <IonCardTitle className='center '>{gymMenuName}</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent>
-                        <IonButton  className=" btnLogin ion-margin-top" type="submit" expand="block">View Gym</IonButton>
+                    </IonCardHeader >
+                    <IonCardContent id="buttonBox">
+                        <IonButtons>
+                            <IonButton  shape='round' className='btn'>View</IonButton>
+                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btn'>Close</IonButton>
+                        </IonButtons>
+                    
                     </IonCardContent>
                 </IonCard>
             {/* </IonBadge> */}
