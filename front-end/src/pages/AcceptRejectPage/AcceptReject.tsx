@@ -56,7 +56,10 @@ export const AcceptRejectPage: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
                     <AcceptRejectCard userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype}></AcceptRejectCard>
+
+
                 </IonContent>
+                
             </IonPage>
         )
 

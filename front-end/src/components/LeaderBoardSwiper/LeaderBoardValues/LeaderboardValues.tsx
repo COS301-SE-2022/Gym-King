@@ -1,7 +1,8 @@
-import { IonCol, IonRow} from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonText} from '@ionic/react';
 import './LeaderboardValues.css'
 
-export const LeaderboardValues=(props:{scores:any[]})=>{
+export const LeaderboardValues=(props:{scores:any[]})=>
+{
     for(let i=props.scores.length;i<10+1;i++)
     {
       props.scores.push({
@@ -35,83 +36,76 @@ export const LeaderboardValues=(props:{scores:any[]})=>{
       }
     }
     return(
-    <div>
+    <IonGrid className="glass">
        <IonRow >
-          <IonCol>
-           <strong> pos</strong>
+          <IonCol size="1">
+           <IonText className="light">#</IonText>
           </IonCol>
-          <IonCol>
-            <strong>username</strong>
+          <IonCol size="9">
+            <IonText className="light">username</IonText>
           </IonCol>
-          <IonCol>
-            <strong>points</strong>
+          <IonCol size="2">
+            <IonText className="light">points</IonText>
           </IonCol>
         </IonRow> 
-        <br></br>   
       <IonRow class="FirstPlace">
-          <IonCol>
-            #1
+          <IonCol  size="1">
+            1
           </IonCol>
-          <IonCol>
+          <IonCol  size="9">
             {FirstPlace.username}
           </IonCol>
-          <IonCol>
+          <IonCol  size="2">
             {FirstPlace.points} pts
           </IonCol>
       </IonRow>
-      <br></br>
       <IonRow class="SecondPlace">
-          <IonCol>
-            #2
+          <IonCol  size="1">
+            2
           </IonCol>
-          <IonCol>
+          <IonCol  size="9">
             {SecondPlace.username}
           </IonCol>
-          <IonCol>
+          <IonCol  size="2">
             {SecondPlace.points} pts
           </IonCol>
       </IonRow>
-      <br></br>
       <IonRow class="ThirdPlace">
-          <IonCol>
-            #3
+          <IonCol  size="1">
+            3
           </IonCol>
-          <IonCol>
+          <IonCol  size="9">
             {ThirdPlace.username}
           </IonCol>
-          <IonCol>
+          <IonCol  size="2">
             {ThirdPlace.points} pts
           </IonCol>
       </IonRow>
-      <br></br>
       {top10.map((el:any)=>
          <IonRow key={el.pos} >
-            <IonCol>
+            <IonCol  size="1" >
               {el.pos}
             </IonCol>
-            <IonCol>
+            <IonCol  size="9">
               {el.username}
             </IonCol>
-            <IonCol>
+            <IonCol  size="2">
               {el.points}pts
             </IonCol>
          </IonRow>
         )}
-        <br>
-        </br>
         <IonRow class="You">
-          <IonCol>
-            #{count}
+          <IonCol  size="1">
+            {count}
           </IonCol>
-          <IonCol>
+          <IonCol  size="9">
             {yourscore.username}
           </IonCol>
-          <IonCol>
+          <IonCol  size="2">
             {yourscore.points}pts
           </IonCol>
       </IonRow>
-        <br></br>
-      </div>
+      </IonGrid>
         )
         
     

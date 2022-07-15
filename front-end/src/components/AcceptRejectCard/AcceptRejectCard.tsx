@@ -1,4 +1,4 @@
-import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText} from '@ionic/react';
+import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import {personCircleOutline} from 'ionicons/icons';
@@ -58,11 +58,11 @@ export class AcceptRejectCard extends React.Component<props>{
     render(){
         
         return(
-            <IonCard data-testid="ARC">
-                 <IonItem>
+            <IonCard data-testid="ARC" className="glass arCard">
+                 <div style={{backgroundColor: "#321E93"}}>
                     <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
                     <IonText className='username'>{this.props.username}</IonText>
-                </IonItem>
+                </div>
                 <IonCardContent>
                     <IonText className='Subheading'>
                         Badge:
@@ -82,7 +82,7 @@ export class AcceptRejectCard extends React.Component<props>{
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-                                <IonButton color='primary' onClick={this.acceptClaim}>Accept</IonButton>
+                                <IonButton color='warning' onClick={this.acceptClaim}>Accept</IonButton>
                             </IonCol>
                             <IonCol>
                                 <IonButton color='secondary' onClick={this.rejectClaim}>Reject</IonButton>
@@ -91,6 +91,7 @@ export class AcceptRejectCard extends React.Component<props>{
                     </IonGrid>
                 </IonCardContent>
             </IonCard>
+            
         )
         
     }

@@ -1,5 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader,IonButton, IonIcon} from '@ionic/react';
-import { informationCircleOutline } from 'ionicons/icons';
+import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
@@ -38,10 +37,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Pending Approvals</IonText>
-                    <IonButton className='btnInfo shadow ' background-color='#0F005A'>
-                        <IonIcon icon={informationCircleOutline} className='infoIcon'></IonIcon>
-                        <IonText>What should I do?</IonText>
-                    </IonButton>
+                    
                     {
                         claims?.map(el =>{
                             return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)

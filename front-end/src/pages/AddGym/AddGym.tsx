@@ -117,7 +117,7 @@ const AddGym: React.FC = () => {
         <ToolBar></ToolBar>
       </IonHeader>
       <IonContent class="AddGymContent">
-        <IonCard class="AddGymCard">
+        <IonCard class="AddGymCard glass">
           <IonCardHeader class="AddGymHeader" className="PageTitle center">
             <IonCardTitle>Add Gym</IonCardTitle>
           </IonCardHeader>

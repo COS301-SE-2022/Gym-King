@@ -62,7 +62,7 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 
         // CREATE BADGE POST REQUEST 
         const createBadge=()=>{
-            let gid = gymId;   //temp value for testing 
+            let gid = 'uU3p';   //temp value for testing 
             let at = localStorage.getItem('act')
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;

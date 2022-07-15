@@ -4,7 +4,7 @@ main {
 
 ion-content {
     --background: linear-gradient(to bottom right, #321E93, #a974ff) no-repeat center/cover fixed;
-  }
+}
 .loginForm{
     height:475px;
     width:75%;
