@@ -1,11 +1,10 @@
-import { badgeRepository } from "../repositories/badge.repository";
+import { employeeRepository } from "../repositories/gym_employee.repository";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
+import { badgeRepository } from "../repositories/badge.repository";
 
 const express = require("express");
 const cors = require("cors");
-const { Pool } = require("pg");
-
 const bodyParser = require('body-parser');
 
 const allowedOrigins = [
@@ -22,23 +21,6 @@ const corsOptions = {
     }
   },
 };
-const pool = (() => {
-  if (process.env.NODE_ENV !== "production") {
-    return new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
-  } else {
-    return new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
-  }
-})();
 //=============================================================================================//
 //Helper Functions 
 //=============================================================================================//
@@ -225,47 +207,27 @@ const employees = express.Router()
       console.error(err);
       res.json(results);
     }
-  });
+  })
   //=========================================================================================================//
   /**
-   * POST request to add an employee to the db
-   * encrypts user's password
-   * 
-   * @param {Employee Info}
-   * @returns http response packet
+   * POST - Insert an employee.
+   * @param {string} email email.
+   * @param {string} name name.
+   * @param {string} surname surname.
+   * @param {string} number phone number.
+   * @param {string} username username.
+   * @param {string} password Password.
+   * @param {string} gid gym ID.
+   * @returns Message confirming insertion.
    */
-  employees
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(bodyParser.raw())
-
-   .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
+  .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
       let query = req.body;
-      const client = await pool.connect();
-      let result = await client.query(
-        "INSERT INTO GYM_EMPLOYEE" +
-          "(email,g_id,name,surname,number,username,password) VALUES" +
-          "('" +
-          query.email +
-          "','" +
-          query.gid +
-          "','" +
-          query.name +
-          "','" +
-          query.surname +
-          "','" +
-          query.number +
-          "','" +
-          query.username +
-          "','" +
-          bcrypt.hashSync(query.password, bcrypt.genSaltSync()) +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);

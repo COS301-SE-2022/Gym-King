@@ -1,8 +1,9 @@
+import { gym_owned } from "../entities/gym_owned.entity";
+import { ownedRepository } from "../repositories/gym_owned.repository";
+
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
-
-
 const bodyParser = require('body-parser');
 
 const allowedOrigins = [
@@ -35,6 +36,15 @@ const pool = (() => {
     });
   }
 })();
+//=============================================================================================//
+//Helper Functions 
+//=============================================================================================//
+//=========================================================================================================//
+  /**
+   * Makes a generated ID given a size input.
+   * @param {number} size of the generated ID.
+   * @returns {string} Generated ID.
+   */
 function createID(length: any) {
   let ID = "";
   let characters =
@@ -44,55 +54,43 @@ function createID(length: any) {
   }
   return ID;
 }
+//=============================================================================================//
+// OWNER ROUTER
+//=============================================================================================//
 const owners = express.Router()
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * GET - gets all gyms owned by a owner.
+   * @param {string} email email of the owner.
+   * @returns List of all gyms that the owner owns.
    */
   .get("/gyms/owned/:email", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.params.email;
-      const client = await pool.connect();
-      let result = await client.query(
-        "SELECT * from GYM WHERE G_ID IN (SELECT G_ID FROM GYM_OWNED WHERE email='" +
-          query +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json(results);
-      client.release();
+      let result = await ownedRepository.findGymsByEmail(query);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
       res.json(results);
     }
   })
- 
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * POST - Insert that a owner owns a gym.
+   * @param {string} gid gym ID of the gym.
+   * @param {string} email email of the owner.
+   * @returns message confirming the insertion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .post("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "INSERT INTO GYM_OWNED" +
-          "(email,g_id) VALUES" +
-          "('" +
-          query.email +
-          "','" +
-          query.gid +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let query = req.body;
+      let result = await ownedRepository.saveOwned(query.gid,query.email);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -136,8 +134,7 @@ const owners = express.Router()
       console.error(err);
       res.json(results);
     }
-  });
-
+  })
    //=========================================================================================================//
   /**
    * POST request to add an owner to the db
@@ -146,10 +143,9 @@ const owners = express.Router()
    * @param {Owner Info}
    * @returns http response packet
    */
-   owners
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
       const bcrypt = require('bcryptjs')
