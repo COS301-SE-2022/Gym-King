@@ -169,6 +169,9 @@ const employees = express.Router()
    * @param {string} badgeicon edited badgeicon.
    * @returns Message confirming update.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -182,26 +185,20 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * DELETE - Delete a badge.
+   * @param {string} bid badge ID used to find badge.
+   * @returns Message confirming Deletion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .delete("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "DELETE FROM BADGE_CLAIM " + "WHERE B_ID = '" + query.bid + "'"
-      );
-      result = await client.query(
-        "DELETE FROM BADGE_OWNED " + "WHERE B_ID = '" + query.bid + "'"
-      );
-      result = await client.query(
-        "DELETE FROM BADGE " + "WHERE B_ID = '" + query.bid + "'"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let query = req.body;
+      let result = await badgeClaimRepository.deleteAllClaimsByBID(query.bid);
+      result = await badgeOwnedRepository.deleteAllOwnedByBID(query.bid);
+      result = await badgeRepository.deleteBadge(query.bid);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
