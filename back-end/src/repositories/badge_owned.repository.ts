@@ -1,5 +1,6 @@
 import { GymKingDataSource } from "../datasource";
 import { badge } from "../entities/badge.entity";
+import { badge_claim } from "../entities/badge_claim.entity";
 import { badge_owned } from "../entities/badge_owned.entity";
 import { gym_user } from "../entities/gym_user.entity";
 import { badgeRepository } from "./badge.repository";
@@ -73,5 +74,8 @@ export const badgeOwnedRepository = GymKingDataSource.getRepository(badge_owned)
     },
     deleteOwned(bid: string, email: string) {
         return this.manager.delete(badge_owned, {b_id: bid, email: email})
+    },
+    deleteAllOwnedByBID(bid: string) {
+        return this.manager.delete(badge_owned, {b_id: bid})
     }
 })
