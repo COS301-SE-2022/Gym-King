@@ -81,7 +81,7 @@ const EditBadge: React.FC = () =>{
             let bd = formData.badgeDescription;
             //console.log(formData);
             
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}&gid=${gymid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${badgeicon}&at=${at}`,{
+            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',

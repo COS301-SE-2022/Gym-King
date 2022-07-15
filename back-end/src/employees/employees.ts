@@ -159,34 +159,21 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * PUT - Update a badge.
+   * @param {string} bid badge ID used to find badge.
+   * @param {string} gid gym ID of the badge.
+   * @param {string} badgename edited badgename.
+   * @param {string} badgedescription edited badgedescription.
+   * @param {string} badgechallenge edited badgechallenge.
+   * @param {string} activitytype edited activitytype.
+   * @param {string} badgeicon edited badgeicon.
+   * @returns Message confirming update.
    */
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
-      let result = await client.query(
-        "UPDATE BADGE SET badgename='" +
-          query.bn +
-          "', badgedescription='" +
-          query.bd +
-          "',badgechallenge= '" +
-          query.bc +
-          "',badgeicon='" +
-          query.bi +
-          "',activitytype='" +
-          query.at +
-          "' WHERE b_id = '" +
-          query.bid +
-          "' AND g_id = '" +
-          query.gid +
-          "'"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json(results);
-      client.release();
+      let query = req.body;
+      let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
