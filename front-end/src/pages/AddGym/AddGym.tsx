@@ -1,75 +1,51 @@
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonInput,
-  IonPage,
-  IonRow,
-  IonText,
-  IonToast,
-} from "@ionic/react";
+import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
 import { stamenToner } from "pigeon-maps/providers";
-import Geocoder from "react-native-geocoding";
+import { useHistory } from "react-router-dom";
 const AddGym: React.FC = () => {
 //###################################################################################################
 //# Initiaitng variables
+  const history=useHistory()
  //image
   const image: string =
     "https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png";
   
   //get request parameters via the url
   //get name and name hook
-  const queryString: string = window.location.search;
-  const urlParams: any = new URLSearchParams(queryString);
-  var name: string = urlParams.get("name");
-  if (!name) {
-    name = "name";
-  }
-  const [gymName, setGymName] = useState<string>(name);
-
-  //get addressand address hook
-  var address: string = urlParams.get("address");
-  if (!address) {
-    address = "address";
-  }
-  const [gymAddress, setGymAddress] = useState<string>(address);
-
-  //get coordinates and coordinates hook
-  var y = urlParams.get("latitude");
-  var x = urlParams.get("longitude");
-  if (!y && !x) {
-    y = "-25.7545";
-    x = "28.2314";
-  }
-
+  const [gymName, setGymName] = useState<string>("name");
+  const [gymAddress, setGymAddress] = useState<string>("address");
   const [coordinate, setCoordinate] = useState<[number, number]>([
-    parseFloat(y),
-    parseFloat(x),
+    -25.7545,
+    28.2314,
   ]);
-
+  useIonViewWillEnter(()=>{
+      if(sessionStorage.getItem("gymName")!=null)
+      {
+        setGymName(sessionStorage.getItem("gymName") as string)
+      }
+      if(sessionStorage.getItem("gymAddress")!=null)
+      {
+        setGymAddress(sessionStorage.getItem("gymAddress") as string)
+      }
+      else{
+        sessionStorage.setItem("gymAdress",gymAddress)
+      }
+      if(sessionStorage.getItem("Lat") !=null && sessionStorage.getItem("Long")!=null)
+      {
+        setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
+      }
+  })
+  useIonViewWillLeave(()=>{
+    sessionStorage.removeItem("gymName")
+    sessionStorage.removeItem("gymAddress")
+    sessionStorage.removeItem("Lat")
+    sessionStorage.removeItem("Long")
+  })
   //zoom parameter fpr map
   const zoom: number = 16;
-
-  //url with get parameter
-  const href: string =
-    "http://localhost:3000/AddGymLocation?name=" +
-    gymName +
-    "&address=" +
-    gymAddress +
-    "&latitude=" +
-    coordinate[0] +
-    "&longitude=" +
-    coordinate[1]
   //Toast
     const [showToast1, setShowToast1] = useState(false);
     const [showToast2, setShowToast2] = useState(false);
@@ -78,7 +54,7 @@ const AddGym: React.FC = () => {
 //ADD GYM API
   let gymIcon: string = "logo";
   const addGym = () => {
-    setShowToast1(true)
+    
     fetch(
     `https://gym-king.herokuapp.com/gyms/gym`,
     {
@@ -99,26 +75,20 @@ const AddGym: React.FC = () => {
     .then((response) => response.json())
     .then((response) => {
       console.log(response);
+      setShowToast1(true)
+      sessionStorage.removeItem("gymName")
+      sessionStorage.removeItem("gymAddress")
+      sessionStorage.removeItem("Lat")
+      sessionStorage.removeItem("Long")
+      history.goBack()
     })
     .catch((err) => {
       console.log(err);
-      setShowToast1(true)
+      setShowToast2(true)
     });
   };
 //GEO CODER API
-  const handleKeyDown = (event: { key: string }) => {
-    if (event.key === "Enter") {
-      console.log("using geocoding api");
-      Geocoder.init("AIzaSyD9pQDwcGJFK6NRGNj5-YwdJBx2PtERCTg");
-      Geocoder.from(gymAddress)
-        .then((json) => {
-          var addressComponent = json.results[0].geometry.location;
-          console.log(json.results);
-          setCoordinate([addressComponent.lat, addressComponent.lng]);
-        })
-        .catch((error) => console.warn(error));
-    }
-  };
+  
 
 //###################################################################################################
 //# Page to render
@@ -145,7 +115,7 @@ const AddGym: React.FC = () => {
                   placeholder="name"
                   value={gymName}
                   onIonChange={(e: any) => {
-                    setGymName(e.target.value);
+                    setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                   }}
                 >
                   {" "}
@@ -157,33 +127,15 @@ const AddGym: React.FC = () => {
               </IonRow>
 
               <IonRow className="left">
-                <IonInput
-                  class="AddGymInput"
-                  placeholder="address"
-                  value={gymAddress}
-                  onKeyDown={handleKeyDown}
-                  onIonChange={(e: any) => {
-                    setGymAddress(e.target.value);
-                  }}
-                >
-                  {" "}
-                </IonInput>
-              </IonRow>
-
-              <IonRow className="left topMargin">
-                <IonText className="Subheading">Location:</IonText>
-              </IonRow>
-
-              <IonRow className="left">
-                <IonButton expand="block" class="flex-margin" href={href}>
+                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation">
                   <IonIcon
                     class="AddGymLocation"
-                    name="location-outline"
+                    icon="location-outline"
                   ></IonIcon>
-                  <span>adjust Co-ordinates</span>
+                  <span>{gymAddress}</span>
                   <IonIcon
                     class="AddGymArrow"
-                    name="chevron-forward-outline"
+                    icon="chevron-forward-outline"
                   ></IonIcon>
                 </IonButton>
               </IonRow>
@@ -209,14 +161,12 @@ const AddGym: React.FC = () => {
               </IonRow>
               <IonButton
                 class="AddGymAdd"
-                color="tertiary"
+                color="warning"
                 onClick={() => addGym()}
               >
                 ADD
               </IonButton>
             </IonGrid>
-
-            <IonButton>Next</IonButton>
           </IonCardContent>
         </IonCard>
         <IonToast

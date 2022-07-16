@@ -1,5 +1,5 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList} from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewWillEnter} from '@ionic/react';
+import React, {useState } from 'react';
 import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -10,8 +10,7 @@ const GymOwnerViewBadge: React.FC = () =>{
     
     const [badgeList, setBadgeList] = useState(new Array<any>());
         //GET REQUEST:
-        useEffect(()=>
-        {
+        useIonViewWillEnter(()=>{
             var email="u20519517@tuks.co.za"
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
@@ -33,7 +32,8 @@ const GymOwnerViewBadge: React.FC = () =>{
                 setBadgeList(arr)
             })
             .catch(err => {console.log(err)})
-        },[])
+
+    })
 
     return(
         <IonPage >

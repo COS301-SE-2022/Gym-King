@@ -3,10 +3,11 @@ import ToolBar from '../../components/toolbar/Toolbar';
 import React, {useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
+import { useHistory } from 'react-router-dom';
 
 
 const EditBadge: React.FC = () =>{
-
+        const history=useHistory()
         //STATES
         const [gymId, setGymId] = useState('')
         const [showToast, setShowToast] = useState(false);
@@ -105,7 +106,7 @@ const EditBadge: React.FC = () =>{
                 setShowToast(true);
 
                 //redirect to view badges  
-                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+                history.goBack()
             })
             .catch(err => {console.log(err)}) 
         } 
@@ -131,7 +132,7 @@ const EditBadge: React.FC = () =>{
                 setShowToastDelete(true);
 
                 //redirect to view badges 
-                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+                history.goBack(  )
             })
             .catch(err => {console.log(err)}) 
         } 
