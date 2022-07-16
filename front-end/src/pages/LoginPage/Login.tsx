@@ -1,12 +1,13 @@
 
 import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
 import './Login.css';
 
 
 export const Login: React.FC = () =>{
     let formData:any;
-    
+    let history=useHistory()
     const [showToast, setShowToast] = useState(false);
     const [userType, setUserType] = useState('user');
 
@@ -27,7 +28,8 @@ export const Login: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 if(response.success){
-                    window.location.href = "http://"+window.location.host+"/home";
+                   // window.location.href = "http://"+window.location.host+"/home";
+                   navigate();
                 }else{
                     
                     setShowToast(true);
@@ -39,6 +41,19 @@ export const Login: React.FC = () =>{
                 console.log(err)
             })
     } 
+    const navigate=()=>{
+        if(formData.usertype==="user")
+        {
+            history.push("/userMap")
+        }
+        else if(formData.usertype==="owner")
+        {
+            history.push("/GymOwnerPage")
+        }
+        else{
+            history.push("/PendingApprovals")
+        }
+    }
     
 
     const handleSubmit = async (e:any) =>{
