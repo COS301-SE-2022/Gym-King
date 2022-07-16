@@ -1,9 +1,11 @@
 import { IonActionSheet, IonCard, IonCardSubtitle, IonCardTitle, useIonAlert} from '@ionic/react';
 import { create, trash } from 'ionicons/icons';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './GymCard.css'
 
 export const GymCard=(prop:{id:any,name:string,address:string})=>{
+    const history=useHistory();
     const [showActionSheet, setShowActionSheet] = useState(false);
     const [presentAlert] = useIonAlert();
     return(
@@ -30,7 +32,8 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
                     id:'edit-button',
                     icon: create,
                     handler: () => {
-                      console.log('edit clicked');
+
+                      history.push("/EditGym")
                     }
                   },{
                     text: 'Delete',
