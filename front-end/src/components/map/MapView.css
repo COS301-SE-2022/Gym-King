@@ -55,9 +55,18 @@ ion-input{
 	position:absolute;
     top: 82vh;
 	border-radius:5px !important; 
+    
+   
 }
 
 .btn{
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
 	border-radius:5px !important; 
+}
+#modal{
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
+   
+    background-size: 100vh;
+
 }
