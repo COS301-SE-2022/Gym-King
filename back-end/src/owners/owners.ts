@@ -1,9 +1,9 @@
-import { gym_owned } from "../entities/gym_owned.entity";
+import { gymRepository } from "../repositories/gym.repository";
 import { ownedRepository } from "../repositories/gym_owned.repository";
+import { ownerRepository } from "../repositories/gym_owner.repository";
 
 const express = require("express");
 const cors = require("cors");
-const { Pool } = require("pg");
 const bodyParser = require('body-parser');
 
 const allowedOrigins = [
@@ -19,23 +19,6 @@ const corsOptions = {
     }
   },
 };
-const pool = (() => {
-  if (process.env.NODE_ENV !== "production") {
-    return new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
-  } else {
-    return new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
-  }
-})();
 //=============================================================================================//
 //Helper Functions 
 //=============================================================================================//
@@ -99,78 +82,48 @@ const owners = express.Router()
   })
   //=========================================================================================================//
   /**
-   * ...
-   * @param 
-   * @returns 
+   * POST - Insert that a gym into database.
+   * @param {string} gymBrandName gym brand name.
+   * @param {string} gymAddress gym address.
+   * @param {number} gymCoordLong Longitude coord of gym.
+   * @param {number} gymCoordLat Latitude coord of gym.
+   * @param {string} gymIcon gym icon code.
+   * @returns message confirming the insertion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .post("/gyms/gym", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      const client = await pool.connect();
+      let query = req.body;
       let ID = createID(4);
-      let result = await client.query(
-        "INSERT INTO GYM" +
-          "(G_ID,Gym_BrandName,Gym_Address,Gym_Coord_Long,Gym_Coord_Lat,Gym_Icon) VALUES" +
-          "('" +
-          ID +
-          "','" +
-          query.gbn +
-          "','" +
-          query.ga +
-          "','" +
-          query.gclo +
-          "','" +
-          query.gcla +
-          "','" +
-          query.gi +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      query.gid = ID;
-      res.json(query);
-      client.release();
+      let result = await gymRepository.saveGym(ID,query.gymBrandName,query.gymAddress,query.gymCoordLat,query.gymCoordLong,query.gymIcon);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
       res.json(results);
     }
   })
-   //=========================================================================================================//
+  //=========================================================================================================//
   /**
-   * POST request to add an owner to the db
-   * encrypts user's password
-   * 
-   * @param {Owner Info}
-   * @returns http response packet
+   * POST - Insert that a gym owner into database.
+   * @param {string} email owner email.
+   * @param {string} name owner name.
+   * @param {string} surname owner surname.
+   * @param {string} number owner number.
+   * @param {string} username owner username.
+   * @param {string} password owner password.
+   * @returns message confirming the insertion.
    */
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(bodyParser.raw())
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
       let query = req.body;
-      const client = await pool.connect();
-      let result = await client.query(
-        "INSERT INTO GYM_OWNER" +
-          "(email,name,surname,number,username,password) VALUES" +
-          "('" +
-          query.email +
-          "','" +
-          query.name +
-          "','" +
-          query.surname +
-          "','" +
-          query.number +
-          "','" +
-          query.username +
-          "','" +
-          bcrypt.hashSync(query.password, bcrypt.genSaltSync()) +
-          "')"
-      );
-      const results = { success: true, results: result ? result.rows : null };
-      res.json({ results, query });
-      client.release();
+      let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
+      res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
