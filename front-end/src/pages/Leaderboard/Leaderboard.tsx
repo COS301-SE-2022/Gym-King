@@ -26,7 +26,7 @@ const Leaderboard: React.FC = () =>{
      }
     useEffect(()=>
     {
-        var gymid="lttD"
+        var gymid=sessionStorage.getItem("gid");
         var index:number;
         var Overall:any=[];
         var Cardio:any=[];
