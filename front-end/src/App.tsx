@@ -41,6 +41,11 @@ import { RegisterPage } from './pages/CreateUserPage/Register';
 import {OTP} from './pages/OTP/OTP';
 import MyBadge from './pages/MyBadge/MyBadge'
 import ManageGyms from './pages/ManageGyms/ManageGyms';
+import UserProfilePage from './pages/UserProfile/UserProfile';
+import OwnerProfilePage from './pages/OwnerProfile/OwnerProfile';
+import EmployeeProfilePage from './pages/EmployeeProfile/EmployeeProfile';
+import GymOwnerPage from './pages/GymOwnerPage/GymOwnerPage'
+import EditGym from './pages/EditGymPage/EditGym'
 /*develop*/
 
 
@@ -109,6 +114,21 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/ManageGyms">
           <ManageGyms></ManageGyms>
+        </Route>
+        <Route exact path="/UserProfile">
+          <UserProfilePage></UserProfilePage>
+        </Route>
+        <Route exact path="/OwnerProfile">
+          <OwnerProfilePage></OwnerProfilePage>
+        </Route>
+        <Route exact path="/EmployeeProfile">
+          <EmployeeProfilePage></EmployeeProfilePage>
+        </Route>
+        <Route exact path='/GymOwnerPage'>
+          <GymOwnerPage></GymOwnerPage>
+        </Route>
+        <Route exact path='/EditGym'>
+          <EditGym></EditGym>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

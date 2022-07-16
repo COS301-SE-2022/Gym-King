@@ -30,7 +30,7 @@ const ManageGyms: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Gyms</IonText>
-                    <IonButton routerLink='/AddGym' routerDirection="none" color="warning">ADD GYMS</IonButton>
+                    <IonButton routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYMS</IonButton>
                     {gymList.map(el=>
                         <GymCard key={el.id} id={el.id} name={el.name} address={el.address}></GymCard>
                     )

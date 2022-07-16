@@ -5,7 +5,7 @@ import ToolBar from '../../components/toolbar/Toolbar';
 
 import './UserMap.css'
 const UserMap: React.FC = () => {
-  var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/profile'},
+  var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/UserProfile'},
                      {'caption':'My Badges','icon':'trophy','route':'/MyBadge'},
                      {'caption':'Settings','icon':'cog','route':'/Settings'}] 
   return (
