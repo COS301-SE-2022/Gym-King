@@ -80,9 +80,20 @@ const AddGym: React.FC = () => {
   const addGym = () => {
     setShowToast1(true)
     fetch(
-    `https://gym-king.herokuapp.com/gyms/gym?gbn=${gymName}&ga=${gymAddress}&gclo=${coordinate[1]}&gcla=${coordinate[0]}&gi=${gymIcon}`,
+    `https://gym-king.herokuapp.com/gyms/gym`,
     {
       method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        gymBrandName: gymName,
+        gymAddress: gymAddress,
+        gymCoordLong: coordinate[1],
+        gymCoordLat: coordinate[0],
+        gymIcon: gymIcon
+      })
     }
   )
     .then((response) => response.json())
