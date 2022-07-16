@@ -1,4 +1,4 @@
-import { CreateAnimation, IonBadge, IonButton,  IonLoading, IonText, IonToast } from "@ionic/react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -32,6 +32,7 @@ const MapView: React.FC = () =>{
     }]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    // Location Vars------------------------------------------------------------------------------------------//
     const [postWaiting, setPostWaiting] = useState<boolean>(false);
     const [center, setCenter] = useState([0,0])
     const [zoom, setZoom] = useState(10)
@@ -42,8 +43,9 @@ const MapView: React.FC = () =>{
     const [error, setError] = useState<LocationError>({showError: false});
     const [userLocation, setUserLoc] = useState([0,0]);
 
-    // Gym Menu
-    const [hidden, setHidden] = useState<boolean>(true);
+    // Gym Menu Vars -----------------------------------------------------------------------------------------------//
+
+    const [gymMenuName, setgymMenuName] = useState<string>("");
 
     //=========================================================================================================//
     /**
@@ -79,12 +81,11 @@ const MapView: React.FC = () =>{
     }    
 
     
-    const gymButtonClick=async ()=>{
-        
-        window.alert("The Gyms Menu will open Up");
-        //window.location.href = "http://localhost:3000/Login";
-        
-        setHidden(false)
+    const gymButtonClick=async (name:string)=>{
+        // Set Pop Menus data
+
+        setgymMenuName(name)
+        setShowModal(true)
     }
     
     //=========================================================================================================//
@@ -157,10 +158,38 @@ const MapView: React.FC = () =>{
         }
     })
 
+
+    const [showModal, setShowModal] = useState(false);
+
+    const enterAnimation = (baseEl: any) => {
+        const root = baseEl.shadowRoot;
+
+        const backdropAnimation = createAnimation()
+        .addElement(root.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+        const wrapperAnimation = createAnimation()
+        .addElement(root.querySelector('.modal-wrapper')!)
+        .keyframes([
+            { offset: 0, opacity: '0', transform: 'scale(0)' },
+            { offset: 1, opacity: '0.99', transform: 'scale(1)' }
+        ]);
+
+        return createAnimation()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(500)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    }
+
+    const leaveAnimation = (baseEl: any) => {
+        return enterAnimation(baseEl).direction('reverse');
+    }
+
     return (
         
-        <>
-            
+        <>  
+            <IonContent >
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}
@@ -187,12 +216,17 @@ const MapView: React.FC = () =>{
                     
                     getLocation(false)
                     getNearbyGyms()
-                    setHidden(true);
+                    setShowModal(false)
                 }} 
                 onAnimationStart={()=>{
-                    setHidden(true);
-                    
+                                
+                    setShowModal(false)
                 }}
+                onClick={()=>{
+                                
+                    setShowModal(false)
+                }}
+                
                 
                 
             >
@@ -207,15 +241,15 @@ const MapView: React.FC = () =>{
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:number}) => {
+                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
                     return (
                         <Overlay 
                             key={item.gid}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
-                            offset={[15,30]} 
+                            offset={[15,31]} 
                             
                         > 
-                            <img onClick={gymButtonClick} id = "GymPicture" src={gym} alt='' />
+                            <img onClick={() => {gymButtonClick(item.gym_brandname)}} id ="GymPicture" src={gym} alt='' />
                         </Overlay> 
                     )                 
                 })}
@@ -224,34 +258,26 @@ const MapView: React.FC = () =>{
             
 
             </Map>
-            <CreateAnimation
-                duration={500}
-                fromTo={    {
-                    property: 'transform',
-                    fromValue: 'translateY(0) rotate(0)',
-                    toValue: `translateY(-20vh) rotate(0)`,
-                }}
-                easing="ease-in"
-                play={!hidden}
-                
-                stop={hidden}
-                
-                
-                
-            >
 
-                
-                
-                
-            <IonBadge id = "overlay">
-                
-                <IonText className='center inputHeading'>Gym Name</IonText>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">View Gym</IonButton>
-
-            </IonBadge>
+            <IonModal  id = "overlay"   showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+        
+            {/* <IonBadge > */}
+                <IonCard>
+                    <IonCardHeader>
+                        <IonCardTitle className='center '>{gymMenuName}</IonCardTitle>
+                    </IonCardHeader >
+                    <IonCardContent id="buttonBox">
+                        <IonButtons>
+                            <IonButton  shape='round' className='btn'>View</IonButton>
+                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btn'>Close</IonButton>
+                        </IonButtons>
+                    
+                    </IonCardContent>
+                </IonCard>
+            {/* </IonBadge > */}
             
-            </CreateAnimation>
-                
+            </IonModal>   
+            </IonContent>
         </>
     )
 }
