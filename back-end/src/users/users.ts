@@ -1,10 +1,10 @@
-import { gym_owner } from "../entities/gym_owner.entity";
 import { badgeRepository } from "../repositories/badge.repository";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { gymRepository } from "../repositories/gym.repository";
 import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
+import { userOTPRepository } from "../repositories/user_otp.repository";
 
 const express = require('express');
 const cors = require('cors');
@@ -47,7 +47,21 @@ const fs = require('fs');
   {
       return Value * Math.PI / 180;
   }
-
+//=========================================================================================================//
+  /**
+   * Makes a generated ID given a size input.
+   * @param {number} size of the generated ID.
+   * @returns {string} Generated ID.
+   */
+function createID(length: any) {
+  let ID = "";
+  let characters =
+    "0123456789";
+  for (var i = 0; i < length; i++) {
+    ID += characters.charAt(Math.floor(Math.random() * 10));
+  }
+  return ID;
+}
 //=============================================================================================//
 // USER API
 //=============================================================================================//
@@ -70,6 +84,33 @@ const corsOptions = {
 //=============================================================================================//
 const users = express.Router()
   .options('*', cors(corsOptions))
+  //=========================================================================================================//
+  /**
+   * GET - a users information.
+   * @param {string} email user's email.
+   * @param {string} password user's password.
+   * @returns Users information.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .get('/users/user', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        res.json(user)
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
   //=========================================================================================================//
   /**
    * GET - returns all badges with input of * or returns the specific badge from b_id.
@@ -214,7 +255,6 @@ const users = express.Router()
    * @param {string} usertype Type of user.
    * @returns A message saying success true.
    */
-  users
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(bodyParser.raw())
@@ -280,7 +320,6 @@ const users = express.Router()
    * @param {string} password The password the user created (NOT ecrypted).
    * @returns Returns params of completed insertion.
    */
-  users
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(bodyParser.raw())
@@ -303,7 +342,6 @@ const users = express.Router()
    * @param {string} radius circle radius in KM to check for gyms
    * @returns a list of gyms and their locations
    */
-  users
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(bodyParser.raw())
@@ -332,6 +370,67 @@ const users = express.Router()
         res.json(  { 'success': false, 'results':'user coordinates not given'} );
       }
     } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * PUT save a gym user to the database.
+   * @param {string} email The email of the user.
+   * @param {string} name The name of the user.
+   * @param {string} surname The surname of the user. 
+   * @param {string} number The phone number of the user. 
+   * @param {string} username The username the user.
+   * @param {string} password The password the user (NOT ecrypted).
+   * @returns Returns params of completed insertion.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .put('/users/user', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const bcrypt = require('bcryptjs')
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        const result = await userRepository.updateUser(query.email,query.name,query.surname,query.number,query.username);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * PUT update a user password.
+   * @param {string} email The email of the user. 
+   * @param {string} otp OTP given by user.
+   * @param {string} newpassword New password.
+   * @returns message informing successful update or not.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .put('/users/user/password', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const user = await userRepository.findByEmail(query.email);
+      const otp = await userOTPRepository.findByEmail(query.email);
+      if (otp.otp == query.otp) {
+        const result = await userRepository.updateUserPassword(user.email, query.newpassword);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or OTP!'})
+      }
+    }catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);

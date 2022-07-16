@@ -176,6 +176,60 @@ const utils = express.Router()
           "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
           ")"
       );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS USER_OTP(" +
+          "email VARCHAR(320)," +
+          "otp VARCHAR(50)," +
+          "Date DATE DEFAULT NOW()," +
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
+          ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS EMPLOYEE_OTP(" +
+          "email VARCHAR(320)," +
+          "otp VARCHAR(50)," +
+          "Date DATE DEFAULT NOW()," +
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (email) REFERENCES GYM_EMPLOYEE(email)" +
+          ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS OWNER_OTP(" +
+          "email VARCHAR(320)," +
+          "otp VARCHAR(50)," +
+          "Date DATE DEFAULT NOW()," +
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (email) REFERENCES GYM_OWNER(email)" +
+          ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS USER_PROFILE_PICTURE(" +
+          "email VARCHAR(320)," +
+          "picture VARCHAR(65535)," +
+          "Date DATE DEFAULT NOW()," +
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
+          ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS EMPLOYEE_PROFILE_PICTURE(" +
+          "email VARCHAR(320)," +
+          "picture VARCHAR(65535)," +
+          "Date DATE DEFAULT NOW()," +
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (email) REFERENCES GYM_EMPLOYEE(email)" +
+          ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS OWNER_PROFILE_PICTURE(" +
+          "email VARCHAR(320)," +
+          "picture VARCHAR(65535)," +
+          "Date DATE DEFAULT NOW()," +
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (email) REFERENCES GYM_OWNER(email)" +
+          ")"
+      );
       const results = { success: true, results: result };
       res.json(results);
       client.release();
