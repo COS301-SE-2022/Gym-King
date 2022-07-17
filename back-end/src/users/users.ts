@@ -400,7 +400,7 @@ const users = express.Router()
    })
   //=========================================================================================================//
   /**
-   * PUT save a gym user to the database.
+   * PUT update a gym user.
    * @param {string} email The email of the user.
    * @param {string} name The name of the user.
    * @param {string} surname The surname of the user. 

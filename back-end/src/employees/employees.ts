@@ -227,6 +227,38 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
+   * PUT update a gym employee.
+   * @param {string} email The email of the employee.
+   * @param {string} name The name of the employee.
+   * @param {string} surname The surname of the employee. 
+   * @param {string} number The phone number of the employee. 
+   * @param {string} username The username the employee.
+   * @param {string} password The password the employee (NOT ecrypted).
+   * @returns Returns params of completed insertion.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .put('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const bcrypt = require('bcryptjs')
+      const employee = await employeeRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, employee.password)) {
+        const result = await employeeRepository.updateEmployee(query.email,query.name,query.surname,query.number,query.username);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * PUT - Update accepted badge_claim to badge_owned.
    * @param {string} bid badge ID used to find badge.
    * @param {string} email email used to find the user.
