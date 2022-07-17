@@ -464,14 +464,27 @@ const users = express.Router()
   /**
    * DELETE - Delete a user.
    * @param {string} email unique email used to delete the user.
+   * @param {string} password user password.
    * @returns message confirming deletion.
    */
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
-    let result = await badgeOwnedRepository.deleteAllOwnedByEmail(req.body.email);
-    result = await badgeClaimRepository.deleteAllClaimsByEmail(req.body.email);
-    result = await userRepository.deleteUser(req.body.email)  
-    res.json(result)
+    try {
+      let query = req.body;
+      const bcrypt = require('bcryptjs')
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        const result = await userRepository.deleteUser(query.email);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
   })
 export {users}
