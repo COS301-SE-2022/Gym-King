@@ -53,6 +53,7 @@
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.0.1",
     "rxjs": "^6.5.0",
+    "typeorm": "^0.3.7",
     "use-file-picker": "^1.4.2",
     "webpack": "^5.73.0",
     "yarn": "^1.22.18",
