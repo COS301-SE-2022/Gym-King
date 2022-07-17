@@ -39,6 +39,7 @@
     "@testing-library/dom": "7.21.4",
     "add": "^2.0.6",
     "babel-loader": "^8.0.2",
+    "eslint-config-react-app": "^7.0.1",
     "nx": "^14.4.3",
     "pigeon-maps": "^0.21.0",
     "pigeon-marker": "^0.3.4",
