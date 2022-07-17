@@ -68,5 +68,8 @@ export const badgeClaimRepository = GymKingDataSource.getRepository(badge_claim)
     },
     deleteAllClaimsByBID(bid: string) {
         return this.manager.delete(badge_claim, {b_id: bid})
+    },
+    deleteAllClaimsByEmail(email: string) {
+        return this.manager.delete(badge_claim, {email: email})
     }
 })
