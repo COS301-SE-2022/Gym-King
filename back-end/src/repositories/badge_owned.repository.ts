@@ -77,5 +77,8 @@ export const badgeOwnedRepository = GymKingDataSource.getRepository(badge_owned)
     },
     deleteAllOwnedByBID(bid: string) {
         return this.manager.delete(badge_owned, {b_id: bid})
+    },
+    deleteAllOwnedByEmail(email: string) {
+        return this.manager.delete(badge_owned, {email: email})
     }
 })

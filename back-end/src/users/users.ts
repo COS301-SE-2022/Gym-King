@@ -1,5 +1,6 @@
 import { badgeRepository } from "../repositories/badge.repository";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
+import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { gymRepository } from "../repositories/gym.repository";
 import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
@@ -377,6 +378,28 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * POST - create OTP for user.
+   * @param {string} email email of user.
+   * @returns message indicating creation
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post('/users/user/OTP', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      let result = await userOTPRepository.deleteUserOTP(query.email);
+      const newOTP = createID(6);
+      result = await userOTPRepository.saveUserOTP(query.email,newOTP);
+      res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+  //=========================================================================================================//
+  /**
    * PUT save a gym user to the database.
    * @param {string} email The email of the user.
    * @param {string} name The name of the user.
@@ -389,7 +412,7 @@ const users = express.Router()
    .use(bodyParser.urlencoded({ extended: true }))
    .use(bodyParser.json())
    .use(bodyParser.raw())
-   .put('/users/user', cors(corsOptions), async (req: any, res: any) => {
+   .put('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
       const bcrypt = require('bcryptjs')
@@ -423,8 +446,9 @@ const users = express.Router()
       const query = req.body;
       const user = await userRepository.findByEmail(query.email);
       const otp = await userOTPRepository.findByEmail(query.email);
-      if (otp.otp == query.otp) {
+      if (otp != null && otp.otp == query.otp) {
         const result = await userRepository.updateUserPassword(user.email, query.newpassword);
+        const otp = await userOTPRepository.deleteUserOTP(query.email);
         res.json(result);
       }
       else {
@@ -445,7 +469,9 @@ const users = express.Router()
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
-    const result = await userRepository.deleteUser(req.body.email)  
+    let result = await badgeOwnedRepository.deleteAllOwnedByEmail(req.body.email);
+    result = await badgeClaimRepository.deleteAllClaimsByEmail(req.body.email);
+    result = await userRepository.deleteUser(req.body.email)  
     res.json(result)
   })
 export {users}
