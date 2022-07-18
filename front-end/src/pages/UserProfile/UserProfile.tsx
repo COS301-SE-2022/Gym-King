@@ -3,12 +3,15 @@ import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 
 const UserProfilePage: React.FC = () =>{
     
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
+    let history=useHistory()
+
 
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
@@ -162,7 +165,7 @@ const UserProfilePage: React.FC = () =>{
     }
 
     const goToUserBadges = () =>{
-        
+        history.push("/MyBadge")
     }
     
 
