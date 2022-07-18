@@ -17,20 +17,51 @@ const UserProfilePage: React.FC = () =>{
     const [phone, setPhone]= useState("")
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
-
-
+    const [numClaims, setNumClaims] = useState("");
+    const [numBadges, setNumBadges] = useState("");
 
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
+   
+    
     const getNumberOfBadges = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/owned/${email}`,{
+        fetch(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
-                
+                if(response === null)
+                {
+                    //no claims
+                    setNumBadges("0");
+                }
+                else
+                {
+                    setNumBadges(response.length)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+        })
+    }
+    const getNumberOfClaims = () =>{
+        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
+                method: 'GET'
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                if(response === null)
+                {
+                    //no claims
+                    setNumClaims("0");
+                }
+                else
+                {
+                    setNumClaims(response.length)
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -66,6 +97,7 @@ const UserProfilePage: React.FC = () =>{
             })
         
         getNumberOfBadges()
+        getNumberOfClaims()
          // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -185,7 +217,7 @@ const UserProfilePage: React.FC = () =>{
                             <IonCol>
                                 <IonCard className="smallCard">
                                     <IonCardContent>
-                                        <IonText className="bigNumber">123</IonText><br></br>
+                                        <IonText className="bigNumber">{numBadges}</IonText><br></br>
                                         <IonText>badges</IonText>
                                     </IonCardContent>
                                     
@@ -194,7 +226,7 @@ const UserProfilePage: React.FC = () =>{
                             <IonCol>
                                 <IonCard className="smallCard">
                                     <IonCardContent>
-                                        <IonText  className="bigNumber">2</IonText><br></br>
+                                        <IonText  className="bigNumber">{numClaims}</IonText><br></br>
                                         <IonText>pending badges</IonText>
                                     </IonCardContent>
                                 </IonCard>

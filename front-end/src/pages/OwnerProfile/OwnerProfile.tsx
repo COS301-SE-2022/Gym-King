@@ -80,6 +80,21 @@ const OwnerProfilePage: React.FC = () =>{
                 console.log(err)
                 //setShowFail(true);
             }) 
+
+            //get number of gyms owned
+        fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
+            method: 'GET'
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            
+        })
+        .catch(err => {
+            console.log(err)
+            //setShowFail(true);
+        }) 
+       
     }
 
 
