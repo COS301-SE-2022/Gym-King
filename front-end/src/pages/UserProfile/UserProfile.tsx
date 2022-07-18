@@ -23,6 +23,19 @@ const UserProfilePage: React.FC = () =>{
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
+    const getNumberOfBadges = () =>{
+        fetch(`https://gym-king.herokuapp.com/users/owned/${email}`,{
+                method: 'GET'
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                
+            })
+            .catch(err => {
+                console.log(err)
+        })
+    }
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
@@ -52,6 +65,8 @@ const UserProfilePage: React.FC = () =>{
                 console.log(err)
             })
         
+        getNumberOfBadges()
+         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const updateUserDetails = () =>{
@@ -112,6 +127,8 @@ const UserProfilePage: React.FC = () =>{
     const updateUsername=(e:any)=>{
         setUsername(e.detail.value)
     }
+
+    
     
 
         return(
