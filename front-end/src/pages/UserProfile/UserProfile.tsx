@@ -3,13 +3,13 @@ import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useEffect } from 'react';
-///
+
 
 const UserProfilePage: React.FC = () =>{
     
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
-
+    
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname]= useState("")
@@ -51,9 +51,34 @@ const UserProfilePage: React.FC = () =>{
     },[])
 
 
-    function dismiss() {
+
+    const dismiss =()=> {
         modal.current?.dismiss();
     }
+
+    const updateDetails = (e:any) =>{
+        //update 
+        
+        //dismiss
+        dismiss()
+    }
+    
+    const updateEmail=(e:any)=>{
+        setEmail(e.detail.value)
+    }
+    const updateName=(e:any)=>{
+        setName(e.detail.value)
+    }
+    const updateSurname=(e:any)=>{
+        setSurname(e.detail.value)
+    }
+    const updatePhone=(e:any)=>{
+        setPhone(e.detail.value)
+    }
+    const updateUsername=(e:any)=>{
+        setUsername(e.detail.value)
+    }
+    
 
         return(
             <IonPage color='#220FE' >
@@ -129,39 +154,45 @@ const UserProfilePage: React.FC = () =>{
                     <br></br>
 
                     <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
+                        
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="white" onClick={() => dismiss()}>Close</IonButton>
+                                <IonButton color="white" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="white" onClick={() => dismiss()} type="submit">Confirm</IonButton>
+                                <IonButton color="white" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
                         <IonContent >
-                            <form style={{"padding":"5%"}}>
+                            <form style={{"padding":"5%"}} onChange={updateDetails}>
+
+                                <IonLabel className="smallHeading" position="floating">Username</IonLabel>
+                                <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
+
                                 <IonLabel className="smallHeading" position="floating">Name</IonLabel>
-                                <IonInput className='textInput' name='name' type='text' required></IonInput>
+                                <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Surname</IonLabel>
-                                <IonInput className='textInput' name='surname' type='text' required ></IonInput>
+                                <IonInput className='textInput' name='surname' type='text' required value={surname}  onIonChange={updateSurname}></IonInput>
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Email</IonLabel>
-                                <IonInput className='textInput' name='email' type='email' required></IonInput>
+                                <IonInput className='textInput' name='email' type='email' required value={email} onIonChange={updateEmail}></IonInput>
                                 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Phone</IonLabel>
-                                <IonInput className='textInput' name='phonenumber' type='text' required ></IonInput>
+                                <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel>
                                 <IonButton className='' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
+                        
                     </IonModal>
                     
                 </IonContent>
