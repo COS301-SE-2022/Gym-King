@@ -167,7 +167,11 @@ const UserProfilePage: React.FC = () =>{
     const goToUserBadges = () =>{
         history.push("/MyBadge")
     }
+    const goToPendingBadges = () =>{
+        history.push("/PendingBadges")
+    }
     
+
 
         return(
             <IonPage color='#220FE' >
@@ -230,7 +234,7 @@ const UserProfilePage: React.FC = () =>{
                                 </IonCard>
                             </IonCol>
                             <IonCol>
-                                <IonCard className="smallCard">
+                                <IonCard className="smallCard" onClick={goToPendingBadges}>
                                     <IonCardContent>
                                         <IonText  className="bigNumber">{numClaims}</IonText><br></br>
                                         <IonText>pending badges</IonText>
