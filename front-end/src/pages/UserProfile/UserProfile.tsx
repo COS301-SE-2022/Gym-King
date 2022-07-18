@@ -183,6 +183,7 @@ const UserProfilePage: React.FC = () =>{
                                 </IonCard>
                             </IonCol>
                         </IonRow>
+                        
                     </IonGrid>
 
                     <br></br>
