@@ -29,7 +29,7 @@ export const Login: React.FC = () =>{
             .then(response =>{
                 if(response.success){
                    // window.location.href = "http://"+window.location.host+"/home";
-                   localStorage.setItem("username", formData.username)
+                   localStorage.setItem("email", formData.email)
                    localStorage.setItem("password", formData.password)
                    navigate();
                 }else{

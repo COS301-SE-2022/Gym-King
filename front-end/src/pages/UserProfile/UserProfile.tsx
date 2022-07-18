@@ -18,13 +18,13 @@ const UserProfilePage: React.FC = () =>{
         setPresentingElement(page.current); //for modal
         
         fetch(`https://gym-king.herokuapp.com/users/user`,{
-                method: 'GET',
+                method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    username: localStorage.getItem("username"),
+                    email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
