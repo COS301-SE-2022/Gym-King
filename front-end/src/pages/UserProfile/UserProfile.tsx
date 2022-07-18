@@ -161,7 +161,9 @@ const UserProfilePage: React.FC = () =>{
         setUsername(e.detail.value)
     }
 
-    
+    const goToUserBadges = () =>{
+        
+    }
     
 
         return(
@@ -216,7 +218,7 @@ const UserProfilePage: React.FC = () =>{
                         </IonRow>
                         <IonRow>
                             <IonCol>
-                                <IonCard className="smallCard">
+                                <IonCard className="smallCard" onClick={goToUserBadges}>
                                     <IonCardContent>
                                         <IonText className="bigNumber">{numBadges}</IonText><br></br>
                                         <IonText>badges</IonText>

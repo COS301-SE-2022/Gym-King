@@ -44,11 +44,11 @@ export const Login: React.FC = () =>{
             })
     } 
     const navigate=()=>{
-        if(formData.usertype==="user")
+        if(formData.usertype==="gym_user")
         {
             history.push("/userMap")
         }
-        else if(formData.usertype==="owner")
+        else if(formData.usertype==="gym_owner")
         {
             history.push("/GymOwnerPage")
         }
