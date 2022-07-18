@@ -19,7 +19,7 @@ export const AddEmployee: React.FC = () =>{
             number: e.target.number.value,
             username: e.target.username.value,
             password: e.target.password.value,
-            gid: e.target.gym.value,
+            gym: e.target.gym.value,
         };
             createEmployee();
     }
@@ -38,7 +38,7 @@ export const AddEmployee: React.FC = () =>{
                 number: formData.number,
                 username: formData.username,
                 password: formData.password,
-                gid: formData.gid,
+                gid: formData.gym,
             })
         })
         .then(response =>response.json())
@@ -96,7 +96,7 @@ export const AddEmployee: React.FC = () =>{
                         <IonInput name='password' type='password' className='textInput' required></IonInput>
 
                         <IonText className="smallHeading">Gym*</IonText>
-                        <IonInput name='gid' type='text' className='textInput' required></IonInput>
+                        <IonInput name='gym' type='text' className='textInput' required></IonInput>
 
                         <IonButton color="warning" className="btnAddEmployee ion-margin-top" type="submit" expand="block">Add Employee</IonButton>
 
