@@ -26,7 +26,7 @@ const OwnerProfilePage: React.FC = () =>{
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
-        
+        /*
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
                 method: 'POST',
                 headers: {
@@ -50,7 +50,7 @@ const OwnerProfilePage: React.FC = () =>{
             })
             .catch(err => {
                 console.log(err)
-            })
+            })*/
         
     },[])
 
