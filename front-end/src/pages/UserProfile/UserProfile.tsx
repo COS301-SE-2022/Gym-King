@@ -2,7 +2,6 @@ import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonBut
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
-
 import { useEffect } from 'react';
 
 
@@ -11,11 +10,41 @@ const UserProfilePage: React.FC = () =>{
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
 
+
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
-    useEffect(() => {
-        setPresentingElement(page.current);
-    }, []);
+
+    useEffect(()=>{
+        setPresentingElement(page.current); //for modal
+        
+        fetch(`https://gym-king.herokuapp.com/users/user`,{
+                method: 'GET',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    username: localStorage.getItem("username"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                if(response.success){
+                   // window.location.href = "http://"+window.location.host+"/home";
+                   console.log(response)
+                    
+                }else{
+                    console.log(response.success)
+                    console.log(response.results)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        
+    },[])
+
 
     function dismiss() {
         modal.current?.dismiss();

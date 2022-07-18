@@ -20,7 +20,7 @@ export const Login: React.FC = () =>{
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    username: formData.username,
+                    email: formData.email,
                     password: formData.password,
                     usertype: formData.usertype
                  })
@@ -29,6 +29,8 @@ export const Login: React.FC = () =>{
             .then(response =>{
                 if(response.success){
                    // window.location.href = "http://"+window.location.host+"/home";
+                   localStorage.setItem("username", formData.username)
+                   localStorage.setItem("password", formData.password)
                    navigate();
                 }else{
                     
@@ -59,7 +61,7 @@ export const Login: React.FC = () =>{
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
         formData={
-            username: e.target.userName.value,
+            email: e.target.email.value,
             password: e.target.userPassword.value,
             usertype: userType
         };
@@ -81,8 +83,8 @@ export const Login: React.FC = () =>{
                     <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST" className='loginForm'>
                         <IonText className='center inputHeading'>Login</IonText>
                             <br></br><br></br>
-                            <IonLabel className="smallHeading" position="floating">Username*</IonLabel>
-                            <IonInput className='textInput' name='userName' type='text' required></IonInput>
+                            <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
+                            <IonInput className='textInput' name='email' type='text' required></IonInput>
                             
                             <br></br>
                             <IonLabel className="smallHeading" position="floating">Password*</IonLabel>
