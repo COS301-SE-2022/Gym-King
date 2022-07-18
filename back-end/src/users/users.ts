@@ -126,6 +126,40 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET - returns all badge claims of a user.
+   * @param {string} email email of gym_user.
+   * @returns list of all claims the user has made.
+   */
+   .get('/users/claims/:email', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.email;
+      const result = await badgeClaimRepository.findByEmail(query);
+      res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET - returns all badges owned of a user.
+   * @param {string} email email of gym_user.
+   * @returns list of all badges owned by user.
+   */
+   .get('/users/owned/:email', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.email;
+      const result = await badgeOwnedRepository.findByEmail(query);
+      res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * GET - return gym information from giving its gym ID
    * @param {string} gid input of the gym ID to find gym.
    * @return Information on gym found by ID.
