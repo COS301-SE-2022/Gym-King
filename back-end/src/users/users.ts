@@ -255,12 +255,12 @@ const users = express.Router()
         }
         if(result == null) {
           res.status(404); 
-          res.json( { 'success': false, 'results':'invalid username or password'} );
+          res.json( { 'success': false, 'results':'invalid email or password'} );
         }
         else {
           if(result.length==0) {
             res.status(404);
-            res.json( { 'success': false, 'results':'invalid username or password'} );
+            res.json( { 'success': false, 'results':'invalid email or password'} );
           }
           else{
             let hashPass = result.password;
@@ -275,7 +275,7 @@ const users = express.Router()
         }
       }else {
         res.status(400);
-        res.json(  { 'success': false, 'results':'missing username or password'} );
+        res.json(  { 'success': false, 'results':'missing email or password'} );
       }
     } catch (err) {
       const results = { 'success': false, 'results': err };
