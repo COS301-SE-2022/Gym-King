@@ -5,9 +5,6 @@ import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingBadges.css';
 
-
-export type UploadActivityStates = {act?:any}
-
 const PendingBadgesPage: React.FC = () =>{
 
     //STATES AND VARIABLES 
@@ -16,7 +13,7 @@ const PendingBadgesPage: React.FC = () =>{
 
     //GET REQUEST:
     useEffect(()=>{
-        fetch(`https://gym-king.herokuapp.com/users/claims/u20519517@tuks.co.za`,{
+        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -26,6 +23,10 @@ const PendingBadgesPage: React.FC = () =>{
                 {
                     //has claims 
                     setClaims(response)
+                }
+                else{
+                    //no badges
+                    setClaims([])
                 }
             })
             .catch(err => {
@@ -45,11 +46,13 @@ const PendingBadgesPage: React.FC = () =>{
                     <IonText className='PageTitle center'>Pending Badges</IonText>
                     
                     {
-                        claims?.map(el =>{
+                        
+                        claims !== [] && claims?.map(el =>{
                             
                             return ( <PendingBadgeItem badgeName={el.b_id.badgename} key={el.email + el.b_id}></PendingBadgeItem>)
-                        })
+                        }) 
                     }
+                    
                 </IonContent>
             </IonPage>
         )
