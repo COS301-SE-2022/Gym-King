@@ -47,7 +47,7 @@ import EmployeeProfilePage from './pages/EmployeeProfile/EmployeeProfile';
 import GymOwnerPage from './pages/GymOwnerPage/GymOwnerPage'
 import EditGym from './pages/EditGymPage/EditGym'
 import GymPage from './pages/GymPage/GymPage';
-import PendingBadgesPage from './pages/UserPendingBadges/PendingBanges';
+import PendingBadgesPage from './pages/UserPendingBadges/PendingBadges';
 /*develop*/
 
 

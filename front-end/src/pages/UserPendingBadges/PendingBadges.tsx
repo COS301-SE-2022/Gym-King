@@ -1,7 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
-import ApprovalButton from '../../components/approvalButton/approvalButton';
+import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingBadges.css';
 
@@ -16,7 +16,7 @@ const PendingBadgesPage: React.FC = () =>{
 
     //GET REQUEST:
     useEffect(()=>{
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
+        fetch(`https://gym-king.herokuapp.com/users/claims/u20519517@tuks.co.za`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -33,6 +33,8 @@ const PendingBadgesPage: React.FC = () =>{
         })
     },[])
 
+
+
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -44,7 +46,8 @@ const PendingBadgesPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)
+                            
+                            return ( <PendingBadgeItem badgeName={el.b_id.badgename} key={el.email + el.b_id}></PendingBadgeItem>)
                         })
                     }
                 </IonContent>
