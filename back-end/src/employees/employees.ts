@@ -2,6 +2,7 @@ import { employeeRepository } from "../repositories/gym_employee.repository";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { badgeRepository } from "../repositories/badge.repository";
+import { employeeOTPRepository } from "../repositories/employee_otp.repository";
 
 const express = require("express");
 const cors = require("cors");
@@ -36,6 +37,20 @@ function createID(length: any) {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for (var i = 0; i < length; i++) {
     ID += characters.charAt(Math.floor(Math.random() * 62));
+  }
+  return ID;
+}
+/**
+   * Makes a generated ID given a size input.
+   * @param {number} size of the generated ID.
+   * @returns {string} Generated ID.
+   */
+ function createID2(length: any) {
+  let ID = "";
+  let characters =
+    "0123456789";
+  for (var i = 0; i < length; i++) {
+    ID += characters.charAt(Math.floor(Math.random() * 10));
   }
   return ID;
 }
@@ -81,6 +96,32 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
+   * POST - Insert an employee.
+   * @param {string} email email.
+   * @param {string} name name.
+   * @param {string} surname surname.
+   * @param {string} number phone number.
+   * @param {string} username username.
+   * @param {string} password Password.
+   * @param {string} gid gym ID.
+   * @returns Message confirming insertion.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
+     try {
+       let query = req.body;
+       let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
+       res.json(result);
+     } catch (err) {
+       const results = { success: false, results: err };
+       console.error(err);
+       res.json(results);
+     }
+   })
+  //=========================================================================================================//
+  /**
    * POST - Insert a badge into the database.
    * @param {string} gid email used to find claim.
    * @param {string} badgename badge ID used to find claim.
@@ -101,6 +142,117 @@ const employees = express.Router()
       res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - create OTP for employee.
+   * @param {string} email email of employee.
+   * @returns message indicating creation
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post('/employees/employee/OTP', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      let result = await employeeOTPRepository.deleteEmployeeOTP(query.email);
+      const newOTP = createID2(6);
+      result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
+      res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
+   * POST - Get an employee's information.
+   * @param {string} email employee's email.
+   * @param {string} password employee's password.
+   * @returns employee information.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const employee = await employeeRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, employee.password)) {
+        res.json(employee)
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+  //=========================================================================================================//
+  /**
+   * PUT update an employee password.
+   * @param {string} email The email of the employee. 
+   * @param {string} otp OTP given by employee.
+   * @param {string} newpassword New password.
+   * @returns message informing successful update or not.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .put('/employees/employee/password', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const employee = await employeeRepository.findByEmail(query.email);
+      const otp = await employeeOTPRepository.findByEmail(query.email);
+      if (otp != null && otp.otp == query.otp) {
+        const result = await employeeRepository.updateEmployeePassword(employee.email, query.newpassword);
+        const otp = await employeeOTPRepository.deleteEmployeeOTP(query.email);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or OTP!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * PUT update a gym employee.
+   * @param {string} email The email of the employee.
+   * @param {string} name The name of the employee.
+   * @param {string} surname The surname of the employee. 
+   * @param {string} number The phone number of the employee. 
+   * @param {string} username The username the employee.
+   * @param {string} password The password the employee (NOT ecrypted).
+   * @returns Returns params of completed insertion.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .put('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const bcrypt = require('bcryptjs')
+      const employee = await employeeRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, employee.password)) {
+        const result = await employeeRepository.updateEmployee(query.email,query.name,query.surname,query.number,query.username);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);
     }
@@ -210,28 +362,30 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * POST - Insert an employee.
-   * @param {string} email email.
-   * @param {string} name name.
-   * @param {string} surname surname.
-   * @param {string} number phone number.
-   * @param {string} username username.
-   * @param {string} password Password.
-   * @param {string} gid gym ID.
-   * @returns Message confirming insertion.
+   * DELETE - Delete an employee.
+   * @param {string} email employee email.
+   * @param {string} password employee password.
+   * @returns message confirming deletion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
-  .post("/users/useremp", cors(corsOptions), async (req: any, res: any) => {
-    try {
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .delete("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
+     try {
       let query = req.body;
-      let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
-      res.json(result);
-    } catch (err) {
-      const results = { success: false, results: err };
-      console.error(err);
-      res.json(results);
-    }
-  })
+      const bcrypt = require('bcryptjs')
+      const employee = await employeeRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, employee.password)) {
+        const result = await employeeRepository.deleteEmployee(query.email);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+     } catch (err) {
+       const results = { success: false, results: err };
+       console.error(err);
+       res.json(results);
+     }
+   })
 export {employees};

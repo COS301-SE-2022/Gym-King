@@ -28,6 +28,13 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
     findByGID(gid: string) {
         return this.findBy({ g_id: gid });
     },
+    async updateEmployee(email: string, name: string, surname: string, number: string, username: string) {
+        return await this.manager.update(gym_employee, { email: email }, {name: name, surname: surname, number: number, username: username})
+    },
+    async updateEmployeePassword(email: string, password: string) {
+        const bcrypt = require('bcryptjs')
+        return await this.manager.update(gym_employee, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
+    },
     async saveEmployee(email: string, name: string, surname: string, number: string, username: string, password: string, gid: string) {
         const result = await gymRepository.findByGID(gid);
         const gymEntity = new gym();
@@ -50,5 +57,8 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
     },
     deleteEmployee(email: string) {
         return this.manager.delete(gym_employee, {email: email})
+    },
+    deleteEmployeeByGID(gid: string) {
+        return this.manager.delete(gym_employee, {g_id: gid})
     }
 })

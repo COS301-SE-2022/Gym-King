@@ -87,33 +87,6 @@ const users = express.Router()
   .options('*', cors(corsOptions))
   //=========================================================================================================//
   /**
-   * GET - a users information.
-   * @param {string} email user's email.
-   * @param {string} password user's password.
-   * @returns Users information.
-   */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
-   .get('/users/user', cors(corsOptions), async (req: any, res: any) => {
-    try {
-      const bcrypt = require('bcryptjs')
-      let query = req.body;
-      const user = await userRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, user.password)) {
-        res.json(user)
-      }
-      else {
-        res.json({'message':'Invalid email or password!'})
-      }
-    } catch (err) {
-      const results = { 'success': false, 'results': err };
-      console.error(err);
-      res.json(results);
-    }
-   })
-  //=========================================================================================================//
-  /**
    * GET - returns all badges with input of * or returns the specific badge from b_id.
    * @param {string} bid give badge ID for specific badge or * for all badges.
    * @returns A list with information on all badges or specific badge.
@@ -251,7 +224,7 @@ const users = express.Router()
   //=========================================================================================================//
   /**
    * POST user login.
-   * @param {string} username Username of the user.
+   * @param {string} email email of the user.
    * @param {string} password Password of the user.
    * @param {string} usertype Type of user.
    * @returns A message saying success true.
@@ -263,31 +236,31 @@ const users = express.Router()
     try {
       const bcrypt = require('bcryptjs');
       let query = req.body;
-      if (query.username != null && query.password != null && query.usertype != null) {
+      if (query.email != null && query.password != null && query.usertype != null) {
         let uT = query.usertype;
         if(query.usertype !== "gym_owner" && query.usertype !== "gym_employee"){
           uT="gym_user";
         }
-        let uN=query.username;
+        let uE=query.email;
         let uP=query.password;
         let result:any;
         if (uT == "gym_employee") {
-          result = await employeeRepository.findByUsername(uN);
+          result = await employeeRepository.findByEmail(uE);
         }
         else if (uT == "gym_owner") {
-          result = await ownerRepository.findByUsername(uN);
+          result = await ownerRepository.findByEmail(uE);
         }
         else {
-          result = await userRepository.findByUsername(uN);
+          result = await userRepository.findByEmail(uE);
         }
         if(result == null) {
           res.status(404); 
-          res.json( { 'success': false, 'results':'invalid username or password'} );
+          res.json( { 'success': false, 'results':'invalid email or password'} );
         }
         else {
           if(result.length==0) {
             res.status(404);
-            res.json( { 'success': false, 'results':'invalid username or password'} );
+            res.json( { 'success': false, 'results':'invalid email or password'} );
           }
           else{
             let hashPass = result.password;
@@ -302,7 +275,7 @@ const users = express.Router()
         }
       }else {
         res.status(400);
-        res.json(  { 'success': false, 'results':'missing username or password'} );
+        res.json(  { 'success': false, 'results':'missing email or password'} );
       }
     } catch (err) {
       const results = { 'success': false, 'results': err };
@@ -398,9 +371,36 @@ const users = express.Router()
       res.json(results);
     }
    })
+   //=========================================================================================================//
+  /**
+   * POST - Get users information.
+   * @param {string} email user's email.
+   * @param {string} password user's password.
+   * @returns Users information.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        res.json(user)
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
   //=========================================================================================================//
   /**
-   * PUT save a gym user to the database.
+   * PUT update a gym user.
    * @param {string} email The email of the user.
    * @param {string} name The name of the user.
    * @param {string} surname The surname of the user. 
@@ -464,14 +464,27 @@ const users = express.Router()
   /**
    * DELETE - Delete a user.
    * @param {string} email unique email used to delete the user.
+   * @param {string} password user password.
    * @returns message confirming deletion.
    */
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
-    let result = await badgeOwnedRepository.deleteAllOwnedByEmail(req.body.email);
-    result = await badgeClaimRepository.deleteAllClaimsByEmail(req.body.email);
-    result = await userRepository.deleteUser(req.body.email)  
-    res.json(result)
+    try {
+      let query = req.body;
+      const bcrypt = require('bcryptjs')
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        const result = await userRepository.deleteUser(query.email);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
   })
 export {users}
