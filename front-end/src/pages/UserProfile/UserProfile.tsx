@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
@@ -9,12 +9,16 @@ const UserProfilePage: React.FC = () =>{
     
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
-    
+
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showFail, setShowFail] = useState(false);
+
+
 
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
@@ -50,6 +54,33 @@ const UserProfilePage: React.FC = () =>{
         
     },[])
 
+    const updateUserDetails = () =>{
+        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+                method: 'PUT',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: email,
+                    name: name, 
+                    surname: surname, 
+                    username: username, 
+                    number: phone, 
+                    password: localStorage.getItem("password"), 
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                //show toast
+                
+            })
+            .catch(err => {
+                console.log(err)
+                //setShowFail(true);
+            })
+    }
 
 
     const dismiss =()=> {
@@ -58,13 +89,16 @@ const UserProfilePage: React.FC = () =>{
 
     const updateDetails = (e:any) =>{
         //update 
-        
+        updateUserDetails()
         //dismiss
         dismiss()
+
+        setShowSuccess(true);
     }
     
     const updateEmail=(e:any)=>{
         setEmail(e.detail.value)
+        localStorage.setItem("email", email)
     }
     const updateName=(e:any)=>{
         setName(e.detail.value)
@@ -194,7 +228,20 @@ const UserProfilePage: React.FC = () =>{
                         </IonContent>
                         
                     </IonModal>
-                    
+                    <IonToast
+                        isOpen={showSuccess}
+                        onDidDismiss={() => setShowSuccess(false)}
+                        message="Details updated!"
+                        duration={1000}
+                        color="success"
+                    />
+                    <IonToast
+                        isOpen={showFail}
+                        onDidDismiss={() => setShowFail(false)}
+                        message="Could not update. Try again later."
+                        duration={1000}
+                        color="danger"
+                    />
                 </IonContent>
             </IonPage>
         )
