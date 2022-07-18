@@ -23,6 +23,13 @@ export const ownerRepository = GymKingDataSource.getRepository(gym_owner).extend
     findByUsername(username: string) {
         return this.findOneBy({ username: username });
     },
+    async updateOwner(email: string, name: string, surname: string, number: string, username: string) {
+        return await this.manager.update(gym_owner, { email: email }, {name: name, surname: surname, number: number, username: username})
+    },
+    async updateOwnerPassword(email: string, password: string) {
+        const bcrypt = require('bcryptjs')
+        return await this.manager.update(gym_owner, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
+    },
     saveOwner(email: string, name: string, surname: string, number: string, username: string, password: string) {
         const bcrypt = require('bcryptjs')
         const owner = new gym_owner();

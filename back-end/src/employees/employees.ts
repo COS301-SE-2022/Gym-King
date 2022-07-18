@@ -161,7 +161,8 @@ const employees = express.Router()
       let result = await employeeOTPRepository.deleteEmployeeOTP(query.email);
       const newOTP = createID2(6);
       result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
-      res.json(result);
+      const results = { 'success': true };
+      res.json(results);
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -214,7 +215,8 @@ const employees = express.Router()
       if (otp != null && otp.otp == query.otp) {
         const result = await employeeRepository.updateEmployeePassword(employee.email, query.newpassword);
         const otp = await employeeOTPRepository.deleteEmployeeOTP(query.email);
-        res.json(result);
+        const results = { 'success': true };
+        res.json(results);
       }
       else {
         res.json({'message':'Invalid email or OTP!'})
@@ -376,8 +378,10 @@ const employees = express.Router()
       const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
       if (bcrypt.compareSync(query.password, employee.password)) {
-        const result = await employeeRepository.deleteEmployee(query.email);
-        res.json(result);
+        let result = await employeeRepository.deleteEmployee(employee.email);
+        result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
+        const results = { 'success': true };
+        res.json(results);
       }
       else {
         res.json({'message':'Invalid email or password!'})

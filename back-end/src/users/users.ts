@@ -364,7 +364,8 @@ const users = express.Router()
       let result = await userOTPRepository.deleteUserOTP(query.email);
       const newOTP = createID(6);
       result = await userOTPRepository.saveUserOTP(query.email,newOTP);
-      res.json(result);
+      const results = { 'success': true };
+      res.json(results);
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -449,7 +450,8 @@ const users = express.Router()
       if (otp != null && otp.otp == query.otp) {
         const result = await userRepository.updateUserPassword(user.email, query.newpassword);
         const otp = await userOTPRepository.deleteUserOTP(query.email);
-        res.json(result);
+        const results = { 'success': true };
+        res.json(results);
       }
       else {
         res.json({'message':'Invalid email or OTP!'})
@@ -475,8 +477,12 @@ const users = express.Router()
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       if (bcrypt.compareSync(query.password, user.password)) {
-        const result = await userRepository.deleteUser(query.email);
-        res.json(result);
+        let result = await badgeOwnedRepository.deleteAllOwnedByEmail(user.email);
+        result = await badgeClaimRepository.deleteAllClaimsByEmail(user.email);
+        result = await userOTPRepository.deleteUserOTP(user.email);
+        result = await userRepository.deleteUser(user.email);
+        const results = { 'success': true };
+        res.json(results);
       }
       else {
         res.json({'message':'Invalid email or password!'})
