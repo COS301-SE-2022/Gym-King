@@ -54,8 +54,8 @@ const EmployeeProfilePage: React.FC = () =>{
         
     },[])
 
-    const updateEmployeeDetails = () =>{/*
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+    const updateEmployeeDetails = () =>{
+        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
@@ -72,14 +72,12 @@ const EmployeeProfilePage: React.FC = () =>{
             })
             .then(response =>response.json())
             .then(response =>{
-                console.log(response)
-                //show toast
-                
+                console.log(response)                
             })
             .catch(err => {
                 console.log(err)
                 //setShowFail(true);
-            }) */
+            }) 
     }
 
 
