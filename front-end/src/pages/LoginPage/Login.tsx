@@ -94,13 +94,13 @@ export const Login: React.FC = () =>{
 
                             <IonLabel className="smallHeading" position="floating">User type</IonLabel>
                             <IonSegment onIonChange={segmentChanged}  >
-                                <IonSegmentButton value="user">
+                                <IonSegmentButton value="gym_user">
                                     <IonLabel>User</IonLabel>
                                 </IonSegmentButton>
-                                <IonSegmentButton value="employee">
+                                <IonSegmentButton value="gym_employee">
                                     <IonLabel>Employee</IonLabel>
                                 </IonSegmentButton>
-                                <IonSegmentButton value="owner">
+                                <IonSegmentButton value="gym_owner">
                                     <IonLabel>Owner</IonLabel>
                                 </IonSegmentButton>
                             </IonSegment>

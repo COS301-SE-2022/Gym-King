@@ -26,8 +26,8 @@ const EmployeeProfilePage: React.FC = () =>{
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
-        /*
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        
+        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -51,7 +51,7 @@ const EmployeeProfilePage: React.FC = () =>{
             .catch(err => {
                 console.log(err)
             })
-        */
+        
     },[])
 
     const updateEmployeeDetails = () =>{/*
