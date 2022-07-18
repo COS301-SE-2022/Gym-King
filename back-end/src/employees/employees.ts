@@ -61,33 +61,6 @@ const employees = express.Router()
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
-   * GET - a employee's information.
-   * @param {string} email employee's email.
-   * @param {string} password employee's password.
-   * @returns employee information.
-   */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
-   .get('/employees/employee', cors(corsOptions), async (req: any, res: any) => {
-    try {
-      const bcrypt = require('bcryptjs')
-      let query = req.body;
-      const employee = await employeeRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, employee.password)) {
-        res.json(employee)
-      }
-      else {
-        res.json({'message':'Invalid email or password!'})
-      }
-    } catch (err) {
-      const results = { 'success': false, 'results': err };
-      console.error(err);
-      res.json(results);
-    }
-   })
-  //=========================================================================================================//
-  /**
    * GET - returns all claims from a specific gym.
    * @param {string} gid gym ID used to find claims.
    * @returns list of claims belonging to a gym.
@@ -189,6 +162,33 @@ const employees = express.Router()
       const newOTP = createID2(6);
       result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
       res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
+   * POST - Get an employee's information.
+   * @param {string} email employee's email.
+   * @param {string} password employee's password.
+   * @returns employee information.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const employee = await employeeRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, employee.password)) {
+        res.json(employee)
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);

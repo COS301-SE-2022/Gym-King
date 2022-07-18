@@ -87,33 +87,6 @@ const users = express.Router()
   .options('*', cors(corsOptions))
   //=========================================================================================================//
   /**
-   * GET - a users information.
-   * @param {string} email user's email.
-   * @param {string} password user's password.
-   * @returns Users information.
-   */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
-   .get('/users/user', cors(corsOptions), async (req: any, res: any) => {
-    try {
-      const bcrypt = require('bcryptjs')
-      let query = req.body;
-      const user = await userRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, user.password)) {
-        res.json(user)
-      }
-      else {
-        res.json({'message':'Invalid email or password!'})
-      }
-    } catch (err) {
-      const results = { 'success': false, 'results': err };
-      console.error(err);
-      res.json(results);
-    }
-   })
-  //=========================================================================================================//
-  /**
    * GET - returns all badges with input of * or returns the specific badge from b_id.
    * @param {string} bid give badge ID for specific badge or * for all badges.
    * @returns A list with information on all badges or specific badge.
@@ -251,7 +224,7 @@ const users = express.Router()
   //=========================================================================================================//
   /**
    * POST user login.
-   * @param {string} username Username of the user.
+   * @param {string} email email of the user.
    * @param {string} password Password of the user.
    * @param {string} usertype Type of user.
    * @returns A message saying success true.
@@ -263,22 +236,22 @@ const users = express.Router()
     try {
       const bcrypt = require('bcryptjs');
       let query = req.body;
-      if (query.username != null && query.password != null && query.usertype != null) {
+      if (query.email != null && query.password != null && query.usertype != null) {
         let uT = query.usertype;
         if(query.usertype !== "gym_owner" && query.usertype !== "gym_employee"){
           uT="gym_user";
         }
-        let uN=query.username;
+        let uE=query.email;
         let uP=query.password;
         let result:any;
         if (uT == "gym_employee") {
-          result = await employeeRepository.findByUsername(uN);
+          result = await employeeRepository.findByEmail(uE);
         }
         else if (uT == "gym_owner") {
-          result = await ownerRepository.findByUsername(uN);
+          result = await ownerRepository.findByEmail(uE);
         }
         else {
-          result = await userRepository.findByUsername(uN);
+          result = await userRepository.findByEmail(uE);
         }
         if(result == null) {
           res.status(404); 
@@ -392,6 +365,33 @@ const users = express.Router()
       const newOTP = createID(6);
       result = await userOTPRepository.saveUserOTP(query.email,newOTP);
       res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
+   * POST - Get users information.
+   * @param {string} email user's email.
+   * @param {string} password user's password.
+   * @returns Users information.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .post('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const bcrypt = require('bcryptjs')
+      let query = req.body;
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        res.json(user)
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
