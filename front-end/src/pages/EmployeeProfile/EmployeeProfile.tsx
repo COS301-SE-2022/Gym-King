@@ -15,8 +15,11 @@ const EmployeeProfilePage: React.FC = () =>{
     const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
+    //const [gid, setGid] = useState("");
+
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
+    
 
 
 
@@ -27,6 +30,7 @@ const EmployeeProfilePage: React.FC = () =>{
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
         
+        //get employee information 
         fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
                 method: 'POST',
                 headers: {
@@ -46,12 +50,25 @@ const EmployeeProfilePage: React.FC = () =>{
                 setSurname( response.surname);
                 setPhone( response.number);
                 setUsername(response.username);
-                
+                //setGid(response.g_id);
             })
             .catch(err => {
                 console.log(err)
             })
-        
+        /*console.log(gid)
+        //get employee's gym name 
+        fetch(`https://gym-king.herokuapp.com/gyms/gym/${gid}`,{
+                method: 'GET'
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })*/
     },[])
 
     const updateEmployeeDetails = () =>{
