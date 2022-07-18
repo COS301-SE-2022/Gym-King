@@ -3,12 +3,19 @@ import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useEffect } from 'react';
+import { number } from 'yup/lib/locale';
 
 
 const UserProfilePage: React.FC = () =>{
     
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
+
+    const [email, setEmail] = useState("")
+    const [name, setName] = useState("")
+    const [surname, setSurname]= useState("")
+    const [username, setUsername]= useState("")
+    const [phone, setPhone]= useState("")
 
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
@@ -17,7 +24,7 @@ const UserProfilePage: React.FC = () =>{
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
         
-        fetch(`https://gym-king.herokuapp.com/users/user`,{
+        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -30,14 +37,13 @@ const UserProfilePage: React.FC = () =>{
             })
             .then(response =>response.json())
             .then(response =>{
-                if(response.success){
-                   // window.location.href = "http://"+window.location.host+"/home";
-                   console.log(response)
-                    
-                }else{
-                    console.log(response.success)
-                    console.log(response.results)
-                }
+                console.log(response)
+                setEmail(response.email);
+                setName(response.name);
+                setSurname( response.surname);
+                setPhone( response.number);
+                setUsername(response.username);
+                
             })
             .catch(err => {
                 console.log(err)
@@ -67,10 +73,10 @@ const UserProfilePage: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText className="PageTitle center">Username</IonText>
+                                                <IonText className="PageTitle center">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">Name Surname</i>
+                                                <i className="center">{name} {surname}</i>
                                             </IonRow>
                                             
                                         </IonCol>
@@ -86,11 +92,11 @@ const UserProfilePage: React.FC = () =>{
                                         <IonGrid>
                                             <IonRow>
                                                 <IonCol><b>Email</b></IonCol>
-                                                <IonCol><IonText>john@email.com</IonText></IonCol>
+                                                <IonCol><IonText>{email}</IonText></IonCol>
                                             </IonRow>
                                             <IonRow>
                                                 <IonCol><b>Phone Number</b></IonCol>
-                                                <IonCol><IonText>0123456782</IonText></IonCol>
+                                                <IonCol><IonText>{phone}</IonText></IonCol>
                                             </IonRow>
                                             <IonRow>
                                                 <IonButton id="open-modal" expand="block">Edit Details</IonButton>
