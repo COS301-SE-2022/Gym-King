@@ -173,6 +173,7 @@ const EmployeeProfilePage: React.FC = () =>{
                                 </IonCard>
                             </IonCol>
                         </IonRow>
+                        
                     </IonGrid>
 
                     <br></br>
