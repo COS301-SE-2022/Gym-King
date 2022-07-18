@@ -56,10 +56,11 @@ const UserProfilePage: React.FC = () =>{
                 if(response === null)
                 {
                     //no claims
-                    setNumClaims("0");
+                    setNumClaims("0");   
                 }
                 else
                 {
+                    //has claims 
                     setNumClaims(response.length)
                 }
             })
