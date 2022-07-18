@@ -3,12 +3,15 @@ import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./OwnerProfile.css";
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 
 const OwnerProfilePage: React.FC = () =>{
     
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
+    let history=useHistory()
+
 
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
@@ -17,7 +20,8 @@ const OwnerProfilePage: React.FC = () =>{
     const [phone, setPhone]= useState("")
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
-
+    const [numGyms, setNumGyms] = useState("");
+    
 
 
 
@@ -52,6 +56,22 @@ const OwnerProfilePage: React.FC = () =>{
                 console.log(err)
             })
         
+        //get number of gyms owned
+        fetch(`https://gym-king.herokuapp.com/gyms/owned/${localStorage.getItem("email")}`,{
+            method: 'GET'
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            if(response != null)
+            {
+                setNumGyms(response.length)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            //setShowFail(true);
+        }) 
     },[])
 
     const updateEmployeeDetails = () =>{
@@ -81,19 +101,7 @@ const OwnerProfilePage: React.FC = () =>{
                 //setShowFail(true);
             }) 
 
-            //get number of gyms owned
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-            method: 'GET'
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            console.log(response)
-            
-        })
-        .catch(err => {
-            console.log(err)
-            //setShowFail(true);
-        }) 
+        
        
     }
 
@@ -128,6 +136,9 @@ const OwnerProfilePage: React.FC = () =>{
         setUsername(e.detail.value)
     }
     
+    const goToManageGyms = () =>{
+        history.push("/ManageGyms")
+    }
 
         return(
             <IonPage color='#220FE' >
@@ -181,9 +192,9 @@ const OwnerProfilePage: React.FC = () =>{
                         </IonRow>
                         <IonRow>
                             <IonCol>
-                                <IonCard className="smallCard">
+                                <IonCard className="smallCard" onClick={goToManageGyms}>
                                     <IonCardContent>
-                                        <IonText className="bigNumber">6</IonText><br></br>
+                                        <IonText className="bigNumber">{numGyms}</IonText><br></br>
                                         <IonText>gyms</IonText>
                                     </IonCardContent>
                                     
