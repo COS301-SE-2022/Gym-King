@@ -11,6 +11,7 @@ export type UploadActivityStates = {act?:any}
 const PendingBadgesPage: React.FC = () =>{
 
     //STATES AND VARIABLES 
+    // eslint-disable-next-line
     const [claims, setClaims] = useState(new Array());
 
     //GET REQUEST:
