@@ -15,7 +15,8 @@ const EmployeeProfilePage: React.FC = () =>{
     const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
-    //const [gid, setGid] = useState("");
+    const [gymName, setGymName] = useState("");
+    const [gymAddress, setGymAddress] = useState("");
 
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
@@ -50,7 +51,9 @@ const EmployeeProfilePage: React.FC = () =>{
                 setSurname( response.surname);
                 setPhone( response.number);
                 setUsername(response.username);
-                //setGid(response.g_id);
+                setGymName(response.g_id.gym_brandname);
+                setGymAddress(response.g_id.gym_address);
+
             })
             .catch(err => {
                 console.log(err)
@@ -183,7 +186,8 @@ const EmployeeProfilePage: React.FC = () =>{
                             <IonCol>
                                 <IonCard className="gymCard">
                                     <IonCardContent>
-                                        <IonText  className="Subheading">Parkview Virgin Active</IonText><br></br>
+                                        <IonText  className="inputHeading">{gymName}</IonText><br></br>
+                                        <i className='smallFont'>{gymAddress}</i>
                                     </IonCardContent>
                                 </IonCard>
                             </IonCol>
