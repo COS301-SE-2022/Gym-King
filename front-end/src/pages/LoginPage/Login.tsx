@@ -20,7 +20,7 @@ export const Login: React.FC = () =>{
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    username: formData.username,
+                    email: formData.email,
                     password: formData.password,
                     usertype: formData.usertype
                  })
@@ -29,6 +29,8 @@ export const Login: React.FC = () =>{
             .then(response =>{
                 if(response.success){
                    // window.location.href = "http://"+window.location.host+"/home";
+                   localStorage.setItem("email", formData.email)
+                   localStorage.setItem("password", formData.password)
                    navigate();
                 }else{
                     
@@ -42,11 +44,11 @@ export const Login: React.FC = () =>{
             })
     } 
     const navigate=()=>{
-        if(formData.usertype==="user")
+        if(formData.usertype==="gym_user")
         {
             history.push("/userMap")
         }
-        else if(formData.usertype==="owner")
+        else if(formData.usertype==="gym_owner")
         {
             history.push("/GymOwnerPage")
         }
@@ -59,7 +61,7 @@ export const Login: React.FC = () =>{
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
         formData={
-            username: e.target.userName.value,
+            email: e.target.email.value,
             password: e.target.userPassword.value,
             usertype: userType
         };
@@ -81,8 +83,8 @@ export const Login: React.FC = () =>{
                     <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST" className='loginForm'>
                         <IonText className='center inputHeading'>Login</IonText>
                             <br></br><br></br>
-                            <IonLabel className="smallHeading" position="floating">Username*</IonLabel>
-                            <IonInput className='textInput' name='userName' type='text' required></IonInput>
+                            <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
+                            <IonInput className='textInput' name='email' type='text' required></IonInput>
                             
                             <br></br>
                             <IonLabel className="smallHeading" position="floating">Password*</IonLabel>
@@ -92,13 +94,13 @@ export const Login: React.FC = () =>{
 
                             <IonLabel className="smallHeading" position="floating">User type</IonLabel>
                             <IonSegment onIonChange={segmentChanged}  >
-                                <IonSegmentButton value="user">
+                                <IonSegmentButton value="gym_user">
                                     <IonLabel>User</IonLabel>
                                 </IonSegmentButton>
-                                <IonSegmentButton value="employee">
+                                <IonSegmentButton value="gym_employee">
                                     <IonLabel>Employee</IonLabel>
                                 </IonSegmentButton>
-                                <IonSegmentButton value="owner">
+                                <IonSegmentButton value="gym_owner">
                                     <IonLabel>Owner</IonLabel>
                                 </IonSegmentButton>
                             </IonSegment>

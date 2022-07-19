@@ -21,8 +21,9 @@
   },
   "dependencies": {
     "@agney/ir-toast": "^0.2.0",
-    "@capacitor/android": "^3.6.0",
     "@awesome-cordova-plugins/device-motion": "^5.44.0",
+    "@awesome-cordova-plugins/sms": "^5.44.0",
+    "@capacitor/android": "^3.6.0",
     "@capacitor/core": "^3.5.1",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/device-motion": "^5.36.0",
@@ -36,6 +37,7 @@
     "babel": "^6.23.0",
     "babel-loader": "^8.2.5",
     "cordova-plugin-device-motion": "^2.0.1",
+    "cordova-sms-plugin": "^1.0.2",
     "install-peers": "^1.0.3",
     "nx": "14.1.4",
     "ol": "^6.14.1",

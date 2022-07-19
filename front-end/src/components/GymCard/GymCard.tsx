@@ -12,7 +12,7 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
         <div>
             <IonCard
                 color="primary"   
-                class="ion-padding"
+                class="gymCard ion-padding"
                 onClick={() => setShowActionSheet(true)}
             >
                   <IonCardTitle>

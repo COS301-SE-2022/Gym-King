@@ -45,8 +45,14 @@ const MapView: React.FC = () =>{
 
     // Gym Menu Vars -----------------------------------------------------------------------------------------------//
 
-    const [gymMenuName, setgymMenuName] = useState<string>("");
-
+    const [gymData, setGymData]=useState({
+        g_id: "",
+        gym_brandname: "",
+        gym_address: "",
+        gym_coord_lat: 0,
+        gym_coord_long: 0,
+        gym_icon: ".."
+    });
     //=========================================================================================================//
     /**
      * Function that gets the users location
@@ -81,11 +87,11 @@ const MapView: React.FC = () =>{
     }    
 
     
-    const gymButtonClick=async (name:string)=>{
+    const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
 
-        setgymMenuName(name)
-        setShowModal(true)
+        setGymData(activeGym);
+        setShowModal(true);
     }
     
     //=========================================================================================================//
@@ -249,7 +255,7 @@ const MapView: React.FC = () =>{
                             offset={[15,31]} 
                             
                         > 
-                            <img onClick={() => {gymButtonClick(item.gym_brandname)}} id ="GymPicture" src={gym} alt='' />
+                            <img onClick={() => {gymButtonClick(item)}} id ="GymPicture" src={gym} alt='' />
                         </Overlay> 
                     )                 
                 })}
@@ -259,16 +265,30 @@ const MapView: React.FC = () =>{
 
             </Map>
 
-            <IonModal  id = "overlay"   showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+            <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
             {/* <IonBadge > */}
                 <IonCard>
                     <IonCardHeader>
-                        <IonCardTitle className='center '>{gymMenuName}</IonCardTitle>
+                        <IonCardTitle className='center '>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox">
                         <IonButtons>
-                            <IonButton  shape='round' className='btn'>View</IonButton>
+                            <IonButton  
+                                shape='round' 
+                                className='btn'
+                                onClick={()=>{
+
+                                    sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
+                                    sessionStorage.setItem('gym_address',gymData.gym_address);
+                                    sessionStorage.setItem('gid',gymData.g_id);
+
+                                    window.location.href = "http://"+window.location.host+"/GymPage";
+                                    
+                                }}
+                            >
+                                View
+                            </IonButton>
                             <IonButton onClick={()=>setShowModal(false)} shape='round' className='btn'>Close</IonButton>
                         </IonButtons>
                     

@@ -26,6 +26,8 @@ const ManageEmployees: React.FC = () =>{
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>My Employees</IonText>
                 <IonButton routerLink='/AddEmployee' routerDirection="none" color="warning">Add Employee</IonButton>
+                <br></br>
+                <IonButton routerLink='/EmployeeProfile' routerDirection="forward" color="warning"> View Employee Profile </IonButton>
             </IonContent>
         </IonPage>
     )

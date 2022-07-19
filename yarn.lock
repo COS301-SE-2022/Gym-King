@@ -54,6 +54,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@awesome-cordova-plugins/sms@^5.44.0":
+  version "5.44.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/sms/-/sms-5.44.0.tgz#397ec0751d22a03021a9a3b89ff1c84c77edea93"
+  integrity sha512-sb6cLSS7ywzVfe216lT31ogVHgybYVMYVV6Bo9oFxDeLcCEwLFkGzH6Zf+FAghWiCv0UoalsNNLdGhmkgZkUIg==
+  dependencies:
+    "@types/cordova" latest
+
 "@axe-core/playwright@^4.4.2":
   version "4.4.2"
   resolved "https://registry.npmjs.org/@axe-core/playwright/-/playwright-4.4.2.tgz"
@@ -5459,6 +5466,11 @@ cordova-plugin-device-motion@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/cordova-plugin-device-motion/-/cordova-plugin-device-motion-2.0.1.tgz#7f6d974c4eb8fc5ae58e9aadd63d9fa502edec6d"
   integrity sha512-MEsF8HBLYGZCXjRZ3mNqrLZensxBC6FZAuxwbW/7NeIBNoutwpN5hho7/p9JUISDYacQge4K2ahbnQyN4IUZNA==
+
+cordova-sms-plugin@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cordova-sms-plugin/-/cordova-sms-plugin-1.0.2.tgz#726982a36bdd11380b2e29e3e0ef3165f3be71e0"
+  integrity sha512-plbjtBtr5bnUEWh+5bLj2afKdQDL9dRwXu+wW46AKTsqQqx03/C3NPvDSXOLn7knrU+Vr4kDciClmK2zCMxJPg==
 
 core-js-compat@^3.21.0, core-js-compat@^3.22.1:
   version "3.22.4"
