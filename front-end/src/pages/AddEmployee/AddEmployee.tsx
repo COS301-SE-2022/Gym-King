@@ -111,14 +111,14 @@ export const AddEmployee: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
-                        isOpen={ShowError1Toast}
+                        isOpen={showError1Toast}
                         onDidDismiss={() => setShowError1Toast(false)}
                         message = "Employee Already Exists."
                         duration={1000}
                         color="danger"
                     />
                     <IonToast
-                        isOpen={ShowError2Toast}
+                        isOpen={showError2Toast}
                         onDidDismiss={()=>setShowError2Toast(false)}
                         message="Internal Error. Please try again later."
                         duration ={1000}
