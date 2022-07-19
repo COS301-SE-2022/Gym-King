@@ -48,5 +48,8 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
     },
     deleteBadge(bid: string) {
         return this.manager.delete(badge, {b_id: bid})
+    },
+    deleteBadgeByGID(gid: string) {
+        return this.manager.delete(badge, {g_id: gid})
     }
 })

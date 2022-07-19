@@ -126,6 +126,40 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET - returns all badge claims of a user.
+   * @param {string} email email of gym_user.
+   * @returns list of all claims the user has made.
+   */
+   .get('/users/claims/:email', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.email;
+      const result = await badgeClaimRepository.findByEmail(query);
+      res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET - returns all badges owned of a user.
+   * @param {string} email email of gym_user.
+   * @returns list of all badges owned by user.
+   */
+   .get('/users/owned/:email', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.email;
+      const result = await badgeOwnedRepository.findByEmail(query);
+      res.json(result);
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * GET - return gym information from giving its gym ID
    * @param {string} gid input of the gym ID to find gym.
    * @return Information on gym found by ID.
@@ -364,7 +398,8 @@ const users = express.Router()
       let result = await userOTPRepository.deleteUserOTP(query.email);
       const newOTP = createID(6);
       result = await userOTPRepository.saveUserOTP(query.email,newOTP);
-      res.json(result);
+      const results = { 'success': true };
+      res.json(results);
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -449,7 +484,8 @@ const users = express.Router()
       if (otp != null && otp.otp == query.otp) {
         const result = await userRepository.updateUserPassword(user.email, query.newpassword);
         const otp = await userOTPRepository.deleteUserOTP(query.email);
-        res.json(result);
+        const results = { 'success': true };
+        res.json(results);
       }
       else {
         res.json({'message':'Invalid email or OTP!'})
@@ -475,8 +511,12 @@ const users = express.Router()
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       if (bcrypt.compareSync(query.password, user.password)) {
-        const result = await userRepository.deleteUser(query.email);
-        res.json(result);
+        let result = await badgeOwnedRepository.deleteAllOwnedByEmail(user.email);
+        result = await badgeClaimRepository.deleteAllClaimsByEmail(user.email);
+        result = await userOTPRepository.deleteUserOTP(user.email);
+        result = await userRepository.deleteUser(user.email);
+        const results = { 'success': true };
+        res.json(results);
       }
       else {
         res.json({'message':'Invalid email or password!'})

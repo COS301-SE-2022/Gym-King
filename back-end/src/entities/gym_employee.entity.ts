@@ -20,7 +20,7 @@ export class gym_employee {
     @Column({length: 300})
     password: string
 
-    @ManyToOne(() => gym, (gym) => gym.g_id)
+    @ManyToOne(() => gym, (gym) => gym.g_id,{ eager: true })
     @JoinColumn({name: "g_id"})
     g_id: gym
 }

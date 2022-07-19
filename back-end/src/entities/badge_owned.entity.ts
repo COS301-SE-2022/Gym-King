@@ -22,7 +22,7 @@ export class badge_owned {
     date: Date
 
     @PrimaryColumn({type: "varchar",length: 3})
-    @ManyToOne(() => badge, (badge) => badge.b_id)
+    @ManyToOne(() => badge, (badge) => badge.b_id,{eager: true})
     @JoinColumn({name: "b_id"})
     b_id: badge
 

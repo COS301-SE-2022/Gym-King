@@ -5,7 +5,7 @@ import { gym_owner } from "../entities/gym_owner.entity";
 import { gymRepository } from "./gym.repository";
 import { ownerRepository } from "./gym_owner.repository";
 
-export const ownedRepository = GymKingDataSource.getRepository(gym_owned).extend({
+export const gymOwnedRepository = GymKingDataSource.getRepository(gym_owned).extend({
     findAll() {
         return this.find();
     },
