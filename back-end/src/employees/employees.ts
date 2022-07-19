@@ -275,12 +275,12 @@ const employees = express.Router()
       let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
       const ret = result;
       if (ret != null){
-        result = await badgeClaimRepository.deleteClaim(ret.b_id, ret.email);
-        result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id,ret.email);
+        result = await badgeClaimRepository.deleteClaim(ret.b_id.b_id, ret.email);
+        result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id.b_id,ret.email);
         if (result != null) {
-          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         } else {
-          result = await badgeOwnedRepository.saveOwned(ret.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+          result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         }
         res.json(result);
       }
