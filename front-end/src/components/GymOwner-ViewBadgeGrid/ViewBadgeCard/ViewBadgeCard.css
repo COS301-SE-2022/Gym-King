@@ -9,9 +9,8 @@
 .ViewBadgeCard{
     padding: 0%;
     margin: 0px;
-    height: 180px;
-    width: 115px;
-    background-color: rgba(1, 1,1, 0.4);
+    height: 14em;
+    width: 10em;
     
 }
 .ViewBadgeImage{
@@ -21,30 +20,4 @@
 .ViewBadgeImage img{
     height: 125px;
     width: 125px;
-}
-@media (max-width:384px)
-{
-    .ViewBadgeCard{
-        padding: 0%;
-        margin: 0px;
-        height: 180px;
-        width: 100px !important;
-        
-    }
-    
-}
-@media (max-width:339px)
-{
-    .ViewBadgeCard{
-        padding: 0%;
-        margin: 0px;
-        height: 160px;
-        width: 90px !important;
-        
-    }
-    .ViewBadgeImage img{
-        height: 100px;
-        width: 90px;
-    }
-    
 }

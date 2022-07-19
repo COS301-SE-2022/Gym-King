@@ -8,7 +8,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
     const history=useHistory()
     const [showActionSheet, setShowActionSheet] = useState(false);
     return(
-        <div>
+        <>
             <IonCard 
                 color="primary" 
                 class="ViewBadgeCard"  
@@ -54,7 +54,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                     }
                   }]}>
             </IonActionSheet>
-            </div>
+            </>
         )
         
     
