@@ -25,8 +25,10 @@
 }
 .flex-margin{
     --background: #620DEC;
-    width:100%;
-    opacity: 64%;
     border-radius: 5px;
     margin-bottom: 2em;
+}
+
+.centerMap{
+    width:80%;
 }

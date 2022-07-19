@@ -1,16 +1,10 @@
 import {
   IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
   IonInput,
   IonPage,
-  IonRow,
   IonText,
   IonToast,
 } from "@ionic/react";
@@ -128,37 +122,21 @@ const EditGym: React.FC = () => {
         <ToolBar></ToolBar>
       </IonHeader>
       <IonContent class="AddGymContent">
-        <IonCard class="AddGymCard glass">
-          <IonCardHeader class="AddGymHeader" className="PageTitle center">
-            <IonCardTitle>Edit Gym</IonCardTitle>
-          </IonCardHeader>
+          <IonText class="PageTitle center">Edit Gym</IonText>
 
-          <IonCardContent class="AddGymCardContent">
-            <IonGrid class="AddGymGrid" className="grid">
-              <IonRow class="AddGymRow" className="left topMargin">
-                <IonText className="Subheading">Name:</IonText>
-              </IonRow>
-
-              <IonRow className="left">
-                <IonInput
-                  class="AddGymInput"
-                  placeholder="name"
+                <IonText className='inputHeading leftMargin'>Name:</IonText> <br></br>
+                <IonInput class="textInput centerComp smallerTextBox"
                   value={gymName}
                   onIonChange={(e: any) => {
                     setGymName(e.target.value);
                   }}
                 >
                   {" "}
-                </IonInput>
-              </IonRow>
+                </IonInput> <br></br>
 
-              <IonRow class="AddGymRow" className="left topMargin">
-                <IonText className="Subheading">Address:</IonText>
-              </IonRow>
-
-              <IonRow className="left">
+                <IonText className='inputHeading leftMargin'>Address:</IonText> <br></br><br></br>
                 <IonInput
-                  class="AddGymInput"
+                  class="textInput centerComp smallerTextBox"
                   placeholder="address"
                   value={gymAddress}
                   onKeyDown={handleKeyDown}
@@ -167,15 +145,11 @@ const EditGym: React.FC = () => {
                   }}
                 >
                   {" "}
-                </IonInput>
-              </IonRow>
+                </IonInput><br></br> 
 
-              <IonRow className="left topMargin">
-                <IonText className="Subheading">Location:</IonText>
-              </IonRow>
+                <IonText className='inputHeading leftMargin'>Location:</IonText> <br></br><br></br>
 
-              <IonRow className="left">
-                <IonButton expand="block" class="flex-margin" href={href}>
+                <IonButton expand="block" className="flex-margin centerComp width80" href={href} color="secondary">
                   <IonIcon
                     class="AddGymLocation"
                     name="location-outline"
@@ -186,38 +160,35 @@ const EditGym: React.FC = () => {
                     name="chevron-forward-outline"
                   ></IonIcon>
                 </IonButton>
-              </IonRow>
-              <IonRow>
-                <Map
-                  height={200}
-                  center={[coordinate[0], coordinate[1]]}
-                  zoom={zoom}
-                  provider={stamenToner}
-                >
-                  <Overlay
-                    anchor={[coordinate[0], coordinate[1]]}
-                    offset={[30, 30]}
+                <div className="centerMap centerComp">
+                  <Map
+                    height={200}
+                    center={[coordinate[0], coordinate[1]]}
+                    zoom={zoom}
+                    provider={stamenToner}
                   >
-                    <img
-                      width={60}
-                      height={50}
-                      src={image}
-                      alt="builing icon"
-                    ></img>
-                  </Overlay>
-                </Map>
-              </IonRow>
+                  
+                    <Overlay
+                      anchor={[coordinate[0], coordinate[1]]}
+                      offset={[30, 30]}
+                    >
+                      <img
+                        width={60}
+                        height={50}
+                        src={image}
+                        alt="builing icon"
+                      ></img>
+                    </Overlay>
+                  </Map>
+                </div>
               <IonButton
-                class="AddGymAdd"
+                className="width80 centerComp"
                 color="tertiary"
                 onClick={() => addGym()}
               >
                 Save Changes
               </IonButton>
-            </IonGrid>
-
-          </IonCardContent>
-        </IonCard>
+              <br></br><br></br>
         <IonToast
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}
