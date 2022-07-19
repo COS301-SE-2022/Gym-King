@@ -49,6 +49,7 @@ import EditGym from './pages/EditGymPage/EditGym'
 import GymPage from './pages/GymPage/GymPage';
 import PendingBadgesPage from './pages/UserPendingBadges/PendingBadges';
 import EmployeeHomePage from './pages/EmployeeHomePage/EmployeeHome';
+import AppSettingsPage from './pages/AppSettingsPage/AppSettingsPage';
 /*develop*/
 
 
@@ -141,6 +142,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/EmployeeHome'>
           <EmployeeHomePage></EmployeeHomePage>
+        </Route>
+        <Route exact path='/AppSettings'>
+          <AppSettingsPage></AppSettingsPage>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
