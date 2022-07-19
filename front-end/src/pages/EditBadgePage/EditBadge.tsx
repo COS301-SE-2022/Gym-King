@@ -148,24 +148,24 @@ const EditBadge: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Edit Badge</IonText>
                     <form onSubmit={handleSubmit}>
-                        <IonText className='inputHeading'>Badge Name:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Badge Name:</IonText> <br></br><br></br>
                         <IonInput name='badgeName' type='text' value={badgename} className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
 
-                        <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
                         <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
 
-                        <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeChallenge"  value={badgechallenge} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <IonText className='inputHeading'>Badge Description:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <IonButton class=" btnFitWidth" color='success' type='submit' >SAVE CHANGES</IonButton>
+                        <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
                         
                     </form>
-                    <IonButton class=" btnFitWidth" color='danger' type='button' onClick={deleteBadge}>DELETE BADGE</IonButton>
+                    <IonButton className=" btnFitWidth width80 centerComp" color='danger' type='button' onClick={deleteBadge}>DELETE BADGE</IonButton>
                     <br></br><br></br>
                     <IonToast
                         isOpen={showToast}
