@@ -143,7 +143,7 @@ const App: React.FC = () => (
         <Route exact path='/EmployeeHome'>
           <EmployeeHomePage></EmployeeHomePage>
         </Route>
-        <Route exact path='/AppSettings'>
+        <Route exact path='/Settings'>
           <AppSettingsPage></AppSettingsPage>
         </Route>
       </IonRouterOutlet>
