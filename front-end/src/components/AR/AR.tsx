@@ -115,10 +115,8 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
                 
                 onDidDismiss={() => setError({showError: false, message: "no error here"})}
                 duration={3000}
-            />
-            <IonCard>
-                <IonButton color='primary' onClick={ViewAR}>View Model</IonButton>
-            </IonCard>
+            /><br></br>
+            <IonButton color='primary' onClick={ViewAR} style={{"width":"80%"}} className="centerComp">View Model</IonButton>
         </>
     )
 }

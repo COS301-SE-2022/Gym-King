@@ -12,9 +12,7 @@ ion-slides {
     align-self:center;
     margin-top: 20px;
     height: 100%;
-    background-color:inherit;
-    border-color:indigo;
-    border-style:solid;
+
   }
   .container img.under {
     padding: 3% 3% 3% 3%;

@@ -18,7 +18,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, RadioGroupState
     render(){
         const {list} = this.props;
         return(
-             <IonList  data-testid="rg">
+
              <IonRadioGroup onIonChange={this.onChange}>
                {
                     list?.map((el:any) =>{
@@ -33,7 +33,6 @@ export class RadioGroup extends React.Component<RadioGroupProps, RadioGroupState
    
              </IonRadioGroup>
 
-           </IonList>
         )
         
     }
