@@ -124,7 +124,7 @@ const UploadActivityPage: React.FC = () =>{
                     <IonText className='PageTitle center'>{badgename}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                     <form onSubmit={handleSubmit}>
-                        <IonText className='inputHeading'>Enter your activity details:</IonText>
+                        <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={activitytype} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
@@ -135,8 +135,8 @@ const UploadActivityPage: React.FC = () =>{
                             </IonRow>
                         </IonGrid>
                         <FileChooser numFiles={0}></FileChooser>
-
-                        <IonButton class="btnSubmit" type='submit'>SUBMIT</IonButton>
+                        <br></br>
+                        <IonButton className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
                     <br></br>
                     <br></br>
