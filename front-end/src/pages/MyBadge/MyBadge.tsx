@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
+import { useHistory } from 'react-router-dom';
+
 
 const badges=[
     { id:1,name:'gold running',qty:5},
@@ -18,6 +20,10 @@ const badges=[
     { id:10,name:'jog gold',qty:1},
 ]
 const MyBadge: React.FC = () =>{
+
+    let history=useHistory()
+
+
     const [checkboxList,setCheckboxList]=useState([
         { val: 'Gold', isChecked: true },
         { val: 'Silver', isChecked: true },
@@ -43,6 +49,10 @@ const MyBadge: React.FC = () =>{
     }
     const [sort,setSort]=useState("none")
 
+    const goToPendingBadges = () =>{
+        history.push("/PendingBadges")
+    }
+
     return(
         <IonPage >
             <IonHeader>
@@ -51,6 +61,9 @@ const MyBadge: React.FC = () =>{
             <br></br>
             <IonContent fullscreen class="MyBadgeContent" className='Content'>
                     <IonText className='PageTitle center'>My Badges</IonText>
+
+                    <IonButton style={{"width":"12em"}} onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
+
                     <IonToolbar class="FilterBar">
                         <IonButtons slot='start'>
                             <IonButton id="sort-trigger" >

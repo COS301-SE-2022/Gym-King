@@ -3,12 +3,15 @@ import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 
 const UserProfilePage: React.FC = () =>{
     
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
+    let history=useHistory()
+
 
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
@@ -17,12 +20,57 @@ const UserProfilePage: React.FC = () =>{
     const [phone, setPhone]= useState("")
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
-
-
+    const [numClaims, setNumClaims] = useState("");
+    const [numBadges, setNumBadges] = useState("");
 
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
+   
+    
+    const getNumberOfBadges = () =>{
+        fetch(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`,{
+                method: 'GET'
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                if(response === null)
+                {
+                    //no claims
+                    setNumBadges("0");
+                }
+                else
+                {
+                    setNumBadges(response.length)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+        })
+    }
+    const getNumberOfClaims = () =>{
+        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
+                method: 'GET'
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                if(response === null)
+                {
+                    //no claims
+                    setNumClaims("0");   
+                }
+                else
+                {
+                    //has claims 
+                    setNumClaims(response.length)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+        })
+    }
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
@@ -52,6 +100,9 @@ const UserProfilePage: React.FC = () =>{
                 console.log(err)
             })
         
+        getNumberOfBadges()
+        getNumberOfClaims()
+         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const updateUserDetails = () =>{
@@ -112,7 +163,15 @@ const UserProfilePage: React.FC = () =>{
     const updateUsername=(e:any)=>{
         setUsername(e.detail.value)
     }
+
+    const goToUserBadges = () =>{
+        history.push("/MyBadge")
+    }
+    const goToPendingBadges = () =>{
+        history.push("/PendingBadges")
+    }
     
+
 
         return(
             <IonPage color='#220FE' >
@@ -166,18 +225,18 @@ const UserProfilePage: React.FC = () =>{
                         </IonRow>
                         <IonRow>
                             <IonCol>
-                                <IonCard className="smallCard">
+                                <IonCard className="smallCard" onClick={goToUserBadges}>
                                     <IonCardContent>
-                                        <IonText className="bigNumber">123</IonText><br></br>
+                                        <IonText className="bigNumber">{numBadges}</IonText><br></br>
                                         <IonText>badges</IonText>
                                     </IonCardContent>
                                     
                                 </IonCard>
                             </IonCol>
                             <IonCol>
-                                <IonCard className="smallCard">
+                                <IonCard className="smallCard" onClick={goToPendingBadges}>
                                     <IonCardContent>
-                                        <IonText  className="bigNumber">2</IonText><br></br>
+                                        <IonText  className="bigNumber">{numClaims}</IonText><br></br>
                                         <IonText>pending badges</IonText>
                                     </IonCardContent>
                                 </IonCard>
