@@ -17,7 +17,7 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
         return this.find({activitytype: at });
     },
     findByGID(gid: string) {
-        return this.find({ g_id: gid });
+        return this.findBy({ g_id: gid });
     },
     async updateBadge(bid: string, gid: string, badgename: string, badgedescription: string, badgechallenge: string, at: string, badgeicon: string) {
         return await this.manager.update(badge, {b_id: bid, g_id: gid}, {badgename: badgename, badgedescription: badgedescription, badgechallenge: badgechallenge, activitytype: at, badgeicon: badgeicon})

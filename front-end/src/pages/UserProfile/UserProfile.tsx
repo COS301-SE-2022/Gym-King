@@ -35,15 +35,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
-                if(response === null)
-                {
-                    //no claims
-                    setNumBadges("0");
-                }
-                else
-                {
-                    setNumBadges(response.length)
-                }
+                setNumBadges(response.length)
             })
             .catch(err => {
                 console.log(err)
@@ -56,16 +48,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
-                if(response === null)
-                {
-                    //no claims
-                    setNumClaims("0");   
-                }
-                else
-                {
-                    //has claims 
-                    setNumClaims(response.length)
-                }
+                setNumClaims(response.length)
             })
             .catch(err => {
                 console.log(err)

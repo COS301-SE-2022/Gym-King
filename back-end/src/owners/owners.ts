@@ -59,6 +59,23 @@ const owners = express.Router()
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
+   * GET - get all employees who fall under an owner of gym.
+   * @param {string} email email of the owner.
+   * @returns List of all employees who work for a gym owned by owner.
+   */
+   .get("/owners/employees/:email", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.email;
+      let result = await ownerRepository.findEmployeesByOwnerEmail(query);
+      res.json(result);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * GET - gets all gyms owned by a owner.
    * @param {string} email email of the owner.
    * @returns List of all gyms that the owner owns.

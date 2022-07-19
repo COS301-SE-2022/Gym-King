@@ -1,6 +1,5 @@
 import { GymKingDataSource } from "../datasource";
 import { badge } from "../entities/badge.entity";
-import { badge_claim } from "../entities/badge_claim.entity";
 import { badge_owned } from "../entities/badge_owned.entity";
 import { gym_user } from "../entities/gym_user.entity";
 import { badgeRepository } from "./badge.repository";
@@ -14,7 +13,7 @@ export const badgeOwnedRepository = GymKingDataSource.getRepository(badge_owned)
         return this.find({ b_id: bid });
     },
     findByEmail(email: string) {
-        return this.find({email: email });
+        return this.findBy({email: email });
     },
     findByBIDandEmail(bid: string, email:string) {
         return this.findOneBy({b_id: bid, email: email });

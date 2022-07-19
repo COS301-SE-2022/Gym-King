@@ -19,15 +19,7 @@ const PendingBadgesPage: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
-                if(response != null)
-                {
-                    //has claims 
-                    setClaims(response)
-                }
-                else{
-                    //no badges
-                    setClaims([])
-                }
+                setClaims(response)
             })
             .catch(err => {
                 console.log(err)
