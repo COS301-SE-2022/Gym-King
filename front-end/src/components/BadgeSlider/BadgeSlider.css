@@ -8,9 +8,6 @@ ion-slides {
     align-self:center;
     margin-top: 10px;
     height: 200px;
-    background-color:inherit;
-    border-color:indigo;
-    border-style:solid;
   }
 
   ion-slide {

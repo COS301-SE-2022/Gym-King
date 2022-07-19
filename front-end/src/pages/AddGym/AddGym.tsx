@@ -97,13 +97,13 @@ const AddGym: React.FC = () => {
       <IonHeader>
         <ToolBar></ToolBar>
       </IonHeader>
-      <IonContent class="AddGymContent">
-        <IonCard class="AddGymCard glass">
-          <IonCardHeader class="AddGymHeader" className="PageTitle center">
+      <IonContent class="">
+        <IonCard className="glassForm">
+          <IonCardHeader  className="PageTitle center" color="secondary" >
             <IonCardTitle>Add Gym</IonCardTitle>
           </IonCardHeader>
 
-          <IonCardContent class="AddGymCardContent">
+          <IonCardContent>
             <IonGrid class="AddGymGrid" className="grid">
               <IonRow class="AddGymRow" className="left topMargin">
                 <IonText className="Subheading">Name:</IonText>
@@ -111,8 +111,8 @@ const AddGym: React.FC = () => {
 
               <IonRow className="left">
                 <IonInput
-                  class="AddGymInput"
-                  placeholder="name"
+                  class="textInput"
+    
                   value={gymName}
                   onIonChange={(e: any) => {
                     setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
@@ -127,7 +127,7 @@ const AddGym: React.FC = () => {
               </IonRow>
 
               <IonRow className="left">
-                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation">
+                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
                   <IonIcon
                     class="AddGymLocation"
                     icon="location-outline"

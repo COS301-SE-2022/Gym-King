@@ -10,7 +10,7 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
 });
 
-
+/*
 describe('Testing API calls', () => {
 
     it('should load owned gym data', async () => {
@@ -65,3 +65,5 @@ describe('Integration Tests', () => {
         expect(getByTestId('rg')).toBeDefined()
     });
 })
+
+*/

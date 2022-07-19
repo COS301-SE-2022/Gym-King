@@ -70,9 +70,9 @@ export class AcceptRejectCard extends React.Component<props>{
                     <IonText className='txtBadge'>
                         {this.props.badgename}
                     </IonText>
-                    <br></br>
+                    <br></br><br></br>
                     <ActivityList  activityCategory={this.props.activitytype} i1={this.props.i1} i2={this.props.i2} i3={this.props.i3}></ActivityList>
-                    <br></br>
+                    <br></br><br></br>
                     <IonText className='Subheading'>Proof:</IonText>
                     <IonCard className='justify'>
                         <IonCardContent >

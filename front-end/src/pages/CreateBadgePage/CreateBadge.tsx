@@ -7,7 +7,7 @@ import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
 
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
-
+import "./CreateBadge.css";
 
 
 //export type CreateBadge = {act?:any}
@@ -121,20 +121,20 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Creating Badge</IonText>
                     <form onSubmit={handleSubmit}>
-                        <IonText className='inputHeading'>Badge Name:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Badge Name:</IonText> <br></br><br></br>
                         <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
-                        <IonText className='inputHeading'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
+                        <SegmentButton  list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
 
-                        <IonText className='inputHeading'>Gym Location:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Gym Location:</IonText> <br></br><br></br>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
-                        <IonText className='inputHeading '>Badge Challenge:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeChallenge" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <IonText className='inputHeading'>Badge Description:</IonText> <br></br><br></br>
+                        <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
 
@@ -144,7 +144,7 @@ import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }
 
-                        <IonButton class="btnSubmit" type='submit'>CREATE</IonButton>
+                        <IonButton class="btnSubmit centerComp" type='submit' color="tertiary">CREATE</IonButton>
                     </form>
                     <br></br><br></br>
                     <IonToast

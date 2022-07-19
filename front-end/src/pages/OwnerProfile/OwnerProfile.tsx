@@ -21,6 +21,7 @@ const OwnerProfilePage: React.FC = () =>{
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
     const [numGyms, setNumGyms] = useState("");
+    const [numEmployees, setNumEmployees] = useState("");
     
 
 
@@ -70,7 +71,22 @@ const OwnerProfilePage: React.FC = () =>{
         })
         .catch(err => {
             console.log(err)
-            //setShowFail(true);
+        }) 
+
+        //get number of employees
+        fetch(`https://gym-king.herokuapp.com/owners/employees/${localStorage.getItem("email")}`,{
+            method: 'GET'
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            if(response != null)
+            {
+                setNumEmployees(response.length)
+            }
+        })
+        .catch(err => {
+            console.log(err)
         }) 
     },[])
 
@@ -203,7 +219,7 @@ const OwnerProfilePage: React.FC = () =>{
                             <IonCol>
                                 <IonCard className="smallCard">
                                     <IonCardContent>
-                                        <IonText  className="bigNumber">23</IonText><br></br>
+                                        <IonText  className="bigNumber">{numEmployees}</IonText><br></br>
                                         <IonText>employees</IonText>
                                     </IonCardContent>
                                 </IonCard>

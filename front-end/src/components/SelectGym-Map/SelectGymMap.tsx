@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Map, Overlay} from "pigeon-maps";
-import { IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonItem, IonLabel, IonList, IonModal, IonRow, IonSearchbar, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
+import { IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonItem, IonLabel, IonModal, IonRow, IonSearchbar, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
 import "./SelectGymMap.css"
 import { stamenToner } from 'pigeon-maps/providers'
 import { locate, location, lockClosed, lockOpen } from "ionicons/icons";
@@ -150,6 +150,18 @@ export function SelectGymMap() {
                                   setGymAddress(e.target.value);
                               }} 
                               onKeyDown={handleKeyDown} placeholder={"address"}></IonSearchbar>
+              </IonRow>
+              <IonRow>
+                <IonButton  onClick={()=>{
+                                          getLocation();
+                                          setGymAddress("Evander");
+                                          modal.current?.setCurrentBreakpoint(0.25)
+                                      }}>
+                              <IonIcon slot="start" icon={location}></IonIcon>
+                              <IonLabel>Use My Location</IonLabel>
+                                </IonButton>
+              </IonRow>
+              <IonRow>
                 <IonButton color="warning"
                             onClick={()=>{
                               sessionStorage.setItem("gymAddress",gymAddress)
@@ -157,31 +169,25 @@ export function SelectGymMap() {
                               sessionStorage.setItem("Long",String(gymCoord[1]))
                               history.goBack()
                             }}>Select</IonButton>
+                
               </IonRow>
             </IonGrid>
-            <IonList>
-              <IonItem  onClick={()=>{
-                          getLocation();
-                          setGymAddress("Evander");
-                          modal.current?.setCurrentBreakpoint(0.25)
-                      }}>
-               <IonIcon slot="start" icon={location}></IonIcon>
-               <IonLabel>Use My Location</IonLabel>
-              </IonItem>
-              {
-                addresses.map((el:any)=>(
-                    <IonItem key={el.id}
-                      onClick={()=>{
-                          changeCoords(el.lat,el.long);
-                          setGymAddress(el.address);
-                          modal.current?.setCurrentBreakpoint(0.25)
-                      }}>
-                        <IonIcon slot="start" icon={location}></IonIcon>
-                       <IonLabel>{el.address}</IonLabel>
-                    </IonItem>
-                )
-              )}
-            </IonList>
+            
+              
+                {
+                  addresses.map((el:any)=>(
+                      <IonItem key={el.id}
+                        onClick={()=>{
+                            changeCoords(el.lat,el.long);
+                            setGymAddress(el.address);
+                            modal.current?.setCurrentBreakpoint(0.25)
+                        }}>
+                          <IonIcon slot="start" icon={location}></IonIcon>
+                        <IonLabel>{el.address}</IonLabel>
+                      </IonItem>
+                  )
+                )}
+            
           </IonContent>
         </IonModal>
     </div>

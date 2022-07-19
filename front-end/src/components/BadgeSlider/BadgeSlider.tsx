@@ -109,11 +109,9 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
     return (
         <>
         
-        <IonCard>
-        <IonCardHeader>
+        <IonCard class="glassForm">
+        <IonCardHeader color="primary">
             <IonCardTitle className='inputHeading' class ="ion-text-center">Create Badge Icon</IonCardTitle> 
-
-
         </IonCardHeader>
         
             <IonSlides 
@@ -143,6 +141,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             <IonSlide><img id = "treadmill"  src={treadmill} width={10} height={10} alt='' /></IonSlide>
             </IonSlides>
         </IonCard>
+        <br></br>
         <BadgeCanvas rank={activeRank} emblem = {activeEmblem}/>
         <AR rank={activeARRank} emblem={activeAREmblem} ></AR>
 

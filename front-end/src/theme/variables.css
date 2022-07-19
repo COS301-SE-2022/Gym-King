@@ -191,6 +191,7 @@ ion-card{
 }
 
 
+
 .badge{
   font-size:700%;
   margin-left:35%;
@@ -206,6 +207,10 @@ ion-card{
   border-radius: 10px;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
+}
+
+.width80{
+  width: 80%;
 }
 
 .md body {

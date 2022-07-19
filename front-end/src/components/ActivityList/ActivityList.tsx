@@ -1,4 +1,4 @@
-import {IonGrid, IonRow, IonText, IonItem, IonList} from '@ionic/react';
+import {IonText, IonChip, IonLabel} from '@ionic/react';
 import React from 'react'
 import './ActivityList.css' ;
 
@@ -10,64 +10,50 @@ export class  ActivityList extends React.Component<props>{
     render(){
         if(this.props.activityCategory === 'cardio'){
             return(
-                <IonList>
-                    <IonItem >
-                        <IonGrid className='centerLeft grid'  >
-                            <IonRow className='left topMargin' style={{backgroundColor:'#'}}>
-                                <IonText className='Subheading'>Duration:</IonText>
-                            </IonRow>
-                        </IonGrid>
+                <>
+                <IonChip className="chip" >
+                    <IonLabel > 
+                        <IonText className='Subheading'>Duration:</IonText> 
                         <IonText className='textInput' >{this.props.i1}</IonText>
-                    </IonItem>
-                    <br></br>
-                    <IonItem>
-                        <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <IonText className='Subheading'>Distance:</IonText>
-                            </IonRow>
-                        </IonGrid>
+                    </IonLabel>
+                </IonChip> <br></br>
+                <IonChip className="chip">
+                    <IonLabel > 
+                        <IonText className='Subheading'>Distance:</IonText> 
                         <IonText className='textInput' >{this.props.i2}</IonText>
-                    </IonItem>
-                    <br></br>
-                    <IonItem>
-                        <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <IonText className='Subheading'>Level of Difficulty:</IonText>
-                            </IonRow>
-                        </IonGrid>
+                    </IonLabel>
+                </IonChip> <br></br>
+                <IonChip className="chip">
+                    <IonLabel > 
+                        <IonText className='Subheading'>Level of Difficulty:</IonText> 
                         <IonText className='textInput' >{this.props.i3}</IonText>
-                    </IonItem>
-                </IonList>
+                    </IonLabel>
+                </IonChip>
+                </>
             )
         }
         else{
             return(
-                <IonList>
-                    <IonItem>
-                        <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <IonText className='Subheading'>Weight:</IonText>
-                            </IonRow>
-                        </IonGrid>
+                <>
+                <IonChip  className="chip">
+                    <IonLabel > 
+                        <IonText className='Subheading'>Weight:</IonText> 
                         <IonText className='textInput' >{this.props.i1}</IonText>
-                    </IonItem>
-                    <IonItem>
-                        <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <IonText className='Subheading'>Sets:</IonText>
-                            </IonRow>
-                        </IonGrid>
+                    </IonLabel>
+                </IonChip> <br></br>
+                <IonChip className="chip" >
+                    <IonLabel > 
+                        <IonText className='Subheading'>Sets:</IonText> 
                         <IonText className='textInput' >{this.props.i2}</IonText>
-                    </IonItem>
-                    <IonItem>
-                        <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <IonText className='Subheading'>Reps:</IonText>
-                            </IonRow>
-                        </IonGrid>
+                    </IonLabel>
+                </IonChip> <br></br>
+                <IonChip className="chip">
+                    <IonLabel > 
+                        <IonText className='Subheading'>Reps:</IonText> 
                         <IonText className='textInput' >{this.props.i3}</IonText>
-                    </IonItem>
-                </IonList>
+                    </IonLabel>
+                </IonChip>
+                </>
             )
         }
 
