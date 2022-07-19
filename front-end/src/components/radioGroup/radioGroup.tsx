@@ -1,4 +1,4 @@
-import {IonItem, IonLabel, IonList, IonRadio, IonRadioGroup} from '@ionic/react';
+import {IonItem, IonLabel, IonRadio, IonRadioGroup} from '@ionic/react';
 import React from 'react'
 import '../../theme/variables.css'
 //creating a type so props can be entered

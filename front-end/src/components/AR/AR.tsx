@@ -1,5 +1,5 @@
 
-import {IonButton, IonCard, IonToast} from '@ionic/react';
+import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
 
