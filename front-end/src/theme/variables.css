@@ -209,6 +209,10 @@ ion-card{
   box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
 }
 
+.width80{
+  width: 80%;
+}
+
 .md body {
   --ion-background-color: var(--ion-color-secondary);
   --ion-background-color-rgb: 18,18,18;
