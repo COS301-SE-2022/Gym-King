@@ -134,12 +134,7 @@ const users = express.Router()
     try {
       let query = req.params.email;
       const result = await badgeClaimRepository.findByEmail(query);
-      if (result.length == 0){
-        res.json(null);
-      }
-      else {
-        res.json(result);
-      }
+      res.json(result);
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -156,12 +151,7 @@ const users = express.Router()
     try {
       let query = req.params.email;
       const result = await badgeOwnedRepository.findByEmail(query);
-      if (result.length == 0){
-        res.json(null);
-      }
-      else {
-        res.json(result);
-      }
+      res.json(result);
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
