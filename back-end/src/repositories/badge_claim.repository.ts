@@ -13,7 +13,7 @@ export const badgeClaimRepository = GymKingDataSource.getRepository(badge_claim)
         return this.find({ b_id: bid });
     },
     findByEmail(email: string) {
-        return this.find({email: email });
+        return this.findBy({email: email });
     },
     findByBIDandEmail(bid: string, email:string) {
         return this.findOneBy({b_id: bid,email: email });
