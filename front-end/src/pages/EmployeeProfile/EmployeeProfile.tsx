@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./EmployeeProfile.css";
@@ -20,6 +20,8 @@ const EmployeeProfilePage: React.FC = () =>{
 
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
     
 
 
@@ -30,7 +32,7 @@ const EmployeeProfilePage: React.FC = () =>{
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
-        
+        setLoading(true)
         //get employee information 
         fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
                 method: 'POST',
@@ -54,9 +56,11 @@ const EmployeeProfilePage: React.FC = () =>{
                 setGymName(response.g_id.gym_brandname);
                 setGymAddress(response.g_id.gym_address);
 
+                setLoading(false);
             })
             .catch(err => {
                 console.log(err)
+                setLoading(false);
             })
         /*console.log(gid)
         //get employee's gym name 
@@ -251,6 +255,15 @@ const EmployeeProfilePage: React.FC = () =>{
                         message="Could not update. Try again later."
                         duration={1000}
                         color="danger"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
                     />
                 </IonContent>
             </IonPage>

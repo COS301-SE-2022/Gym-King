@@ -67,7 +67,6 @@ export const AcceptRejectPage: React.FC = () =>{
                     <IonLoading 
                         isOpen={loading}
                         message={"Loading"}
-                        duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
