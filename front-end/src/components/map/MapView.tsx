@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
+import { useHistory } from 'react-router-dom';
 
 import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
@@ -15,7 +16,8 @@ interface LocationError {
 }
 
 const MapView: React.FC = () =>{
-    
+    let history=useHistory()
+
     //=========================================================================================================//
     //                                                       MAP                                               //
     //=========================================================================================================//
@@ -285,7 +287,7 @@ const MapView: React.FC = () =>{
                                     sessionStorage.setItem('gym_address',gymData.gym_address);
                                     sessionStorage.setItem('gid',gymData.g_id);
 
-                                    window.location.href = "http://"+window.location.host+"/GymPage";
+                                    history.push("/GymPage");
                                     
                                 }}
                             >

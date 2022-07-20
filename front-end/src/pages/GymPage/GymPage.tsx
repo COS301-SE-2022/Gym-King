@@ -1,11 +1,8 @@
 import {IonContent, IonPage, IonHeader,  IonButton, IonCardSubtitle, IonCard, IonCardTitle, IonModal, createAnimation} from '@ionic/react';
 import React, { useState } from 'react';
-import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import './GymPage.css';
-var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/OwnerProfile'},
-                     {'caption':'Settings','icon':'cog','route':'/Settings'}] 
 
 
 const GymPage: React.FC = () =>{
@@ -45,9 +42,8 @@ const GymPage: React.FC = () =>{
     return(
         <IonPage >
             <IonHeader>
-                <ToolBar menu={true} ></ToolBar>
+                <ToolBar></ToolBar>
             </IonHeader>
-            <BurgerMenu listItems={Menulist}></BurgerMenu>
             <br></br>
             <IonContent fullscreen className ='Content' id="main">
                 <IonCard>
