@@ -1,20 +1,26 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './ManageGyms.css';
 
 const ManageGyms: React.FC = () =>{
+
     const [gymList,setGymList]=useState<any>([])
+    const [loading, setLoading] = useState<boolean>(false);
+
+
     useIonViewWillEnter(()=>
         {
             var email="u20519517@tuks.co.za"
+            setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
+                setLoading(false)
                 let arr=[];
                 for(let i=0;i<response.length;i++)
                 {
@@ -26,7 +32,10 @@ const ManageGyms: React.FC = () =>{
                 }
                 setGymList(arr)
             })
-            .catch(err => {console.log(err)})
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
         },[])
     return(
         <IonPage >
@@ -42,6 +51,16 @@ const ManageGyms: React.FC = () =>{
                     )
 
                     }
+
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
             </IonContent>
             
         </IonPage>

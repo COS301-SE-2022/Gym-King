@@ -213,6 +213,18 @@ ion-card{
   width: 80%;
 }
 
+.marginLeft{
+  margin-left: 3em;
+}
+
+
+.spinner{
+  --background: #873CFF;
+  --spinner-color: #ffc409;
+  --height: 4em;
+}
+
+
 .md body {
   --ion-background-color: var(--ion-color-secondary);
   --ion-background-color-rgb: 18,18,18;

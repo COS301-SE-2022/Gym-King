@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
@@ -14,9 +14,12 @@ const PendingApprovalsPage: React.FC = () =>{
     let gymId= 'wSek';  //temp value for testing 
     // eslint-disable-next-line
     const [claims, setClaims] = useState(new Array());
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     //GET REQUEST:
     useEffect(()=>{
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/claims/gym/${gymId}`,{
             "method":"GET"
         })
@@ -24,9 +27,12 @@ const PendingApprovalsPage: React.FC = () =>{
         .then(response =>{
             //console.log(response);
             setClaims(response)
-            
+            setLoading(false)
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
     },[gymId])
 
         return(
@@ -43,6 +49,16 @@ const PendingApprovalsPage: React.FC = () =>{
                             return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)
                         })
                     }
+
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
                 </IonContent>
             </IonPage>
         )
