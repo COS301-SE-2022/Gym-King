@@ -200,6 +200,7 @@ const MapView: React.FC = () =>{
                 isOpen={loading}
                 message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
+                cssClass="spinner"
             />
             <IonToast
                 isOpen={error.showError}

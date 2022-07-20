@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonText, IonPage} from '@ionic/react';
+import { IonContent, IonHeader, IonText, IonPage, IonLoading} from '@ionic/react';
 import React, {useEffect, useState} from 'react'
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -15,10 +15,13 @@ export const AcceptRejectPage: React.FC = () =>{
     const [i3, setI3] = useState('');
     const [badgename, setBadgename] = useState('');
     const [activitytype, setActivityType] = useState('');
+    const [loading, setLoading] = useState<boolean>(false);
+
 
 
     //GET THE CLAIM 
     useEffect(()=>{
+        setLoading(true);
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
             "method":"GET"
         })
@@ -27,8 +30,12 @@ export const AcceptRejectPage: React.FC = () =>{
             setI1(response.input1);
             setI2(response.input2);
             setI3(response.input3);
+            setLoading(false);
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
     },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
@@ -57,7 +64,15 @@ export const AcceptRejectPage: React.FC = () =>{
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
                     <AcceptRejectCard userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype}></AcceptRejectCard>
 
-
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
                 </IonContent>
                 
             </IonPage>

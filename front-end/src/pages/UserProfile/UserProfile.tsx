@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
@@ -11,7 +11,7 @@ const UserProfilePage: React.FC = () =>{
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
     let history=useHistory()
-
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
@@ -29,6 +29,7 @@ const UserProfilePage: React.FC = () =>{
    
     
     const getNumberOfBadges = () =>{
+        
         fetch(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
@@ -57,7 +58,7 @@ const UserProfilePage: React.FC = () =>{
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
-        
+        setLoading(true);
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
                 method: 'POST',
                 headers: {
@@ -77,10 +78,13 @@ const UserProfilePage: React.FC = () =>{
                 setSurname( response.surname);
                 setPhone( response.number);
                 setUsername(response.username);
+
+                setLoading(false);
                 
             })
             .catch(err => {
                 console.log(err)
+                setLoading(false)
             })
         
         getNumberOfBadges()
@@ -107,12 +111,10 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
-                //show toast
                 
             })
             .catch(err => {
                 console.log(err)
-                //setShowFail(true);
             })
     }
 
@@ -285,6 +287,15 @@ const UserProfilePage: React.FC = () =>{
                         duration={1000}
                         color="danger"
                     />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
                 </IonContent>
             </IonPage>
         )
@@ -294,12 +305,3 @@ const UserProfilePage: React.FC = () =>{
 
 export default UserProfilePage;
 
-/*
-<IonGrid>
-                        <IonRow>
-                            <IonCol size='4'><img className="centerComp" id = "Gold"  src={Gold} width={60} height={60} alt='' /></IonCol>
-                            <IonCol size='4'><img className="centerComp"  id = "Silver"  src={Silver} width={60} height={60} alt='' /></IonCol>
-                            <IonCol size='4'><img className="centerComp" id = "Bronze" src={Bronze} width={60} height={60} alt='' /></IonCol>
-                        </IonRow>
-                    </IonGrid>
-*/
