@@ -19,7 +19,7 @@ const ManageEmployees: React.FC = () =>{
     {
         var email="u19068035@tuks.co.za"
         setLoading(true)
-        fetch('https://gym-king.herokuapp.com/employees', {
+        fetch('https://gym-king.herokuapp.com/employees/employee/info', {
             "method":"GET"
         })
         .then(response =>response.json())
@@ -30,7 +30,12 @@ const ManageEmployees: React.FC = () =>{
             for(let q = 0; q<response.length; q++)
             {
                 arr.push({
-                    '':response[q].
+                    'email':response[q].email,
+                    'name':response[q].name,
+                    'surname':response[q].surname,
+                    'username': response[q].username,
+                    'number': response[q].number,
+                    'gym': response[q].gym
                 })
             }
             setEmployeeList(arr)
