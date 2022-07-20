@@ -1,5 +1,4 @@
 import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter} from '@ionic/react';
-import React, {useEffect} from 'react';
 import React, {useState} from 'react';
 import EmployeeCard from '../../components/EmployeeCard/EmployeeCard';
 import {ToolBar} from '../../components/toolbar/Toolbar';
