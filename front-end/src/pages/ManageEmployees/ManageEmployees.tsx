@@ -56,7 +56,7 @@ const ManageEmployees: React.FC = () =>{
                 <br></br>
                 <IonButton routerLink='/EmployeeProfile' routerDirection="forward" color="warning"> View Employee Profile </IonButton>
                 
-                <Ion Loading
+                <IonLoading
                     isOpen={loading}
                     message={"Loading"}
                     duration={2000}
