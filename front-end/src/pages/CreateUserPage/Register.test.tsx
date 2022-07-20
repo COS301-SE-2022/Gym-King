@@ -6,6 +6,6 @@ import Register from './CreateUserPage';
 */
 
 test('renders without crashing', () => {
-  const {baseElement} = render(<RegisterPage />);
+  const {baseElement} = render(<Register />);
   expect(baseElement).toBeDefined();
 });
