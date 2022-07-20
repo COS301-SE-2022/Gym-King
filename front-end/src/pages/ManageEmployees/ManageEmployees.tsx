@@ -56,14 +56,14 @@ const ManageEmployees: React.FC = () =>{
                 <br></br>
                 <IonButton routerLink='/EmployeeProfile' routerDirection="forward" color="warning"> View Employee Profile </IonButton>
                 
-                <IonLoading
-                    isOpen={loading}
-                    message={"Loading"}
-                    duration={2000}
-                    spinner={"circles"}
-                    onDidDismiss{() => setLoading(false)}
-                    cssClass={"spinner"}
-                />
+                <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
             </IonContent>
         </IonPage>
     )
