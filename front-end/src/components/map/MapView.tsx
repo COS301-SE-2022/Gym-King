@@ -272,7 +272,7 @@ const MapView: React.FC = () =>{
             <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
             {/* <IonBadge > */}
-                <IonCard>
+                <IonCard style={{"margin":"0px"}}>
                     <IonCardHeader>
                         <IonCardTitle className='center '>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
@@ -286,7 +286,7 @@ const MapView: React.FC = () =>{
                                     sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
                                     sessionStorage.setItem('gym_address',gymData.gym_address);
                                     sessionStorage.setItem('gid',gymData.g_id);
-
+                                    setShowModal(false);
                                     history.push("/GymPage");
                                     
                                 }}

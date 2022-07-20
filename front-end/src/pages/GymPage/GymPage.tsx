@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import './GymPage.css';
+import { useHistory } from 'react-router-dom';
 
 
 const GymPage: React.FC = () =>{
@@ -10,6 +11,7 @@ const GymPage: React.FC = () =>{
     let gid = sessionStorage.getItem("gid");
     let gname = sessionStorage.getItem("gym_brandname");
     let gaddress = sessionStorage.getItem("gym_address");
+    let history=useHistory()
 
 
     const [showModal, setShowModal] = useState(false);
@@ -38,6 +40,13 @@ const GymPage: React.FC = () =>{
     const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
     }
+    
+    const goToViewBadges = () =>{
+        history.push("/ViewBadges")
+    }
+    const goToLeaderboard = () =>{
+        history.push("/Leaderboard")
+    }
 
     return(
         <IonPage >
@@ -50,8 +59,8 @@ const GymPage: React.FC = () =>{
                     <IonCardTitle className='center'>{gname}</IonCardTitle>
                     <IonCardSubtitle className='center'>{gaddress}</IonCardSubtitle>
                     
-                    <IonButton>View Badges</IonButton>
-                    <IonButton onClick={()=>{setShowModal(true)}}>View Leaderboard</IonButton>
+                    <IonButton onClick={goToViewBadges}>View Badges</IonButton>
+                    <IonButton onClick={goToLeaderboard}>View Leaderboard</IonButton>
                 </IonCard>
                 
                 <IonModal id="main" showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
