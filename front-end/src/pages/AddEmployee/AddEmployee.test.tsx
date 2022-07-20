@@ -6,6 +6,6 @@ import AddEmployee from './AddEmployee';
 */
 
 test('renders without crashing', ()=> {
-  const{baseElement} = render(</AddEmployee/>);
+  const{baseElement} = render(<AddEmployee/>);
   expect(baseElement).toBeDefined();
 });
