@@ -1,5 +1,5 @@
 import {fireEvent, render, screen} from '@testing-library/react';
-import CreateUserPage from './CreateUserPage';
+import RegisterPage from './CreateUserPage';
 
 ////TESTS TO BE PERFORMED////
 /*
