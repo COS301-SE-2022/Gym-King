@@ -6,6 +6,6 @@ import EmployeeProfilePage from './EmployeeProfile';
 */
 
 test('renders without crashing', () => {
-  const {baseElement } = render(<EmployeeProfile/>);
+  const {baseElement } = render(<EmployeeProfilePage/>);
   expect(baseElement).toBeDefined();
 });
