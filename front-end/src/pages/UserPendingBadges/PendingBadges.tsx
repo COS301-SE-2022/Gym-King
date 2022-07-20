@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
@@ -10,9 +10,11 @@ const PendingBadgesPage: React.FC = () =>{
     //STATES AND VARIABLES 
     // eslint-disable-next-line
     const [claims, setClaims] = useState(new Array());
+    const [loading, setLoading] = useState<boolean>(false);
 
     //GET REQUEST:
     useEffect(()=>{
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
@@ -20,9 +22,11 @@ const PendingBadgesPage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setClaims(response)
+                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
+                setLoading(false)
         })
     },[])
 
@@ -45,6 +49,14 @@ const PendingBadgesPage: React.FC = () =>{
                         }) 
                     }
                     
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
                 </IonContent>
             </IonPage>
         )

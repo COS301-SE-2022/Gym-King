@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./OwnerProfile.css";
@@ -22,7 +22,8 @@ const OwnerProfilePage: React.FC = () =>{
     const [showFail, setShowFail] = useState(false);
     const [numGyms, setNumGyms] = useState("");
     const [numEmployees, setNumEmployees] = useState("");
-    
+    const [loading, setLoading] = useState<boolean>(false);
+
 
 
 
@@ -31,7 +32,7 @@ const OwnerProfilePage: React.FC = () =>{
 
     useEffect(()=>{
         setPresentingElement(page.current); //for modal
-        
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
                 method: 'POST',
                 headers: {
@@ -52,9 +53,11 @@ const OwnerProfilePage: React.FC = () =>{
                 setPhone( response.number);
                 setUsername(response.username);
                 
+                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
+                setLoading(false)
             })
         
         //get number of gyms owned
@@ -283,6 +286,14 @@ const OwnerProfilePage: React.FC = () =>{
                         message="Could not update. Try again later."
                         duration={1000}
                         color="danger"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
                     />
                 </IonContent>
             </IonPage>

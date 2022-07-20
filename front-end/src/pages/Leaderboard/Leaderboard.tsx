@@ -1,4 +1,4 @@
-import {IonContent, IonHeader, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText} from '@ionic/react';
+import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -10,6 +10,8 @@ const Leaderboard: React.FC = () =>{
     const [cardio, setcardio] = useState(new Array<any>());
     const [strength, setstrength] = useState(new Array<any>());
     const [type, setType] = useState('overall');
+    const [loading, setLoading] = useState<boolean>(false);
+
 
 
     const choosePage = () => {
@@ -82,6 +84,7 @@ const Leaderboard: React.FC = () =>{
                 }
             return bflag;
         }
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`,{
             "method":"GET"
         })
@@ -90,6 +93,7 @@ const Leaderboard: React.FC = () =>{
             let results=response;
             
             console.log(results)
+            setLoading(false)
 
             for(let i=0;i<results.length;i++)
             {
@@ -118,7 +122,10 @@ const Leaderboard: React.FC = () =>{
             setcardio(Cardio)
             setstrength(Strenght)
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
     },[])
 
     return(
@@ -148,6 +155,14 @@ const Leaderboard: React.FC = () =>{
                 }
                 </div>
                 
+                <IonLoading 
+                    isOpen={loading}
+                    message={"Loading"}
+                    spinner={"circles"}
+                    onDidDismiss={() => setLoading(false)}
+                    cssClass={"spinner"}
+                    
+                />
             </IonContent>
         </IonPage>
     )

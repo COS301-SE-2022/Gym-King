@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast, IonLoading} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -26,6 +26,8 @@ const UploadActivityPage: React.FC = () =>{
         const [badgename, setBadgename] = useState('');
         const [activitytype, setAT] = useState('');
         const [badgedescription, setDescription] = useState('');
+        const [loading, setLoading] = useState<boolean>(false);
+
 
         
 
@@ -64,6 +66,7 @@ const UploadActivityPage: React.FC = () =>{
 
         // GET BADGES GET REQUEST 
         useEffect(()=>{
+            setLoading(true)
             fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
             })
@@ -74,9 +77,12 @@ const UploadActivityPage: React.FC = () =>{
                 setAT( response.activitytype)
                 setDescription(response.badgechallenge)
                 setBadgename(response.badgename)
-                //setG_id(response.g_id)
+                setLoading(false)
             })
-            .catch(err => {console.log(err)})
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
         } ,[badgeId])
 
 
@@ -146,6 +152,14 @@ const UploadActivityPage: React.FC = () =>{
                         message="Your claim has been uploaded."
                         duration={500}
                         color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
                     />
                 </IonContent>
             </IonPage>
