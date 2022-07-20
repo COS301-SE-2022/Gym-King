@@ -1,11 +1,11 @@
 import {fireEvent, render, screen} from '@testing-library/react';
-import OwnerProfile from './OwnerProfile';
+import OwnerProfilePage from './OwnerProfile';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
 test('renders without crashing', () => {
-  const {baseElement} = render(<OwnerProfile />);
+  const {baseElement} = render(<OwnerProfilePage />);
   exper(baseElement).toBeDefined();
 });
