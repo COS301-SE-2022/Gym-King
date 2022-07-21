@@ -1,4 +1,8 @@
+import { badgeRepository } from "../repositories/badge.repository";
+import { badgeClaimRepository } from "../repositories/badge_claim.repository";
+import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { gymRepository } from "../repositories/gym.repository";
+import { employeeRepository } from "../repositories/gym_employee.repository";
 import { gymOwnedRepository } from "../repositories/gym_owned.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
@@ -231,6 +235,31 @@ const owners = express.Router()
   })
   //=========================================================================================================//
   /**
+   * put - update a gym.
+   * @param {string} gid gym id
+   * @param {string} brandname gym name
+   * @param {string} address gym address
+   * @param {string} lat gym lat coordinates
+   * @param {string} long gym long coordinates
+   * @param {string} icon gym icon
+   * @returns message confirming deletion.
+   */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
+   .put("/owner/gym/info", cors(corsOptions), async (req: any, res: any) => {
+     try {
+       let query = req.body;
+       let result = await gymRepository.updateGym(query.gid, query.brandname, query.address, query.lat, query.long, query.icon)
+        res.json(result);
+     } catch (err) {
+       const results = { success: false, results: err };
+       console.error(err);
+       res.json(results);
+     }
+   })
+  //=========================================================================================================//
+  /**
    * PUT update an owner password.
    * @param {string} email The email of the owner. 
    * @param {string} otp OTP given by owner.
@@ -253,6 +282,48 @@ const owners = express.Router()
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+   //=========================================================================================================//
+  /**
+   * DELETE - Delete a gym.
+   * @param {string} email unique email used to delete the owner.
+   * @param {string} password owner password.
+   * @param {string} gid gym id
+   * @returns message confirming deletion.
+   */
+  .use(bodyParser.urlencoded({extended:true}))
+  .use(bodyParser.json())
+  .delete("/owner/delete/gym",cors(corsOptions),async(req:any,res:any)=>{
+    try{
+      let query=req.body;
+      const bcrypt=require('bcryptjs')
+      const owner = await ownerRepository.findByEmail(query.email)
+      if(bcrypt.compareSync(query.password,owner.password))
+      {
+        let result;
+        result=await badgeRepository.findByGID(query.gid);
+        let badges=result;
+        for(let i=0;i<badges.length;i++)
+        {
+          result= await badgeOwnedRepository.deleteAllOwnedByBID(badges[i].b_id)
+          result=await badgeClaimRepository.deleteAllClaimsByBID(badges[i].b_id)
+        }
+        result= await gymOwnedRepository.deleteAllByGID(query.gid);
+        result=await employeeRepository.deleteEmployeeByGID(query.gid);
+        result= await badgeRepository.deleteBadgeByGID(query.gid)
+        result=await gymRepository.deleteGym(query.gid)
+        res.json(result)
+      }
+      else {
+        res.json({success:false,'results':'invalid password'})
+      }
+    }
+    catch (err) 
+    {
+      const results = { success: false, results: err };
       console.error(err);
       res.json(results);
     }
