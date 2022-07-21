@@ -60,7 +60,7 @@ export const AddEmployee: React.FC = () =>{
                 body: JSON.stringify({ 
                     email: formData.email,
                     name: formData.name,
-                    surname: formData.name,
+                    surname: formData.surname,
                     number: formData.number, 
                     username: formData.username, 
                     password: formData.password,

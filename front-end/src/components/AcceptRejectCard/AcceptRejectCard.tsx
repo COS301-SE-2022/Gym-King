@@ -5,7 +5,7 @@ import {personCircleOutline} from 'ionicons/icons';
 import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
-import { useHistory } from 'react-router-dom';
+import { useHistory ,} from 'react-router-dom';
 
 
 //creating a type so props can be entered
@@ -15,7 +15,7 @@ export type props = {userID:any, username:any, badgeId:any, badgename:any, i1:an
 export class AcceptRejectCard extends React.Component<props>{
 
     acceptClaim= ()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${this.props.badgeId}&email=${this.props.userID}`,{
+        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
@@ -28,9 +28,7 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .then(response =>response.json())
         .then(response =>{
-            //console.log(response.results);
-            //display toast 
-            //redirect to PendingApprovals
+
             let history=useHistory()
             history.push("/PendingApprovals");
         })
