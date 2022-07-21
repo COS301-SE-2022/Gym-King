@@ -1,5 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { RadioGroup } from '../../components/radioGroup/radioGroup';
+import ToolBar from '../../components/toolbar/Toolbar';
 import './AddEmployee.css';
 
 export const AddEmployee: React.FC = () =>{
@@ -7,7 +9,29 @@ export const AddEmployee: React.FC = () =>{
     const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [showError1Toast, setShowError1Toast] = useState(false);
     const [showError2Toast, setShowError2Toast] = useState(false);
+    const [ownedGyms, setOwnedGyms] = useState([]);
+    const [gymId, setGymId] = useState('')
+
+
     let formData : any;
+
+    useEffect(()=>{
+        let gymOwner = localStorage.getItem("email")
+        fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
+            "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            setOwnedGyms(response);
+
+        })
+        .catch(err => {console.log(err)}) 
+    })
+
+    const setChosenGymLocation = (e:any) =>{
+        console.log(e);
+        setGymId(e)
+    }
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
@@ -19,86 +43,77 @@ export const AddEmployee: React.FC = () =>{
             number: e.target.number.value,
             username: e.target.username.value,
             password: e.target.password.value,
-            gym: e.target.gym.value,
+            gid: gymId,
         };
-            createEmployee();
+        createEmployee();
     }
     
     const createEmployee=()=>{
-        fetch('https://gym-king.herokuapp.com/employees/employee/info', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: formData.email,
-                name: formData.name,
-                surname: formData.surname,
-                number: formData.number,
-                username: formData.username,
-                password: formData.password,
-                gid: formData.gym,
+        console.log(formData)
+        
+        fetch(`https://gym-king.herokuapp.com/employees/employee`,{
+                "method":"POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: formData.email,
+                    name: formData.name,
+                    surname: formData.name,
+                    number: formData.number, 
+                    username: formData.username, 
+                    password: formData.password,
+                    g_id: gymId
+                })
             })
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            if(response.results.success)
-            {
+            .then(response =>response.json())
+            .then(response =>{
+                //show toast
                 setShowSuccessToast(true);
 
-                window.location.href = "http://localhost:3000/AddEmployee";
-            }
-            else
-            {
-                console.log(response.results);
-                if(response.results.code ==="23505")
-                {
-                    setShowError1Toast(true);
-                }   
-                else
-                {
-                    setShowError2Toast(true);
-                }
-            }
-        })
-        .catch(err => {
-            console.log(err)
-            setShowError2Toast(true);
-        })
+                //redirect to view badges (gym owner) 
+                //history.push("/ManageEmployees");
+            })
+            .catch(err => {
+                setShowError1Toast(true);
+                console.log(err)
+            }) 
     }
 
     return(
-        <IonPage color='#220FE'>
-            <IonHeader>
-            </IonHeader>
+        <IonPage color='#220FE' >
+                <IonHeader>
+                    <ToolBar></ToolBar>
+                </IonHeader>
+                <br></br>
                 <IonContent fullscreen className='Content'>
-                    <form onSubmit={handleSubmit} className="registerForm">
-                        <IonText className='center inputHeading'>Add Employee</IonText>
+                    <form onSubmit={handleSubmit} >
+                        <IonText className='PageTitle center'>Add Employee</IonText>
                         <br></br>
 
-                        <IonText className="smallHeading">Email*</IonText>
-                        <IonInput name='email' type='text' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin">Email*</IonText>
+                        <IonInput name='email' type='text' className='textInput  smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading">Name*</IonText>
-                        <IonInput name='name' type='text' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin">Name*</IonText>
+                        <IonInput name='name' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading">Surname*</IonText>
-                        <IonInput name='surname' type='text' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin">Surname*</IonText>
+                        <IonInput name='surname' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading">Phone Number*</IonText>
-                        <IonInput name='number' type='number' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin">Phone Number*</IonText>
+                        <IonInput name='number' type='number' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading"> Username*</IonText>
-                        <IonInput name='username' type='text' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin"> Username*</IonText>
+                        <IonInput name='username' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading">Password*</IonText>
-                        <IonInput name='password' type='password' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin">Password*</IonText>
+                        <IonInput name='password' type='password' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading">Gym*</IonText>
-                        <IonInput name='gym' type='text' className='textInput' required></IonInput>
+                        <IonText className="smallHeading leftMargin">Gym*</IonText>
+                        <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
-                        <IonButton color="warning" className="btnAddEmployee ion-margin-top" type="submit" expand="block">Add Employee</IonButton>
+                        <IonButton color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
 
                     </form>
                     <br></br>
@@ -125,7 +140,7 @@ export const AddEmployee: React.FC = () =>{
                         color="danger"
                     />
                 </IonContent>
-        </IonPage>
+            </IonPage>
     )
 }
 
