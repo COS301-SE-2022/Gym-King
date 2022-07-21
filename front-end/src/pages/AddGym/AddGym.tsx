@@ -15,7 +15,7 @@ const AddGym: React.FC = () => {
   
   //get request parameters via the url
   //get name and name hook
-  const [gymName, setGymName] = useState<string>("name");
+  const [gymName, setGymName] = useState<string>("");
   const [gymAddress, setGymAddress] = useState<string>("address");
   const [coordinate, setCoordinate] = useState<[number, number]>([
     -25.7545,

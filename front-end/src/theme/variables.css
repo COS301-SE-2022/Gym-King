@@ -158,6 +158,13 @@ ion-card{
   margin-left:5%;
   margin-bottom: 20px;
 }
+.subheading{
+  font-family: 'Comfortaa', cursive;
+  font-size:11px;
+  margin-left:5%;
+  margin-right: 5%;
+  margin-bottom: 20px;
+}
 
 .grid
 {
