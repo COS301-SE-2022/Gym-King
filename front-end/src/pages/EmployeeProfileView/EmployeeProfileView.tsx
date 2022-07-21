@@ -54,7 +54,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText className="PageTitle center un">{username}</IonText>
+                                                <IonText className=" un PageTitle center ">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name} {surname}</i>

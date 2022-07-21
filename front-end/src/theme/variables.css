@@ -198,7 +198,7 @@ ion-card{
 }
 
 .un{
-  font-size: 5vw;
+  font-size: 5vw !important;
   margin-bottom: 5%;
   font-family: 'Comfortaa', cursive;;
 }
