@@ -5,7 +5,7 @@ import ViewBadgeCard from './ViewBadgeCard';
 /*
 - test that image displays correctly  ? 
 
-*/
+
 
 
 test('renders without crashing', () => {
@@ -21,4 +21,4 @@ describe('Testing prop values', () => {
         expect (baseElement).toHaveTextContent("cardio champion");        
     }); 
 
-});
+});*/

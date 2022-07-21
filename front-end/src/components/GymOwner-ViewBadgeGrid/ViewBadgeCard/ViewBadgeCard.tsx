@@ -1,11 +1,13 @@
 import { IonActionSheet, IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import BadgeImage from '../../BadgeImage/BadgeImage';
+
 import './ViewBadgeCard.css'
 
-export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number })=>{
-    let badge=require("../../../utils/badges.json")  
+export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;Badgerank:string,BadgeEmblem:string })=>{
     const history=useHistory()
+    
     const [showActionSheet, setShowActionSheet] = useState(false);
     return(
         <>
@@ -16,12 +18,8 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 onClick={ () => {setShowActionSheet(true)}}>
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
-                            <img 
-                                width="100px" 
-                                height="100%"
-                                src={badge[props.BadgeImg].Base64} 
-                                alt={badge[props.BadgeImg].name}
-                            />
+                    
+                        <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.Badgerank}></BadgeImage>
                     </IonRow>
                     <IonRow class='BadgeDetails'>
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>

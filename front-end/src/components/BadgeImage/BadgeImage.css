@@ -1,0 +1,46 @@
+#badgeOver{ 
+  height: 90px;
+  width: 75px !important;
+  position: absolute!important;
+  top:7% !important;
+  left:13% !important;
+  
+  z-index:1 !important;
+}
+#badgeUnder{
+  height:100px;
+  width: 130px !important;
+}
+@media (max-width:339px)
+{
+    
+    #badgeOver{ 
+        height: 90px;
+        width: 65px !important;
+        position: absolute!important;
+        top:6% !important;
+        left:14% !important;
+        
+        z-index:1 !important;
+    }
+    #badgeUnder{
+        width: 100px !important;
+    }
+}
+@media (min-width:385px)
+{
+    
+    #badgeOver{ 
+        height: 120px;
+        width: 110px !important;
+        position: absolute!important;
+        top:6% !important;
+        left:11% !important;
+        
+        z-index:1 !important;
+    }
+    #badgeUnder{
+        height: 130px;
+        width: 130px !important;
+    }
+}
