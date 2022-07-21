@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
+import { useHistory } from 'react-router-dom';
 
 
 export type UploadActivityStates = {act?:any}
@@ -15,6 +16,8 @@ const PendingApprovalsPage: React.FC = () =>{
     const [claims, setClaims] = useState(new Array());
     const [loading, setLoading] = useState<boolean>(false);
     const [gymId, setGymId] = useState("");
+    let history=useHistory()
+
 
 
     //GET REQUEST:
@@ -60,6 +63,10 @@ const PendingApprovalsPage: React.FC = () =>{
         })
     },[gymId])
 
+    const goToAcceptReject = () =>{
+        history.push("/AcceptReject")
+    }
+
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -71,7 +78,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)
+                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton></div>)
                         })
                     }
 
