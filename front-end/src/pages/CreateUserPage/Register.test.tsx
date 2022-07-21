@@ -1,11 +1,11 @@
 import {fireEvent, render, screen} from '@testing-library/react';
-import {register} from './CreateUserPage';
+import RegisterPage from './Register';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
 test('renders without crashing', () => {
-  const {baseElement} = render(<Register />);
+  const {baseElement} = render(<RegisterPage/>);
   expect(baseElement).toBeDefined();
 });
