@@ -1,5 +1,6 @@
-import { IonContent, IonHeader, IonText, IonPage, IonLoading} from '@ionic/react';
-import React, {useEffect, useState} from 'react'
+import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import React, {useState} from 'react'
+import { useHistory } from 'react-router-dom';
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './AcceptReject.css';
@@ -16,11 +17,11 @@ export const AcceptRejectPage: React.FC = () =>{
     const [badgename, setBadgename] = useState('');
     const [activitytype, setActivityType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
-
+    const history=useHistory();
 
 
     //GET THE CLAIM 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
             "method":"GET"
@@ -39,7 +40,7 @@ export const AcceptRejectPage: React.FC = () =>{
     },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
-        useEffect(()=>
+        useIonViewWillEnter(()=>
             {
                 fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
@@ -62,7 +63,7 @@ export const AcceptRejectPage: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
-                    <AcceptRejectCard userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype}></AcceptRejectCard>
+                    <AcceptRejectCard userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history}></AcceptRejectCard>
 
                     <IonLoading 
                         isOpen={loading}
