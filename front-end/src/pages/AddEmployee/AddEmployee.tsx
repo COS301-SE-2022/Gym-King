@@ -25,7 +25,7 @@ export const AddEmployee: React.FC = () =>{
     }
     
     const createEmployee=()=>{
-        fetch('', {
+        fetch('https://gym-king.herokuapp.com/employees/employee/info', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
