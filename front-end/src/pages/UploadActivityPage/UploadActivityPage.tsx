@@ -6,6 +6,8 @@ import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
+import { useHistory } from 'react-router-dom';
+
 
 export type UploadActivityStates = {act?:any}
 
@@ -27,6 +29,7 @@ const UploadActivityPage: React.FC = () =>{
         const [activitytype, setAT] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [loading, setLoading] = useState<boolean>(false);
+        let history=useHistory()
 
 
         
@@ -112,7 +115,7 @@ const UploadActivityPage: React.FC = () =>{
             .then(response =>{
                 //console.log(response);
                 setShowToast1(true);
-                window.location.href = "http://localhost:3000/ViewBadges";
+                history.push("/ViewBadges");
             })
             .catch(err => {console.log(err)}) 
         }
