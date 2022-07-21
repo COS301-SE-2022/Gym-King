@@ -62,7 +62,6 @@ import "./CreateBadge.css";
 
         // CREATE BADGE POST REQUEST 
         const createBadge=()=>{
-            let gid = 'uU3p';   //temp value for testing 
             let at = localStorage.getItem('act')
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
@@ -77,7 +76,7 @@ import "./CreateBadge.css";
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    gid: gid,
+                    gid: gymId,
                     badgename: bn,
                     badgedescription: bd,
                     badgechallenge: bc,
@@ -98,7 +97,7 @@ import "./CreateBadge.css";
 
         // OWNED GYMS GET REQUEST 
         useEffect(()=>{
-            let gymOwner = "u20519517@tuks.co.za"
+            let gymOwner = localStorage.getItem("email")
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
                 "method":"GET"
             })
