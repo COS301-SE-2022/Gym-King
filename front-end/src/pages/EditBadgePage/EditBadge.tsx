@@ -4,6 +4,7 @@ import React, {useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import { useHistory } from 'react-router-dom';
+import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 
 
 const EditBadge: React.FC = () =>{
@@ -17,6 +18,7 @@ const EditBadge: React.FC = () =>{
         const [badgedescription, setDescription] = useState('');
         const [badgechallenge, setChallenge] = useState('');
         const [loading, setLoading] = useState<boolean>(false);
+        const [badgeIcon, setBadgeIcon] = useState('');
 
         //VARIABLES
         let formData:any;
@@ -56,7 +58,10 @@ const EditBadge: React.FC = () =>{
         
         // GET BADGES REQUEST 
         useEffect( ()=>{
+
             setLoading(true)
+            
+            sessionStorage.setItem('waiting',"true")
             fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
             })
@@ -67,9 +72,14 @@ const EditBadge: React.FC = () =>{
                 setBadgename(response.badgename)
                 setChallenge(response.badgechallenge)
                 setGymId(response.g_id)
+                setBadgeIcon(response.badgeicon)
+                console.log("get: "+response.badgeicon)
+                sessionStorage.setItem('bi',response.badgeicon)
+                sessionStorage.setItem('waiting',"false")
                 setLoading(false)
             })
             .catch(err => {
+                sessionStorage.setItem('waiting',"false")
                 console.log(err)
                 setLoading(false)
             })
@@ -78,11 +88,11 @@ const EditBadge: React.FC = () =>{
 
         // UPDATE BADGE PUT REQUEST 
         const updateBadge= ()=>{
-            let badgeicon = "BADGE ICON"
             let at = localStorage.getItem('act');
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
+            let bi = localStorage.getItem('badgeIcon');
             
             fetch(`https://gym-king.herokuapp.com/badges/badge`,{
                 "method":"PUT",
@@ -96,7 +106,7 @@ const EditBadge: React.FC = () =>{
                     badgename: bn,
                     badgedescription: bd,
                     badgechallenge: bc,
-                    badgeicon: badgeicon,
+                    badgeicon: bi,
                     activitytype: at
                  })
             })
@@ -164,6 +174,8 @@ const EditBadge: React.FC = () =>{
                         <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
+                        <BadgeSlider bIcon = {badgeIcon} name = "badgeIcon"></BadgeSlider>
+                        
                         <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
                         
                     </form>
