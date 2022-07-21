@@ -5,6 +5,7 @@ import {personCircleOutline} from 'ionicons/icons';
 import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
+import { useHistory } from 'react-router-dom';
 
 
 //creating a type so props can be entered
@@ -30,7 +31,8 @@ export class AcceptRejectCard extends React.Component<props>{
             //console.log(response.results);
             //display toast 
             //redirect to PendingApprovals
-            window.location.href = "http://localhost:3000/PendingApprovals";
+            let history=useHistory()
+            history.push("/PendingApprovals");
         })
         .catch(err => {console.log(err)})
     } 
@@ -51,7 +53,8 @@ export class AcceptRejectCard extends React.Component<props>{
             console.log(response.results);
             //display toast 
             //redirect to PendingApprovals
-            window.location.href = "http://localhost:3000/PendingApprovals";
+            let history=useHistory()
+            history.push("/PendingApprovals");
         })
         .catch(err => {console.log(err)})
     }
