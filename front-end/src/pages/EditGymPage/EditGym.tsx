@@ -111,7 +111,7 @@ const EditGym: React.FC = () => {
       <IonContent class="">
         <IonCard className="glassForm">
           <IonCardHeader  className="PageTitle center" color="secondary" >
-            <IonCardTitle>Add Gym</IonCardTitle>
+            <IonCardTitle>Edit Gym</IonCardTitle>
           </IonCardHeader>
 
           <IonCardContent>

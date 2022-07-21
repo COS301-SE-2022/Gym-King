@@ -30,6 +30,9 @@ export const userRepository = GymKingDataSource.getRepository(gym_user).extend({
         const bcrypt = require('bcryptjs')
         return await this.manager.update(gym_user, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
     },
+    async updateUserProfilePicture(email: string, profilepicture: string) {
+        return await this.manager.update(gym_user, { email: email }, {profile_picture: profilepicture})
+    },
     saveUser(email: string, name: string, surname: string, number: string, username: string, password: string) {
         const bcrypt = require('bcryptjs')
         const user = new gym_user();

@@ -1,22 +1,24 @@
-import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
+import { IonCard, IonCardTitle, IonContent, IonGrid, IonPopover, IonRow} from '@ionic/react';
+import { useRef, useState } from 'react';
+import AR from '../../AR/AR';
+import BadgeImage from '../../BadgeImage/BadgeImage';
 import './MyBadgeCard.css'
 
-export const MyBadgeCard=(prop:{id:any,name:string,qty:number})=>{
+export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string,badgeRank:string})=>{
+    const popover = useRef<HTMLIonPopoverElement>(null);
+    const [popoverOpen, setPopoverOpen]  = useState(false);
     return(
+        <div>
             <IonCard 
                 data-testid="viewbadgegrid"
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
+                onClick={()=>{setPopoverOpen(true)}}
                 >
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
-                            <img 
-                                width="100px" 
-                                height="100%"
-                                src='#' 
-                                alt='badge'
-                            />
+                        <BadgeImage BadgeEmblem={prop.badgeEmblem} Badgerank={prop.badgeRank}></BadgeImage>
                     </IonRow>
                     <IonRow class='BadgeDetails'>
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
@@ -29,6 +31,12 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number})=>{
                             
                 </IonGrid>
             </IonCard>
+            <IonPopover  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+              <IonContent>
+                <AR  rank={prop.badgeRank} emblem={prop.badgeEmblem}></AR>
+            </IonContent>
+          </IonPopover>
+            </div>
         )
         
     
