@@ -8,7 +8,7 @@ export const MyBadgeGrid=(prop:{badges:any[],filters:any[],sort:string})=>{
     {
         for(let j=0;j<prop.filters.length;j++)
         {
-            if(prop.filters[j].isChecked===true&& prop.badges[i].name.toLowerCase().includes(prop.filters[j].val.toLowerCase()))
+            if(prop.filters[j].isChecked===true&& prop.badges[i].icon[0].toLowerCase().includes(prop.filters[j].val[0].toLowerCase()))
             {
                 arr.push(prop.badges[i])
             }
@@ -41,7 +41,7 @@ export const MyBadgeGrid=(prop:{badges:any[],filters:any[],sort:string})=>{
             <IonRow  className="ion-align-items-center">
                 {arr.map(el => 
                     <IonCol className="center" key={el.id}>
-                    <MyBadgeCard id={el.id} name={el.name} qty={el.qty}></MyBadgeCard>
+                    <MyBadgeCard id={el.id} name={el.name} qty={el.qty} badgeEmblem={el.icon[1]} badgeRank={el.icon[0]}></MyBadgeCard>
                     </IonCol>)}
             </IonRow>
         </IonGrid>

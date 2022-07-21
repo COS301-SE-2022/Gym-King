@@ -14,8 +14,20 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
                 "method":"GET"
             })
             .then(response =>response.json())
-            .then(response =>{
-                setBadges(response)
+            .then(response =>{  
+                let arr=[];
+                for(let i=0; i<response.length; i++)
+                {
+                    let icon=response[i].badgeicon.split("_")
+                    console.log(response)
+                    arr.push({
+                        'b_id':response[i].b_id,
+                        'badgename':response[i].badgename,
+                        'badgedescription':response[i].badgedescription,
+                        'icon':icon
+                    })
+                }
+                setBadges(arr)
             })
             .catch(err => {console.log(err)})
         },[props.gymID])
@@ -26,7 +38,7 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         {badges.map(el => 
         
             <IonCol className='center' key={el.b_id}>
-                <ViewBadgeCard  BadgeID={el.b_id} BadgeTitle={el.badgename} BadgeDesc={el.badgedescription} BadgeImg={0}></ViewBadgeCard>
+                <ViewBadgeCard  BadgeID={el.b_id} BadgeTitle={el.badgename} BadgeDesc={el.badgedescription} Badgerank={el.icon[0]} BadgeEmblem={el.icon[1]}></ViewBadgeCard>
              </IonCol>)}
         </IonRow>
 
