@@ -6,6 +6,7 @@ import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
 import { userOTPRepository } from "../repositories/user_otp.repository";
+import { storageRef } from "../firebase.connection";
 
 const express = require('express');
 const cors = require('cors');
@@ -14,17 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const userpicture = multer();
-const firebaseAdmin = require('firebase-admin');
 const { v4: uuidv4 } = require('uuid');
-const admin = firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-  }),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
-});
-const storageRef = admin.storage().bucket(process.env.FIREBASE_DB_URL);
 
 //=============================================================================================//
 //Helper Functions 
@@ -528,7 +519,7 @@ const users = express.Router()
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       let oldFileName = '';
-      if (user.profile_picture.includes('/')){
+      if (user.profile_picture != null && user.profile_picture.includes('/')){
         oldFileName = user.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
@@ -621,7 +612,7 @@ const users = express.Router()
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       let oldFileName = '';
-      if (user.profile_picture.includes('/')){
+      if (user.profile_picture != null && user.profile_picture.includes('/')){
         oldFileName = user.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];

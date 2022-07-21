@@ -3,10 +3,14 @@ import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { badgeRepository } from "../repositories/badge.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
+import { storageRef } from "../firebase.connection";
 
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const employeepicture = multer();
+const { v4: uuidv4 } = require('uuid');
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -95,6 +99,21 @@ const employees = express.Router()
       const results = { success: false, results: err };
       console.error(err);
       res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET a employees profile picture.
+   * @param {string} email employee email.
+   * @returns {image} 
+   */
+   .get('/employees/employee/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.email;
+    const user = await employeeRepository.findByEmail(query);
+    if (user != null){
+      res.json(user.profile_picture);
+    } else{
+      res.json({'message':'Invalid email!'})
     }
   })
   //=========================================================================================================//
@@ -246,6 +265,73 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
+   * PUT update a employee user profile picture.
+   * @param {string} email The email of the employee.
+   * @param {string} password The password the employee (NOT ecrypted).
+   * @param {file} profilepicture the picture.
+   * @returns message informing successful update.
+   */
+   .put('/employees/employee/picture', employeepicture.single('profilepicture'), cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const file = req.file;
+      const bcrypt = require('bcryptjs')
+      const employee = await employeeRepository.findByEmail(query.email);
+      let oldFileName = '';
+      if (employee.profile_picture != null && employee.profile_picture.includes('/')){
+        oldFileName = employee.profile_picture.split('/');
+        if (oldFileName.length == 5){
+          oldFileName = oldFileName[4];
+          oldFileName = oldFileName.replace('%2F','/')
+        }
+        else{
+          oldFileName = 'empty';
+        }
+      }
+      else {
+        oldFileName = 'empty';
+      }
+      if (bcrypt.compareSync(query.password, employee.password)) {
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+        let newFileName = ``;
+        if (file.mimetype == 'image/jpeg'){
+          newFileName = `employees/${Date.now()}.jpg`;
+        }
+        else if (file.mimetype == 'image/png') {
+          newFileName = `employees/${Date.now()}.png`;
+        }
+        else {
+          res.json({'message':'Invalid file type.'})
+          return;
+        }
+        const blob = storageRef.file(newFileName);
+        const blobStream = blob.createWriteStream({
+          resumable: false,
+          metadata: {
+            firebaseStorageDownloadTokens: uuidv4(),
+          }
+        });
+        blobStream.on('error', err => {
+          res.json({'success':false})
+        });
+        blobStream.on('finish', async () => {
+          await storageRef.file(newFileName).makePublic();
+          await employeeRepository.updateEmployeeProfilePicture(employee.email,storageRef.file(newFileName).publicUrl());
+          res.json({'success':true});
+        });
+        blobStream.end(req.file.buffer);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * PUT - Update accepted badge_claim to badge_owned.
    * @param {string} bid badge ID used to find badge.
    * @param {string} email email used to find the user.
@@ -347,7 +433,22 @@ const employees = express.Router()
       let query = req.body;
       const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
+      let oldFileName = '';
+      if (employee.profile_picture != null && employee.profile_picture.includes('/')){
+        oldFileName = employee.profile_picture.split('/');
+        if (oldFileName.length == 5){
+          oldFileName = oldFileName[4];
+          oldFileName = oldFileName.replace('%2F','/')
+        }
+        else{
+          oldFileName = 'empty';
+        }
+      }
+      else {
+        oldFileName = 'empty';
+      }
       if (bcrypt.compareSync(query.password, employee.password)) {
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await employeeRepository.deleteEmployee(employee.email);
         result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
         const results = { 'success': true };
