@@ -10,7 +10,7 @@ export const badgeOwnedRepository = GymKingDataSource.getRepository(badge_owned)
         return this.find();
     },
     findByBID(bid: string) {
-        return this.find({ b_id: bid });
+        return this.findBy({ b_id: bid });
     },
     findByEmail(email: string) {
         return this.findBy({email: email });
