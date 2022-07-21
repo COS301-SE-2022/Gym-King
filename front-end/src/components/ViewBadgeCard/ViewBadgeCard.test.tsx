@@ -5,7 +5,6 @@ import ViewBadgeCard from './ViewBadgeCard';
 /*
 - test that image displays correctly  ? 
 
-*/
 
 
 test('renders without crashing', () => {
@@ -13,4 +12,4 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
   });
 
-
+*/

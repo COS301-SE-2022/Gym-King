@@ -5,7 +5,8 @@ import ViewBadgePage from './ViewBadgePage';
 
 //data-testid="btnSeg"
 //testing API
-test("API fetch badges",()=>{
+
+/*test("API fetch badges",()=>{
     let badge:any=[]    
     var gymid="lttD"
 
@@ -35,4 +36,4 @@ test('renders without crashing', () => {
 test('creates badge Grid', () => {
     const { baseElement } = render(<IonGrid/>);
     expect(baseElement).toBeDefined();
-});
+});*/
