@@ -32,7 +32,7 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
                     id:'edit-button',
                     icon: create,
                     handler: () => {
-
+                      sessionStorage.setItem("gid",prop.id  )
                       history.push("/EditGym")
                     }
                   },{
