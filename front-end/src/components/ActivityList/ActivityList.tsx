@@ -12,19 +12,19 @@ export class  ActivityList extends React.Component<props>{
             return(
                 <>
                 <IonChip className="chip" >
-                    <IonLabel > 
-                        <IonText className='Subheading'>Duration:</IonText> 
-                        <IonText className='textInput' >{this.props.i1}</IonText>
+                    <IonLabel style={{"width":"22em"}}> 
+                        <IonText   className='Subheading'>Duration:</IonText> 
+                        <IonText  className='textInput' >{this.props.i1}</IonText>
                     </IonLabel>
                 </IonChip> <br></br>
                 <IonChip className="chip">
-                    <IonLabel > 
+                    <IonLabel style={{"width":"22em"}}> 
                         <IonText className='Subheading'>Distance:</IonText> 
                         <IonText className='textInput' >{this.props.i2}</IonText>
                     </IonLabel>
                 </IonChip> <br></br>
                 <IonChip className="chip">
-                    <IonLabel > 
+                    <IonLabel style={{"width":"22em"}}> 
                         <IonText className='Subheading'>Level of Difficulty:</IonText> 
                         <IonText className='textInput' >{this.props.i3}</IonText>
                     </IonLabel>
@@ -36,19 +36,19 @@ export class  ActivityList extends React.Component<props>{
             return(
                 <>
                 <IonChip  className="chip">
-                    <IonLabel > 
+                    <IonLabel style={{"width":"22em"}} > 
                         <IonText className='Subheading'>Weight:</IonText> 
                         <IonText className='textInput' >{this.props.i1}</IonText>
                     </IonLabel>
                 </IonChip> <br></br>
                 <IonChip className="chip" >
-                    <IonLabel > 
+                    <IonLabel style={{"width":"22em"}}> 
                         <IonText className='Subheading'>Sets:</IonText> 
                         <IonText className='textInput' >{this.props.i2}</IonText>
                     </IonLabel>
                 </IonChip> <br></br>
                 <IonChip className="chip">
-                    <IonLabel > 
+                    <IonLabel style={{"width":"22em"}} > 
                         <IonText className='Subheading'>Reps:</IonText> 
                         <IonText className='textInput' >{this.props.i3}</IonText>
                     </IonLabel>

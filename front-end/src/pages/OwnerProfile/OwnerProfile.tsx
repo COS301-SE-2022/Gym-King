@@ -172,11 +172,10 @@ const OwnerProfilePage: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <span className="userImage centerComp"></span>
-                                        </IonCol>
+                                            <span className="userImage centerComp"></span>                                        </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText className="PageTitle center">{username}</IonText>
+                                                <IonText className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name} {surname}</i>

@@ -53,7 +53,7 @@ export const Login: React.FC = () =>{
             history.push("/GymOwnerPage")
         }
         else{
-            history.push("/PendingApprovals")
+            history.push("/EmployeeHome")
         }
     }
     
