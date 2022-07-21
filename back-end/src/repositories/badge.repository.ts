@@ -14,7 +14,7 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
         return this.findOneBy({badgename: name });
     },
     findByActivityType(at: string) {
-        return this.find({activitytype: at });
+        return this.findBy({activitytype: at });
     },
     findByGID(gid: string) {
         return this.findBy({ g_id: gid });

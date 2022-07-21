@@ -39,6 +39,7 @@
     "cordova-plugin-device-motion": "^2.0.1",
     "cordova-sms-plugin": "^1.0.2",
     "install-peers": "^1.0.3",
+    "multer": "^1.4.5-lts.1",
     "nx": "14.1.4",
     "ol": "^6.14.1",
     "pigeon-maps": "^0.21.0",
@@ -58,7 +59,24 @@
     "tslib": "^2.3.1",
     "use-file-picker": "^1.4.2",
     "yarn": "^1.22.18",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "@firebase/app-types": "0.x",
+    "@google-cloud/storage": "^6.2.3",
+    "@types/express": "^4.17.13",
+    "@types/node": "*",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "firebase-admin": "^11.0.0",
+    "path": "^0.12.7",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.7.0",
+    "typeorm": "^0.3.7",
+    "typescript": "^4.7.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nrwl/cli": "13.8.3",
@@ -93,6 +111,6 @@
     "prisma": "^3.12.0",
     "tailwindcss": "^3.0.2",
     "ts-jest": "27.0.5",
-    "typescript": "~4.5.2"
+    "typescript": "^4.7.3"
   }
 }
