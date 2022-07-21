@@ -294,18 +294,53 @@ const users = express.Router()
    * POST save a users claim for a badge to database.
    * @param {string} bid The badge ID of the badge.
    * @param {string} email The email of the user who claims they completed it.
-   * @param {string} username The username of the user who claims they completed it.
+   * @param {string} password The password of the user.
    * @param {string} input1 The first input 
    * @param {string} input2 The second input 
    * @param {string} input3 The third input 
-   * @param {string} proof The code of the image used to find the proof.
+   * @param {string} proof image of proof.
    * @returns Returns params of completed insertion.
    */
-  .post('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
+  .post('/claims/claim', userpicture.single('proof') , cors(corsOptions), async (req: any, res: any) => {
     try {
+      const bcrypt = require('bcryptjs')
       let query = req.body;
-      let result = await badgeClaimRepository.saveClaim(query.bid, query.email, query.username, query.input1, query.input2, query.input3, query.proof)
-      res.json( result );
+      let file = req.file;
+      const user = await userRepository.findByEmail(query.email);
+      if(bcrypt.compareSync(query.password, user.password)){
+        let newFileName = ``;
+        if (file.mimetype == 'image/jpeg'){
+          newFileName = `claims/${Date.now()}.jpg`;
+        }
+        else if (file.mimetype == 'image/png') {
+          newFileName = `claims/${Date.now()}.png`;
+        }
+        else {
+          res.json({'message':'Invalid file type.'})
+          return;
+        }
+        const blob = storageRef.file(newFileName);
+        const blobStream = blob.createWriteStream({
+          resumable: false,
+          metadata: {
+            firebaseStorageDownloadTokens: uuidv4(),
+          }
+        });
+        blobStream.on('error', err => {
+          res.json({'success':false})
+        });
+        blobStream.on('finish', async () => {
+          await storageRef.file(newFileName).makePublic();
+          const claimURL = await storageRef.file(newFileName).publicUrl();
+          await badgeClaimRepository.saveClaim(query.bid, user.email, user.username, query.input1, query.input2, query.input3, claimURL)
+          res.json({'success':true});
+        });
+        blobStream.end(req.file.buffer);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'});
+      }
+      
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);

@@ -342,7 +342,22 @@ const employees = express.Router()
       let query = req.body;
       let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
       const ret = result;
-      if (ret != null){
+      if (ret != null && ret.email == query.email && ret.b_id.b_id == query.bid){
+        let oldFileName = '';
+        if (ret.proof != null && ret.proof.includes('/')){
+          oldFileName = ret.proof.split('/');
+          if (oldFileName.length == 5){
+            oldFileName = oldFileName[4];
+            oldFileName = oldFileName.replace('%2F','/')
+          }
+          else{
+            oldFileName = 'empty';
+          }
+        }
+        else {
+          oldFileName = 'empty';
+        }
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         result = await badgeClaimRepository.deleteClaim(ret.b_id.b_id, ret.email);
         result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id.b_id,ret.email);
         if (result != null) {
@@ -413,8 +428,29 @@ const employees = express.Router()
   .delete("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await badgeClaimRepository.deleteClaim(query.bid,query.email);
-      res.json(result);
+      let claim = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+      if (claim != null && claim.email == query.email && claim.b_id.b_id == query.bid){
+        let oldFileName = '';
+        if (claim.proof != null && claim.proof.includes('/')){
+          oldFileName = claim.proof.split('/');
+          if (oldFileName.length == 5){
+            oldFileName = oldFileName[4];
+            oldFileName = oldFileName.replace('%2F','/')
+          }
+          else{
+            oldFileName = 'empty';
+          }
+        }
+        else {
+          oldFileName = 'empty';
+        }
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+        await badgeClaimRepository.deleteClaim(query.bid,query.email);
+        res.json({'success':true})
+      }
+      else{
+        res.json({'message':'Invalid email or badge ID!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
