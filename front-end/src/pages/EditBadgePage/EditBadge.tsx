@@ -149,7 +149,12 @@ const EditBadge: React.FC = () =>{
             .catch(err => {console.log(err)}) 
         } 
         
-        
+        const changeName = (e:any) =>{
+            
+            console.log(e.target.value)
+            setBadgename(e.target.value)
+            
+        }
         return(
         
             <IonPage color='#220FE' >
@@ -159,9 +164,9 @@ const EditBadge: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Edit Badge</IonText>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} >
                         <IonText className='inputHeading leftMargin'>Badge Name:</IonText> <br></br><br></br>
-                        <IonInput name='badgeName' type='text' value={badgename} className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                        <IonInput onKeyUp={changeName} name='badgeName' type='text' value={badgename} className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
 
                         <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
@@ -174,7 +179,7 @@ const EditBadge: React.FC = () =>{
                         <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <BadgeSlider bIcon = {badgeIcon} name = "badgeIcon"></BadgeSlider>
+                        <BadgeSlider bIcon = {badgeIcon} name = {badgename}></BadgeSlider>
                         
                         <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
                         

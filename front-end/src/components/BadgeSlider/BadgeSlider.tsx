@@ -220,7 +220,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
         <IonCardHeader color="primary">
             <IonCardTitle className='inputHeading' class ="ion-text-center">Create Badge Icon</IonCardTitle> 
         </IonCardHeader>
-        <BadgeCanvas rank={activeRank} emblem = {activeEmblem}/>
+    <BadgeCanvas name={inp.name}rank={activeRank} emblem = {activeEmblem}/>
             <IonSlides 
                 options={slideOpts}
                 ref={mySlides1}
