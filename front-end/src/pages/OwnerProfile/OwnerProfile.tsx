@@ -1,10 +1,13 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./OwnerProfile.css";
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+interface InternalValues {
+    file: any;
+}
 
 const OwnerProfilePage: React.FC = () =>{
     
@@ -14,6 +17,7 @@ const OwnerProfilePage: React.FC = () =>{
 
 
     const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
@@ -23,6 +27,8 @@ const OwnerProfilePage: React.FC = () =>{
     const [numGyms, setNumGyms] = useState("");
     const [numEmployees, setNumEmployees] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
+    const [profilePicture, setProfilePicture] = useState('');
+
 
 
 
@@ -52,6 +58,8 @@ const OwnerProfilePage: React.FC = () =>{
                 setSurname( response.surname);
                 setPhone( response.number);
                 setUsername(response.username);
+                setPassword(localStorage.getItem("password")!);
+                setProfilePicture(response.profile_picture)
                 
                 setLoading(false)
             })
@@ -162,6 +170,37 @@ const OwnerProfilePage: React.FC = () =>{
         history.push("/ManageEmployees")
     }
 
+    //images
+    const values =useRef<InternalValues>(
+        {
+          file: false,
+        });
+        const onFileChange = (fileChangeEvent: any) => {
+            values.current.file = fileChangeEvent.target.files[0];
+            submitImage()
+          };
+        const submitImage = () =>{
+            if (!values.current.file) {
+                return false;
+            }
+    
+            let formData = new FormData();
+            formData.append("email", email)
+            formData.append("password", password)
+            formData.append('profilepicture', values.current.file, values.current.file.name);
+    
+            fetch(`https://gym-king.herokuapp.com/owners/owner/picture`,{
+                    "method":"PUT",
+                    body: formData
+                })
+                .then(response =>response.json())
+                .then(response =>{
+                    console.log(response)
+                })
+                .catch(err => {console.log(err)}) 
+            
+        }
+
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -175,7 +214,9 @@ const OwnerProfilePage: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <span className="userImage centerComp"></span>                                        </IonCol>
+                                            <IonImg  src={profilePicture} alt="" className="userImage centerComp" style={{"border-radius":"50%","position":"absolute"}} ></IonImg>
+                                            <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
+                                        </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
                                                 <IonText className="PageTitle center un">{username}</IonText>
