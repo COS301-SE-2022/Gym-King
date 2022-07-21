@@ -197,7 +197,11 @@ ion-card{
   padding:2%;
 }
 
-
+.un{
+  font-size: 5vw;
+  margin-bottom: 5%;
+  font-family: 'Comfortaa', cursive;;
+}
 
 .badge{
   font-size:700%;

@@ -176,7 +176,7 @@ const OwnerProfilePage: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText className="PageTitle center">{username}</IonText>
+                                                <IonText className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name} {surname}</i>
