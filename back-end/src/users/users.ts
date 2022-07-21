@@ -12,24 +12,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const firebaseAdmin = require('firebase-admin');
+const { v4: uuidv4 } = require('uuid');
+const serviceAccount = require(JSON.parse(process.env.FIREBASE));
 const multer = require('multer');
-const userstorage = multer.diskStorage({
-  destination: function (req: any, file: any, callback: any) {
-    callback(null, './src/users/userpictures/')
-  },
-  filename: function (req: any, file: any, callback: any) {
-    if (file.mimetype == 'image/jpeg') {
-      callback(null, createID(10)+'.jpg')
-    }
-    else if (file.mimetype == 'image/png') {
-      callback(null, createID(10)+'.png')
-    }
-    else{
-      callback(null, 'incorrect')
-    }
-  }
-})
-const userpicture = multer({storage: userstorage});
+const userpicture = multer();
 
 //=============================================================================================//
 //Helper Functions 
