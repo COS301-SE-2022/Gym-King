@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
 import './AddEmployee.css';
+import { useHistory } from 'react-router-dom';
 
 export const AddEmployee: React.FC = () =>{
 
@@ -11,8 +12,7 @@ export const AddEmployee: React.FC = () =>{
     const [showError2Toast, setShowError2Toast] = useState(false);
     const [ownedGyms, setOwnedGyms] = useState([]);
     const [gymId, setGymId] = useState('')
-
-
+    let history=useHistory()
     let formData : any;
 
     useEffect(()=>{
@@ -64,7 +64,7 @@ export const AddEmployee: React.FC = () =>{
                     number: formData.number, 
                     username: formData.username, 
                     password: formData.password,
-                    g_id: gymId
+                    gid: formData.gid
                 })
             })
             .then(response =>response.json())
@@ -73,7 +73,7 @@ export const AddEmployee: React.FC = () =>{
                 setShowSuccessToast(true);
 
                 //redirect to view badges (gym owner) 
-                //history.push("/ManageEmployees");
+                history.push("/ManageEmployees");
             })
             .catch(err => {
                 setShowError1Toast(true);
