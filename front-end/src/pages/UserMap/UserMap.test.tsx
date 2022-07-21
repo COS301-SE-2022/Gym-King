@@ -4,5 +4,5 @@ import UserMap from './UserMap'
 test('renders without crashing', () => {
     const { baseElement } = render(<UserMap />);
     expect(baseElement).toBeDefined();
-  });
+});
 

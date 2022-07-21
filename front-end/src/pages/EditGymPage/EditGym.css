@@ -1,0 +1,34 @@
+.AddGymContent{
+    --ion-background-color: #C7C7C7;
+}
+.AddGymHeader{
+    background-color:#4309A7;
+    width: 100% !important;
+}
+.AddGymCardContent{
+    background-color:#321D93;   
+}
+.AddGymInput{
+    background-color: #620DEC;
+    width:100%;
+    opacity: 64%;
+    border-radius: 5px;
+}
+.AddGymGrid{
+    width: 100% !important;
+    margin-bottom: 3em;
+}
+
+.flex-margin .AddGymLocation,
+.flex-margin span {
+  margin-right: auto;
+}
+.flex-margin{
+    --background: #620DEC;
+    border-radius: 5px;
+    margin-bottom: 2em;
+}
+
+.centerMap{
+    width:80%;
+}

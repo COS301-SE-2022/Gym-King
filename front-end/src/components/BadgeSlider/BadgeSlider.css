@@ -1,0 +1,18 @@
+.swiper-slide img {
+    width: auto;
+    height: auto;
+    
+}
+
+ion-slides {
+    align-self:center;
+    margin-top: 10px;
+    height: 200px;
+  }
+
+  ion-slide {
+    padding: 7% 7% 7% 7%;
+    
+
+  }
+

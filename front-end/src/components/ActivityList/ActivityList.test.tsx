@@ -9,8 +9,29 @@ test('renders without crashing', () => {
 
 ////TESTS TO BE PERFROMED////
 /*
-  - Renders without crashing 
-  - tests if labels are (Duration, Distance and Level of difficulty) if activityCaterogy prop is cardio
-  - tests if labels are (Weights, Sets and Reps) if activityCaterogy prop is strength 
-  - test that text inputs display what is passed in as props 
+
 */
+
+
+describe('Testing prop text values', () => {
+
+  test('correctly displays cardio activitytype inputs', async () => {
+    const {baseElement} = render(<ActivityList activityCategory='cardio' i1='00:23:00' i2='3' i3='4'/>);
+    expect (baseElement).toHaveTextContent("Duration");
+    expect (baseElement).toHaveTextContent("Distance");
+    expect (baseElement).toHaveTextContent("Level of Difficulty");
+  }); 
+  test('correctly displays cardio activitytype inputs', async () => {
+    const {baseElement} = render(<ActivityList activityCategory='STRENGTH' i1='00:23:00' i2='3' i3='4' />);
+    expect (baseElement).toHaveTextContent("Weight");
+    expect (baseElement).toHaveTextContent("Sets");
+    expect (baseElement).toHaveTextContent("Reps");
+  }); 
+  test('correctly displays inputs', async () => {
+    const {baseElement} = render(<ActivityList activityCategory='STRENGTH' i1='00:23:00' i2='3' i3='4' />);
+    expect (baseElement).toHaveTextContent("00:23:00");
+    expect (baseElement).toHaveTextContent("3");
+    expect (baseElement).toHaveTextContent("4");
+  }); 
+});
+

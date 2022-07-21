@@ -26,7 +26,6 @@
 
 .btnSubmit{
     width: 40%;
-    margin-left:45%;
 }
 
 .inputError{
@@ -37,7 +36,6 @@
 }
 
 .PageTitle{
-    width:fit-content;
     text-align: center;
 }
 

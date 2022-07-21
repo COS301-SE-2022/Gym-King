@@ -1,37 +1,72 @@
-import {IonContent, IonText, IonPage, IonHeader,IonButton, IonIcon} from '@ionic/react';
-import { informationCircleOutline } from 'ionicons/icons';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
+import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
+import { useHistory } from 'react-router-dom';
 
 
 export type UploadActivityStates = {act?:any}
 
 const PendingApprovalsPage: React.FC = () =>{
 
-    let gymId= 'lttD';
+    //STATES AND VARIABLES 
     // eslint-disable-next-line
     const [claims, setClaims] = useState(new Array());
+    const [loading, setLoading] = useState<boolean>(false);
+    const [gymId, setGymId] = useState("");
+    let history=useHistory()
+
+
 
     //GET REQUEST:
-    const getClaims=()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim?gid=${gymId}`,{
+    useEffect(()=>{
+        setLoading(true)
+        //get employee information 
+        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+
+                setGymId(response.g_id.g_id)
+
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+            })
+        console.log(gymId);
+        fetch(`https://gym-king.herokuapp.com/claims/gym/${gymId}`,{
             "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
             //console.log(response);
-            setClaims(response.results)
-            
+            setClaims(response)
+            setLoading(false)
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
+    },[gymId])
+
+    const goToAcceptReject = () =>{
+        history.push("/AcceptReject")
     }
 
-    
-    
-        getClaims();
-        //console.log(claims);
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -40,17 +75,22 @@ const PendingApprovalsPage: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Pending Approvals</IonText>
-                    <IonButton className='btnInfo shadow ' background-color='#0F005A'>
-                        <IonIcon icon={informationCircleOutline} className='infoIcon'></IonIcon>
-                        <IonText>What should I do?</IonText>
-                    </IonButton>
+                    
                     {
                         claims?.map(el =>{
-                            //console.log('hello');
-                            return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email}></ApprovalButton>)
+                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton></div>)
                         })
                     }
-                    
+
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
                 </IonContent>
             </IonPage>
         )

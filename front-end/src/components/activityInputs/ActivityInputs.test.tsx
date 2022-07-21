@@ -9,9 +9,25 @@ test('renders without crashing', () => {
 
   ////TESTS TO BE PERFROMED////
 /*
-  - Renders without crashing 
-  - tests if labels are (Duration, Distance and Level of difficulty) if activityCaterogy prop is cardio
-  - tests if labels are (Weights, Sets and Reps) if activityCaterogy prop is strength 
   - test that activtystates update when value in input boxes change (test handle change function)
+
+*/
+/*
+
+describe('Testing prop text values', () => {
+
+  test('correctly displays cardio activitytype inputs', async () => {
+    const {baseElement} = render(<ActivityInputs activityCategory='CARDIO' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
+    expect (baseElement).toHaveTextContent("Duration");
+    expect (baseElement).toHaveTextContent("Distance");
+    expect (baseElement).toHaveTextContent("Level of Difficulty");
+  }); 
+  test('correctly displays cardio activitytype inputs', async () => {
+    const {baseElement} = render(<ActivityInputs activityCategory='STRENGTH' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
+    expect (baseElement).toHaveTextContent("Weight");
+    expect (baseElement).toHaveTextContent("Sets");
+    expect (baseElement).toHaveTextContent("Reps");
+  }); 
+});
 
 */

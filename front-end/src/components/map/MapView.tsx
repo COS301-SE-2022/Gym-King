@@ -1,9 +1,13 @@
-import { IonButton, IonLoading, IonToast } from "@ionic/react";
-import React, { useState } from "react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
+import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
+import { useHistory } from 'react-router-dom';
 
+import gym from '../../icons/gym.png'
+import location from '../../icons/location.png'
+import recenter from '../../icons/recenter.png'
 import './MapView.css';
 interface LocationError {
     showError: boolean;
@@ -11,46 +15,195 @@ interface LocationError {
 
 }
 
-
 const MapView: React.FC = () =>{
+    let history=useHistory()
+
+    //=========================================================================================================//
+    //                                                       MAP                                               //
+    //=========================================================================================================//
+    const maxZoom = 17.4
+    const minZoom = 13
+    const [gyms, setGyms] = useState<{[key: string]: any}>([{
+        key: "",
+        g_id: "",
+        gym_brandname: "",
+        gym_address: "",
+        gym_coord_lat: 0,
+        gym_coord_long: 0,
+        gym_icon: ".."
+    }]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    // Location Vars------------------------------------------------------------------------------------------//
+    const [postWaiting, setPostWaiting] = useState<boolean>(false);
     const [center, setCenter] = useState([0,0])
     const [zoom, setZoom] = useState(10)
+    const [first, setFirst] = useState(true)
+
+    const [refresh, setRefresh] = useState(10)
 
     const [error, setError] = useState<LocationError>({showError: false});
-    const getLocation = async() => {
-        setLoading(true);
+    const [userLocation, setUserLoc] = useState([0,0]);
+
+    // Gym Menu Vars -----------------------------------------------------------------------------------------------//
+
+    const [gymData, setGymData]=useState({
+        g_id: "",
+        gym_brandname: "",
+        gym_address: "",
+        gym_coord_lat: 0,
+        gym_coord_long: 0,
+        gym_icon: ".."
+    });
+    //=========================================================================================================//
+    /**
+     * Function that gets the users location
+     * makes use of google API
+     * saves users location to a var
+     */
+    const getLocation = async(load: boolean) => {
         try {
+            
+            if(load) {
+                setLoading(true)
+                
+            };
             const position = await Geolocation.getCurrentPosition();
           
-            setUserLoc([position?.coords.latitude, position?.coords.longitude]) 
-            setLoading(false);
-            setCenter([position?.coords.latitude, position?.coords.longitude]) 
-            
+            setUserLoc([position.coords.latitude, position.coords.longitude]) 
+
+            if(load){
+                setCenter([position?.coords.latitude, position?.coords.longitude]) 
+                setZoom(17.4) 
+            }
+
             setError({showError: false, message: "no error here"})
-            setZoom(15) 
+     
+            setLoading(false);
 
         } catch(e){
             setLoading(false);
             
             setError({showError: true, message: "Cannot get userlocation: Check Permissions"});
         }
-    }
-    const [userLocation, setUserLoc] = useState([0,0])
+    }    
 
-    const gymButtonClick=()=>{
-        console.log("CLICKED")
-        window.alert("The Gyms Menu will open Up");
+    
+    const gymButtonClick=async (activeGym:any)=>{
+        // Set Pop Menus data
 
+        setGymData(activeGym);
+        setShowModal(true);
     }
+    
+    //=========================================================================================================//
+    /**
+     * Function that gets the location of nearby gyms
+     * @requires position users coordinates
+     * @returns all nearby gyms
+     */    
+    const getNearbyGyms = async () => {
+        
+        
+        //=========================================================================================================//
+        /**
+         * POST request to get nearby gyms
+         * makes use of gym-king API
+         * @param userLocation
+         */
+        if(!postWaiting){
+            setPostWaiting(true);
+            fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    latCoord: center[0],
+                    longCoord: center[1],
+                    radius: Math.pow(1.5,(18-zoom))
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                
+                if(response.success){
+                    console.info(Math.pow(1.5,(18-zoom)))
+                    console.info(response.results)
+                    setGyms(response.results);
+                    setPostWaiting(false);
+
+                }else{
+                    console.log(response.success)
+                    console.log(response.results)
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+        
+    }
+    
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+            getLocation(first);
+            if(first){
+                setFirst(false)
+                setRefresh(10000)
+            }
+            console.log("Map Refresh")
+
+            
+            getNearbyGyms();
+        }, refresh);
+        
+        return () => 
+        {
+            clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+        }
+    })
+
+
+    const [showModal, setShowModal] = useState(false);
+
+    const enterAnimation = (baseEl: any) => {
+        const root = baseEl.shadowRoot;
+
+        const backdropAnimation = createAnimation()
+        .addElement(root.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+        const wrapperAnimation = createAnimation()
+        .addElement(root.querySelector('.modal-wrapper')!)
+        .keyframes([
+            { offset: 0, opacity: '0', transform: 'scale(0)' },
+            { offset: 1, opacity: '0.99', transform: 'scale(1)' }
+        ]);
+
+        return createAnimation()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(500)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    }
+
+    const leaveAnimation = (baseEl: any) => {
+        return enterAnimation(baseEl).direction('reverse');
+    }
+
     return (
         
-        <>
+        <>  
+            <IonContent >
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
+                spinner={"circles"}
+                cssClass="spinner"
             />
             <IonToast
                 isOpen={error.showError}
@@ -60,55 +213,95 @@ const MapView: React.FC = () =>{
                 duration={3000}
             />
 
-            <IonButton onClick={getLocation}>CLICK ME!</IonButton>
+            <Map 
+                provider={stamenToner}
+                center={[center[0],center[1]]}
+                zoom={zoom} 
+                maxZoom={maxZoom}
+                minZoom={minZoom}
+                zoomSnap={false}
+                onBoundsChanged={({ center, zoom }) => { 
+                    setCenter(center) ;
+                    setZoom(zoom) ;
+                    
+                    getLocation(false)
+                    getNearbyGyms()
+                    setShowModal(false)
+                }} 
+                onAnimationStart={()=>{
+                                
+                    setShowModal(false)
+                }}
+                onClick={()=>{
+                                
+                    setShowModal(false)
+                }}
+                
+                
+                
+            >
+                <button id="float" onClick={() => { 
+                    
+                    getLocation(true)
+                    getNearbyGyms()
+                }}>
+                    <i id="fa fa-plus my-float"></i>
+                    <img src={recenter} alt =""></img>
+                </button>
+                <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
+                <img src={location} width={50} height={50} alt='' />
+                </Overlay>      
+                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
+                    return (
+                        <Overlay 
+                            key={item.gid}
+                            anchor={[item.gym_coord_lat,item.gym_coord_long]} 
+                            offset={[15,31]} 
+                            
+                        > 
+                            <img onClick={() => {gymButtonClick(item)}} id ="GymPicture" src={gym} alt='' />
+                        </Overlay> 
+                    )                 
+                })}
+
+                
             
-                <Map 
-                    provider={stamenToner}
-                    height={900}
-                    center={[center[0],center[1]]}
-                    zoom={zoom} 
+
+            </Map>
+
+            <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+        
+            {/* <IonBadge > */}
+                <IonCard style={{"margin":"0px"}}>
+                    <IonCardHeader>
+                        <IonCardTitle className='center '>{gymData.gym_brandname}</IonCardTitle>
+                    </IonCardHeader >
+                    <IonCardContent id="buttonBox">
+                        <IonButtons>
+                            <IonButton  
+                                shape='round' 
+                                className='btn'
+                                onClick={()=>{
+
+                                    sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
+                                    sessionStorage.setItem('gym_address',gymData.gym_address);
+                                    sessionStorage.setItem('gid',gymData.g_id);
+                                    setShowModal(false);
+                                    history.push("/GymPage");
+                                    
+                                }}
+                            >
+                                View
+                            </IonButton>
+                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btn'>Close</IonButton>
+                        </IonButtons>
                     
-                    onBoundsChanged={({ center, zoom }) => { 
-                        setCenter(center) 
-                        setZoom(zoom) 
-                    }} 
-                    
-                >
-                    
-                    <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[30,30]} >
-                    <img src='https://icons-for-free.com/iconfiles/png/512/svg+location+locator+map+navigation+user+user+location+icon-1320184910707394703.png' width={50} height={50} alt='' />
-                    </Overlay>      
-
-                    <Overlay 
-                        anchor={[userLocation[0]*0.9995,userLocation[1]*0.9997]} 
-                        offset={[30,30]} 
-                        
-                        >
-                            
-                            <img onClick={gymButtonClick} id = "GymPicture" src='https://www.seekpng.com/png/full/309-3093415_gym-building-sport-training-svg-png-icon-free.png' width={50} height={50} alt='' />
-                    </Overlay> 
-
-                    <Overlay 
-                        anchor={[userLocation[0]*0.9998,userLocation[1]*0.9994]} 
-                        offset={[30,30]} 
-                        
-                        >
-                            
-                            <img onClick={gymButtonClick} id = "GymPicture" src='https://www.seekpng.com/png/full/309-3093415_gym-building-sport-training-svg-png-icon-free.png' width={50} height={50} alt='' />
-                    </Overlay> 
-
-                    <Overlay 
-                        anchor={[userLocation[0]*1.00025,userLocation[1]*1.00015]} 
-                        offset={[30,30]} 
-                        
-                        >
-                            
-                            <img onClick={gymButtonClick} id = "GymPicture" src='https://www.seekpng.com/png/full/309-3093415_gym-building-sport-training-svg-png-icon-free.png' width={50} height={50} alt='' />
-                    </Overlay> 
-
-                </Map>
-                
-                
+                    </IonCardContent>
+                </IonCard>
+            {/* </IonBadge > */}
+            
+            </IonModal>   
+            </IonContent>
         </>
     )
 }

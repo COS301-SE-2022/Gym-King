@@ -1,0 +1,13 @@
+.profileCard{
+    width:25em;
+}
+
+.gymCard{
+    width:22em;
+    height: max-content;
+}
+
+.smallFont{
+    font-size: 15px;
+}
+

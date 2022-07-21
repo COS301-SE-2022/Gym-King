@@ -10,6 +10,10 @@
 /coverage
 
 # production
+build
+android
+ios
+
 /build
 /android
 /ios

@@ -1,117 +1,148 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast} from '@ionic/react';
-import React, { useState } from 'react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast, IonLoading} from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
+import { useHistory } from 'react-router-dom';
+
 
 export type UploadActivityStates = {act?:any}
 
 const UploadActivityPage: React.FC = () =>{
-    
-///////////////////////GET REQUEST/////////////////////////
-    let badgeId= localStorage.getItem("badgeid");
-    const [b_id, setB_id] = useState('');
-    const [badgename, setBadgename] = useState('');
-    const [activitytype, setAT] = useState('');
-    const [badgedescription, setDescription] = useState('');
-    //const [g_id, setG_id] = useState(''); //commented because not used
 
-    const getBadges= ()=>{
-        fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            console.log(response)
-            setB_id(response.results[0].b_id)
-            setAT( response.results[0].activitytype)
-            setDescription(response.results[0].badgechallenge)
-            setBadgename(response.results[0].badgename)
-            //setG_id(response.results[0].g_id)
-        })
-        .catch(err => {console.log(err)})
-    } 
-    getBadges();
+        // STATES AND VARIABLES 
+        const [isValid, setIsValid] = useState(false);
+        const [submitted, setSubmitted] = useState(false);
+        let email = localStorage.getItem("email")  
+                      
+        localStorage.setItem( 'e1', "");
+        localStorage.setItem( 'e2', "");
+        localStorage.setItem( 'e3', "");
+        let formData: any
+        const [showToast1, setShowToast1] = useState(false);
+        let badgeId= localStorage.getItem("badgeid");
+        const [b_id, setB_id] = useState('');
+        const [badgename, setBadgename] = useState('');
+        const [activitytype, setAT] = useState('');
+        const [badgedescription, setDescription] = useState('');
+        const [loading, setLoading] = useState<boolean>(false);
+        const [username, setUsername]=useState("");
+        let history=useHistory()
 
-///////////////////////////////////////////////////////////
 
-//////////////////POST REQUEST/////////////////////////////
-    let email = 'u20519517@tuks.co.za';
-    let username= 'Gates';
-
-    const sendClaim=()=>{
         
-        let i1= formData.i1;
-        let i2= formData.i2;
-        let i3= formData.i3;
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
-            "method":"POST"
-        })
-        .then(response =>response.json())
-        .then(response =>{
-            console.log(response);
-        })
-        .catch(err => {console.log(err)}) 
-    }
 
+        //METHODS 
+        const handleSubmit = async (e:any) =>{
+            e.preventDefault();
+            formData={
+                i1: e.target.i1.value,
+                i2: e.target.i2.value,
+                i3: e.target.i3.value,
+            };
+            //console.log(formData);
 
-    //submit claim 
-    const [input1, setInput1] = useState('');
-    const [input2, setInput2] = useState('');
-    const [input3, setInput3] = useState('');
-    const [isValid, setIsValid] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
+            if(formData.i1 == null)
+                localStorage.setItem( 'e1', "This field is required");
+            if(formData.i2 == null)
+                localStorage.setItem( 'e2', "This field is required");
+            if(formData.i3 == null)
+                localStorage.setItem( 'e3', "This field is required");
 
-    localStorage.setItem( 'e1', "");
-    localStorage.setItem( 'e2', "");
-    localStorage.setItem( 'e3', "");
-    let formData: any
-
-    const [showToast1, setShowToast1] = useState(false);
-   const handleSubmit = async (e:any) =>{
-        e.preventDefault();
-        formData={
-            i1: e.target.i1.value,
-            i2: e.target.i2.value,
-            i3: e.target.i3.value,
-        };
-        console.log(formData);
-
-        if(formData.i1 == null)
-            localStorage.setItem( 'e1', "This field is required");
-        if(formData.i2 == null)
-            localStorage.setItem( 'e2', "This field is required");
-        if(formData.i3 == null)
-            localStorage.setItem( 'e3', "This field is required");
-
-        const isValid = await claimSchema.isValid(formData);
-        setSubmitted(true);
-        if(isValid)
-        {
-            setIsValid(true);
-            //handle post request 
-            sendClaim();
-            setShowToast1(true);
-
+            const isValid = await claimSchema.isValid(formData);
+            setSubmitted(true);
+            if(isValid)
+            {
+                setIsValid(true);
+                //handle post request 
+                sendClaim();
+               
+            }
+            
         }
         
-   }
-    
-    const updateInputs = (e:any) =>{
-        let input = e.target.name;
-        let value = e.target.value; 
-        if(input === 'i1')
-            setInput1(input1 + value);
-        else if(input === 'i2')
-            setInput2(value);
-        else if (input==='i3')
-            setInput3(value); 
+        const updateInputs = (e:any) =>{
+        
+        }
 
-            console.log(input1,input2,input3);
-    }
+        // GET BADGES GET REQUEST 
+        useEffect(()=>{
+            setLoading(true)
+            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response)
+                setB_id(response.b_id)
+                setAT( response.activitytype)
+                setDescription(response.badgechallenge)
+                setBadgename(response.badgename)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+
+            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                setUsername(response.username);
+                setLoading(false);
+                
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+        } ,[badgeId])
+
+
+        // SEND CLAIM POST REQUEST 
+        const sendClaim=()=>{
+            
+            let i1= formData.i1;
+            let i2= formData.i2;
+            let i3= formData.i3;
+            fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+                "method":"POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    bid: b_id,
+                    email: email,
+                    username: username,
+                    input1: i1,
+                    input2: i2,
+                    input3: i3,
+                    proof: "PROOF"
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                //console.log(response);
+                setShowToast1(true);
+                history.push("/ViewBadges");
+            })
+            .catch(err => {console.log(err)}) 
+        }
     
     
         return(
@@ -126,7 +157,7 @@ const UploadActivityPage: React.FC = () =>{
                     <IonText className='PageTitle center'>{badgename}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                     <form onSubmit={handleSubmit}>
-                        <IonText className='inputHeading'>Enter your activity details:</IonText>
+                        <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={activitytype} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
@@ -137,8 +168,8 @@ const UploadActivityPage: React.FC = () =>{
                             </IonRow>
                         </IonGrid>
                         <FileChooser numFiles={0}></FileChooser>
-
-                        <IonButton class="btnSubmit" type='submit'>SUBMIT</IonButton>
+                        <br></br>
+                        <IonButton className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
                     <br></br>
                     <br></br>
@@ -148,6 +179,14 @@ const UploadActivityPage: React.FC = () =>{
                         message="Your claim has been uploaded."
                         duration={500}
                         color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
                     />
                 </IonContent>
             </IonPage>

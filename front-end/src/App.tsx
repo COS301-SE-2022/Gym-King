@@ -35,6 +35,23 @@ import EditBadge from './pages/EditBadgePage/EditBadge';
 import ViewBadgePage from './pages/ViewBadgePage/ViewBadgePage';
 import ARPage from './pages/ARPage/ARPage';
 import GymOwnerViewBadge from './pages/GymOwner-ViewBadge/GymOwnerViewBadge'
+import Leaderboard from './pages/Leaderboard/Leaderboard'
+import LoginPage from './pages/LoginPage/Login';
+import { RegisterPage } from './pages/CreateUserPage/Register';
+import {OTP} from './pages/OTP/OTP';
+import MyBadge from './pages/MyBadge/MyBadge'
+import ManageGyms from './pages/ManageGyms/ManageGyms';
+import UserProfilePage from './pages/UserProfile/UserProfile';
+import OwnerProfilePage from './pages/OwnerProfile/OwnerProfile';
+import EmployeeProfilePage from './pages/EmployeeProfile/EmployeeProfile';
+import GymOwnerPage from './pages/GymOwnerPage/GymOwnerPage'
+import EditGym from './pages/EditGymPage/EditGym'
+import GymPage from './pages/GymPage/GymPage';
+import PendingBadgesPage from './pages/UserPendingBadges/PendingBadges';
+import EmployeeHomePage from './pages/EmployeeHomePage/EmployeeHome';
+import AppSettingsPage from './pages/AppSettingsPage/AppSettingsPage';
+import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
+import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 /*develop*/
 
 
@@ -44,13 +61,14 @@ setupIonicReact();
 const App: React.FC = () => (
 
   <IonApp>
+
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/home">
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/home" />
+          <Redirect to="/Login" />
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
@@ -64,18 +82,18 @@ const App: React.FC = () => (
         <Route exact path='/AddGymLocation'>
           <AddGymLocation></AddGymLocation>
         </Route>
-
         <Route exact path='/UserMap'>
           <UserMap></UserMap>
         </Route>            
         <Route exact path='/AR'>
           <ARPage></ARPage>
-        </Route>       
-        <Route exact path='/PendingApprovals'>
-  
-
-          <PendingApprovalsPage></PendingApprovalsPage>
-        </Route>   
+        </Route>     
+        <Route exact path='/Login'>
+          <LoginPage></LoginPage>
+        </Route>
+        <Route exact path='/Register'>
+          <RegisterPage></RegisterPage>
+        </Route>         
         <Route exact path='/AcceptReject'>
           <AcceptRejectPage></AcceptRejectPage>
         </Route>
@@ -91,6 +109,51 @@ const App: React.FC = () => (
         <Route exact path='/GymOwner-ViewBadges'>
           <GymOwnerViewBadge></GymOwnerViewBadge>
         </Route>  
+        <Route exact path='/Leaderboard'>
+          <Leaderboard></Leaderboard>
+        </Route>  
+        <Route exact path='/OTP'>
+          <OTP></OTP>
+        </Route>
+        <Route exact path ='/MyBadge'>
+          <MyBadge></MyBadge>
+        </Route>
+        <Route exact path="/ManageGyms">
+          <ManageGyms></ManageGyms>
+        </Route>
+        <Route exact path="/UserProfile">
+          <UserProfilePage></UserProfilePage>
+        </Route>
+        <Route exact path="/OwnerProfile">
+          <OwnerProfilePage></OwnerProfilePage>
+        </Route>
+        <Route exact path="/EmployeeProfile">
+          <EmployeeProfilePage></EmployeeProfilePage>
+        </Route>
+        <Route exact path='/GymOwnerPage'>
+          <GymOwnerPage></GymOwnerPage>
+        </Route>
+        <Route exact path='/EditGym'>
+          <EditGym></EditGym>
+        </Route>
+        <Route exact path='/GymPage'>
+          <GymPage></GymPage>
+        </Route>
+        <Route exact path='/PendingBadges'>
+          <PendingBadgesPage></PendingBadgesPage>
+        </Route>
+        <Route exact path='/EmployeeHome'>
+          <EmployeeHomePage></EmployeeHomePage>
+        </Route>
+        <Route exact path='/Settings'>
+          <AppSettingsPage></AppSettingsPage>
+        </Route>
+        <Route exact path='/ManageEmployees'>
+          <ManageEmployees></ManageEmployees>
+        </Route>
+        <Route exact path='/EmployeeProfileView'>
+          <EmployeeProfileViewPage></EmployeeProfileViewPage>
+        </Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
