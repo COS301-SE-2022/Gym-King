@@ -1,14 +1,20 @@
-import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
+import { IonCard, IonCardTitle, IonContent, IonGrid, IonPopover, IonRow} from '@ionic/react';
+import { useRef, useState } from 'react';
+import AR from '../../AR/AR';
 import BadgeImage from '../../BadgeImage/BadgeImage';
 import './MyBadgeCard.css'
 
 export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string,badgeRank:string})=>{
+    const popover = useRef<HTMLIonPopoverElement>(null);
+    const [popoverOpen, setPopoverOpen]  = useState(false);
     return(
+        <div>
             <IonCard 
                 data-testid="viewbadgegrid"
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
+                onClick={()=>{setPopoverOpen(true)}}
                 >
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
@@ -25,6 +31,12 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                             
                 </IonGrid>
             </IonCard>
+            <IonPopover  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+              <IonContent>
+                <AR  rank={prop.badgeRank} emblem={prop.badgeEmblem}></AR>
+            </IonContent>
+          </IonPopover>
+            </div>
         )
         
     
