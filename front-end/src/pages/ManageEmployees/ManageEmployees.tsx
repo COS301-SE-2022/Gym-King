@@ -1,49 +1,47 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter, IonItem, IonList, IonAvatar, IonLabel} from '@ionic/react';
 import React, {useState} from 'react';
-import EmployeeCard from '../../components/EmployeeCard/EmployeeCard';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import './ManageEmployees.css';
+import { useHistory } from 'react-router-dom';
 
-const EmployeeList=[
-
-]
 
 const ManageEmployees: React.FC = () =>{
-
-    const [employeeList, setEmployeeList] = useState<any>([])
+    // eslint-disable-next-line
+    const [employeeList, setEmployeeList] = useState(new Array())
     const [loading, setLoading] = useState<boolean>(false);
-    
+    let history=useHistory()
+
     
     useIonViewWillEnter(()=>
     {
-        var email="u19068035@tuks.co.za"
+        var owner=localStorage.getItem('email')
         setLoading(true)
-        fetch('https://gym-king.herokuapp.com/employees/employee/info', {
+
+        fetch(`https://gym-king.herokuapp.com/owners/employees/${owner}`, {
             "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
             console.log(response)
+            setEmployeeList(response)
+
             setLoading(false)
-            let arr=[];
-            for(let q = 0; q<response.length; q++)
-            {
-                arr.push({
-                    'email':response[q].email,
-                    'name':response[q].name,
-                    'surname':response[q].surname,
-                    'username': response[q].username,
-                    'number': response[q].number,
-                    'gym': response[q].gym
-                })
-            }
-            setEmployeeList(arr)
         })
         .catch(err => {
             console.log(err)
             setLoading(false)
          })
     },[])
+
+    const goToProfile = (email:string, name:string, surname:string, username:string, phone:string, gid:string)=>{
+        localStorage.setItem("employee_email", email);
+        localStorage.setItem("employee_name", name);
+        localStorage.setItem("employee_surname", surname);
+        localStorage.setItem("employee_username", username);
+        localStorage.setItem("employee_phone",phone);
+        localStorage.setItem("employee_gid", gid);
+        history.push("/EmployeeProfileView")
+    }
     return(
         <IonPage>
             <IonHeader>
@@ -53,9 +51,23 @@ const ManageEmployees: React.FC = () =>{
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>My Employees</IonText>
                 <IonButton routerLink='/AddEmployee' routerDirection="none" color="warning">Add Employee</IonButton>
-                <br></br>
-                <IonButton routerLink='/EmployeeProfile' routerDirection="forward" color="warning"> View Employee Profile </IonButton>
-                
+                <br></br><br></br>
+                <IonList>
+                {
+                    employeeList?.map(el =>{
+                        return(
+                            <IonItem  key={el.email}  onClick={() => goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id)} >
+                                <IonAvatar slot="start">
+                                <img src="./avatar-finn.png" alt=""/>
+                                </IonAvatar>
+                                <IonLabel>
+                                <h2>{el.name} {el.surname}</h2>
+                                </IonLabel>
+                            </IonItem>
+                        )
+                    })
+                }
+                </IonList>
                 <IonLoading 
                         isOpen={loading}
                         message={"Loading"}
@@ -70,3 +82,4 @@ const ManageEmployees: React.FC = () =>{
 }
 
 export default ManageEmployees;
+
