@@ -1,5 +1,6 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
+import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
@@ -20,7 +21,7 @@ const PendingApprovalsPage: React.FC = () =>{
 
 
     //GET REQUEST:
-    useIonViewWillEnter(()=>{
+    useEffect(()=>{
         setLoading(true)
         //get employee information 
         fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
