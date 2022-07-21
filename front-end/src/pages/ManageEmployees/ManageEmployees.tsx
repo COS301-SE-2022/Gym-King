@@ -50,7 +50,7 @@ const ManageEmployees: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>My Employees</IonText>
-                <IonButton routerLink='/AddEmployee' routerDirection="none" color="warning">Add Employee</IonButton>
+                <IonButton routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>
                 <br></br><br></br>
                 <IonList>
                 {

@@ -158,6 +158,9 @@ const OwnerProfilePage: React.FC = () =>{
     const goToManageGyms = () =>{
         history.push("/ManageGyms")
     }
+    const goToManageEmployees = () =>{
+        history.push("/ManageEmployees")
+    }
 
         return(
             <IonPage color='#220FE' >
@@ -219,7 +222,7 @@ const OwnerProfilePage: React.FC = () =>{
                                 </IonCard>
                             </IonCol>
                             <IonCol>
-                                <IonCard className="smallCard">
+                                <IonCard className="smallCard" onClick={goToManageEmployees}>
                                     <IonCardContent>
                                         <IonText  className="bigNumber">{numEmployees}</IonText><br></br>
                                         <IonText>employees</IonText>
