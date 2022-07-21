@@ -12,6 +12,20 @@ const ManageGyms: React.FC = () =>{
 
     useIonViewWillEnter(()=>
         {
+            if(sessionStorage.getItem("gymName")!=null)
+            {
+                sessionStorage.removeItem("gymName")
+            }
+            if(sessionStorage.getItem("gymAddress")!=null)
+            {
+                sessionStorage.removeItem("gymAddress")
+            }
+            if(sessionStorage.getItem("Lat") !=null && sessionStorage.getItem("Long")!=null)
+            {
+                sessionStorage.removeItem("Lat")
+                sessionStorage.removeItem("Long")
+            }
+            
             let email = localStorage.getItem("email");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{

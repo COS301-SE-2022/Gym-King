@@ -15,7 +15,7 @@ const AddGym: React.FC = () => {
   
   //get request parameters via the url
   //get name and name hook
-  const [gymName, setGymName] = useState<string>("");
+  const [gymName, setGymName] = useState<string>("name");
   const [gymAddress, setGymAddress] = useState<string>("address");
   const [coordinate, setCoordinate] = useState<[number, number]>([
     -25.7545,
@@ -37,12 +37,6 @@ const AddGym: React.FC = () => {
       {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
-  })
-  useIonViewWillLeave(()=>{
-    sessionStorage.removeItem("gymName")
-    sessionStorage.removeItem("gymAddress")
-    sessionStorage.removeItem("Lat")
-    sessionStorage.removeItem("Long")
   })
   //zoom parameter fpr map
   const zoom: number = 16;
@@ -77,10 +71,6 @@ const AddGym: React.FC = () => {
       sessionStorage.setItem("new_gid", response.g_id)
       console.log(sessionStorage.getItem("new_gid"))
       setShowToast1(true)
-      sessionStorage.removeItem("gymName")
-      sessionStorage.removeItem("gymAddress")
-      sessionStorage.removeItem("Lat")
-      sessionStorage.removeItem("Long")
       history.goBack()
       fetch(`https://gym-king.herokuapp.com/gyms/owned`,
       {
