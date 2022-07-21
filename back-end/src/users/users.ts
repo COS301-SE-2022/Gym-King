@@ -11,6 +11,25 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const userstorage = multer.diskStorage({
+  destination: function (req: any, file: any, callback: any) {
+    callback(null, './src/users/userpictures/')
+  },
+  filename: function (req: any, file: any, callback: any) {
+    if (file.mimetype == 'image/jpeg') {
+      callback(null, createID(10)+'.jpg')
+    }
+    else if (file.mimetype == 'image/png') {
+      callback(null, createID(10)+'.png')
+    }
+    else{
+      callback(null, 'incorrect')
+    }
+  }
+})
+const userpicture = multer({storage: userstorage});
 
 //=============================================================================================//
 //Helper Functions 
@@ -54,7 +73,22 @@ const fs = require('fs');
    * @param {number} size of the generated ID.
    * @returns {string} Generated ID.
    */
-function createID(length: any) {
+  function createID(length: any) {
+  let ID = "";
+  let characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < length; i++) {
+    ID += characters.charAt(Math.floor(Math.random() * 62));
+  }
+  return ID;
+}
+//=========================================================================================================//
+  /**
+   * Makes a generated ID given a size input.
+   * @param {number} size of the generated ID.
+   * @returns {string} Generated ID.
+   */
+function createID2(length: any) {
   let ID = "";
   let characters =
     "0123456789";
@@ -84,6 +118,9 @@ const corsOptions = {
 // USER ROUTER
 //=============================================================================================//
 const users = express.Router()
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .options('*', cors(corsOptions))
   //=========================================================================================================//
   /**
@@ -232,6 +269,24 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET a users profile picture.
+   * @param {string} email User email.
+   * @returns {image} 
+   */
+   .get('/users/user/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.email;
+    const user = await userRepository.findByEmail(query);
+    const file = './src/users/userpictures/'+user.profile_picture;
+      fs.access(file, fs.F_OK, (err: any) => {
+        if (err) {
+          res.json({"success": false});
+          return
+        }
+        res.download(file); 
+      })
+  })
+  //=========================================================================================================//
+  /**
    * POST save a users claim for a badge to database.
    * @param {string} bid The badge ID of the badge.
    * @param {string} email The email of the user who claims they completed it.
@@ -242,8 +297,6 @@ const users = express.Router()
    * @param {string} proof The code of the image used to find the proof.
    * @returns Returns params of completed insertion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
   .post('/claims/claim', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -263,9 +316,6 @@ const users = express.Router()
    * @param {string} usertype Type of user.
    * @returns A message saying success true.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
   .post('/users/login', cors(corsOptions), async (req: any, res: any) => {
     try {
       const bcrypt = require('bcryptjs');
@@ -328,9 +378,6 @@ const users = express.Router()
    * @param {string} password The password the user created (NOT ecrypted).
    * @returns Returns params of completed insertion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
     try {
       const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
@@ -350,9 +397,6 @@ const users = express.Router()
    * @param {string} radius circle radius in KM to check for gyms
    * @returns a list of gyms and their locations
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
   .post('/gyms/aroundme', cors(corsOptions), async (req: any, res: any) => {
     try {
       if (req.body.latCoord != null && req.body.longCoord != null) {
@@ -389,14 +433,11 @@ const users = express.Router()
    * @param {string} email email of user.
    * @returns message indicating creation
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .post('/users/user/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
       let result = await userOTPRepository.deleteUserOTP(query.email);
-      const newOTP = createID(6);
+      const newOTP = createID2(6);
       result = await userOTPRepository.saveUserOTP(query.email,newOTP);
       const results = { 'success': true };
       res.json(results);
@@ -413,9 +454,6 @@ const users = express.Router()
    * @param {string} password user's password.
    * @returns Users information.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .post('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const bcrypt = require('bcryptjs')
@@ -444,9 +482,6 @@ const users = express.Router()
    * @param {string} password The password the user (NOT ecrypted).
    * @returns Returns params of completed insertion.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .put('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -467,15 +502,60 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * PUT update a gym user profile picture.
+   * @param {string} email The email of the user.
+   * @param {string} password The password the user (NOT ecrypted).
+   * @param {file} profilepicture the picture.
+   * @returns message informing successful update.
+   */
+   .put('/users/user/picture', userpicture.single('profilepicture'), cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const file = req.file;
+      const bcrypt = require('bcryptjs')
+      const user = await userRepository.findByEmail(query.email);
+      if (bcrypt.compareSync(query.password, user.password)) {
+        fs.unlink('./src/users/userpictures/'+user.profile_picture, (err) => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
+        if (file.mimetype == 'image/jpeg') {
+          const result = await userRepository.updateUserProfilePicture(user.email, file.filename);
+          res.json({'success':true});
+        }
+        else if (file.mimetype == 'image/png') {
+          const result = await userRepository.updateUserProfilePicture(user.email, file.filename);
+          res.json({'success':true});
+        }
+        else {
+          fs.unlink('./src/users/userpictures/incorrect', (err) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+          })
+          res.json({'message':'Invalid file type!'})
+        }
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * PUT update a user password.
    * @param {string} email The email of the user. 
    * @param {string} otp OTP given by user.
    * @param {string} newpassword New password.
    * @returns message informing successful update or not.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .put('/users/user/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -503,14 +583,18 @@ const users = express.Router()
    * @param {string} password user password.
    * @returns message confirming deletion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
   .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       if (bcrypt.compareSync(query.password, user.password)) {
+        fs.unlink('./src/users/userpictures/'+user.profile_picture, (err) => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
         let result = await badgeOwnedRepository.deleteAllOwnedByEmail(user.email);
         result = await badgeClaimRepository.deleteAllClaimsByEmail(user.email);
         result = await userOTPRepository.deleteUserOTP(user.email);

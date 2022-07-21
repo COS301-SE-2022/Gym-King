@@ -56,6 +56,9 @@ function createID(length: any) {
 // OWNER ROUTER
 //=============================================================================================//
 const owners = express.Router()
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
@@ -98,9 +101,6 @@ const owners = express.Router()
    * @param {string} email email of the owner.
    * @returns message confirming the insertion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
   .post("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -122,9 +122,6 @@ const owners = express.Router()
    * @param {string} gymIcon gym icon code.
    * @returns message confirming the insertion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
   .post("/gyms/gym", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -148,9 +145,6 @@ const owners = express.Router()
    * @param {string} password owner password.
    * @returns message confirming the insertion.
    */
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw())
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -168,9 +162,6 @@ const owners = express.Router()
    * @param {string} email email of owner.
    * @returns message indicating creation
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .post('/owners/owner/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -192,9 +183,6 @@ const owners = express.Router()
    * @param {string} password owner's password.
    * @returns owner information.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .post('/owners/owner/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const bcrypt = require('bcryptjs')
@@ -223,9 +211,6 @@ const owners = express.Router()
    * @param {string} password The password the owner (NOT ecrypted).
    * @returns Returns params of completed insertion.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .put('/owners/owner/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -252,9 +237,6 @@ const owners = express.Router()
    * @param {string} newpassword New password.
    * @returns message informing successful update or not.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
-   .use(bodyParser.raw())
    .put('/owners/owner/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -282,8 +264,6 @@ const owners = express.Router()
    * @param {string} password owner password.
    * @returns message confirming deletion.
    */
-   .use(bodyParser.urlencoded({ extended: true }))
-   .use(bodyParser.json())
    .delete('/owners/delete', cors(corsOptions), async (req: any, res: any) => {
      try {
        let query = req.body;
