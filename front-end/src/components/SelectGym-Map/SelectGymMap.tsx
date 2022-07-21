@@ -11,7 +11,20 @@ import { useHistory } from "react-router-dom";
 export function SelectGymMap() {
 
   const history=useHistory()
-
+  let height=435;
+  let screenHeight=window.innerHeight;
+  if(screenHeight>=840)
+  {
+    height=700;
+  }
+  else if(screenHeight>=740)
+  {
+    height=560;
+  }
+  else if(screenHeight>=650)
+  {
+    height=500;
+  }
   const image:string="https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png"
 
   const [center, setCenter] = useState([-25.7545 ,28.2314 ])
@@ -36,8 +49,8 @@ export function SelectGymMap() {
         changeCoords(Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long")))
       }
       setOpen(true)
-      setIcon(lockClosed)
-      setLock(true)
+      setIcon(lockOpen)
+      setLock(false)
   })
   useIonViewWillLeave(()=>{
     setOpen(false)
@@ -96,8 +109,9 @@ export function SelectGymMap() {
   return (
     <div>
     <Map
+    
      provider={stamenToner}
-     height={800}
+     height={height}
      center={[center[0],center[1]]} 
      zoom={zoom}
      maxZoom={17}
