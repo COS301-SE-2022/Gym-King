@@ -1,13 +1,14 @@
-import { IonActionSheet, IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
-import { useState } from 'react';
+import { IonButton, IonCard, IonCardTitle, IonContent, IonGrid,IonPopover, IonRow} from '@ionic/react';
+import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import AR from '../AR/AR';
 import BadgeImage from '../BadgeImage/BadgeImage';
 import './ViewBadgeCard.css'
-import { useHistory } from 'react-router-dom';
 
 export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number;BadgeRank:string;BadgeEmblem:string })=>{
     let history=useHistory();
-    const [showActionSheet, setShowActionSheet] = useState(false);
+    const popover = useRef<HTMLIonPopoverElement>(null);
+    const [popoverOpen, setPopoverOpen]  = useState(false);
     return(
         <div>
             <IonCard 
@@ -15,7 +16,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
-                onClick={ () => {setShowActionSheet(true)}}>
+                onClick={ () =>{setPopoverOpen(true)} }>
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
                             <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.BadgeRank}></BadgeImage>
@@ -27,29 +28,12 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                     </IonRow>  
                 </IonGrid>
             </IonCard>
-            <IonActionSheet
-                isOpen={showActionSheet}
-                onDidDismiss={()=>setShowActionSheet(false)}
-                cssClass="my-custom-class"
-               
-                buttons={[{
-                    text: 'View In AR',
-                    handler: () => {
-                    }
-                  },{
-                    text: 'Apply for badge',
-                    handler: () => {
-                        localStorage.setItem("badgeid",props.BadgeID);
-                        history.push("/UploadActivity")
-                    }
-                  },{ 
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                      console.log('Cancel clicked');
-                    }
-                  }]}>
-            </IonActionSheet>
+            <IonPopover  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+              <IonContent>
+                <IonButton className="centerComp" style={{"width":"80%"}} onClick={()=>{sessionStorage.setItem("badgeid",props.BadgeID);setPopoverOpen(false);history.push("/UploadActivity")}}>Apply for badge</IonButton>
+                <AR  rank={props.BadgeRank} emblem={props.BadgeEmblem}></AR>
+                </IonContent>
+          </IonPopover>
         </div>
         )
         
