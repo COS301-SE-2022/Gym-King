@@ -8,6 +8,7 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
 
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 import "./CreateBadge.css";
+import { useHistory } from 'react-router-dom';
 
 
 //export type CreateBadge = {act?:any}
@@ -22,6 +23,8 @@ import "./CreateBadge.css";
         const [showToast, setShowToast] = useState(false);
         const [ownedGyms, setOwnedGyms] = useState([]);
         let formData:any;
+        let history=useHistory()
+
 
 
         //METHODS
@@ -90,7 +93,7 @@ import "./CreateBadge.css";
                 setShowToast(true);
 
                 //redirect to view badges (gym owner) 
-                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+                history.push("/GymOwner-ViewBadges");
             })
             .catch(err => {console.log(err)}) 
         }
