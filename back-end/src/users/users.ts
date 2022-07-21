@@ -12,11 +12,19 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const firebaseAdmin = require('firebase-admin');
-const { v4: uuidv4 } = require('uuid');
-const serviceAccount = require(JSON.parse(process.env.FIREBASE));
 const multer = require('multer');
 const userpicture = multer();
+const firebaseAdmin = require('firebase-admin');
+const { v4: uuidv4 } = require('uuid');
+const admin = firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+  }),
+  databaseURL: process.env.FIREBASE_DATABASE_URL
+});
+const storageRef = admin.storage().bucket(process.env.FIREBASE_DB_URL);
 
 //=============================================================================================//
 //Helper Functions 
@@ -150,6 +158,27 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET - returns all badges that a user earned
+   * @param {string} email input of user ID
+   * @returns A list of badges user earned
+   */
+   .post('/user/badges',cors(corsOptions),async(req: any, res: any)=>
+   {
+     try
+     {
+       let query= req.body.email;
+       const results= await badgeOwnedRepository.findByEmail(query)
+       res.json(results)
+     }
+     catch(err)
+     {
+       const results = { 'success': false, 'results': err };
+       console.error(err);
+       res.json(results);
+     }
+   })
+  //=========================================================================================================//
+  /**
    * GET - returns all badge claims of a user.
    * @param {string} email email of gym_user.
    * @returns list of all claims the user has made.
@@ -263,14 +292,11 @@ const users = express.Router()
    .get('/users/user/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
     const query = req.params.email;
     const user = await userRepository.findByEmail(query);
-    const file = './src/users/userpictures/'+user.profile_picture;
-      fs.access(file, fs.F_OK, (err: any) => {
-        if (err) {
-          res.json({"success": false});
-          return
-        }
-        res.download(file); 
-      })
+    if (user != null){
+      res.json(user.profile_picture);
+    } else{
+      res.json({'message':'Invalid email!'})
+    }
   })
   //=========================================================================================================//
   /**
@@ -501,30 +527,49 @@ const users = express.Router()
       const file = req.file;
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
+      let oldFileName = '';
+      if (user.profile_picture.includes('/')){
+        oldFileName = user.profile_picture.split('/');
+        if (oldFileName.length == 5){
+          oldFileName = oldFileName[4];
+          oldFileName = oldFileName.replace('%2F','/')
+        }
+        else{
+          oldFileName = 'empty';
+        }
+      }
+      else {
+        oldFileName = 'empty';
+      }
       if (bcrypt.compareSync(query.password, user.password)) {
-        fs.unlink('./src/users/userpictures/'+user.profile_picture, (err) => {
-          if (err) {
-            console.error(err)
-            return
-          }
-        })
-        if (file.mimetype == 'image/jpeg') {
-          const result = await userRepository.updateUserProfilePicture(user.email, file.filename);
-          res.json({'success':true});
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+        let newFileName = ``;
+        if (file.mimetype == 'image/jpeg'){
+          newFileName = `users/${Date.now()}.jpg`;
         }
         else if (file.mimetype == 'image/png') {
-          const result = await userRepository.updateUserProfilePicture(user.email, file.filename);
-          res.json({'success':true});
+          newFileName = `users/${Date.now()}.png`;
         }
         else {
-          fs.unlink('./src/users/userpictures/incorrect', (err) => {
-            if (err) {
-              console.error(err)
-              return
-            }
-          })
-          res.json({'message':'Invalid file type!'})
+          res.json({'message':'Invalid file type.'})
+          return;
         }
+        const blob = storageRef.file(newFileName);
+        const blobStream = blob.createWriteStream({
+          resumable: false,
+          metadata: {
+            firebaseStorageDownloadTokens: uuidv4(),
+          }
+        });
+        blobStream.on('error', err => {
+          res.json({'success':false})
+        });
+        blobStream.on('finish', async () => {
+          await storageRef.file(newFileName).makePublic();
+          await userRepository.updateUserProfilePicture(user.email,storageRef.file(newFileName).publicUrl());
+          res.json({'success':true});
+        });
+        blobStream.end(req.file.buffer);
       }
       else {
         res.json({'message':'Invalid email or password!'})
@@ -575,13 +620,22 @@ const users = express.Router()
       let query = req.body;
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
+      let oldFileName = '';
+      if (user.profile_picture.includes('/')){
+        oldFileName = user.profile_picture.split('/');
+        if (oldFileName.length == 5){
+          oldFileName = oldFileName[4];
+          oldFileName = oldFileName.replace('%2F','/')
+        }
+        else{
+          oldFileName = 'empty';
+        }
+      }
+      else {
+        oldFileName = 'empty';
+      }
       if (bcrypt.compareSync(query.password, user.password)) {
-        fs.unlink('./src/users/userpictures/'+user.profile_picture, (err) => {
-          if (err) {
-            console.error(err)
-            return
-          }
-        })
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await badgeOwnedRepository.deleteAllOwnedByEmail(user.email);
         result = await badgeClaimRepository.deleteAllClaimsByEmail(user.email);
         result = await userOTPRepository.deleteUserOTP(user.email);
