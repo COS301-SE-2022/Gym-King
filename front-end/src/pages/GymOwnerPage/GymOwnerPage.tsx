@@ -19,7 +19,7 @@ const GymOwnerPage: React.FC = () =>{
                 <br></br>
                 <IonButton routerLink="/GymOwner-ViewBadges" routerDirection="forward" color="warning">Manage Badges</IonButton>
                 <br></br>
-                <IonButton routerLink="/ManageEmployee" routerDirection="forward" color="warning" >Manage Employees</IonButton>
+                <IonButton routerLink="/ManageEmployees" routerDirection="forward" color="warning" >Manage Employees</IonButton>
             </IonContent>
         </IonPage>
     )

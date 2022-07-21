@@ -6,7 +6,7 @@ export const gymRepository = GymKingDataSource.getRepository(gym).extend({
         return this.find();
     },
     findByBrandname(brandname: string) {
-        return this.findBy({ gym_brandname: brandname });
+        return this.find({ gym_brandname: brandname });
     },
     findByGID(gid: string) {
         return this.findOneBy({ g_id: gid });

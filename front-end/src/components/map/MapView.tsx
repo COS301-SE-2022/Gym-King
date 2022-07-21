@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { stamenToner } from 'pigeon-maps/providers';
+import { useHistory } from 'react-router-dom';
 
 import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
@@ -15,7 +16,8 @@ interface LocationError {
 }
 
 const MapView: React.FC = () =>{
-    
+    let history=useHistory()
+
     //=========================================================================================================//
     //                                                       MAP                                               //
     //=========================================================================================================//
@@ -270,7 +272,7 @@ const MapView: React.FC = () =>{
             <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
             {/* <IonBadge > */}
-                <IonCard>
+                <IonCard style={{"margin":"0px"}}>
                     <IonCardHeader>
                         <IonCardTitle className='center '>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
@@ -284,8 +286,8 @@ const MapView: React.FC = () =>{
                                     sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
                                     sessionStorage.setItem('gym_address',gymData.gym_address);
                                     sessionStorage.setItem('gid',gymData.g_id);
-
-                                    window.location.href = "http://"+window.location.host+"/GymPage";
+                                    setShowModal(false);
+                                    history.push("/GymPage");
                                     
                                 }}
                             >

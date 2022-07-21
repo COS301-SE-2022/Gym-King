@@ -1,4 +1,4 @@
-import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
+import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -38,12 +38,6 @@ const AddGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
   })
-  useIonViewWillLeave(()=>{
-    sessionStorage.removeItem("gymName")
-    sessionStorage.removeItem("gymAddress")
-    sessionStorage.removeItem("Lat")
-    sessionStorage.removeItem("Long")
-  })
   //zoom parameter fpr map
   const zoom: number = 16;
   //Toast
@@ -74,17 +68,38 @@ const AddGym: React.FC = () => {
     .then((response) => response.json())
     .then((response) => {
       console.log(response);
+      sessionStorage.setItem("new_gid", response.g_id)
+      console.log(sessionStorage.getItem("new_gid"))
       setShowToast1(true)
-      sessionStorage.removeItem("gymName")
-      sessionStorage.removeItem("gymAddress")
-      sessionStorage.removeItem("Lat")
-      sessionStorage.removeItem("Long")
       history.goBack()
+      fetch(`https://gym-king.herokuapp.com/gyms/owned`,
+      {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: localStorage.getItem('email'),
+          gid: sessionStorage.getItem("new_gid")
+        })
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        sessionStorage.removeItem("new_gid")
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
     })
     .catch((err) => {
       console.log(err);
       setShowToast2(true)
     });
+    
+
   };
 //GEO CODER API
   

@@ -58,9 +58,6 @@ function createID(length: any) {
 // EMPLOYEE ROUTER
 //=============================================================================================//
 const employees = express.Router()
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .use(bodyParser.raw()) 
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
@@ -109,6 +106,9 @@ const employees = express.Router()
    * @param {string} gid gym ID.
    * @returns Message confirming insertion.
    */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
    .post("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
      try {
        let query = req.body;
@@ -131,6 +131,9 @@ const employees = express.Router()
    * @param {string} activitytype email used to find claim.
    * @returns A claim made by user for badge.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .post("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -149,6 +152,9 @@ const employees = express.Router()
    * @param {string} email email of employee.
    * @returns message indicating creation
    */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
    .post('/employees/employee/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -170,6 +176,9 @@ const employees = express.Router()
    * @param {string} password employee's password.
    * @returns employee information.
    */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
    .post('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const bcrypt = require('bcryptjs')
@@ -195,6 +204,9 @@ const employees = express.Router()
    * @param {string} newpassword New password.
    * @returns message informing successful update or not.
    */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
    .put('/employees/employee/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -226,6 +238,9 @@ const employees = express.Router()
    * @param {string} password The password the employee (NOT ecrypted).
    * @returns Returns params of completed insertion.
    */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
    .put('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
@@ -251,18 +266,21 @@ const employees = express.Router()
    * @param {string} email email used to find the user.
    * @returns The badge_owned inserted or error message.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .put("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
       let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
       const ret = result;
       if (ret != null){
-        result = await badgeClaimRepository.deleteClaim(ret.b_id.b_id, ret.email);
-        result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id.b_id,ret.email);
+        result = await badgeClaimRepository.deleteClaim(ret.b_id, ret.email);
+        result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id,ret.email);
         if (result != null) {
-          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         } else {
-          result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+          result = await badgeOwnedRepository.saveOwned(ret.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         }
         res.json(result);
       }
@@ -287,6 +305,9 @@ const employees = express.Router()
    * @param {string} badgeicon edited badgeicon.
    * @returns Message confirming update.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -304,6 +325,9 @@ const employees = express.Router()
    * @param {string} bid badge ID used to find badge.
    * @returns Message confirming Deletion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .delete("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -324,6 +348,9 @@ const employees = express.Router()
    * @param {string} email unique email used to delete the claim.
    * @returns message confirming deletion.
    */
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(bodyParser.raw())
   .delete("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
@@ -342,6 +369,9 @@ const employees = express.Router()
    * @param {string} password employee password.
    * @returns message confirming deletion.
    */
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json())
+   .use(bodyParser.raw())
    .delete("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
      try {
       let query = req.body;

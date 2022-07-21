@@ -158,6 +158,13 @@ ion-card{
   margin-left:5%;
   margin-bottom: 20px;
 }
+.subheading{
+  font-family: 'Comfortaa', cursive;
+  font-size:11px;
+  margin-left:5%;
+  margin-right: 5%;
+  margin-bottom: 20px;
+}
 
 .grid
 {
@@ -190,7 +197,11 @@ ion-card{
   padding:2%;
 }
 
-
+.un{
+  font-size: 5vw !important;
+  margin-bottom: 5%;
+  font-family: 'Comfortaa', cursive;;
+}
 
 .badge{
   font-size:700%;

@@ -28,7 +28,6 @@ export class badge {
     @OneToMany(() => badge_owned, (badge_owned) => badge_owned.b_id)
     badges_owned: badge_owned[]
 
-    @Column({length: 4})
     @ManyToOne(() => gym, (gym) => gym.g_id)
     @JoinColumn({name: "g_id"})
     g_id: gym

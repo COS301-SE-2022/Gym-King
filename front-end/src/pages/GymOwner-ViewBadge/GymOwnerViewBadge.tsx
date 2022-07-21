@@ -13,7 +13,7 @@ const GymOwnerViewBadge: React.FC = () =>{
 
         //GET REQUEST:
         useIonViewWillEnter(()=>{
-            var email="u20519517@tuks.co.za"
+            var email=localStorage.getItem("email")
             setLoading(true);
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"

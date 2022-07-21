@@ -12,16 +12,19 @@ export class ApprovalButton extends React.Component<props>{
 
     userId = (this.props.userID).toString();
     onClick= () =>{
+        
         localStorage.setItem('email', this.userId);
         localStorage.setItem('badgeId', this.props.badgeId);
         localStorage.setItem('username', this.props.username);
+
+
     }
 
 
     render(){
         //console.log(this.userId);
         return(
-            <IonItem button detail class='btnApproval' onClick={this.onClick} href='http://localhost:3000/AcceptReject' data-testid="aB">
+            <IonItem button detail class='btnApproval' onClick={this.onClick} data-testid="aB">
                 <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
                 <IonLabel>{this.props.username}</IonLabel>
             </IonItem>

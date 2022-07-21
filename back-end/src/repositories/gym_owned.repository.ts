@@ -10,10 +10,10 @@ export const gymOwnedRepository = GymKingDataSource.getRepository(gym_owned).ext
         return this.find();
     },
     findByGID(gid: string) {
-        return this.findBy({ g_id: gid });
+        return this.find({ g_id: gid });
     },
     findByEmail(email: string) {
-        return this.findBy({ email: email });
+        return this.find({ email: email });
     },
     findByGIDandEmail(gid: string, email: string) {
         return this.findOneBy({ g_id: gid, email: email });

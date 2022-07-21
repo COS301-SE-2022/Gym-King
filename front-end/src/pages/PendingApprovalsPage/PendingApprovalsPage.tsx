@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
+import { useHistory } from 'react-router-dom';
 
 
 export type UploadActivityStates = {act?:any}
@@ -11,15 +12,42 @@ export type UploadActivityStates = {act?:any}
 const PendingApprovalsPage: React.FC = () =>{
 
     //STATES AND VARIABLES 
-    let gymId= 'wSek';  //temp value for testing 
     // eslint-disable-next-line
     const [claims, setClaims] = useState(new Array());
     const [loading, setLoading] = useState<boolean>(false);
+    const [gymId, setGymId] = useState("");
+    let history=useHistory()
+
 
 
     //GET REQUEST:
     useEffect(()=>{
         setLoading(true)
+        //get employee information 
+        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+
+                setGymId(response.g_id.g_id)
+
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+            })
+        console.log(gymId);
         fetch(`https://gym-king.herokuapp.com/claims/gym/${gymId}`,{
             "method":"GET"
         })
@@ -35,6 +63,10 @@ const PendingApprovalsPage: React.FC = () =>{
         })
     },[gymId])
 
+    const goToAcceptReject = () =>{
+        history.push("/AcceptReject")
+    }
+
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -46,7 +78,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton>)
+                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton></div>)
                         })
                     }
 
