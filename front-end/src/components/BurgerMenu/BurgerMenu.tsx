@@ -17,7 +17,7 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                         <IonMenuToggle auto-hide="false">
                             {props.listItems.map((el:any)=>
                            
-                            <IonItem button routerLink={el.route} routerDirection="forward">
+                            <IonItem button routerLink={el.route} routerDirection="forward" key={Math.random()}>
                                 
                                 <IonIcon icon={el.icon} ></IonIcon>
                                 <IonLabel>{el.caption}</IonLabel>

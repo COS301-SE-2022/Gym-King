@@ -6,6 +6,8 @@ import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
+import { useHistory } from 'react-router-dom';
+
 
 export type UploadActivityStates = {act?:any}
 
@@ -14,8 +16,8 @@ const UploadActivityPage: React.FC = () =>{
         // STATES AND VARIABLES 
         const [isValid, setIsValid] = useState(false);
         const [submitted, setSubmitted] = useState(false);
-        let email = 'u20519517@tuks.co.za';                 //TEMP FOR TESTING PURPOSES
-        let username= 'Gates';                              //TEMP FOR TESTING PURPOSES 
+        let email = localStorage.getItem("email")  
+                      
         localStorage.setItem( 'e1', "");
         localStorage.setItem( 'e2', "");
         localStorage.setItem( 'e3', "");
@@ -27,6 +29,8 @@ const UploadActivityPage: React.FC = () =>{
         const [activitytype, setAT] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [loading, setLoading] = useState<boolean>(false);
+        const [username, setUsername]=useState("");
+        let history=useHistory()
 
 
         
@@ -83,6 +87,29 @@ const UploadActivityPage: React.FC = () =>{
                 console.log(err)
                 setLoading(false)
             })
+
+            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                setUsername(response.username);
+                setLoading(false);
+                
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
         } ,[badgeId])
 
 
@@ -112,7 +139,7 @@ const UploadActivityPage: React.FC = () =>{
             .then(response =>{
                 //console.log(response);
                 setShowToast1(true);
-                window.location.href = "http://localhost:3000/ViewBadges";
+                history.push("/ViewBadges");
             })
             .catch(err => {console.log(err)}) 
         }

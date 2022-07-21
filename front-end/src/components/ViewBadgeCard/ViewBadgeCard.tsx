@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import BadgeImage from '../BadgeImage/BadgeImage';
 import './ViewBadgeCard.css'
+import { useHistory } from 'react-router-dom';
 
 export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number;BadgeRank:string;BadgeEmblem:string })=>{
     let history=useHistory();
