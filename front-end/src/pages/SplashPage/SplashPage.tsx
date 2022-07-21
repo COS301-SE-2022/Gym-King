@@ -18,25 +18,11 @@ return (
 {
     return(
         <div classname="splash-screen"> 
-            Wait a moment for the apo to load 
+            Wait a moment for the app to load 
             <div classname="loading-dot">.</div>
         </div>
     );
 }
-
-/*function LandingFrame()
-{
-    const style = {
-        "background-image": 'url("Gym_Dumbbells_For_Working_Out_(193383405)")',
-        "background-repeat": "no-repeat",
-        "background-size": "cover",
-        position: "absolute",
-        height: "100%",
-        width: "100%"
-    }
-
-    return <div style={style}></div>
-}*/
 
 /*function SplashPage()
 {
