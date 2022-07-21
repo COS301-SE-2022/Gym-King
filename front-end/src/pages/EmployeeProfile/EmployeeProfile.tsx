@@ -1,8 +1,12 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./EmployeeProfile.css";
 import { useEffect } from 'react';
+
+interface InternalValues {
+    file: any;
+}
 
 
 const EmployeeProfilePage: React.FC = () =>{
@@ -11,12 +15,14 @@ const EmployeeProfilePage: React.FC = () =>{
     const page = useRef(null);
 
     const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
     const [gymName, setGymName] = useState("");
     const [gymAddress, setGymAddress] = useState("");
+    const [profilePicture, setProfilePicture] = useState('');
 
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
@@ -55,27 +61,15 @@ const EmployeeProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setGymName(response.g_id.gym_brandname);
                 setGymAddress(response.g_id.gym_address);
+                setProfilePicture(response.profile_picture)
+                setPassword(localStorage.getItem("password")!)
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+            })
 
-                setLoading(false);
-            })
-            .catch(err => {
-                console.log(err)
-                setLoading(false);
-            })
-        /*console.log(gid)
-        //get employee's gym name 
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${gid}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                console.log(response)
-                
-                
-            })
-            .catch(err => {
-                console.log(err)
-            })*/
     },[])
 
     const updateEmployeeDetails = () =>{
@@ -135,6 +129,36 @@ const EmployeeProfilePage: React.FC = () =>{
         setUsername(e.detail.value)
     }
     
+        //images
+        const values =useRef<InternalValues>(
+            {
+              file: false,
+            });
+            const onFileChange = (fileChangeEvent: any) => {
+                values.current.file = fileChangeEvent.target.files[0];
+                submitImage()
+              };
+            const submitImage = () =>{
+                if (!values.current.file) {
+                    return false;
+                }
+        
+                let formData = new FormData();
+                formData.append("email", email)
+                formData.append("password", password)
+                formData.append('profilepicture', values.current.file, values.current.file.name);
+        
+                fetch(`https://gym-king.herokuapp.com/employees/employee/picture`,{
+                        "method":"PUT",
+                        body: formData
+                    })
+                    .then(response =>response.json())
+                    .then(response =>{
+                        console.log(response)
+                    })
+                    .catch(err => {console.log(err)}) 
+                
+            }
 
         return(
             <IonPage color='#220FE' >
@@ -145,11 +169,12 @@ const EmployeeProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard">
+                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <span className="userImage centerComp"></span>
+                                            <IonImg  src={profilePicture} alt="" className="userImage centerComp" style={{"border-radius":"50%","position":"absolute"}} ></IonImg>
+                                            <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
