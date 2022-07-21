@@ -52,11 +52,14 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
     const [activeRankId,setActvieRankId] = useState(0);
     const [activeEmblemId,setActvieEmblemId] = useState(0);
     const setBadgeIcon = async () => {
-        localStorage.setItem('badgeIcon', activeRankId+"-"+activeEmblemId);
+        localStorage.setItem('badgeIcon', activeARRank+"-"+activeAREmblem);
+        console.log(activeARRank+"-"+activeAREmblem);
+        console.log(activeRankId)
+        console.log(activeEmblemId)
     }
     const handleRankChange = async () => {
-        const swiper = await mySlides1.current.getSwiper();
-        await setActvieRankId(swiper.activeIndex)
+        const swiper =  await mySlides1.current.getSwiper();
+        setActvieRankId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieRank(Bronze);
             setActvieARRank("b");
@@ -67,12 +70,11 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             setActvieRank(Gold);
             setActvieARRank("g");
         }
-        await setBadgeIcon();
     };
 
     const handleEmblemChange = async () => {
         const swiper = await mySlides2.current.getSwiper();
-        await setActvieEmblemId(swiper.activeIndex)
+        setActvieEmblemId(swiper.activeIndex)
         if(swiper.activeIndex===0){
             setActvieEmblem(bicep);
             setActvieAREmblem("bicep");
@@ -93,7 +95,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             setActvieAREmblem("pullup");
         }else if(swiper.activeIndex===6){
             setActvieEmblem(running);
-            setActvieAREmblem("running");
+            setActvieAREmblem("run");
         }else if(swiper.activeIndex===7){
             setActvieEmblem(situp);
             setActvieAREmblem("situp");
@@ -101,11 +103,9 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             setActvieEmblem(treadmill);
             setActvieAREmblem("treadmill");
         }
-        await setBadgeIcon();
     };
 
 
-    setBadgeIcon();
     return (
         <>
         
@@ -117,7 +117,8 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             <IonSlides 
                 options={slideOpts}
                 ref={mySlides1}
-                onIonSlideDidChange={handleRankChange} 
+                onIonSlideWillChange={handleRankChange} 
+                onIonSlideDidChange={setBadgeIcon}
             >
             <IonSlide><img id = "Bronze" src={Bronze} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "Silver"  src={Silver} width={10} height={10} alt='' /></IonSlide>
@@ -128,7 +129,8 @@ export const BadgeSlider: React.FC<BadgeInputProps> = () => {
             <IonSlides
                 options={slideOpts}
                 ref={mySlides2}
-                onIonSlideDidChange={handleEmblemChange}
+                onIonSlideWillChange={handleEmblemChange} 
+                onIonSlideDidChange={setBadgeIcon}
             >
             <IonSlide><img id = "bicep"  src={bicep} width={10} height={10} alt='' /></IonSlide>
             <IonSlide><img id = "clean"  src={clean} width={10} height={10} alt='' /></IonSlide>
