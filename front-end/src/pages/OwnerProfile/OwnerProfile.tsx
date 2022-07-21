@@ -210,7 +210,7 @@ const OwnerProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard">
+                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
