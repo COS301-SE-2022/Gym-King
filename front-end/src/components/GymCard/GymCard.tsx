@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './GymCard.css'
 
-export const GymCard=(prop:{id:any,name:string,address:string})=>{
+export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any})=>{
     const [loading, setLoading] = useState<boolean>(false);
     const [showToast1, setShowToast1] = useState(false);
     const [showToast2, setShowToast2] = useState(false);
@@ -32,6 +32,7 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
     .then((response) => {
       setLoading(false)
       console.log(response)
+      
       if(response?.success===false)
       {
         setToastMessage(response.results)
@@ -39,6 +40,8 @@ export const GymCard=(prop:{id:any,name:string,address:string})=>{
       }
       else{
         setShowToast1(true)
+        prop.deleteClicked();
+       
       }
     })
     .catch((err) => {
