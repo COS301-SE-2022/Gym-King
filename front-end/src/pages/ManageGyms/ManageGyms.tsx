@@ -12,7 +12,7 @@ const ManageGyms: React.FC = () =>{
 
     useIonViewWillEnter(()=>
         {
-            var email="u20519517@tuks.co.za"
+            let email = localStorage.getItem("email");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
