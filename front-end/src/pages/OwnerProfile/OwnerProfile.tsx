@@ -60,6 +60,7 @@ const OwnerProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
+                localStorage.setItem("profilepicture", profilePicture)
                 
                 setLoading(false)
             })
@@ -99,7 +100,7 @@ const OwnerProfilePage: React.FC = () =>{
         .catch(err => {
             console.log(err)
         }) 
-    },[])
+    },[profilePicture])
 
     const updateEmployeeDetails = () =>{
         fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{

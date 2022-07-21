@@ -62,6 +62,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 setGymName(response.g_id.gym_brandname);
                 setGymAddress(response.g_id.gym_address);
                 setProfilePicture(response.profile_picture)
+                localStorage.setItem("profilepicture", profilePicture)
                 setPassword(localStorage.getItem("password")!)
                 setLoading(false);
             })
@@ -70,7 +71,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 setLoading(false);
             })
 
-    },[])
+    },[profilePicture])
 
     const updateEmployeeDetails = () =>{
         fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{

@@ -58,7 +58,7 @@ const ManageEmployees: React.FC = () =>{
                         return(
                             <IonItem  key={el.email}  onClick={() => goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id)} >
                                 <IonAvatar slot="start">
-                                <img src="./avatar-finn.png" alt=""/>
+                                <img src={el.profile_picture} alt=""/>
                                 </IonAvatar>
                                 <IonLabel>
                                 <h2>{el.name} {el.surname}</h2>

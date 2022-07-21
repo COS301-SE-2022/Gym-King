@@ -85,6 +85,7 @@ const UserProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
+                localStorage.setItem("profilepicture", profilePicture)
                 setLoading(false);
                 
             })
@@ -97,7 +98,7 @@ const UserProfilePage: React.FC = () =>{
         getNumberOfClaims()
          // eslint-disable-next-line react-hooks/exhaustive-deps
 
-    },[])
+    },[profilePicture])
 
     const updateUserDetails = () =>{
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
