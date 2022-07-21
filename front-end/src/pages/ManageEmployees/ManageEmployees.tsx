@@ -33,13 +33,14 @@ const ManageEmployees: React.FC = () =>{
          })
     },[])
 
-    const goToProfile = (email:string, name:string, surname:string, username:string, phone:string, gid:string)=>{
+    const goToProfile = (email:string, name:string, surname:string, username:string, phone:string, gid:string, profilePic:string)=>{
         localStorage.setItem("employee_email", email);
         localStorage.setItem("employee_name", name);
         localStorage.setItem("employee_surname", surname);
         localStorage.setItem("employee_username", username);
         localStorage.setItem("employee_phone",phone);
         localStorage.setItem("employee_gid", gid);
+        localStorage.setItem("employee_profilepicture", profilePic)
         history.push("/EmployeeProfileView")
     }
     return(
@@ -56,7 +57,8 @@ const ManageEmployees: React.FC = () =>{
                 {
                     employeeList?.map(el =>{
                         return(
-                            <IonItem  key={el.email}  onClick={() => goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id)} >
+        
+                            <IonItem  key={el.email}  onClick={() => goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id, el.profile_picture)} >
                                 <IonAvatar slot="start">
                                 <img src={el.profile_picture} alt=""/>
                                 </IonAvatar>
