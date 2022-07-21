@@ -1,5 +1,5 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast, IonLoading} from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import React, {  useState } from 'react';
 import FileChooser from '../../components/filechooser/FileChooser';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {shieldOutline} from 'ionicons/icons';
@@ -23,7 +23,6 @@ const UploadActivityPage: React.FC = () =>{
         localStorage.setItem( 'e3', "");
         let formData: any
         const [showToast1, setShowToast1] = useState(false);
-        let badgeId= localStorage.getItem("badgeid");
         const [b_id, setB_id] = useState('');
         const [badgename, setBadgename] = useState('');
         const [activitytype, setAT] = useState('');
@@ -69,7 +68,8 @@ const UploadActivityPage: React.FC = () =>{
         }
 
         // GET BADGES GET REQUEST 
-        useEffect(()=>{
+        useIonViewWillEnter(()=>{
+            let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
@@ -101,7 +101,6 @@ const UploadActivityPage: React.FC = () =>{
             })
             .then(response =>response.json())
             .then(response =>{
-                console.log(response)
                 setUsername(response.username);
                 setLoading(false);
                 
@@ -110,7 +109,7 @@ const UploadActivityPage: React.FC = () =>{
                 console.log(err)
                 setLoading(false)
             })
-        } ,[badgeId])
+        })
 
 
         // SEND CLAIM POST REQUEST 
@@ -139,7 +138,8 @@ const UploadActivityPage: React.FC = () =>{
             .then(response =>{
                 //console.log(response);
                 setShowToast1(true);
-                history.push("/ViewBadges");
+                sessionStorage.removeItem("badgeid")
+                history.goBack();
             })
             .catch(err => {console.log(err)}) 
         }

@@ -18,6 +18,9 @@ const EmployeeProfileViewPage: React.FC = () =>{
     const [username, setUsername]= useState<any>("")
     const [phone, setPhone]= useState<any>("")
     const [gymId, setGymId] = useState<any>("");
+    const [gymName, setGymName] = useState<any>("");
+    const [gymLocation, setGymLocation] = useState<any>("");
+
     console.log(gymId);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
@@ -34,6 +37,21 @@ const EmployeeProfileViewPage: React.FC = () =>{
         setUsername(localStorage.getItem("employee_username"))
         setPhone(localStorage.getItem("employee_phone"))
         setGymId(localStorage.getItem("employee_gid"))
+        console.log()
+
+        fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
+            "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            setGymName(response.gym_brandname)
+            setGymLocation(response.gym_address)
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+         })
 
     },[])
 
@@ -89,8 +107,8 @@ const EmployeeProfileViewPage: React.FC = () =>{
                             <IonCol>
                                 <IonCard className="gymCard">
                                     <IonCardContent>
-                                        <IonText  className="inputHeading">{"Gym Name"}</IonText><br></br>
-                                        <i className='smallFont'>{"Gym Location"}</i>
+                                        <IonText  className="inputHeading">{gymName}</IonText><br></br>
+                                        <i className='smallFont'>{gymLocation}</i>
                                     </IonCardContent>
                                 </IonCard>
                             </IonCol>
