@@ -5,7 +5,6 @@ import {personCircleOutline} from 'ionicons/icons';
 import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
-import { useHistory ,} from 'react-router-dom';
 
 
 //creating a type so props can be entered
@@ -28,11 +27,13 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .then(response =>response.json())
         .then(response =>{
-
+/*
             let history=useHistory()
-            history.push("/PendingApprovals");
+            history.push("/PendingApprovals");*/
+            window.location.href ="http://localhost:3000/PendingApprovals"
+
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {console.log(err)}) 
     } 
     rejectClaim = () =>{
         fetch(`https://gym-king.herokuapp.com/claims/claim`,{
@@ -51,8 +52,11 @@ export class AcceptRejectCard extends React.Component<props>{
             console.log(response.results);
             //display toast 
             //redirect to PendingApprovals
+            /*
             let history=useHistory()
-            history.push("/PendingApprovals");
+            history.push("/PendingApprovals"); */
+            window.location.href ="http://localhost:3000/PendingApprovals"
+
         })
         .catch(err => {console.log(err)})
     }
