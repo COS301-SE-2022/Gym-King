@@ -1,7 +1,8 @@
 import { IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
+import BadgeImage from '../../BadgeImage/BadgeImage';
 import './MyBadgeCard.css'
 
-export const MyBadgeCard=(prop:{id:any,name:string,qty:number})=>{
+export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string,badgeRank:string})=>{
     return(
             <IonCard 
                 data-testid="viewbadgegrid"
@@ -11,12 +12,7 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number})=>{
                 >
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
-                            <img 
-                                width="100px" 
-                                height="100%"
-                                src='#' 
-                                alt='badge'
-                            />
+                        <BadgeImage BadgeEmblem={prop.badgeEmblem} Badgerank={prop.badgeRank}></BadgeImage>
                     </IonRow>
                     <IonRow class='BadgeDetails'>
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
