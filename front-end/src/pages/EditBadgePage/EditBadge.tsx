@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {useEffect, useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
@@ -16,7 +16,7 @@ const EditBadge: React.FC = () =>{
         const [activitytype, setActivityType] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [badgechallenge, setChallenge] = useState('');
-        //const [ownedGyms, setOwnedGyms] = useState([]);
+        const [loading, setLoading] = useState<boolean>(false);
 
         //VARIABLES
         let formData:any;
@@ -57,6 +57,7 @@ const EditBadge: React.FC = () =>{
         
         // GET BADGES REQUEST 
         useEffect( ()=>{
+            setLoading(true)
             fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
             })
@@ -67,8 +68,13 @@ const EditBadge: React.FC = () =>{
                 setBadgename(response.badgename)
                 setChallenge(response.badgechallenge)
                 setGymId(response.g_id)
+                
+                setLoading(false)
             })
-            .catch(err => {console.log(err)})
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
         },[badgeId])
     
 
@@ -180,6 +186,15 @@ const EditBadge: React.FC = () =>{
                         message="Badge Deleted"
                         duration={500}
                         color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
                     />
                 </IonContent>
             </IonPage>

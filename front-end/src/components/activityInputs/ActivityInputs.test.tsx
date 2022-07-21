@@ -12,7 +12,7 @@ test('renders without crashing', () => {
   - test that activtystates update when value in input boxes change (test handle change function)
 
 */
-
+/*
 
 describe('Testing prop text values', () => {
 
@@ -29,3 +29,5 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("Reps");
   }); 
 });
+
+*/

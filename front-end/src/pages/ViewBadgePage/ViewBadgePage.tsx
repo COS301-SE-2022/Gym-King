@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow, IonLoading} from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -12,11 +12,13 @@ const ViewBadgePage: React.FC = () =>{
                      {'caption':'My Badges','icon':'trophy','route':'/myBadges'},
                      {'caption':'Settings','icon':'cog','route':'/Settings'}] 
     const [badges, setBadges] = useState(new Array<any>());
-    
+    const [loading, setLoading] = useState<boolean>(false);
+
         //GET REQUEST:
         useEffect(()=>
         {
             var gymid="wSek"
+            setLoading(true)
             fetch(`https://gym-king.herokuapp.com/badges/gym/${gymid}`,{
                 "method":"GET"
             })
@@ -25,8 +27,12 @@ const ViewBadgePage: React.FC = () =>{
                 console.log("this is the response")
                 console.log(response)
                 setBadges(response)
+                setLoading(false)
             })
-            .catch(err => {console.log(err)})
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
         },[])
     return(
         <IonPage >
@@ -49,7 +55,14 @@ const ViewBadgePage: React.FC = () =>{
                     </IonGrid>
                     
                     
-                   
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
             </IonContent>
         </IonPage>
     )

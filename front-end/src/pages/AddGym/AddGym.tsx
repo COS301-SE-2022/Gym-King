@@ -55,8 +55,7 @@ const AddGym: React.FC = () => {
   let gymIcon: string = "logo";
   const addGym = () => {
     
-    fetch(
-    `https://gym-king.herokuapp.com/gyms/gym`,
+    fetch(`https://gym-king.herokuapp.com/gyms/gym`,
     {
       method: "POST",
       headers: {
@@ -183,6 +182,7 @@ const AddGym: React.FC = () => {
         duration={500}
         color="danger"
       />
+      
       </IonContent>
     </IonPage>
   );

@@ -4,6 +4,7 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
+  IonLoading,
   IonPage,
   IonText,
   IonToast,
@@ -30,6 +31,8 @@ const EditGym: React.FC = () => {
     name = "name";
   }
   const [gymName, setGymName] = useState<string>(name);
+  const [loading, setLoading] = useState<boolean>(false);
+
 
   //get addressand address hook
   var address: string = urlParams.get("address");
@@ -73,6 +76,7 @@ const EditGym: React.FC = () => {
   let gymIcon: string = "logo";
   const addGym = () => {
     setShowToast1(true)
+    setLoading(true)
     fetch(
     `https://gym-king.herokuapp.com/gyms/gym`,
     {
@@ -93,10 +97,12 @@ const EditGym: React.FC = () => {
     .then((response) => response.json())
     .then((response) => {
       console.log(response);
+      setLoading(false)
     })
     .catch((err) => {
       console.log(err);
       setShowToast1(true)
+      setLoading(false)
     });
   };
 //GEO CODER API
@@ -202,6 +208,15 @@ const EditGym: React.FC = () => {
         message="Error adding gym."
         duration={500}
         color="danger"
+      />
+      <IonLoading 
+          isOpen={loading}
+          message={"Loading"}
+          duration={2000}
+          spinner={"circles"}
+          onDidDismiss={() => setLoading(false)}
+          cssClass={"spinner"}
+          
       />
       </IonContent>
     </IonPage>
