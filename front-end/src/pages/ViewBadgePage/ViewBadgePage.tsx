@@ -17,7 +17,7 @@ const ViewBadgePage: React.FC = () =>{
         //GET REQUEST:
         useEffect(()=>
         {
-            var gymid="wSek"
+            let gymid = sessionStorage.getItem("gid");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/badges/gym/${gymid}`,{
                 "method":"GET"

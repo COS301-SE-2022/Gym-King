@@ -8,6 +8,7 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
 
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 import "./CreateBadge.css";
+import { useHistory } from 'react-router-dom';
 
 
 //export type CreateBadge = {act?:any}
@@ -22,6 +23,8 @@ import "./CreateBadge.css";
         const [showToast, setShowToast] = useState(false);
         const [ownedGyms, setOwnedGyms] = useState([]);
         let formData:any;
+        let history=useHistory()
+
 
 
         //METHODS
@@ -62,7 +65,6 @@ import "./CreateBadge.css";
 
         // CREATE BADGE POST REQUEST 
         const createBadge=()=>{
-            let gid = 'uU3p';   //temp value for testing 
             let at = localStorage.getItem('act')
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
@@ -77,7 +79,7 @@ import "./CreateBadge.css";
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    gid: gid,
+                    gid: gymId,
                     badgename: bn,
                     badgedescription: bd,
                     badgechallenge: bc,
@@ -91,14 +93,14 @@ import "./CreateBadge.css";
                 setShowToast(true);
 
                 //redirect to view badges (gym owner) 
-                window.location.href = "http://localhost:3000/GymOwner-ViewBadges";
+                history.push("/GymOwner-ViewBadges");
             })
             .catch(err => {console.log(err)}) 
         }
 
         // OWNED GYMS GET REQUEST 
         useEffect(()=>{
-            let gymOwner = "u20519517@tuks.co.za"
+            let gymOwner = localStorage.getItem("email")
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
                 "method":"GET"
             })

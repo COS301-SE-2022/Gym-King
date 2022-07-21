@@ -39,7 +39,6 @@ const EditBadge: React.FC = () =>{
                     badgeDescription: e.target.badgeDescription.value,
                     badgeChallenge:e.target.badgeChallenge.value,
                     activityType: localStorage.getItem('act'),
-                    gymName: gymId
                 };
                 
                 
@@ -68,7 +67,6 @@ const EditBadge: React.FC = () =>{
                 setBadgename(response.badgename)
                 setChallenge(response.badgechallenge)
                 setGymId(response.g_id)
-                
                 setLoading(false)
             })
             .catch(err => {
@@ -80,13 +78,11 @@ const EditBadge: React.FC = () =>{
 
         // UPDATE BADGE PUT REQUEST 
         const updateBadge= ()=>{
-            let gymid= gymId
             let badgeicon = "BADGE ICON"
             let at = localStorage.getItem('act');
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
-            //console.log(formData);
             
             fetch(`https://gym-king.herokuapp.com/badges/badge`,{
                 "method":"PUT",
@@ -96,7 +92,7 @@ const EditBadge: React.FC = () =>{
                 },
                 body: JSON.stringify({ 
                     bid: badgeId,
-                    gid: gymid,
+                    gid: gymId,
                     badgename: bn,
                     badgedescription: bd,
                     badgechallenge: bc,

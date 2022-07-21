@@ -1,11 +1,9 @@
 import {IonContent, IonPage, IonHeader,  IonButton, IonCardSubtitle, IonCard, IonCardTitle, IonModal, createAnimation} from '@ionic/react';
 import React, { useState } from 'react';
-import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import './GymPage.css';
-var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/OwnerProfile'},
-                     {'caption':'Settings','icon':'cog','route':'/Settings'}] 
+import { useHistory } from 'react-router-dom';
 
 
 const GymPage: React.FC = () =>{
@@ -13,6 +11,7 @@ const GymPage: React.FC = () =>{
     let gid = sessionStorage.getItem("gid");
     let gname = sessionStorage.getItem("gym_brandname");
     let gaddress = sessionStorage.getItem("gym_address");
+    let history=useHistory()
 
 
     const [showModal, setShowModal] = useState(false);
@@ -41,21 +40,27 @@ const GymPage: React.FC = () =>{
     const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
     }
+    
+    const goToViewBadges = () =>{
+        history.push("/ViewBadges")
+    }
+    const goToLeaderboard = () =>{
+        history.push("/Leaderboard")
+    }
 
     return(
         <IonPage >
             <IonHeader>
-                <ToolBar menu={true} ></ToolBar>
+                <ToolBar></ToolBar>
             </IonHeader>
-            <BurgerMenu listItems={Menulist}></BurgerMenu>
             <br></br>
             <IonContent fullscreen className ='Content' id="main">
-                <IonCard>
-                    <IonCardTitle className='center'>{gname}</IonCardTitle>
-                    <IonCardSubtitle className='center'>{gaddress}</IonCardSubtitle>
+                <IonCard className="glass gym centerComp">
+                    <IonCardTitle className='center PageTitle'>{gname}</IonCardTitle>
+                    <IonCardSubtitle className='center subheading'>{gaddress}</IonCardSubtitle>
                     
-                    <IonButton>View Badges</IonButton>
-                    <IonButton onClick={()=>{setShowModal(true)}}>View Leaderboard</IonButton>
+                    <IonButton color="warning" onClick={goToViewBadges}>View Badges</IonButton>
+                    <IonButton color='warning' onClick={goToLeaderboard}>View Leaderboard</IonButton>
                 </IonCard>
                 
                 <IonModal id="main" showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
