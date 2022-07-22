@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewWillEnter} from '@ionic/react';
 import React, { useState} from 'react';
 import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
@@ -145,7 +145,4 @@ export const AddEmployee: React.FC = () =>{
 }
 
 export default AddEmployee;
-function useIonViewWillEnter(arg0: () => void) {
-    throw new Error('Function not implemented.');
-}
 

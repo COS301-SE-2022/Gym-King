@@ -1,5 +1,5 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg} from '@ionic/react';
-import React, {useRef, useState} from 'react'
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
+import React, {useRef, useState, } from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useHistory } from 'react-router-dom';
@@ -208,7 +208,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
@@ -345,8 +345,3 @@ const UserProfilePage: React.FC = () =>{
 }
 
 export default UserProfilePage;
-
-function useIonViewWillEnter(arg0: () => void, arg1: string[]) {
-    throw new Error('Function not implemented.');
-}
-

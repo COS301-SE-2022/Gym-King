@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -64,7 +64,3 @@ const PendingBadgesPage: React.FC = () =>{
 }
 
 export default PendingBadgesPage;
-function useIonViewWillEnter(arg0: () => void, arg1: never[]) {
-    throw new Error('Function not implemented.');
-}
-

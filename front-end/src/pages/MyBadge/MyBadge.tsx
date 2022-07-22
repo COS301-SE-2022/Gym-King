@@ -12,6 +12,7 @@ const MyBadge: React.FC = () =>{
     const [badges, setBadges] = useState(new Array<any>());
     let history=useHistory()
     const [loading, setLoading] = useState<boolean>(false);
+    
     useIonViewWillEnter(()=>{
         let email=localStorage.getItem("email")
         setLoading(true)

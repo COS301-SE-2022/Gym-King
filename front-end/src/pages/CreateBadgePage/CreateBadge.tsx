@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewWillEnter} from '@ionic/react';
 
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {  useState } from 'react';
@@ -169,7 +169,5 @@ import { useHistory } from 'react-router-dom';
 }
 
 export default CreateBadge;
-function useIonViewWillEnter(arg0: () => void) {
-    throw new Error('Function not implemented.');
-}
+
 

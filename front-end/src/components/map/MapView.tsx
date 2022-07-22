@@ -274,7 +274,7 @@ const MapView: React.FC = () =>{
             {/* <IonBadge > */}
                 <IonCard style={{"margin":"0px"}} >
                     <IonCardHeader>
-                        <IonCardTitle className='center PageTitleNoPadding'>{gymData.gym_brandname}</IonCardTitle>
+                        <IonCardTitle className='center Subheading'>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox">
                         <IonButtons>

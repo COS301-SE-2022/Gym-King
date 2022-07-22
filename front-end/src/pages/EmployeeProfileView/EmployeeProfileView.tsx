@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -156,7 +156,3 @@ const EmployeeProfileViewPage: React.FC = () =>{
 }
 
 export default EmployeeProfileViewPage;
-function useIonViewWillEnter(arg0: () => void, arg1: never[]) {
-    throw new Error('Function not implemented.');
-}
-

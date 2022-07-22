@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewWillEnter} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
@@ -216,7 +216,3 @@ const EditBadge: React.FC = () =>{
 }
 
 export default EditBadge;
-function useIonViewWillEnter(arg0: () => void, arg1: (string | null)[]) {
-    throw new Error('Function not implemented.');
-}
-

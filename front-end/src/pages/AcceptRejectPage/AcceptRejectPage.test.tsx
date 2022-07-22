@@ -1,13 +1,13 @@
 import { render, wait } from '@testing-library/react';
 import { useEffect } from 'react';
-import AcceptRejectPage from './AcceptReject'
+//import AcceptRejectPage from './AcceptReject'
 const request = require('supertest');
 
 
 ////TESTS TO BE PERFORMED////
 /*
 */
-
+/*
 test('renders without crashing', () => {
     const { baseElement } = render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
@@ -62,3 +62,4 @@ describe('Integration Tests', () => {
     
     });
 })
+*/

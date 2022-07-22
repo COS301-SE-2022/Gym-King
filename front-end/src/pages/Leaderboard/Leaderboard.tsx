@@ -1,4 +1,4 @@
-import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText} from '@ionic/react';
+import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, useIonViewWillEnter} from '@ionic/react';
 import React, {  useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -170,7 +170,4 @@ const Leaderboard: React.FC = () =>{
 }
 
 export default Leaderboard;
-function useIonViewWillEnter(arg0: () => void, arg1: never[]) {
-    throw new Error('Function not implemented.');
-}
 
