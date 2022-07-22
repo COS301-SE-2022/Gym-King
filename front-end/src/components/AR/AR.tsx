@@ -118,14 +118,9 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
      * saves users location to a var
      */    
     const ViewAR = () =>{
-        // console.log(AndroidLink());
 
         // check if the component inputs are valid
-        if(validInputs()){
-
-            // console.log("ViewAR Clicked") ; 
-            // console.log(AndroidLink())     
-            // console.log(IosLink())       
+        if(validInputs()){    
             
             // check if IOS device
             if(IsiOS()){
