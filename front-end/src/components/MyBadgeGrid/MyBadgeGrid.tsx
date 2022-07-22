@@ -41,7 +41,7 @@ export const MyBadgeGrid=(prop:{badges:any[],filters:any[],sort:string})=>{
             <IonRow  className="ion-align-items-center">
                 {arr.map(el => 
                     <IonCol className="center" key={el.id}>
-                    <MyBadgeCard id={el.id} name={el.name} qty={el.qty} badgeEmblem={el.icon[1]} badgeRank={el.icon[0]}></MyBadgeCard>
+                    <MyBadgeCard id={el.id} name={el.name} qty={el.qty} badgeEmblem={el.icon[1].split} badgeRank={el.icon[0]}></MyBadgeCard>
                     </IonCol>)}
             </IonRow>
         </IonGrid>
