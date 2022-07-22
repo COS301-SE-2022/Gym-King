@@ -280,6 +280,7 @@ const MapView: React.FC = () =>{
                         <IonButtons>
                             <IonButton  
                                 shape='round' 
+                                color="white"
                                 className='btn'
                                 onClick={()=>{
 

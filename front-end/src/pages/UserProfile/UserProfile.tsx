@@ -197,7 +197,7 @@ const UserProfilePage: React.FC = () =>{
 
 
         return(
-            <IonPage color='#220FE' >
+            <IonPage >
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
