@@ -124,6 +124,12 @@ span{
   color:white;
 }
 
+ion-button{
+  width:80%;
+  margin-left: 10%;
+  margin-right:10%;
+}
+
 .PageTitle
 {
     font-size:2em;

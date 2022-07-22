@@ -281,11 +281,11 @@ const OwnerProfilePage: React.FC = () =>{
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="white" onClick={dismiss}>Close</IonButton>
+                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="white" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
