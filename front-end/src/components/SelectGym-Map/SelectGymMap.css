@@ -2,3 +2,12 @@
     --border-radius: 5px !important;
     width: 7em;
 }
+
+#GymPicture{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+
+}

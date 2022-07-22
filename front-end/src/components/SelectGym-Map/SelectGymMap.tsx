@@ -8,6 +8,7 @@ import Geocoder from "react-native-geocoding";
 import { Geolocation } from '@ionic-native/geolocation';
 import { useHistory } from "react-router-dom";
 
+import image from '../../icons/gym.png'
 export function SelectGymMap() {
 
   const history=useHistory()
@@ -25,7 +26,6 @@ export function SelectGymMap() {
   {
     height=500;
   }
-  const image:string="https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png"
 
   const [center, setCenter] = useState([-25.7545 ,28.2314 ])
   const [gymCoord,setGymCoord]=useState([-25.7545 ,28.2314 ])
@@ -106,6 +106,7 @@ export function SelectGymMap() {
         .catch((error) => console.warn(error));
     }
   };
+  
   return (
     <div>
     <Map
@@ -114,7 +115,8 @@ export function SelectGymMap() {
      height={height}
      center={[center[0],center[1]]} 
      zoom={zoom}
-     maxZoom={17}
+     maxZoom={17.4}
+     minZoom={13}
      onBoundsChanged={({ center, zoom }) => { 
       if(!lock){
         setGymCoord([center[0],center[1]])
@@ -122,8 +124,8 @@ export function SelectGymMap() {
       setZoom(zoom) 
       setCenter(center)
      }} >
-       <Overlay anchor={[gymCoord[0],gymCoord[1]]} offset={[30,30]} >
-          <img src={image} width={80} height={80} alt='building icon' />
+       <Overlay anchor={[gymCoord[0],gymCoord[1]]} offset={[15,31]} >
+          <img src={image}  alt='building icon' id ="GymPicture"/>
         </Overlay>
     </Map>
     <IonFab vertical="top" horizontal="end" slot="fixed">

@@ -22,6 +22,7 @@ import { useHistory } from 'react-router-dom';
         const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
         const [ownedGyms, setOwnedGyms] = useState([]);
+        const [badgename, setBadgename] = useState('');
         let formData:any;
         let history=useHistory()
 
@@ -112,7 +113,12 @@ import { useHistory } from 'react-router-dom';
             .catch(err => {console.log(err)}) 
         })
 
-        
+        const changeName = (e:any) =>{
+            
+            console.log(e.target.value)
+            setBadgename(e.target.value)
+            
+        }
         return(
         
             <IonPage color='#220FE' >
@@ -122,9 +128,9 @@ import { useHistory } from 'react-router-dom';
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Creating Badge</IonText>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} >
                         <IonText className='inputHeading leftMargin'>Badge Name:</IonText> <br></br><br></br>
-                        <IonInput name='badgeName' type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                        <IonInput name='badgeName' onKeyUp={changeName} type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
                         <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
                         <SegmentButton  list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
@@ -140,7 +146,7 @@ import { useHistory } from 'react-router-dom';
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
 
-                        <BadgeSlider name = "badgeIcon"></BadgeSlider>
+                        <BadgeSlider name = {badgename}></BadgeSlider>
 
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
