@@ -24,7 +24,7 @@ export interface ARInputProps {
  * 
  * @param inp - used to determine what badge to fetch from the API
  * @param inp.rank - the rank of the ARbadge model "b", "s", "g" ...etc
- * @param inp.emblem - the rank of the ARbadge model "bicep", "situp", "gym" ...etc  
+ * @param inp.emblem - the emblem of the ARbadge model "bicep", "situp", "gym" ...etc  
  * @result opens up AR scene 
  */
 const AR: React.FC<ARInputProps> = ( inp ) => {
