@@ -1,6 +1,5 @@
 import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast, IonLoading, useIonViewWillEnter} from '@ionic/react';
-import React, {  useState } from 'react';
-import FileChooser from '../../components/filechooser/FileChooser';
+import React, {  useRef, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
@@ -8,20 +7,21 @@ import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
 
-
+interface InternalValues {
+    file: any;
+}
 export type UploadActivityStates = {act?:any}
 
 const UploadActivityPage: React.FC = () =>{
-
+        
         // STATES AND VARIABLES 
         const [isValid, setIsValid] = useState(false);
         const [submitted, setSubmitted] = useState(false);
-        let email = localStorage.getItem("email")  
-                      
+        let email = localStorage.getItem("email") 
         localStorage.setItem( 'e1', "");
         localStorage.setItem( 'e2', "");
         localStorage.setItem( 'e3', "");
-        let formData: any
+        let formdata: any
         const [showToast1, setShowToast1] = useState(false);
         const [b_id, setB_id] = useState('');
         const [badgename, setBadgename] = useState('');
@@ -30,28 +30,25 @@ const UploadActivityPage: React.FC = () =>{
         const [loading, setLoading] = useState<boolean>(false);
         const [username, setUsername]=useState("");
         let history=useHistory()
-
-
         
-
         //METHODS 
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
-            formData={
+            formdata={
                 i1: e.target.i1.value,
                 i2: e.target.i2.value,
                 i3: e.target.i3.value,
             };
             //console.log(formData);
 
-            if(formData.i1 == null)
+            if(formdata.i1 == null)
                 localStorage.setItem( 'e1', "This field is required");
-            if(formData.i2 == null)
+            if(formdata.i2 == null)
                 localStorage.setItem( 'e2', "This field is required");
-            if(formData.i3 == null)
+            if(formdata.i3 == null)
                 localStorage.setItem( 'e3', "This field is required");
 
-            const isValid = await claimSchema.isValid(formData);
+            const isValid = await claimSchema.isValid(formdata);
             setSubmitted(true);
             if(isValid)
             {
@@ -102,6 +99,7 @@ const UploadActivityPage: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 setUsername(response.username);
+                console.log(username)
                 setLoading(false);
                 
             })
@@ -110,29 +108,35 @@ const UploadActivityPage: React.FC = () =>{
                 setLoading(false)
             })
         })
-
-
+        const values =useRef<InternalValues>({
+            file: false,
+        });
+        const onFileChange = (fileChangeEvent: any) => {
+            values.current.file = fileChangeEvent.target.files[0];
+            submitImage()
+        };
+        const submitImage = () =>{
+            if (!values.current.file) {
+                return false;
+            }    
+        }
         // SEND CLAIM POST REQUEST 
         const sendClaim=()=>{
-            
-            let i1= formData.i1;
-            let i2= formData.i2;
-            let i3= formData.i3;
+            let i1= formdata.i1;
+            let i2= formdata.i2;
+            let i3= formdata.i3;
+            let formData = new FormData();
+                formData.append("bid", b_id)
+                formData.append("email", email!)
+                formData.append("password", localStorage.getItem("password")!)
+                formData.append("input1", i1)
+                formData.append("input2", i2)
+                formData.append("input3", i3)
+                formData.append('proof', values.current.file, values.current.file.name);
+                console.log(formData);
             fetch(`https://gym-king.herokuapp.com/claims/claim`,{
                 "method":"POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    bid: b_id,
-                    email: email,
-                    username: username,
-                    input1: i1,
-                    input2: i2,
-                    input3: i3,
-                    proof: "PROOF"
-                })
+                body: formData
             })
             .then(response =>response.json())
             .then(response =>{
@@ -143,7 +147,6 @@ const UploadActivityPage: React.FC = () =>{
             })
             .catch(err => {console.log(err)}) 
         }
-    
     
         return(
         
@@ -167,7 +170,7 @@ const UploadActivityPage: React.FC = () =>{
                                 <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
-                        <FileChooser numFiles={0}></FileChooser>
+                        <input  type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                         <br></br>
                         <IonButton className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
