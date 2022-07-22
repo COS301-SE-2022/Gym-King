@@ -12362,6 +12362,11 @@ react-refresh@^0.11.0:
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz"
   integrity sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==
 
+react-rounded-image@^2.0.14:
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/react-rounded-image/-/react-rounded-image-2.0.14.tgz#38335128e543a767e084b383765411f09b1b70bb"
+  integrity sha512-kTfjC73j2PCuwrFTtz8KEUhg8T4olJypazIy7BC4TwXLiPKJEIVP8e26MvQnHhXz1JUu73Li+9mLV3QIoX+TXw==
+
 react-router-dom@^5.2.0:
   version "5.3.1"
   resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-5.3.1.tgz"

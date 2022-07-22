@@ -235,6 +235,17 @@ ion-card{
   --height: 4em;
 }
 
+.userImage{
+  height: 7em;
+  width: 7em;
+  background-color: #bbb ;
+}
+
+.contain
+{
+  background-size: contain;
+}
+
 
 .md body {
   --ion-background-color: var(--ion-color-secondary);
