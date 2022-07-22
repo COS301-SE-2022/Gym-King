@@ -1,11 +1,17 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast, useIonViewWillEnter} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 
 
 export const Login: React.FC = () =>{
+    useIonViewWillEnter(()=>{
+        if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
+        {
+            navigate()
+        }
+    })
     let formData:any;
     let history=useHistory()
     const [showToast, setShowToast] = useState(false);
@@ -31,6 +37,7 @@ export const Login: React.FC = () =>{
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
                    localStorage.setItem("password", formData.password)
+                   localStorage.setItem("usertype",formData.usertype)
                    navigate();
                 }else{
                     
@@ -44,11 +51,12 @@ export const Login: React.FC = () =>{
             })
     } 
     const navigate=()=>{
-        if(formData.usertype==="gym_user")
+        let usertype=localStorage.getItem("usertype")
+        if(usertype==="gym_user")
         {
             history.push("/userMap")
         }
-        else if(formData.usertype==="gym_owner")
+        else if(usertype==="gym_owner")
         {
             history.push("/GymOwnerPage")
         }

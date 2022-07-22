@@ -93,7 +93,7 @@ import { useHistory } from 'react-router-dom';
                 setShowToast(true);
 
                 //redirect to view badges (gym owner) 
-                history.push("/GymOwner-ViewBadges");
+                history.goBack();
             })
             .catch(err => {console.log(err)}) 
         }

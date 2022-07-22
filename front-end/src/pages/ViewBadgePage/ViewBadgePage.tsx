@@ -1,5 +1,5 @@
-import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow, IonLoading} from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import React, { useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
 import './ViewBadgePage.css';
@@ -10,7 +10,7 @@ const ViewBadgePage: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
         //GET REQUEST:
-        useEffect(()=>
+        useIonViewWillEnter(()=>
         {
             let gymid = sessionStorage.getItem("gid");
             setLoading(true)
@@ -23,7 +23,6 @@ const ViewBadgePage: React.FC = () =>{
                 for(let i=0;i<response.length;i++)
                 {
                     let icon=response[i].badgeicon.split("_")
-                    console.log(response)
                     arr.push({
                         'b_id':response[i].b_id,
                         'badgename':response[i].badgename,
