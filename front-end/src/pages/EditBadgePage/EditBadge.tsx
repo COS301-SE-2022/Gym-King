@@ -1,6 +1,6 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewWillEnter} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
-import React, {useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import { useHistory } from 'react-router-dom';
@@ -57,7 +57,7 @@ const EditBadge: React.FC = () =>{
 
         
         // GET BADGES REQUEST 
-        useEffect( ()=>{
+        useIonViewWillEnter( ()=>{
 
             setLoading(true)
             

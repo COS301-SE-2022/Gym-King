@@ -1,12 +1,10 @@
 import {IonToolbar, IonContent, IonHeader, IonItem,  IonList, IonMenu, IonTitle, IonMenuToggle,  IonLabel, IonIcon} from '@ionic/react';
 import { exit } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
 
 import './BurgerMenu.css'
 /*look at viewbadge page to see implementation
 */
 export const BurgerMenu=(props:{listItems:any[]})=>{
-        const history=useHistory()
         return(
                 <IonMenu side="start" menuId="first" contentId='main'>
                     <IonHeader>
@@ -30,7 +28,7 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                                                         localStorage.removeItem("email")
                                                         localStorage.removeItem("password")
                                                         localStorage.removeItem("usertype")
-                                                        history.goBack()
+                                                        window.location.href="http://localhost:3000/Login"
                                                     }}>
                                 
                                 <IonIcon icon={exit} ></IonIcon>

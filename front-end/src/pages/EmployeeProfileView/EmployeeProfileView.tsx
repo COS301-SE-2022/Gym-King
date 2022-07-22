@@ -1,7 +1,6 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import { useEffect } from 'react';
 
 
 
@@ -32,7 +31,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setLoading(true)
         //get employee information 
         setEmail(localStorage.getItem("employee_email"))

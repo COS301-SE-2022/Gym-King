@@ -74,7 +74,7 @@ http://ionicframework.com/docs/theming/ */
 .ios body {
   --ion-background-color: var(--ion-color-secondary);
   --ion-background-color-rgb: 18,18,18;
-  --ion-text-color: #ffffff;
+  --ion-text-color: white;
   --ion-text-color-rgb: 255,255,255;
 
   --ion-color-step-50: #301d8c;
@@ -120,6 +120,15 @@ http://ionicframework.com/docs/theming/ */
 {
     padding:5em;
 }
+span{
+  color:white;
+}
+
+ion-button{
+  width:80%;
+  margin-left: 10%;
+  margin-right:10%;
+}
 
 .PageTitle
 {
@@ -127,7 +136,11 @@ http://ionicframework.com/docs/theming/ */
     font-family: 'Comfortaa', cursive;
     padding:5%;
 }
-
+.PageTitleNoPadding
+{
+    font-size:2em;
+    font-family: 'Comfortaa', cursive;
+}
 .Subheading
 {
     font-family: 'Comfortaa', cursive;

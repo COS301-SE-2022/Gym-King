@@ -1,4 +1,6 @@
-
+body{
+    --ion-card-color:white;
+}
 .profileCard{
     width:25em;
 }

@@ -1,13 +1,12 @@
-import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonRow, IonText} from '@ionic/react';
+import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonImg, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import {personCircleOutline} from 'ionicons/icons';
-import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
 
 //creating a type so props can be entered
-export type props = {userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any};
+export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any};
 
 
 export class AcceptRejectCard extends React.Component<props>{
@@ -80,7 +79,7 @@ export class AcceptRejectCard extends React.Component<props>{
                     <IonText className='Subheading'>Proof:</IonText>
                     <IonCard className='justify'>
                         <IonCardContent >
-                            <IonIcon icon={documentOutline} className='imgIcon'></IonIcon>     
+                            <IonImg src={this.props.proof}></IonImg> 
                         </IonCardContent>
                     </IonCard>
                     <IonGrid>

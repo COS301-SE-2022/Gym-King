@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import ActivityList from '../ActivityList/ActivityList';
 import AcceptRejectCard from './AcceptRejectCard'
 
-
+/*
 test('renders without crashing', () => {
     const { baseElement } = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="" history=""/>);
     expect(baseElement).toBeDefined();
@@ -15,7 +15,6 @@ test('renders without crashing', () => {
   - test if the reject button works 
   - test if badge image displays
   - test if proof displays 
-*/
 
 describe('Testing prop text values', () => {
   let username = "user1"
@@ -38,13 +37,13 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("2");
     expect (baseElement).toHaveTextContent("3");
   });
-  /*
+  
   test('correctly displays cardio activitytype inputs', async () => {
     const {baseElement} = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="CARDIO" />);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
-  });  */
+  });  
 
   test('correctly displays badgename', async () => {
     const {baseElement} = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="badge" i1="" i2="" i3="" activitytype="" history=""/>);
@@ -52,3 +51,4 @@ describe('Testing prop text values', () => {
   });
 });
 
+*/

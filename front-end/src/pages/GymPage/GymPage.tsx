@@ -57,10 +57,10 @@ const GymPage: React.FC = () =>{
             <IonContent fullscreen className ='Content' id="main">
                 <IonCard className="glass gym centerComp">
                     <IonCardTitle className='center PageTitle'>{gname}</IonCardTitle>
-                    <IonCardSubtitle className='center subheading'>{gaddress}</IonCardSubtitle>
+                    <IonCardSubtitle color="light" className='center subheading'>{gaddress}</IonCardSubtitle>
                     
-                    <IonButton color="warning" onClick={goToViewBadges}>View Badges</IonButton>
-                    <IonButton color='warning' onClick={goToLeaderboard}>View Leaderboard</IonButton>
+                    <IonButton color="warning" onClick={goToViewBadges} className="width80 centerComp">View Badges</IonButton>
+                    <IonButton color='warning' onClick={goToLeaderboard} className="width80 centerComp" >View Leaderboard</IonButton>
                 </IonCard>
                 
                 <IonModal id="main" showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>

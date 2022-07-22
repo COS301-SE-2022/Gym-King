@@ -61,6 +61,6 @@ ion-input{
 
 .btn{
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
-	border-radius:5px !important; 
+	border-radius:5px !important;
+    width:50%;
 }
-

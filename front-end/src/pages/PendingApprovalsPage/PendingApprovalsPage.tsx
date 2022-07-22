@@ -1,6 +1,5 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
-import { useEffect } from 'react';
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
@@ -21,7 +20,7 @@ const PendingApprovalsPage: React.FC = () =>{
 
 
     //GET REQUEST:
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setLoading(true)
         //get employee information 
         fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
@@ -40,6 +39,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 console.log(response)
 
                 setGymId(response.g_id.g_id)
+                localStorage.setItem("gid", response.g_id.g_id)
 
                 setLoading(false);
             })
@@ -48,7 +48,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 setLoading(false);
             })
         console.log(gymId);
-        fetch(`https://gym-king.herokuapp.com/claims/gym/${gymId}`,{
+        fetch(`https://gym-king.herokuapp.com/claims/gym/${localStorage.getItem("gid")}`,{
             "method":"GET"
         })
         .then(response =>response.json())
@@ -99,3 +99,4 @@ const PendingApprovalsPage: React.FC = () =>{
 }
 
 export default PendingApprovalsPage;
+
