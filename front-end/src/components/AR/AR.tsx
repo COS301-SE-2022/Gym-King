@@ -3,6 +3,10 @@ import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
 
+
+/**
+ * @brief inteface input for IonToast 
+ */
 interface inputError {
     showError: boolean;
     message?: String;
