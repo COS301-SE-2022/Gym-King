@@ -6,11 +6,13 @@ import React, { useRef } from 'react';
 import './BadgeCanvas.css'
 
 export interface BadgeCanvasInputProps {
+    name:string,
     rank: string,
     emblem: string    
 }
 
 export const BadgeCanvas: React.FC<BadgeCanvasInputProps> = ({
+    name,
     rank,
     emblem  
   }) => {
@@ -25,7 +27,7 @@ export const BadgeCanvas: React.FC<BadgeCanvasInputProps> = ({
         <>
         <IonCard>
             <IonCardHeader>
-                <IonCardTitle className='inputHeading' class ="ion-text-center">Badge</IonCardTitle> 
+                <IonCardTitle className='inputHeading' class ="ion-text-center">{name}</IonCardTitle> 
 
 
             </IonCardHeader>

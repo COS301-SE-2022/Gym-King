@@ -1,10 +1,13 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+interface InternalValues {
+    file: any;
+}
 
 const UserProfilePage: React.FC = () =>{
     
@@ -14,6 +17,7 @@ const UserProfilePage: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
     const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
@@ -22,6 +26,7 @@ const UserProfilePage: React.FC = () =>{
     const [showFail, setShowFail] = useState(false);
     const [numClaims, setNumClaims] = useState("");
     const [numBadges, setNumBadges] = useState("");
+    const [profilePicture, setProfilePicture] = useState('');
 
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
@@ -78,7 +83,9 @@ const UserProfilePage: React.FC = () =>{
                 setSurname( response.surname);
                 setPhone( response.number);
                 setUsername(response.username);
-
+                setPassword(localStorage.getItem("password")!);
+                setProfilePicture(response.profile_picture)
+                localStorage.setItem("profilepicture", profilePicture)
                 setLoading(false);
                 
             })
@@ -90,7 +97,8 @@ const UserProfilePage: React.FC = () =>{
         getNumberOfBadges()
         getNumberOfClaims()
          // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+
+    },[profilePicture])
 
     const updateUserDetails = () =>{
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
@@ -156,6 +164,36 @@ const UserProfilePage: React.FC = () =>{
         history.push("/PendingBadges")
     }
     
+    //images
+    const values =useRef<InternalValues>(
+    {
+      file: false,
+    });
+    const onFileChange = (fileChangeEvent: any) => {
+        values.current.file = fileChangeEvent.target.files[0];
+        submitImage()
+      };
+    const submitImage = () =>{
+        if (!values.current.file) {
+            return false;
+        }
+
+        let formData = new FormData();
+        formData.append("email", email)
+        formData.append("password", password)
+        formData.append('profilepicture', values.current.file, values.current.file.name);
+
+        fetch(`https://gym-king.herokuapp.com/users/user/picture`,{
+                "method":"PUT",
+                body: formData
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+            })
+            .catch(err => {console.log(err)}) 
+        
+    }
 
 
         return(
@@ -167,11 +205,12 @@ const UserProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard">
+                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <span className="userImage centerComp"></span>
+                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
@@ -231,6 +270,9 @@ const UserProfilePage: React.FC = () =>{
                     </IonGrid>
 
                     <br></br>
+                    
+
+
 
                     <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         

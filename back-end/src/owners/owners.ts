@@ -6,10 +6,14 @@ import { employeeRepository } from "../repositories/gym_employee.repository";
 import { gymOwnedRepository } from "../repositories/gym_owned.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
+import { storageRef } from "../firebase.connection";
 
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const ownerpicture = multer();
+const { v4: uuidv4 } = require('uuid');
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -96,6 +100,21 @@ const owners = express.Router()
       const results = { success: false, results: err };
       console.error(err);
       res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET a owners profile picture.
+   * @param {string} email employee email.
+   * @returns {image} 
+   */
+   .get('/owners/owner/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.email;
+    const owner = await ownerRepository.findByEmail(query);
+    if (owner != null){
+      res.json(owner.profile_picture);
+    } else{
+      res.json({'message':'Invalid email!'})
     }
   })
   //=========================================================================================================//
@@ -204,6 +223,73 @@ const owners = express.Router()
       res.json(results);
     }
    })
+   //=========================================================================================================//
+  /**
+   * PUT update a owner user profile picture.
+   * @param {string} email The email of the owner.
+   * @param {string} password The password the owner (NOT ecrypted).
+   * @param {file} profilepicture the picture.
+   * @returns message informing successful update.
+   */
+   .put('/owners/owner/picture', ownerpicture.single('profilepicture'), cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const file = req.file;
+      const bcrypt = require('bcryptjs')
+      const owner = await ownerRepository.findByEmail(query.email);
+      let oldFileName = '';
+      if (owner.profile_picture != null && owner.profile_picture.includes('/')){
+        oldFileName = owner.profile_picture.split('/');
+        if (oldFileName.length == 5){
+          oldFileName = oldFileName[4];
+          oldFileName = oldFileName.replace('%2F','/')
+        }
+        else{
+          oldFileName = 'empty';
+        }
+      }
+      else {
+        oldFileName = 'empty';
+      }
+      if (bcrypt.compareSync(query.password, owner.password)) {
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+        let newFileName = ``;
+        if (file.mimetype == 'image/jpeg'){
+          newFileName = `owners/${Date.now()}.jpg`;
+        }
+        else if (file.mimetype == 'image/png') {
+          newFileName = `owners/${Date.now()}.png`;
+        }
+        else {
+          res.json({'message':'Invalid file type.'})
+          return;
+        }
+        const blob = storageRef.file(newFileName);
+        const blobStream = blob.createWriteStream({
+          resumable: false,
+          metadata: {
+            firebaseStorageDownloadTokens: uuidv4(),
+          }
+        });
+        blobStream.on('error', err => {
+          res.json({'success':false})
+        });
+        blobStream.on('finish', async () => {
+          await storageRef.file(newFileName).makePublic();
+          await ownerRepository.updateOwnerProfilePicture(owner.email,storageRef.file(newFileName).publicUrl());
+          res.json({'success':true});
+        });
+        blobStream.end(req.file.buffer);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
    //=========================================================================================================//
   /**
    * PUT update a gym owner.
@@ -340,20 +426,35 @@ const owners = express.Router()
        let query = req.body;
        const bcrypt = require('bcryptjs')
        const owner = await ownerRepository.findByEmail(query.email);
-       if (bcrypt.compareSync(query.password, owner.password)) {
-         let result = await gymOwnedRepository.deleteAllByEmail(owner.email);
-         result = await ownerOTPRepository.deleteOwnerOTP(owner.email);
-         result = await ownerRepository.deleteOwner(owner.email);
-         const results = { 'success': true };
-         res.json(results);
-       }
-       else {
-         res.json({'message':'Invalid email or password!'})
-       }
-     } catch (err) {
-       const results = { success: false, results: err };
-       console.error(err);
-       res.json(results);
-     }
-   })
+       let oldFileName = '';
+      if (owner.profile_picture != null && owner.profile_picture.includes('/')){
+        oldFileName = owner.profile_picture.split('/');
+        if (oldFileName.length == 5){
+          oldFileName = oldFileName[4];
+          oldFileName = oldFileName.replace('%2F','/')
+        }
+        else{
+          oldFileName = 'empty';
+        }
+      }
+      else {
+        oldFileName = 'empty';
+      }
+      if (bcrypt.compareSync(query.password, owner.password)) {
+        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+        let result = await gymOwnedRepository.deleteAllByEmail(owner.email);
+        result = await ownerOTPRepository.deleteOwnerOTP(owner.email);
+        result = await ownerRepository.deleteOwner(owner.email);
+        const results = { 'success': true };
+        res.json(results);
+      }
+      else {
+        res.json({'message':'Invalid email or password!'})
+      }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
 export {owners};

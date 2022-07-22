@@ -35,6 +35,9 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
         const bcrypt = require('bcryptjs')
         return await this.manager.update(gym_employee, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
     },
+    async updateEmployeeProfilePicture(email: string, profilepicture: string) {
+        return await this.manager.update(gym_employee, { email: email }, {profile_picture: profilepicture})
+    },
     async saveEmployee(email: string, name: string, surname: string, number: string, username: string, password: string, gid: string) {
         const result = await gymRepository.findByGID(gid);
         const gymEntity = new gym();
