@@ -6,13 +6,12 @@ import {documentOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 //creating a type so props can be entered
-export type props = {userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any};
+export type props = {userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any};
 
 
 export class AcceptRejectCard extends React.Component<props>{
-
+    
     acceptClaim= ()=>{
         fetch(`https://gym-king.herokuapp.com/claims/claim`,{
             "method":"PUT",
@@ -30,7 +29,7 @@ export class AcceptRejectCard extends React.Component<props>{
 /*
             let history=useHistory()
             history.push("/PendingApprovals");*/
-            window.location.href ="http://localhost:3000/PendingApprovals"
+            this.props.history.goBack()
 
         })
         .catch(err => {console.log(err)}) 
@@ -55,7 +54,7 @@ export class AcceptRejectCard extends React.Component<props>{
             /*
             let history=useHistory()
             history.push("/PendingApprovals"); */
-            window.location.href ="http://localhost:3000/PendingApprovals"
+            this.props.history.goBack()
 
         })
         .catch(err => {console.log(err)})

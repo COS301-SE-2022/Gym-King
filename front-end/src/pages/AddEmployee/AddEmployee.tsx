@@ -73,7 +73,7 @@ export const AddEmployee: React.FC = () =>{
                 setShowSuccessToast(true);
 
                 //redirect to view badges (gym owner) 
-                history.push("/ManageEmployees");
+                history.goBack();
             })
             .catch(err => {
                 setShowError1Toast(true);
