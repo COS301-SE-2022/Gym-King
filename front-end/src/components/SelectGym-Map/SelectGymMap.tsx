@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Map, Overlay} from "pigeon-maps";
 import { IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonItem, IonLabel, IonModal, IonRow, IonSearchbar, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
 import "./SelectGymMap.css"
