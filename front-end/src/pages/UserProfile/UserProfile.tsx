@@ -204,7 +204,7 @@ const UserProfilePage: React.FC = () =>{
                 <IonContent>
                     <br></br>
                     <IonGrid>
-                        <IonRow>
+                        <IonRow >
                             <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
                                 <IonGrid>
                                     <IonRow>
@@ -214,7 +214,7 @@ const UserProfilePage: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText className="PageTitle center un">{username}</IonText>
+                                                <IonText color="light" className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name} {surname}</i>
@@ -279,11 +279,11 @@ const UserProfilePage: React.FC = () =>{
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="white" onClick={dismiss}>Close</IonButton>
+                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="white" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -309,7 +309,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
 
                                 <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel>
+                                <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
                                 <IonButton className='' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>

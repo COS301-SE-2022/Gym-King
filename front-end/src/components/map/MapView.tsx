@@ -272,9 +272,9 @@ const MapView: React.FC = () =>{
             <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
             {/* <IonBadge > */}
-                <IonCard style={{"margin":"0px"}}>
+                <IonCard style={{"margin":"0px"}} >
                     <IonCardHeader>
-                        <IonCardTitle className='center '>{gymData.gym_brandname}</IonCardTitle>
+                        <IonCardTitle className='center PageTitleNoPadding'>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox">
                         <IonButtons>
