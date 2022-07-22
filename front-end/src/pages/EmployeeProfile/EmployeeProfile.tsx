@@ -2,7 +2,6 @@ import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonBut
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./EmployeeProfile.css";
-import { useEffect } from 'react';
 
 interface InternalValues {
     file: any;
@@ -36,7 +35,7 @@ const EmployeeProfilePage: React.FC = () =>{
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
         //get employee information 
@@ -299,3 +298,7 @@ const EmployeeProfilePage: React.FC = () =>{
 }
 
 export default EmployeeProfilePage;
+function useIonViewWillEnter(arg0: () => void, arg1: string[]) {
+    throw new Error('Function not implemented.');
+}
+

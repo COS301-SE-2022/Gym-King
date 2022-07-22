@@ -40,7 +40,7 @@ export const AcceptRejectPage: React.FC = () =>{
     },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
-        useEffect(()=>
+        useIonViewWillEnter(()=>
             {
                 fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
@@ -80,3 +80,7 @@ export const AcceptRejectPage: React.FC = () =>{
 
 }
 export default AcceptRejectPage;
+function useIonViewWillEnter(arg0: () => void, arg1: (string | null)[]) {
+    throw new Error('Function not implemented.');
+}
+

@@ -1,5 +1,5 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
 import './AddEmployee.css';
@@ -15,7 +15,7 @@ export const AddEmployee: React.FC = () =>{
     let history=useHistory()
     let formData : any;
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         let gymOwner = localStorage.getItem("email")
         fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
             "method":"GET"
@@ -145,3 +145,7 @@ export const AddEmployee: React.FC = () =>{
 }
 
 export default AddEmployee;
+function useIonViewWillEnter(arg0: () => void) {
+    throw new Error('Function not implemented.');
+}
+

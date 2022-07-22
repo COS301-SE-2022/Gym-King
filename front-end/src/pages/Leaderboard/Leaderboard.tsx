@@ -1,5 +1,5 @@
 import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText} from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
 import './Leaderboard.css';
@@ -26,7 +26,7 @@ const Leaderboard: React.FC = () =>{
     const segmentChanged = (e: any)=>{
         setType(e.detail.value);
      }
-    useEffect(()=>
+     useIonViewWillEnter(()=>
     {
         var gymid=sessionStorage.getItem("gid");
         var index:number;
@@ -170,3 +170,7 @@ const Leaderboard: React.FC = () =>{
 }
 
 export default Leaderboard;
+function useIonViewWillEnter(arg0: () => void, arg1: never[]) {
+    throw new Error('Function not implemented.');
+}
+

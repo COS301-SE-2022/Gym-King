@@ -2,7 +2,6 @@ import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonBut
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 interface InternalValues {
@@ -61,7 +60,7 @@ const UserProfilePage: React.FC = () =>{
         })
     }
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
@@ -346,4 +345,8 @@ const UserProfilePage: React.FC = () =>{
 }
 
 export default UserProfilePage;
+
+function useIonViewWillEnter(arg0: () => void, arg1: string[]) {
+    throw new Error('Function not implemented.');
+}
 
