@@ -76,7 +76,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5' >
-                                            <IonImg  src={profilePicture} alt="" className="userImage centerComp" style={{"border-radius":"50%","position":"absolute"}} ></IonImg>
+                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>

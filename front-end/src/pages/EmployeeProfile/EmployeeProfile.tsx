@@ -174,7 +174,7 @@ const EmployeeProfilePage: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  src={profilePicture} alt="" className="userImage centerComp" style={{"border-radius":"50%","position":"absolute"}} ></IonImg>
+                                            <IonImg   style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
