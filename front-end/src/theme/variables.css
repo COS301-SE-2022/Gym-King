@@ -120,6 +120,9 @@ http://ionicframework.com/docs/theming/ */
 {
     padding:5em;
 }
+span{
+  color:white;
+}
 
 .PageTitle
 {
