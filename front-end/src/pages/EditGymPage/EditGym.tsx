@@ -5,14 +5,12 @@ import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
 import { stamenToner } from "pigeon-maps/providers";
 import { useHistory } from "react-router-dom";
+import image from '../../icons/gym.png'
 const EditGym: React.FC = () => {
 //###################################################################################################
 //# Initiaitng variables
   const history=useHistory()
- //image
-  const image: string =
-    "https://www.pngfind.com/pngs/m/219-2197153_gym-building-sport-training-svg-png-free-.png";
-  
+
   //get request parameters via the url
   //get name and name hook
   const [gymName, setGymName] = useState<string>("name");
@@ -126,7 +124,7 @@ const EditGym: React.FC = () => {
     
                   value={gymName}
                   onIonChange={(e: any) => {
-                    setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
+                    setGymName(e.target.value);sessionStorage.setItem("gymName",e.target.value)
                   }}
                 >
                   {" "}

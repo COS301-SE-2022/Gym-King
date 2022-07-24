@@ -10,10 +10,6 @@ const AddGym: React.FC = () => {
 //###################################################################################################
 //# Initiaitng variables
   const history=useHistory()
- //image
-  
-  //get request parameters via the url
-  //get name and name hook
   const [gymName, setGymName] = useState<string>("name");
   const [gymAddress, setGymAddress] = useState<string>("address");
   const [coordinate, setCoordinate] = useState<[number, number]>([
@@ -24,6 +20,7 @@ const AddGym: React.FC = () => {
       if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
+        console.log(gymName)
       }
       if(sessionStorage.getItem("gymAddress")!=null)
       {
@@ -128,7 +125,7 @@ const AddGym: React.FC = () => {
     
                   value={gymName}
                   onIonChange={(e: any) => {
-                    setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
+                    setGymName(e.target.value);sessionStorage.setItem("gymName",e.target.value)
                   }}
                 >
                   {" "}

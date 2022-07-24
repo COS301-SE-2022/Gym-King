@@ -165,12 +165,12 @@ export function SelectGymMap() {
                               onIonChange={(e: any) => {
                                   setGymAddress(e.target.value);
                               }} 
-                              onKeyDown={handleKeyDown} placeholder={"address"}></IonSearchbar>
+                              onKeyDown={handleKeyDown} placeholder={"address"} value={gymAddress}></IonSearchbar>
               </IonRow>
               <IonRow>
                 <IonButton  onClick={()=>{
                                           getLocation();
-                                          setGymAddress("Evander");
+                                          setGymAddress(gymAddress);
                                           modal.current?.setCurrentBreakpoint(0.25)
                                       }}>
                               <IonIcon slot="start" icon={location}></IonIcon>
