@@ -34,14 +34,14 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("Reps");
   });
   test('correctly diplays input values', async () => {
-    const {baseElement} = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="1" i2="2" i3="3" activitytype="Strength"  history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="1" i2="2" i3="3" activitytype="STRENGTH"  history="" proof=""/>);
     expect (baseElement).toHaveTextContent("1");
     expect (baseElement).toHaveTextContent("2");
     expect (baseElement).toHaveTextContent("3");
   });
   
   test('correctly displays cardio activitytype inputs', async () => {
-    const {baseElement} = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="CARDIO" history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="cardio" history="" proof=""/>);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
