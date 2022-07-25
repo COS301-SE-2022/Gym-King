@@ -29,7 +29,7 @@ export const OTP: React.FC = () =>{
 
     
     return (
-        
+        <>
             <IonPage>
                 <IonHeader>
                 </IonHeader>
@@ -78,7 +78,7 @@ export const OTP: React.FC = () =>{
                 />
             </IonPage>
 
-            
+            </>
 
         )
     }

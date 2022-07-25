@@ -41,5 +41,8 @@ testem.log
 # NPM
 /package-lock.json
 
+# Yarn
+/yarn.lock
+
 #back-end
 back-end/node_modules
