@@ -1,5 +1,6 @@
 import { render, wait } from '@testing-library/react';
 import { useEffect } from 'react';
+import AcceptRejectPage from './AcceptReject';
 //import AcceptRejectPage from './AcceptReject'
 const request = require('supertest');
 
@@ -7,12 +8,12 @@ const request = require('supertest');
 ////TESTS TO BE PERFORMED////
 /*
 */
-/*
+
 test('renders without crashing', () => {
     const { baseElement } = render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
 });
-
+/*
 describe('Testing API calls', () => {
     let badgeId= "XRQ"
     let email ="u20519517@tuks.co.za"

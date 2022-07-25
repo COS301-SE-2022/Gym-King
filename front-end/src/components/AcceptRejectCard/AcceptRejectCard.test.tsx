@@ -2,9 +2,9 @@ import { render } from '@testing-library/react';
 import ActivityList from '../ActivityList/ActivityList';
 import AcceptRejectCard from './AcceptRejectCard'
 
-/*
+
 test('renders without crashing', () => {
-    const { baseElement } = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="" history=""/>);
+    const { baseElement } = render(<AcceptRejectCard userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
     expect(baseElement).toBeDefined();
   });
 
