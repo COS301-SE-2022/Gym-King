@@ -144,6 +144,7 @@ const EmployeeProfilePage: React.FC = () =>{
         .then(response =>response.json())
         .then(response =>{
             setProfilePicture(response.profile_picture)
+            setLoading(false)
         })
         .catch(err => {
             console.log(err)
@@ -171,6 +172,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 formData.append("password", password)
                 formData.append('profilepicture', values.current.file, values.current.file.name);
         
+                setLoading(true)
                 fetch(`https://gym-king.herokuapp.com/employees/employee/picture`,{
                         "method":"PUT",
                         body: formData
@@ -180,7 +182,10 @@ const EmployeeProfilePage: React.FC = () =>{
                         console.log(response)
                         updateProfilePicture()
                     })
-                    .catch(err => {console.log(err)}) 
+                    .catch(err => {
+                        console.log(err)
+                        setLoading(false)
+                    }) 
                 
             }
 

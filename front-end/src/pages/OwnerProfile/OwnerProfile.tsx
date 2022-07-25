@@ -169,6 +169,29 @@ const OwnerProfilePage: React.FC = () =>{
     const goToManageEmployees = () =>{
         history.push("/ManageEmployees")
     }
+    const updateProfilePicture = () =>{
+        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                setProfilePicture(response.profile_picture)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+    }
 
     //images
     const values =useRef<InternalValues>(
@@ -189,6 +212,7 @@ const OwnerProfilePage: React.FC = () =>{
             formData.append("password", password)
             formData.append('profilepicture', values.current.file, values.current.file.name);
     
+            setLoading(true)
             fetch(`https://gym-king.herokuapp.com/owners/owner/picture`,{
                     "method":"PUT",
                     body: formData
@@ -196,8 +220,12 @@ const OwnerProfilePage: React.FC = () =>{
                 .then(response =>response.json())
                 .then(response =>{
                     console.log(response)
+                    updateProfilePicture()
                 })
-                .catch(err => {console.log(err)}) 
+                .catch(err => {
+                    console.log(err)
+                    setLoading(false)
+                }) 
             
         }
 

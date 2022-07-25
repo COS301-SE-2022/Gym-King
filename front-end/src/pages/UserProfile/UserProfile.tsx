@@ -179,6 +179,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setProfilePicture(response.profile_picture)
+                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
@@ -205,6 +206,7 @@ const UserProfilePage: React.FC = () =>{
         formData.append("password", password)
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/users/user/picture`,{
                 "method":"PUT",
                 body: formData
@@ -214,7 +216,10 @@ const UserProfilePage: React.FC = () =>{
                 console.log(response)
                 updateProfilePicture()
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            }) 
         
     }
 
