@@ -128,6 +128,29 @@ const EmployeeProfilePage: React.FC = () =>{
     const updateUsername=(e:any)=>{
         setUsername(e.detail.value)
     }
+
+    const updateProfilePicture= ()=>{
+        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                password: localStorage.getItem("password")
+            })
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            setProfilePicture(response.profile_picture)
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false);
+        })
+
+    }
     
         //images
         const values =useRef<InternalValues>(
@@ -155,6 +178,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     .then(response =>response.json())
                     .then(response =>{
                         console.log(response)
+                        updateProfilePicture()
                     })
                     .catch(err => {console.log(err)}) 
                 
