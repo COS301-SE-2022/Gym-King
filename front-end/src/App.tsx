@@ -53,6 +53,7 @@ import AppSettingsPage from './pages/AppSettingsPage/AppSettingsPage';
 import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
 import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 import AddEmployee from './pages/AddEmployee/AddEmployee';
+import SplashPage from './pages/SplashPage/SplashPage'
 /*develop*/
 
 
@@ -69,7 +70,10 @@ const App: React.FC = () => (
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/Login" />
+          <Redirect to="/SplashPage" />
+        </Route>
+        <Route exact path="/SplashPage">
+          <SplashPage></SplashPage>
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>

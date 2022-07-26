@@ -1,17 +1,27 @@
-import { IonPage, IonContent} from '@ionic/react';
+import { IonPage, IonContent, useIonViewDidEnter, useIonViewWillEnter} from '@ionic/react';
 import './splash-screen.css';
+import {AndroidPermissions } from '@awesome-cordova-plugins/android-permissions'
 //import auth0Client from '../Auth';
+
+
 
 export const SplashPage: React.FC = () =>
 {
-return (
-    <IonPage>
-        <IonContent fullscreen className='splash-screen'>
-            <div className="loading-dot"> 
-            </div> 
-        </IonContent>
-    </IonPage>
-)
+
+    const getPermissons = async () => {
+        console.log("hey")
+        AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.LOCATION)
+    }
+    useIonViewWillEnter(getPermissons)
+
+    return (
+        <IonPage>
+            <IonContent fullscreen className='splash-screen'>
+                <div className="loading-dot"> 
+                </div> 
+            </IonContent>
+        </IonPage>
+    )
 }
 
 /*function LoadingMessage()
