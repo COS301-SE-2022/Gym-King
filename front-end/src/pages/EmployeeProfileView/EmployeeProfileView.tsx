@@ -94,7 +94,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
+                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5' >
@@ -114,8 +114,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                             </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard >
+                                <IonCard className="profileCard">
                                     <IonCardHeader className="inputHeading">Employee Details</IonCardHeader>
                                     <IonCardContent>
                                         <IonGrid>
@@ -131,17 +130,14 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                         </IonGrid>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard className="gymCard">
+                                <IonCard className="profileCard">
                                     <IonCardContent>
                                         <IonText  className="inputHeading">{gymName}</IonText><br></br>
                                         <i className='smallFont'>{gymLocation}</i>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
                         <IonRow>
                             <IonButton onClick={deleteEmployee}>Delete Employee</IonButton>
