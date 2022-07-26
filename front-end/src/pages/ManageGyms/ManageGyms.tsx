@@ -2,7 +2,7 @@
  * @file ManageGyms.tsx
  * @brief provides interface for an owner to manage all of his/her gyms
  */
-import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -18,7 +18,7 @@ const ManageGyms: React.FC = () =>{
      * gymList hook
      * @brief stores list of gyms a gym owner 
      */
-    const [gymList,setGymList]=useState<any>([])
+    const [gymList,setGymList]=useState<any>([{'id':"1",'name':"",'address':""}])
     /**
      * loading hook
      * @brief boolean, determines when loading icon is shown
@@ -50,8 +50,9 @@ const ManageGyms: React.FC = () =>{
                 sessionStorage.removeItem("Lat")
                 sessionStorage.removeItem("Long")
             }
-
-            let email = localStorage.getItem("email");
+        })
+    useIonViewDidEnter(()=>{
+        let email = localStorage.getItem("email");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
@@ -75,7 +76,7 @@ const ManageGyms: React.FC = () =>{
                 console.log(err)
                 setLoading(false)
             })
-        })
+    })
     /**
      * deleteClicked function
      * @brief calls fetch gyms after delete is called 
