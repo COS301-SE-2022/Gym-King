@@ -8,9 +8,9 @@ import './AcceptReject.css';
 export const AcceptRejectPage: React.FC = () =>{
 
     //STATES AND VARIABLES 
-    let badgeId = localStorage.getItem('badgeId');
-    let email = localStorage.getItem('email');
-    let username = localStorage.getItem('username');
+    let badgeId = localStorage.getItem('user_badgeId');
+    let email = localStorage.getItem('user_email');
+    let username = localStorage.getItem('user_username');
     const [i1, setI1] = useState('');
     const [i2, setI2] = useState('');
     const [i3, setI3] = useState('');

@@ -53,7 +53,7 @@ const PendingApprovalsPage: React.FC = () =>{
         })
         .then(response =>response.json())
         .then(response =>{
-            //console.log(response);
+            console.log(response);
             setClaims(response)
             setLoading(false)
         })
@@ -64,6 +64,7 @@ const PendingApprovalsPage: React.FC = () =>{
     },[gymId])
 
     const goToAcceptReject = () =>{
+        
         history.push("/AcceptReject")
     }
 
@@ -78,7 +79,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id}></ApprovalButton></div>)
+                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} ></ApprovalButton></div>)
                         })
                     }
 

@@ -25,8 +25,7 @@ const UserProfilePage: React.FC = () =>{
     const [showFail, setShowFail] = useState(false);
     const [numClaims, setNumClaims] = useState("");
     const [numBadges, setNumBadges] = useState("");
-    const [profilePicture, setProfilePicture] = useState('');
-
+    const [profilePicture, setProfilePicture] = useState(localStorage.getItem("profile_picture"));
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
@@ -84,7 +83,6 @@ const UserProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
-                localStorage.setItem("profilepicture", profilePicture)
                 setLoading(false);
                 
             })
@@ -179,6 +177,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setProfilePicture(response.profile_picture)
+                localStorage.setItem("profile_picture", profilePicture!)
                 setLoading(false)
             })
             .catch(err => {
