@@ -226,7 +226,7 @@ const UserProfilePage: React.FC = () =>{
         return(
             <IonPage >
                 <IonHeader>
-                    <ToolBar></ToolBar>
+                    <ToolBar profile={profilePicture}></ToolBar>
                 </IonHeader>
                 <IonContent>
                     <br></br>

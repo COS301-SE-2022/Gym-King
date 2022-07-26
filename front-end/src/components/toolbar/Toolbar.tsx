@@ -3,16 +3,18 @@ import React from 'react'
 import './Toolbar.css'
 
 //creating a type so props can be entered
-export type ToolBarProps = {username?:string,menu?:boolean};
+export type ToolBarProps = {username?:string,menu?:boolean, profile?:any};
 
 export class ToolBar extends React.Component<ToolBarProps>{
+
     render(){
         let username = this.props.username;
+        
         return(
                 <IonToolbar mode='ios' class="toolbar" color="#0F005A" data-testid="tb">
                     <IonButtons slot="end">
                         <IonButton shape='round' className='profileImage'>
-                            <IonImg src="" alt=""></IonImg>
+                            <IonImg src={this.props.profile!} alt=""></IonImg>
                         </IonButton>
                     </IonButtons>
                     <IonTitle>{username}</IonTitle>
