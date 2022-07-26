@@ -170,7 +170,7 @@ const EditBadge: React.FC = () =>{
 
 
                         <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType} data-testid="segBtn"></SegmentButton><br></br><br></br>
 
 
                         <IonText className='inputHeading leftMargin'>Badge Challenge:</IonText> <br></br><br></br>
