@@ -12,7 +12,7 @@ const AddGymLocation: React.FC = () => {
           </IonToolbar>
       </IonHeader>
       <IonContent>
-          <SelectGymMap></SelectGymMap>     
+          <SelectGymMap data-testid="sgm"></SelectGymMap>     
       </IonContent>
            
     </IonPage>

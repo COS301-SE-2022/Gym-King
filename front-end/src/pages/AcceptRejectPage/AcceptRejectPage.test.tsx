@@ -13,7 +13,7 @@ test('renders without crashing', () => {
     const { baseElement } = render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
 });
-/*
+
 describe('Testing API calls', () => {
     let badgeId= "XRQ"
     let email ="u20519517@tuks.co.za"
@@ -63,4 +63,3 @@ describe('Integration Tests', () => {
     
     });
 })
-*/
