@@ -12,6 +12,7 @@ const MyBadge: React.FC = () =>{
     const [badges, setBadges] = useState(new Array<any>());
     let history=useHistory()
     const [loading, setLoading] = useState<boolean>(false);
+    
     useIonViewWillEnter(()=>{
         let email=localStorage.getItem("email")
         setLoading(true)
@@ -22,6 +23,7 @@ const MyBadge: React.FC = () =>{
         .then(response =>{
             console.log(response)
             let arr=[];
+            console.log(response)
             for(let i=0; i<response.length;i++)
             {
                 arr.push({
@@ -30,6 +32,7 @@ const MyBadge: React.FC = () =>{
                     qty:response[i].count,
                     icon:response[i].b_id.badgeicon.split("_")
                 })
+                
             }
             setBadges(arr)
             setLoading(false)
@@ -80,11 +83,11 @@ const MyBadge: React.FC = () =>{
 
                     <IonButton style={{"width":"12em"}} onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
 
-                    <IonToolbar class="FilterBar">
-                        <IonButtons slot='start'>
-                            <IonButton id="sort-trigger" >
+                    <IonToolbar class="FilterBar" >
+                        <IonButtons slot='start' color="light">
+                            <IonButton id="sort-trigger" color="light">
                                 <IonIcon icon={swapVertical}></IonIcon>
-                                <IonLabel>SORT</IonLabel>
+                                <IonLabel color="light">SORT</IonLabel>
                             </IonButton>
                             <IonPopover  trigger='sort-trigger' triggerAction='click'>      
                                             <IonItem onClick={e=>{setSort("AscName")}}>
@@ -105,8 +108,8 @@ const MyBadge: React.FC = () =>{
                                             </IonItem>
                             </IonPopover>
                         </IonButtons>
-                        <IonButtons slot='secondary'>
-                            <IonButton id="filter-trigger">
+                        <IonButtons slot='secondary' >
+                            <IonButton id="filter-trigger"  color="light">
                                 <IonIcon icon={funnel}></IonIcon>
                                 <IonLabel>FILTER</IonLabel>
                             </IonButton>

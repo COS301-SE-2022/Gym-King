@@ -10,13 +10,13 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
 });
 
-/*
+
 describe('Testing API calls', () => {
 
     it('should load owned gym data', async () => {
-        (()=>{
+        (async ()=>{
             let gymOwner = "u20519517@tuks.co.za"
-            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
+            await fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -31,26 +31,36 @@ describe('Testing API calls', () => {
     });
 
     it('should create a badge', async () => {
-        let gid = "lttD";   //temp value for testing 
-        let at = "Strength"
-        let bn = "Test name"
-        let bc = "Test challenge"
-        let bd = "Test description";
+        (()=>{
 
-            fetch(`https://gym-king.herokuapp.com/badges/badge?gid=${gid}&bn=${bn}&bd=${bd}&bc=${bc}&bi=${'BADGE ICON'}&at=${at}`,{
-                "method":"POST"
+        fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            "method":"POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                gid: "gid",
+                badgename: "bn",
+                badgedescription: "bd",
+                badgechallenge: "bc",
+                badgeicon: "",
+                activitytype: "at",
             })
-            .then(response =>response.json())
-            .then(response =>{
-                expect(response).toBeDefined()
-            })
-            .catch(err => {
-                expect (err).toBeDefined()
-            }) 
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            expect(response).toBeDefined()
+        })
+        .catch(err => {
+            console.log(err)
+            expect(err).toBeDefined()
+        })
+    })
     });
 
-  })
-
+})
+/*
 describe('Integration Tests', () => {
     
     test('sending in a list of activity types displays correctly as a segment button', async () => {

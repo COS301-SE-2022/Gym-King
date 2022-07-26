@@ -158,10 +158,12 @@ const AddGym: React.FC = () => {
                   center={[coordinate[0], coordinate[1]]}
                   zoom={zoom}
                   provider={stamenToner}
+                  data-testid="map"
                 >
-                  <Overlay
+                  <Overlay 
                     anchor={[coordinate[0], coordinate[1]]}
                     offset={[30, 30]}
+                    data-testid="ov"
                   >
                     <img
                       width={60}

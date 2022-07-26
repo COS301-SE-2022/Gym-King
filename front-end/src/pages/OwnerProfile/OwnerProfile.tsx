@@ -1,8 +1,7 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./OwnerProfile.css";
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 interface InternalValues {
@@ -36,7 +35,7 @@ const OwnerProfilePage: React.FC = () =>{
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
         fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
@@ -170,6 +169,29 @@ const OwnerProfilePage: React.FC = () =>{
     const goToManageEmployees = () =>{
         history.push("/ManageEmployees")
     }
+    const updateProfilePicture = () =>{
+        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                setProfilePicture(response.profile_picture)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+    }
 
     //images
     const values =useRef<InternalValues>(
@@ -190,6 +212,7 @@ const OwnerProfilePage: React.FC = () =>{
             formData.append("password", password)
             formData.append('profilepicture', values.current.file, values.current.file.name);
     
+            setLoading(true)
             fetch(`https://gym-king.herokuapp.com/owners/owner/picture`,{
                     "method":"PUT",
                     body: formData
@@ -197,8 +220,12 @@ const OwnerProfilePage: React.FC = () =>{
                 .then(response =>response.json())
                 .then(response =>{
                     console.log(response)
+                    updateProfilePicture()
                 })
-                .catch(err => {console.log(err)}) 
+                .catch(err => {
+                    console.log(err)
+                    setLoading(false)
+                }) 
             
         }
 
@@ -215,7 +242,7 @@ const OwnerProfilePage: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
@@ -281,11 +308,11 @@ const OwnerProfilePage: React.FC = () =>{
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="white" onClick={dismiss}>Close</IonButton>
+                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="white" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>

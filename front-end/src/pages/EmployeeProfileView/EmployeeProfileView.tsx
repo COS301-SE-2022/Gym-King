@@ -1,7 +1,6 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import { useEffect } from 'react';
 
 
 
@@ -32,7 +31,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setLoading(true)
         //get employee information 
         setEmail(localStorage.getItem("employee_email"))
@@ -61,6 +60,24 @@ const EmployeeProfileViewPage: React.FC = () =>{
          })
 
     },[])
+
+    const deleteEmployee=()=>{
+        fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
+            "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            setGymName(response.gym_brandname)
+            setGymLocation(response.gym_address)
+            
+                        
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+         })
+    }
 
    
         return(
@@ -120,6 +137,9 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                     </IonCardContent>
                                 </IonCard>
                             </IonCol>
+                        </IonRow>
+                        <IonRow>
+                            <IonButton onClick={deleteEmployee}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>
