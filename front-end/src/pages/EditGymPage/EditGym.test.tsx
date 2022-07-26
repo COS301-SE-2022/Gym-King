@@ -92,7 +92,7 @@ describe('Testing API calls', () => {
     });
 
 })
-
+/*
 describe('Integration Tests', () => {
     
     test('renders map', async () => {
@@ -102,4 +102,4 @@ describe('Integration Tests', () => {
         expect(getByTestId('oLay').innerHTML).toBeDefined()
     });
 
-})
+})*/

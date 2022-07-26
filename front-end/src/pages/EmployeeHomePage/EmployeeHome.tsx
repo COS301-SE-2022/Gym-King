@@ -11,7 +11,7 @@ const EmployeeHomePage: React.FC = () =>{
             <IonHeader>
                 <ToolBar menu={true} ></ToolBar>
             </IonHeader>
-            <BurgerMenu listItems={Menulist}></BurgerMenu>
+            <BurgerMenu listItems={Menulist} data-testid="bm"></BurgerMenu>
             <br></br>
             <IonContent fullscreen className ='Content' id="main">
                 <IonText className='PageTitle center'>Employee Page</IonText>
