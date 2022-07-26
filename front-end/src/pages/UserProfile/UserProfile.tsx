@@ -321,6 +321,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
 
+                                <br></br>
                                 <IonLabel className="smallHeading" position="floating">Name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
@@ -338,7 +339,7 @@ const UserProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
-                                <IonButton className='' type="button" >Change Password</IonButton>
+                                <IonButton className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         

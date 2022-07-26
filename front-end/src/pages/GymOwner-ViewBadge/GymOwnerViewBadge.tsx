@@ -51,6 +51,7 @@ const GymOwnerViewBadge: React.FC = () =>{
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Badges</IonText>
                     <IonButton routerLink='/CreateBadge' routerDirection='forward' color="warning">CREATE BADGE</IonButton>
+                    <br></br><br></br>
                     <IonAccordionGroup>
                     {badgeList.map(el => 
                         <IonAccordion key={el.GymID} value={el.GymID}>

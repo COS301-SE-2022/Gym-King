@@ -287,7 +287,7 @@ const EmployeeProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton className='' type="button" >Change Password</IonButton>
+                                <IonButton className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         

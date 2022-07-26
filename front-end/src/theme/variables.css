@@ -168,7 +168,6 @@ ion-card{
 .smallHeading{
   font-family: 'Comfortaa', cursive;
   font-size:16px;
-  margin-left:5%;
   margin-bottom: 20px;
 }
 .subheading{
@@ -177,6 +176,12 @@ ion-card{
   margin-left:5%;
   margin-right: 5%;
   margin-bottom: 20px;
+}
+
+.width21{
+  margin-left:0;
+  margin-right:0;
+  width: 21em;
 }
 
 .grid
