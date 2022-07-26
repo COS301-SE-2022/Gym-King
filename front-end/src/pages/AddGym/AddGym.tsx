@@ -14,7 +14,7 @@ const AddGym: React.FC = () => {
   
   //get request parameters via the url
   //get name and name hook
-  const [gymName, setGymName] = useState<string>("name");
+  const [gymName, setGymName] = useState<string>("");
   const [gymAddress, setGymAddress] = useState<string>("address");
   const [coordinate, setCoordinate] = useState<[number, number]>([
     -25.7545,
@@ -110,80 +110,52 @@ const AddGym: React.FC = () => {
       <IonHeader>
         <ToolBar></ToolBar>
       </IonHeader>
-      <IonContent class="">
-        <IonCard className="glassForm">
-          <IonCardHeader  className="PageTitle center" color="secondary" >
-            <IonCardTitle>Add Gym</IonCardTitle>
-          </IonCardHeader>
+      <IonContent className='Content' >
+            <form>
+                <IonText className="PageTitle center">Add Gym</IonText> <br></br>
 
-          <IonCardContent>
-            <IonGrid class="AddGymGrid" className="grid">
-              <IonRow class="AddGymRow" className="left topMargin">
-                <IonText className="Subheading">Name:</IonText>
-              </IonRow>
-
-              <IonRow className="left">
-                <IonInput
-                  class="textInput"
-    
-                  value={gymName}
-                  onIonChange={(e: any) => {
+                <IonText className="smallHeading leftMargin">Name:</IonText>
+                <IonInput required className="textInput  smallerTextBox leftMargin width80" value={gymName} onIonChange={(e: any) => {
                     setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
-                  }}
-                >
-                  {" "}
-                </IonInput>
-              </IonRow>
+                  }}>{" "}
+                </IonInput> <br></br>
 
-              <IonRow class="AddGymRow" className="left topMargin">
-                <IonText className="Subheading">Address:</IonText>
-              </IonRow>
-
-              <IonRow className="left">
+                <IonText className="smallHeading leftMargin">Address:</IonText>
                 <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                  <IonIcon
-                    class="AddGymLocation"
-                    icon="location-outline"
-                  ></IonIcon>
+                  <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
                   <span>{gymAddress}</span>
-                  <IonIcon
-                    class="AddGymArrow"
-                    icon="chevron-forward-outline"
-                  ></IonIcon>
+                  <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
                 </IonButton>
-              </IonRow>
-              <IonRow>
-                <Map
-                  height={200}
-                  center={[coordinate[0], coordinate[1]]}
-                  zoom={zoom}
-                  provider={stamenToner}
-                  data-testid="map"
-                >
-                  <Overlay 
-                    anchor={[coordinate[0], coordinate[1]]}
-                    offset={[30, 30]}
-                    data-testid="ov"
+                <div className="width80 centerComp">
+                  <Map
+                    height={200}
+                    center={[coordinate[0], coordinate[1]]}
+                    zoom={zoom}
+                    provider={stamenToner}
+                    data-testid="map"
                   >
-                    <img
-                      width={60}
-                      height={50}
-                      src={image}
-                      alt="builing icon"
-                    ></img>
-                  </Overlay>
-                </Map>
-              </IonRow>
+                    <Overlay 
+                      anchor={[coordinate[0], coordinate[1]]}
+                      offset={[30, 30]}
+                      data-testid="ov"
+                    >
+                      <img
+                        width={60}
+                        height={50}
+                        src={image}
+                        alt="builing icon"
+                      ></img>
+                    </Overlay>
+                  </Map>
+                </div>
               <IonButton
                 class="AddGymAdd"
                 color="warning"
                 onClick={() => addGym()}
-              >
-                ADD
-              </IonButton>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
+              >ADD</IonButton>
+          </form>
+
+
         <IonToast
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}

@@ -82,7 +82,6 @@ export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any}
                     text: 'Delete',
                     role: 'destructive',
                     icon: trash,
-                    id: 'delete-button',
                     data: {
                       type: 'delete'
                     },
