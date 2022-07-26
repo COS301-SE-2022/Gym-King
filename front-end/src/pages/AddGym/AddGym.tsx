@@ -1,4 +1,4 @@
-import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
