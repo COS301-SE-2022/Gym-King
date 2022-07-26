@@ -156,10 +156,12 @@ const EditGym: React.FC = () => {
                   center={[coordinate[0], coordinate[1]]}
                   zoom={zoom}
                   provider={stamenToner}
+                  data-testid="map"
                 >
                   <Overlay
                     anchor={[coordinate[0], coordinate[1]]}
                     offset={[30, 30]}
+                    data-testid="oLay"
                   >
                     <img
                       width={60}

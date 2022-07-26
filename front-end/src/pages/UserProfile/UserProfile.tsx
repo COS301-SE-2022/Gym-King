@@ -1,8 +1,7 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg} from '@ionic/react';
-import React, {useRef, useState} from 'react'
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
+import React, {useRef, useState, } from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 interface InternalValues {
@@ -61,7 +60,7 @@ const UserProfilePage: React.FC = () =>{
         })
     }
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
@@ -164,6 +163,30 @@ const UserProfilePage: React.FC = () =>{
         history.push("/PendingBadges")
     }
     
+    const updateProfilePicture = () =>{
+        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    password: localStorage.getItem("password")
+                })
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                setProfilePicture(response.profile_picture)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+    }
+    
     //images
     const values =useRef<InternalValues>(
     {
@@ -183,6 +206,7 @@ const UserProfilePage: React.FC = () =>{
         formData.append("password", password)
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/users/user/picture`,{
                 "method":"PUT",
                 body: formData
@@ -190,31 +214,35 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
+                updateProfilePicture()
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            }) 
         
     }
 
 
         return(
-            <IonPage color='#220FE' >
+            <IonPage >
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
                 <IonContent>
                     <br></br>
                     <IonGrid>
-                        <IonRow>
+                        <IonRow >
                             <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText className="PageTitle center un">{username}</IonText>
+                                                <IonText color="light" className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name} {surname}</i>
@@ -279,11 +307,11 @@ const UserProfilePage: React.FC = () =>{
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="white" onClick={dismiss}>Close</IonButton>
+                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="white" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -309,7 +337,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
 
                                 <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel>
+                                <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
                                 <IonButton className='' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
@@ -346,4 +374,3 @@ const UserProfilePage: React.FC = () =>{
 }
 
 export default UserProfilePage;
-
