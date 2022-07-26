@@ -83,6 +83,8 @@ const UserProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
+                sessionStorage.setItem("pp", response.profile_picture)
+
                 setLoading(false);
                 
             })
@@ -162,6 +164,7 @@ const UserProfilePage: React.FC = () =>{
     }
     
     const updateProfilePicture = () =>{
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
                 method: 'POST',
                 headers: {
@@ -177,7 +180,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setProfilePicture(response.profile_picture)
-                localStorage.setItem("profile_picture", profilePicture!)
+                localStorage.setItem("profile_picture", response.profile_picture!)
                 setLoading(false)
             })
             .catch(err => {
@@ -226,13 +229,13 @@ const UserProfilePage: React.FC = () =>{
         return(
             <IonPage >
                 <IonHeader>
-                    <ToolBar profile={profilePicture}></ToolBar>
+                    <ToolBar></ToolBar>
                 </IonHeader>
                 <IonContent>
                     <br></br>
                     <IonGrid>
                         <IonRow >
-                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
+                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
@@ -253,8 +256,7 @@ const UserProfilePage: React.FC = () =>{
                             </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard >
+                                <IonCard className="profileCard" >
                                     <IonCardHeader className="inputHeading">My Details</IonCardHeader>
                                     <IonCardContent>
                                         <IonGrid>
@@ -272,11 +274,10 @@ const UserProfilePage: React.FC = () =>{
                                         </IonGrid>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
-                        <IonRow>
+                        <IonRow >
                             <IonCol>
-                                <IonCard className="smallCard" onClick={goToUserBadges}>
+                                <IonCard className="smallCard" onClick={goToUserBadges} >
                                     <IonCardContent>
                                         <IonText className="bigNumber">{numBadges}</IonText><br></br>
                                         <IonText>badges</IonText>

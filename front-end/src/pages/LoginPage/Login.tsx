@@ -42,6 +42,8 @@ export const Login: React.FC = () =>{
                    localStorage.setItem("password", formData.password)
                    localStorage.setItem("usertype",formData.usertype)
                    localStorage.setItem("profile_picture", response.profile_picture)
+                   sessionStorage.setItem("pp", response.profile_picture)
+
                    setLoading(false)
                    navigate();
                 }else{

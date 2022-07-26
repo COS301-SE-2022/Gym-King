@@ -253,11 +253,25 @@ ion-card{
   width: 7em;
   background-color: #bbb ;
 }
+.toolbarImage{
+  height: 2em;
+  width: 2em;
+  background-color: #bbb ;
+}
+
 
 .contain
 {
   background-size: contain;
 }
+
+.profileCard{
+  width:25em;
+  padding:2%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
 
 
 .md body {

@@ -62,21 +62,26 @@ const EmployeeProfileViewPage: React.FC = () =>{
     },[])
 
     const deleteEmployee=()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
-            "method":"GET"
+        fetch(`https://gym-king.herokuapp.com/employees/employee`, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                email: employee_email!,
+                password: employee_pass!
+            })
         })
         .then(response =>response.json())
         .then(response =>{
             console.log(response)
-            setGymName(response.gym_brandname)
-            setGymLocation(response.gym_address)
-            
-                        
+            setLoading(false)
         })
         .catch(err => {
             console.log(err)
             setLoading(false)
-         })
+        })
     }
 
    
