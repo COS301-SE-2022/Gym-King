@@ -1,60 +1,74 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewDidEnter, IonLoading} from '@ionic/react';
+/**
+ * @file ManageGyms.tsx
+ * @brief provides interface for an owner to manage all of his/her gyms
+ */
+import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './ManageGyms.css';
-
+/**
+ * @returns ManageGyms pages
+ */
 const ManageGyms: React.FC = () =>{
-
-    const [gymList,setGymList]=useState<any>([])
+//=================================================================================================
+//    VARIABLES & HOOKS
+//=================================================================================================
+    //- gymList hook, stores list of gyms a gym owner 
+    const [gymList,setGymList]=useState<any>([{'id':"1",'name':"",'address':""}])
+    //-loading hook {boolean} determines when loading icon is shown
     const [loading, setLoading] = useState<boolean>(false);
     let email = localStorage.getItem("email");
 
     useIonViewDidEnter(()=>
+    {
+        if(sessionStorage.getItem("gid")!=null)
         {
-            if(sessionStorage.getItem("gid")!=null)
-            {
-                sessionStorage.removeItem("gid")
-            }
-            if(sessionStorage.getItem("gymName")!=null)
-            {
-                sessionStorage.removeItem("gymName")
-            }
-            if(sessionStorage.getItem("gymAddress")!=null)
-            {
-                sessionStorage.removeItem("gymAddress")
-            }
-            if(sessionStorage.getItem("Lat") !=null && sessionStorage.getItem("Long")!=null)
-            {
-                sessionStorage.removeItem("Lat")
-                sessionStorage.removeItem("Long")
-            }
+            sessionStorage.removeItem("gid")
+        }
+        if(sessionStorage.getItem("gymName")!=null)
+        {
+            sessionStorage.removeItem("gymName")
+        }
+        if(sessionStorage.getItem("gymAddress")!=null)
+        {
+            sessionStorage.removeItem("gymAddress")
+        }
+        if(sessionStorage.getItem("Lat") !=null && sessionStorage.getItem("Long")!=null)
+        {
+            sessionStorage.removeItem("Lat")
+            sessionStorage.removeItem("Long")
+        }
 
-            
-            setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                console.log(response)
-                setLoading(false)/*
-                let arr=[];
-                for(let i=0;i<response.length;i++)
-                {
-                    arr.push({
-                        'id':response[i].g_id,
-                        'name':response[i].gym_brandname,
-                        'address':response[i].gym_address
-                    })
-                }*/
-                setGymList(response)
-            })
-            .catch(err => {
-                console.log(err)
-                setLoading(false)
-            })
+        
+        setLoading(true)
+        fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
+            "method":"GET"
         })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            setLoading(false)/*
+            let arr=[];
+            for(let i=0;i<response.length;i++)
+            {
+                arr.push({
+                    'id':response[i].g_id,
+                    'name':response[i].gym_brandname,
+                    'address':response[i].gym_address
+                })
+            }*/
+            setGymList(response)
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
+    })
+    /**
+     * deleteClicked function
+     * @brief calls fetch gyms after delete is called 
+     */
         const deleteClicked= () => {
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
@@ -71,6 +85,7 @@ const ManageGyms: React.FC = () =>{
                 setLoading(false)
             })
         }
+    
 
     return(
         <IonPage >
