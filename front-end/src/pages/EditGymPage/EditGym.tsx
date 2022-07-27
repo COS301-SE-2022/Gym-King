@@ -1,4 +1,4 @@
-import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
 import "./EditGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -21,7 +21,7 @@ const EditGym: React.FC = () => {
     -25.7545,
     28.2314,
   ]);
-  useIonViewWillEnter(()=>{
+  useIonViewDidEnter(()=>{
     console.log(sessionStorage.getItem("gid"))
       if(sessionStorage.getItem("gymName")!=null)
       {

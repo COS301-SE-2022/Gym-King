@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewDidEnter} from '@ionic/react';
 import React, {useRef, useState, } from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
@@ -55,7 +55,7 @@ const UserProfilePage: React.FC = () =>{
         })
     }
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{

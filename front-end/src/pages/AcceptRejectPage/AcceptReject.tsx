@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
@@ -23,7 +23,7 @@ export const AcceptRejectPage: React.FC = () =>{
 
 
     //GET THE CLAIM 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
             "method":"GET"
@@ -45,7 +45,7 @@ export const AcceptRejectPage: React.FC = () =>{
     },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
-        useIonViewWillEnter(()=>
+        useIonViewDidEnter(()=>
             {
                 fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"

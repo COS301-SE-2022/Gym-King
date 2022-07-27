@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewDidEnter, IonButton} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -32,7 +32,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true)
         //get employee information 
         setEmail(localStorage.getItem("employee_email"))
