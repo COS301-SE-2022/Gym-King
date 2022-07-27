@@ -21,7 +21,7 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
   }); 
-  test('correctly displays cardio activitytype inputs', async () => {
+  test('correctly displays strength activitytype inputs', async () => {
     const {baseElement} = render(<ActivityList activityCategory='STRENGTH' i1='00:23:00' i2='3' i3='4' />);
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");

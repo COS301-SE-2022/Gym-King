@@ -74,7 +74,7 @@ http://ionicframework.com/docs/theming/ */
 .ios body {
   --ion-background-color: var(--ion-color-secondary);
   --ion-background-color-rgb: 18,18,18;
-  --ion-text-color: #ffffff;
+  --ion-text-color: white;
   --ion-text-color-rgb: 255,255,255;
 
   --ion-color-step-50: #301d8c;
@@ -120,6 +120,15 @@ http://ionicframework.com/docs/theming/ */
 {
     padding:5em;
 }
+span{
+  color:white;
+}
+
+ion-button{
+  width:80%;
+  margin-left: 10%;
+  margin-right:10%;
+}
 
 .PageTitle
 {
@@ -127,7 +136,11 @@ http://ionicframework.com/docs/theming/ */
     font-family: 'Comfortaa', cursive;
     padding:5%;
 }
-
+.PageTitleNoPadding
+{
+    font-size:2em;
+    font-family: 'Comfortaa', cursive;
+}
 .Subheading
 {
     font-family: 'Comfortaa', cursive;
@@ -155,7 +168,6 @@ ion-card{
 .smallHeading{
   font-family: 'Comfortaa', cursive;
   font-size:16px;
-  margin-left:5%;
   margin-bottom: 20px;
 }
 .subheading{
@@ -164,6 +176,12 @@ ion-card{
   margin-left:5%;
   margin-right: 5%;
   margin-bottom: 20px;
+}
+
+.width21{
+  margin-left:0;
+  margin-right:0;
+  width: 21em;
 }
 
 .grid
@@ -240,11 +258,28 @@ ion-card{
   width: 7em;
   background-color: #bbb ;
 }
+.toolbarImage{
+  height: 2em;
+  width: 2em;
+  background-color: #bbb ;
+}
+
 
 .contain
 {
   background-size: contain;
 }
+
+.profileCard{
+  width:25em;
+  padding:2%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.gCard{
+  padding:4%;
+}
+
 
 
 .md body {

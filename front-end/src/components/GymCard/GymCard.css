@@ -1,18 +1,10 @@
-.gymCard{
-  width: 95% !important;
-  height:100px !important;
-  margin-bottom: 5px !important;
-}
+
 .my-custom-class{
     --backdrop-opacity: 0.7;
-
     
 }
 
-#delete-button{
-    background:rgb(255, 55, 55);
-    margin-bottom: 50px;
-}
+
 ion-alert.custom-alert {
     --backdrop-opacity: 0.7;
   }

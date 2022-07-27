@@ -1,6 +1,5 @@
-
-.profileCard{
-    width:25em;
+body{
+    --ion-card-color:white;
 }
 
 .bigNumber{
@@ -11,10 +10,7 @@
     height:9em;
 }
 
-ion-card{
-    margin-top:0px;
-    margin-bottom: 0px;
-}
+
 
 .editForm{
     height:475px;

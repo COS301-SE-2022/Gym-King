@@ -1,7 +1,7 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewWillEnter} from '@ionic/react';
 
 import ToolBar from '../../components/toolbar/Toolbar';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
@@ -100,7 +100,7 @@ import { useHistory } from 'react-router-dom';
         }
 
         // OWNED GYMS GET REQUEST 
-        useEffect(()=>{
+        useIonViewWillEnter(()=>{
             let gymOwner = localStorage.getItem("email")
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
                 "method":"GET"
@@ -169,3 +169,5 @@ import { useHistory } from 'react-router-dom';
 }
 
 export default CreateBadge;
+
+

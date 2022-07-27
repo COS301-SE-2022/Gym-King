@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import EditBadge from './EditBadge';
+import EditGym from './EditGym';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
 test('renders without crashing', () => {
-    const { baseElement } = render(<EditBadge />);
+    const { baseElement } = render(<EditGym />);
     expect(baseElement).toBeDefined();
 });
 
@@ -69,26 +69,25 @@ describe('Testing API calls', () => {
         } )
     });
 
-    it('should delete a badge', async () => {
+    it('should get gym info', async () => {
         (()=>{
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
-                "method":"DELETE",
+            fetch(`https://gym-king.herokuapp.com/gyms/gym/"pwe3"}`,
+            {
+                method: "Get",
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    bid: ""
-                 })
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }})
+                .then((response) => response.json())
+                .then((response) => {                
+                    expect(response).toBeDefined()
+
             })
-            .then(response =>response.json())
-            .then(response =>{
-                expect(response).toBeDefined()
-            })
-            .catch(err => {
-                console.log(err)
+            .catch((err) => {
+            console.log(err);
                 expect(err).toBeDefined()
-            }) 
+
+            });
         })
     });
 
@@ -96,10 +95,11 @@ describe('Testing API calls', () => {
 /*
 describe('Integration Tests', () => {
     
-    test('sending in a list of activity types displays correctly as a segment button', async () => {
-        const {getByTestId } = render(<EditBadge />);
+    test('renders map', async () => {
+        const {getByTestId } = render(<EditGym />);
     
-        expect(getByTestId('segBtn').innerHTML).toBeDefined()
+        expect(getByTestId('map').innerHTML).toBeDefined()
+        expect(getByTestId('oLay').innerHTML).toBeDefined()
     });
 
 })*/
