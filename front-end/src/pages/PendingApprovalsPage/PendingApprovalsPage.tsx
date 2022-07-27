@@ -79,7 +79,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <div onClick={goToAcceptReject} key={Math.random()}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} ></ApprovalButton></div>)
+                            return ( <div onClick={goToAcceptReject} key={Math.random()}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} profile={el.profile_picture}></ApprovalButton></div>)
                         })
                     }
 

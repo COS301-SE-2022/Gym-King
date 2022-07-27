@@ -1,4 +1,4 @@
-import {IonButtons, IonToolbar, IonTitle, IonMenuButton, IonBackButton, IonImg, IonAvatar} from '@ionic/react';
+import {IonButtons, IonToolbar, IonTitle, IonMenuButton, IonBackButton, IonImg} from '@ionic/react';
 import React from 'react'
 import './Toolbar.css'
 
@@ -13,8 +13,7 @@ export class ToolBar extends React.Component<ToolBarProps>{
         return(
                 <IonToolbar mode='ios' class="toolbar" color="#0F005A" data-testid="tb">
                     <IonButtons slot="end">
-                        <IonAvatar >
-                        <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${sessionStorage.getItem("pp")})`}} alt="" className="toolbarImage centerComp contain"  ></IonImg>                        </IonAvatar>
+                        <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${sessionStorage.getItem("pp")})`}} alt="" className="toolbarImage centerComp contain"  ></IonImg>                        
                     </IonButtons>
                     <IonTitle>{username}</IonTitle>
                     <IonButtons slot='start'>
