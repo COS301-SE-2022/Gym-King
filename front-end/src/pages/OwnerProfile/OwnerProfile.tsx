@@ -238,7 +238,7 @@ const OwnerProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
+                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
@@ -259,8 +259,7 @@ const OwnerProfilePage: React.FC = () =>{
                             </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard >
+                                <IonCard className="profileCard">
                                     <IonCardHeader className="inputHeading">My Details</IonCardHeader>
                                     <IonCardContent>
                                         <IonGrid>
@@ -278,7 +277,6 @@ const OwnerProfilePage: React.FC = () =>{
                                         </IonGrid>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
                         <IonRow>
                             <IonCol>
@@ -339,7 +337,7 @@ const OwnerProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton className='' type="button" >Change Password</IonButton>
+                                <IonButton className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         

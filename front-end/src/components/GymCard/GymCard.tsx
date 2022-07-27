@@ -53,11 +53,12 @@ export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any}
     return(
         <div>
             <IonCard
+                style={{"margin-top":"1em"}}
                 color="primary"   
-                class="gymCard ion-padding"
+                class="gCard ion-padding gCard"
                 onClick={() => setShowActionSheet(true)}
             >
-                  <IonCardTitle>
+                  <IonCardTitle className='inputHeading'>
                     {prop.name}
                   </IonCardTitle>
                   <IonCardSubtitle>
@@ -81,7 +82,6 @@ export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any}
                     text: 'Delete',
                     role: 'destructive',
                     icon: trash,
-                    id: 'delete-button',
                     data: {
                       type: 'delete'
                     },

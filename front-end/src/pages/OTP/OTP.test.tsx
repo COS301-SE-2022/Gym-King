@@ -1,8 +1,11 @@
 import {fireEvent, render, screen} from '@testing-library/react';
-import GymOwnerPage from './GymOwnerPage';
+import OTP from './OTP';
 
+////TESTS TO BE PERFORMED////
+/*
+*/
 
 test('renders without crashing', () => {
-  const {baseElement} = render(<GymOwnerPage />);
+  const { baseElement } = render(<OTP/>);
   expect(baseElement).toBeDefined();
 });

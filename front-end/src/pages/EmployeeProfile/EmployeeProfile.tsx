@@ -198,7 +198,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
+                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
@@ -219,8 +219,7 @@ const EmployeeProfilePage: React.FC = () =>{
                             </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard >
+                                <IonCard className='profileCard'>
                                     <IonCardHeader className="inputHeading">My Details</IonCardHeader>
                                     <IonCardContent>
                                         <IonGrid>
@@ -238,17 +237,14 @@ const EmployeeProfilePage: React.FC = () =>{
                                         </IonGrid>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard className="gymCard">
+                                <IonCard className="profileCard">
                                     <IonCardContent>
                                         <IonText  className="inputHeading">{gymName}</IonText><br></br>
                                         <i className='smallFont'>{gymAddress}</i>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
                         
                     </IonGrid>
@@ -260,11 +256,11 @@ const EmployeeProfilePage: React.FC = () =>{
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="white" onClick={dismiss}>Close</IonButton>
+                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="white" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -291,7 +287,7 @@ const EmployeeProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton className='' type="button" >Change Password</IonButton>
+                                <IonButton className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         

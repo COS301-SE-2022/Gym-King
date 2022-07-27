@@ -1,24 +1,21 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast, useIonViewWillEnter} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 
 
 export const Login: React.FC = () =>{
-    useIonViewWillEnter(()=>{
-        if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
-        {
-            navigate()
-        }
-    })
+    
     let formData:any;
     let history=useHistory()
     const [showToast, setShowToast] = useState(false);
     const [userType, setUserType] = useState('user');
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     const loginSubmit= ()=>{
-        
+            setLoading(true)
             fetch('https://gym-king.herokuapp.com/users/login',{
                 method: 'POST',
                 headers: {
@@ -34,16 +31,22 @@ export const Login: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 if(response.success){
+                    console.log(response)
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
                    localStorage.setItem("password", formData.password)
                    localStorage.setItem("usertype",formData.usertype)
+                   localStorage.setItem("profile_picture", response.profile_picture)
+                   sessionStorage.setItem("pp", response.profile_picture)
+
+                   setLoading(false)
                    navigate();
                 }else{
                     
                     setShowToast(true);
                     console.log(response.success)
                     console.log(response.results)
+                    setLoading(false)
                 }
             })
             .catch(err => {
@@ -130,6 +133,14 @@ export const Login: React.FC = () =>{
                 message="Invalid user details."
                 duration={1000}
                 color="danger"
+                />
+                <IonLoading 
+                    isOpen={loading}
+                    message={"Loading"}
+                    duration={2000}
+                    spinner={"circles"}
+                    onDidDismiss={() => setLoading(false)}
+                    cssClass={"spinner"}
                 />
             </IonPage>
 
