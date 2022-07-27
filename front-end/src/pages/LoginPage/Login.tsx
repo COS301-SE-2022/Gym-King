@@ -1,17 +1,12 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast, useIonViewWillEnter} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 
 
 export const Login: React.FC = () =>{
-    useIonViewWillEnter(()=>{
-        if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
-        {
-            navigate()
-        }
-    })
+    
     let formData:any;
     let history=useHistory()
     const [showToast, setShowToast] = useState(false);

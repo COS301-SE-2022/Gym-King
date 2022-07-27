@@ -6,6 +6,7 @@ test('renders without crashing', () => {
     const { baseElement } = render(<GymOwnerViewBadge />);
     expect(baseElement).toBeDefined();
 });
+
 test("API fetch badges",()=>{
     let badges:any=[]    
     var email="u20519517@tuks.co.za"
