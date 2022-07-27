@@ -16,40 +16,20 @@ export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any}
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
-  /**
-   * loading hook
-   * @brief boolean,determines whether loading bar is shown or not
-   */
+  //-loading hook{boolean},determines whether loading bar is shown or not
   const [loading, setLoading] = useState<boolean>(false);
-  /**
-   * showToast1 hook
-   * @brief boolean,determines whether showToast1 is shown or not
-   */
+  //-showToast1 hook {boolean},determines whether showToast1 is shown or not
   const [showToast1, setShowToast1] = useState<boolean>(false);
-  /**
-   * showToast2 hook
-   * @brief boolean,determines whether showToast2 is shown or not
-   */
+  //-showToast2 hook{boolean},determines whether showToast2 is shown or not
   const [showToast2, setShowToast2] = useState<boolean>(false);
-  /**
-   * toastMessage hook
-   * @brief string,stores message to be shown on toast
-   */
+  //-toatsMessage {string},stores message to be shown on toast
   const [toastMessage,setToastMessage]=useState<string>("could not delete gym")
-  /**
-   * history
-   * @brief uses react-route for navigation
-   */
+  //history,uses react-route for navigation
   const history=useHistory();
-  /**
-   * showActionSheet hook
-   * @brief boolean, toggles acttion sheet
-   */
+  //-showActionSheet hook {boolean}, toggles acttion sheet
   const [showActionSheet, setShowActionSheet] = useState<boolean>(false);
-  /**
-   * presentAlert
-   * @brief toggles alert
-   */
+  //-presentAlert, toggles alert
+   
   const [presentAlert] = useIonAlert();
 //=================================================================================================
 //    FUNCTIONS
@@ -97,7 +77,7 @@ export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any}
     });
     }
   return(
-  <div>
+  <div data-testid="GymCard">
     <IonCard
       color="primary"   
       class="gymCard ion-padding"

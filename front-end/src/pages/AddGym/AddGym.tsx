@@ -2,7 +2,7 @@
 * @file AddGym.tsx
 * @brief provides interface for adding new gyms to map
 */
-import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -20,45 +20,21 @@ const AddGym: React.FC = () => {
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
-  /**
-    history variable 
-    @brief this variables uses the useHistory from react-router to navigate
-  */
+  //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
-  /**
-  *  gymName hook
-  *  @brief hook that sets the name of a gym
-  */
+  //-gymName hook, hook that sets the name of a gym
   const [gymName, setGymName] = useState<string>("name"); 
-  /**
-  *  gymAddress hook
-  *  @brief hook that sets the address of a gym
-  */          
+  //- gymAddress hook, hook that sets the address of a gym         
   const [gymAddress, setGymAddress] = useState<string>("address");
-  /**
-  *  coordinate hook
-  *  @brief hook that sets the coordinates of the gym
-  */ 
+  //-coordinate hook, hook that sets the coordinates of the gym 
   const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
-  /** 
-  * zoom  variable  
-  * @brief number, stores default zoom value for the map
-  */
+  //-zoom  variable {number}, stores default zoom value for the map
   const zoom: number = 16;
-  /** 
-  * showToast1  hook 
-  * @brief set showToast1 variable on successeful adding of a gym
-  */
+  //-showToast1  hook, set showToast1 variable on successeful adding of a gym
   const [showToast1, setShowToast1] = useState(false);
-  /** 
-  * showToast2  hook 
-  * @brief set showToast2 variable on unsuccesseful adding of a gym
-  */
+  //-showToast2  hook ,set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
-  /**
-   * gymIcon
-   * @brief string, stores gym icon
-   */
+  //-gymIcon{string}, stores gym icon
    let gymIcon: string = "logo";
 //=================================================================================================
 //    FUNCTIONS

@@ -2,7 +2,7 @@
 * @file EditGym.tsx
 * @brief provides interface for editing a gym detail
 */
-import {IonButton,IonCard,IonCardContent,IonCardHeader,IonCardTitle,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonPage,IonRow,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./EditGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -19,47 +19,23 @@ const EditGym: React.FC = () => {
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
-  /**
-    history variable 
-    @brief this variables uses the useHistory from react-router to navigate
-  */
+  //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
-  /**
-  *  gymAddress hook
-  *  @brief hook that sets the address of a gym
-  */
+  //-gymAddress hook, hook that sets the address of a gym
   const [gymName, setGymName] = useState<string>("name");
-  /**
-  *  gymAddress hook
-  *  @brief hook that sets the address of a gym
-  */
+  //-gymAddress hook, hook that sets the address of a gym
   const [gymAddress, setGymAddress] = useState<string>("address");
-  /**
-  *  coordinate hook
-  *  @brief hook that sets the coordinates of the gym
-  */ 
+  //-coordinate hook, hook that sets the coordinates of the gym
   const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
-   /** 
-  * zoom  variable  
-  * @brief number, stores default zoom value for the map
-  */
-    const zoom: number = 16;
-    /** 
-    * showToast1  hook 
-    * @brief set showToast1 variable on successeful adding of a gym
-    */
-    const [showToast1, setShowToast1] = useState(false);
-    /** 
-    * showToast2  hook 
-    * @brief set showToast2 variable on unsuccesseful adding of a gym
-    */
-    const [showToast2, setShowToast2] = useState(false);
-    /**
-     * gymIcon
-     * @brief string, stores gym icon
-     */
-     let gymIcon: string = "logo";
-//=================================================================================================
+  //-zoom  variable{number}, stores default zoom value for the map
+  const zoom: number = 16;
+  //-showToast1  hook, set showToast1 variable on successeful adding of a gym
+  const [showToast1, setShowToast1] = useState(false);
+  //-showToast2  hook, set showToast2 variable on unsuccesseful adding of a gym
+  const [showToast2, setShowToast2] = useState(false);
+  //-gymIcon {string}, stores gym icon
+  let gymIcon: string = "logo";
+//================================================================================================
 //    FUNCTIONS
 //=================================================================================================
   /**
@@ -136,52 +112,26 @@ const EditGym: React.FC = () => {
 //=================================================================================================
   return (
     <IonPage>
-      <IonHeader>
-        <ToolBar></ToolBar>
-      </IonHeader>
-      <IonContent class="">
-        <IonCard className="glassForm">
-          <IonCardHeader  className="PageTitle center" color="secondary" >
-            <IonCardTitle>Edit Gym</IonCardTitle>
-          </IonCardHeader>
+    <IonHeader>
+      <ToolBar></ToolBar>
+    </IonHeader>
+    <IonContent className='Content' >
+          <form>
+              <IonText className="PageTitle center">Edit Gym</IonText> <br></br>
 
-          <IonCardContent>
-            <IonGrid class="AddGymGrid" className="grid">
-              <IonRow class="AddGymRow" className="left topMargin">
-                <IonText className="Subheading">Name:</IonText>
-              </IonRow>
+              <IonText className="smallHeading leftMargin">Name:</IonText>
+              <IonInput required className="textInput  smallerTextBox leftMargin width80" value={gymName} onIonChange={(e: any) => {
+                  setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
+                }}>{" "}
+              </IonInput> <br></br>
 
-              <IonRow className="left">
-                <IonInput
-                  class="textInput"
-    
-                  value={gymName}
-                  onIonChange={(e: any) => {
-                    setGymName(e.target.value);sessionStorage.setItem("gymName",e.target.value)
-                  }}
-                >
-                  {" "}
-                </IonInput>
-              </IonRow>
-
-              <IonRow class="AddGymRow" className="left topMargin">
-                <IonText className="Subheading">Address:</IonText>
-              </IonRow>
-
-              <IonRow className="left">
-                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                  <IonIcon
-                    class="AddGymLocation"
-                    icon="location-outline"
-                  ></IonIcon>
-                  <span>{gymAddress}</span>
-                  <IonIcon
-                    class="AddGymArrow"
-                    icon="chevron-forward-outline"
-                  ></IonIcon>
-                </IonButton>
-              </IonRow>
-              <IonRow>
+              <IonText className="smallHeading leftMargin">Address:</IonText>
+              <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
+                <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
+                <span>{gymAddress}</span>
+                <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
+              </IonButton>
+              <div className="width80 centerComp">
                 <Map
                   height={200}
                   center={[coordinate[0], coordinate[1]]}
@@ -189,10 +139,10 @@ const EditGym: React.FC = () => {
                   provider={stamenToner}
                   data-testid="map"
                 >
-                  <Overlay
+                  <Overlay 
                     anchor={[coordinate[0], coordinate[1]]}
                     offset={[30, 30]}
-                    data-testid="oLay"
+                    data-testid="ov"
                   >
                     <img
                       width={60}
@@ -202,17 +152,14 @@ const EditGym: React.FC = () => {
                     ></img>
                   </Overlay>
                 </Map>
-              </IonRow>
-              <IonButton
-                class="AddGymAdd"
-                color="warning"
-                onClick={() => saveGym()}
-              >
-                Save changes
-              </IonButton>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
+              </div>
+            <IonButton
+              class="AddGymAdd"
+              color="warning"
+              onClick={() => saveGym()}
+            >Save changes</IonButton>
+        </form>
+
         <IonToast
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}

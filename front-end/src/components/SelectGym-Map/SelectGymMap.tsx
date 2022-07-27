@@ -20,20 +20,11 @@ export function SelectGymMap() {
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
-  /**
-  *  history variable 
-  *  @brief this variables uses the useHistory from react-router to navigate
-  */
+  //-history variable, this variables uses the useHistory from react-router to navigate
   const history=useHistory()
-  /**
-   * height variable
-   * @brief number, height value of the map
-   */
+  //-height variable{number}, height value of the map
   let height:number=435;
-  /**
-   * screenHeight variable
-   *  @brief number, screenHeight is stored and used to determine the value of the height variable
-   */
+  //-screenHeight variable{number}, screenHeight is stored and used to determine the value of the height variable
   let screenHeight:number=window.innerHeight;
     if(screenHeight>=840)
     {height=700;}
@@ -41,50 +32,23 @@ export function SelectGymMap() {
     {height=560;}
     else if(screenHeight>=650)
     {height=500;}
-  /**
-  *    centre hook 
-  *    @brief [number,number],maintains the coordinates of the maps current centre
-  */
+  //-centre hook [number,number],maintains the coordinates of the maps current centre
   const [center, setCenter] = useState([-25.7545 ,28.2314 ])
-  /**
-  * gymCoord hook
-  * @brief [number,number], maintains coordinates of the gym 
-  */
+  //-gymCoord hook@brief [number,number], maintains coordinates of the gym
   const [gymCoord,setGymCoord]=useState([-25.7545 ,28.2314 ])
-  /**
-  * zoom hook
-  * @brief number,stores value for maps zoom 
-  */
+  //-zoom hook {number},stores value for maps zoom 
   const [zoom, setZoom] = useState(17)
-  /**
-   * modal element
-   * @brief  this component uses the IonModalElement
-   */
+  //-modal element,this component uses the IonModalElement
   const modal = useRef<HTMLIonModalElement>(null);
-  /**
-   * open hook
-   * @brief boolean,determines wether modal is open or closed
-   */
+  //-open hook {boolean},determines wether modal is open or closed
   const [open,setOpen]=useState(true)
-  /**
-   * gymAddress hook
-   * @brief string, stores the address of the string
-   */
+  //-gymAddress hook {string}, stores the address of the string
   const [gymAddress, setGymAddress] = useState<string>("address");
-  /**
-   * addresses
-   * @brief string[], stores address list obtained from geocoder
-   */
+  //-addresses {string[]}, stores address list obtained from geocoder
   const [addresses,setaddresses]=useState<any>([])
- /**
-  * icon hook
-  * @brief icon, seticon of the lockbutton
-  */
+  //-icon hook{icon}, seticon of the lockbutton
   const [icon,setIcon]=useState(lockClosed)
-  /**
-   * lock
-   * @brief boolean, determines whether map is locked on map or not
-   */
+  //-lock {boolean}, determines whether map is locked on map or not
   const [lock,setLock]=useState(true)
 //=================================================================================================
 //    FUNCTIONS

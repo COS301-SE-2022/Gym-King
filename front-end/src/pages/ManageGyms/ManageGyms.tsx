@@ -14,15 +14,9 @@ const ManageGyms: React.FC = () =>{
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
-    /**
-     * gymList hook
-     * @brief stores list of gyms a gym owner 
-     */
+    //- gymList hook, stores list of gyms a gym owner 
     const [gymList,setGymList]=useState<any>([{'id':"1",'name':"",'address':""}])
-    /**
-     * loading hook
-     * @brief boolean, determines when loading icon is shown
-     */
+    //-loading hook {boolean} determines when loading icon is shown
     const [loading, setLoading] = useState<boolean>(false);
 //=================================================================================================
 //    FUNCTIONS
