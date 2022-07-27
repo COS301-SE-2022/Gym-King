@@ -25,8 +25,7 @@ const UserProfilePage: React.FC = () =>{
     const [showFail, setShowFail] = useState(false);
     const [numClaims, setNumClaims] = useState("");
     const [numBadges, setNumBadges] = useState("");
-    const [profilePicture, setProfilePicture] = useState('');
-
+    const [profilePicture, setProfilePicture] = useState(localStorage.getItem("profile_picture"));
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
@@ -84,7 +83,8 @@ const UserProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
-                localStorage.setItem("profilepicture", profilePicture)
+                sessionStorage.setItem("pp", response.profile_picture)
+
                 setLoading(false);
                 
             })
@@ -164,6 +164,7 @@ const UserProfilePage: React.FC = () =>{
     }
     
     const updateProfilePicture = () =>{
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/users/user/info`,{
                 method: 'POST',
                 headers: {
@@ -179,6 +180,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setProfilePicture(response.profile_picture)
+                localStorage.setItem("profile_picture", response.profile_picture!)
                 setLoading(false)
             })
             .catch(err => {
@@ -233,7 +235,7 @@ const UserProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow >
-                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
+                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
@@ -254,8 +256,7 @@ const UserProfilePage: React.FC = () =>{
                             </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard >
+                                <IonCard className="profileCard" >
                                     <IonCardHeader className="inputHeading">My Details</IonCardHeader>
                                     <IonCardContent>
                                         <IonGrid>
@@ -273,11 +274,10 @@ const UserProfilePage: React.FC = () =>{
                                         </IonGrid>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
-                        <IonRow>
+                        <IonRow >
                             <IonCol>
-                                <IonCard className="smallCard" onClick={goToUserBadges}>
+                                <IonCard className="smallCard" onClick={goToUserBadges} >
                                     <IonCardContent>
                                         <IonText className="bigNumber">{numBadges}</IonText><br></br>
                                         <IonText>badges</IonText>
@@ -321,6 +321,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
 
+                                <br></br>
                                 <IonLabel className="smallHeading" position="floating">Name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
@@ -338,7 +339,7 @@ const UserProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
-                                <IonButton className='' type="button" >Change Password</IonButton>
+                                <IonButton className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         

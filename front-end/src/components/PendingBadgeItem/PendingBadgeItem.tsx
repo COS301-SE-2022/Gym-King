@@ -13,7 +13,7 @@ export class PendingBadgeItem extends React.Component<props>{
     render(){
         //console.log(this.userId);
         return(
-            <IonItem button detail class='btnApproval'>
+            <IonItem class='btnApproval'>
                 <IonIcon icon={image} className='userProfile'></IonIcon>
                 <IonLabel>{this.props.badgeName}</IonLabel>
             </IonItem>
