@@ -76,8 +76,8 @@ const employees = express.Router()
   .get("/claims/gym/:gid", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.params.gid;
-      let result = await badgeClaimRepository.findByGID(query);
-      res.json(result);
+      let claims = await badgeClaimRepository.findByGID(query);
+      res.json(claims);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
