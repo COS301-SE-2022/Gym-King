@@ -3,7 +3,6 @@ import GymCard from './GymCard';
 /*UNIT TESTING*/
 //test if pages rendered
 test('renders without crashing', () => {
-*/
   const { baseElement } = render(<GymCard id="" name="" address='' deleteClicked=""/>);
   expect(baseElement).toBeDefined();
 });
