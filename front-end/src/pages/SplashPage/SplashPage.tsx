@@ -1,18 +1,19 @@
-import { IonPage, IonContent} from '@ionic/react';
+import { IonPage, IonContent, IonImg} from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
+import logo from './logo.png';
 
 export const SplashPage: React.FC = () =>
 {
 return (
     <IonPage>
-        <IonContent fullscreen className='splash-screen'>
-            <div className="loading-dot"> 
-            </div> 
+        <IonContent fullscreen className='splash'>
+            <IonImg src={logo} className="logo"></IonImg>
         </IonContent>
     </IonPage>
 )
-}
+}    
+
 
 /*function LoadingMessage()
 {

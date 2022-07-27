@@ -53,6 +53,7 @@ import AppSettingsPage from './pages/AppSettingsPage/AppSettingsPage';
 import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
 import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 import AddEmployee from './pages/AddEmployee/AddEmployee';
+import SplashPage from './pages/SplashPage/SplashPage';
 /*develop*/
 
 
@@ -157,6 +158,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/AddEmployee'>
           <AddEmployee></AddEmployee>
+        </Route>
+        <Route exact path='/Splash'>
+          <SplashPage></SplashPage>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
