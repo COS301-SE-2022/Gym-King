@@ -84,7 +84,7 @@ const ManageGyms: React.FC = () =>{
                     {gymList.map((el:any)=>
                         <GymCard key={el.g_id} id={el.g_id} name={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
                     )}
-
+                    
                     <IonLoading 
                         isOpen={loading}
                         message={"Loading"}
@@ -94,6 +94,7 @@ const ManageGyms: React.FC = () =>{
                         cssClass={"spinner"}
                         
                     />
+                    <br></br><br></br><br></br>
             </IonContent>
             
         </IonPage>
