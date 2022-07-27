@@ -12,43 +12,44 @@ export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any}
     const history=useHistory();
     const [showActionSheet, setShowActionSheet] = useState(false);
     const [presentAlert] = useIonAlert();
+
     const deleteGym = (password:string) => {
-    setLoading(true)
-    fetch(`https://gym-king.herokuapp.com/owner/delete/gym`,
-    {
-      method: "DELETE",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        gid:prop.id,
-        "email":localStorage.getItem("email"),
-        "password":password,
-      })
-    }
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      setLoading(false)
-      console.log(response)
-      
-      if(response?.success===false)
+      setLoading(true)
+      fetch(`https://gym-king.herokuapp.com/owner/delete/gym`,
       {
-        setToastMessage(response.results)
+          method: "DELETE",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            "gid":prop.id,
+            "email":localStorage.getItem("email"),
+            "password":password,
+          })
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        setLoading(false)
+        console.log(response)
+        
+        if(response?.success===false)
+        {
+          setToastMessage(response.results)
+          setShowToast2(true)
+        }
+        else{
+          setShowToast1(true)
+          prop.deleteClicked();
+        
+        }
+      })
+      .catch((err) => {
+        setLoading(false)
+        console.log(err);
         setShowToast2(true)
-      }
-      else{
-        setShowToast1(true)
-        prop.deleteClicked();
-       
-      }
-    })
-    .catch((err) => {
-      setLoading(false)
-      console.log(err);
-      setShowToast2(true)
-    });
+      });
     }
     return(
         <div>

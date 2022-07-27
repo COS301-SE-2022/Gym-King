@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -8,9 +8,9 @@ const ManageGyms: React.FC = () =>{
 
     const [gymList,setGymList]=useState<any>([])
     const [loading, setLoading] = useState<boolean>(false);
+    let email = localStorage.getItem("email");
 
-
-    useIonViewWillEnter(()=>
+    useIonViewDidEnter(()=>
         {
             if(sessionStorage.getItem("gid")!=null)
             {
@@ -30,7 +30,7 @@ const ManageGyms: React.FC = () =>{
                 sessionStorage.removeItem("Long")
             }
 
-            let email = localStorage.getItem("email");
+            
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
@@ -38,7 +38,7 @@ const ManageGyms: React.FC = () =>{
             .then(response =>response.json())
             .then(response =>{
                 console.log(response)
-                setLoading(false)
+                setLoading(false)/*
                 let arr=[];
                 for(let i=0;i<response.length;i++)
                 {
@@ -47,8 +47,8 @@ const ManageGyms: React.FC = () =>{
                         'name':response[i].gym_brandname,
                         'address':response[i].gym_address
                     })
-                }
-                setGymList(arr)
+                }*/
+                setGymList(response)
             })
             .catch(err => {
                 console.log(err)
@@ -56,7 +56,6 @@ const ManageGyms: React.FC = () =>{
             })
         })
         const deleteClicked= () => {
-            let email = localStorage.getItem("email");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
                 "method":"GET"
@@ -65,16 +64,7 @@ const ManageGyms: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setLoading(false)
-                let arr=[];
-                for(let i=0;i<response.length;i++)
-                {
-                    arr.push({
-                        'id':response[i].g_id,
-                        'name':response[i].gym_brandname,
-                        'address':response[i].gym_address
-                    })
-                }
-                setGymList(arr)
+                setGymList(response)
             })
             .catch(err => {
                 console.log(err)
@@ -92,7 +82,7 @@ const ManageGyms: React.FC = () =>{
                     <IonText className='PageTitle center'>My Gyms</IonText>
                     <IonButton className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>
                     {gymList.map((el:any)=>
-                        <GymCard key={el.id} id={el.id} name={el.name} address={el.address} deleteClicked={deleteClicked}></GymCard>
+                        <GymCard key={el.g_id} id={el.g_id} name={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
                     )}
 
                     <IonLoading 

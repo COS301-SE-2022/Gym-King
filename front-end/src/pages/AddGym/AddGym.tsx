@@ -1,4 +1,4 @@
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -20,7 +20,7 @@ const AddGym: React.FC = () => {
     -25.7545,
     28.2314,
   ]);
-  useIonViewWillEnter(()=>{
+  useIonViewDidEnter(()=>{
       if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
