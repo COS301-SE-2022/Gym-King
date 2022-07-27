@@ -96,22 +96,3 @@ const ManageEmployees: React.FC = () =>{
 }
 
 export default ManageEmployees;
-/*
-<IonList>
-    {
-        employeeList?.map(el =>{
-                return(
-
-                <IonItem  key={el.email}  onClick={() => goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id, el.profile_picture)} >
-                    <IonAvatar slot="start">
-                    <IonImg src={el.profile_picture} alt=""/>
-                    </IonAvatar>
-                    <IonLabel>
-                    <h2>{el.name} {el.surname}</h2>
-                    </IonLabel>
-                </IonItem>
-            )
-        })
-    }
-</IonList>
-*/

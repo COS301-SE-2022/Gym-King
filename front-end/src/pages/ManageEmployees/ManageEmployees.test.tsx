@@ -9,3 +9,39 @@ test('renders without crashing', ()=> {
   const {baseElement} = render(<ManageEmployees />);
   expect(baseElement).toBeDefined();
 });
+
+describe('Testing API calls', () => {
+
+  it('should load owners employees', async () => {
+      (async ()=>{
+        fetch(`https://gym-king.herokuapp.com/owners/employees/${"owner_email"}`, {
+          "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            expect(response).toBeDefined()
+        })
+        .catch(err => {
+            console.log(err)
+            expect(err).toBeDefined()
+        })
+      })
+  });
+  it('should get owners gyms', async () => {
+      (async ()=>{
+        fetch(`https://gym-king.herokuapp.com/gyms/owned/${"owner_email"}`,{
+          "method":"GET"
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            expect(response).toBeDefined()
+        })
+        .catch(err => {
+          expect(err).toBeDefined()
+        })
+  });
+
+})
+})
+

@@ -26,7 +26,7 @@ const PendingBadgesPage: React.FC = () =>{
             .catch(err => {
                 console.log(err)
                 setLoading(false)
-        })
+            })
     },[])
 
 

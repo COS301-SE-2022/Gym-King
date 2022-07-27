@@ -9,6 +9,7 @@ test('renders without crashing', () => {
   expect(linkElement).toBeInTheDocument();
 });
 
+
 /*Intergration test */
 describe('Integration Tests', () => {
 
