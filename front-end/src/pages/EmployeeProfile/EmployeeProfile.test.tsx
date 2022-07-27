@@ -28,10 +28,12 @@ describe('Testing API calls', () => {
         .then(response =>response.json())
         .then(response =>{
             console.log(response)
-            
+            expect(response).toBeDefined()
         })
         .catch(err => {
             console.log(err)
+            expect(err).toBeDefined()
+
         })
       })
   });
@@ -55,10 +57,12 @@ describe('Testing API calls', () => {
             })
             .then(response =>response.json())
             .then(response =>{
-                console.log(response)                
+                console.log(response)
+                expect(response).toBeDefined()                
             })
             .catch(err => {
                 console.log(err)
+                expect(err).toBeDefined()
             }) 
       })
   });

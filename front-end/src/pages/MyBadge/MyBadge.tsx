@@ -88,7 +88,7 @@ const MyBadge: React.FC = () =>{
                         <IonButtons slot='start' color="light">
                             <IonButton id="sort-trigger" color="light">
                                 <IonIcon size='large' icon={swapVertical}></IonIcon>
-                                <IonLabel color="light" style={{"padding-left":"5%"}}>Sort</IonLabel>
+                                <IonLabel color="light" style={{"paddingLeft":"5%"}}>Sort</IonLabel>
                             </IonButton>
                             <IonPopover  trigger='sort-trigger' triggerAction='click'>      
                                             <IonItem onClick={e=>{setSort("AscName")}}>
@@ -112,7 +112,7 @@ const MyBadge: React.FC = () =>{
                         <IonButtons slot='secondary' >
                             <IonButton id="filter-trigger"  color="light">
                                 <IonIcon size='large' icon={funnel} ></IonIcon>
-                                <IonLabel style={{"padding-left":"5%"}}>Filter</IonLabel>
+                                <IonLabel style={{"paddingLeft":"5%"}}>Filter</IonLabel>
                             </IonButton>
                         </IonButtons>
                         <IonPopover trigger='filter-trigger' triggerAction='click'>
