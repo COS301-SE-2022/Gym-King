@@ -13,7 +13,7 @@ describe('Testing API calls', () => {
 
     it('should load claim data', async () => {
         (()=>{
-            fetch(`https://gym-king.herokuapp.com/gyms/gym`,
+            fetch("https://gym-king.herokuapp.com/gyms/gym",
             {
             method: "POST",
             headers: {
@@ -41,7 +41,7 @@ describe('Testing API calls', () => {
     it('should load claim data', async () => {
         (()=>
         {
-            fetch(`https://gym-king.herokuapp.com/gyms/owned`,
+            fetch("https://gym-king.herokuapp.com/gyms/owned",
             {
                 method: "POST",
                 headers: {
@@ -49,17 +49,17 @@ describe('Testing API calls', () => {
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                email: "localStorage.getItem('email')",
-                gid: "sessionStorage.getItem('new_gid')"
+                email: "email",
+                gid: "new_gid"
                 })
             }
             )
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
+                expect(response).toBeDefined()
             })
             .catch((err) => {
-                console.log(err);
+                expect(err).toBeDefined()
             }); 
         })
     });

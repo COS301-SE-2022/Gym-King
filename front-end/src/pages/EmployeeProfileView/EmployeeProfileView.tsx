@@ -68,8 +68,9 @@ const EmployeeProfileViewPage: React.FC = () =>{
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 
-                email: employee_email!,
-                password: employee_pass!
+                owner_email: localStorage.getItem("email"),
+                owner_password: localStorage.getItem("password"),
+                employee_email: employee_email!
             })
         })
         .then(response =>response.json())
@@ -93,11 +94,11 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
+                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5' >
-                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
+                                            <IonImg  style={{"overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>

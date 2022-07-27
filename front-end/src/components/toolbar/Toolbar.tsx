@@ -14,7 +14,7 @@ export class ToolBar extends React.Component<ToolBarProps>{
                 <IonToolbar mode='ios' class="toolbar" color="#0F005A" data-testid="tb">
                     <IonButtons slot="end">
                         <IonAvatar >
-                        <IonImg  style={{"position":"absolute","overflow":"hidden","margin-top":"6px","border-radius":"50%","background-image":`url(${sessionStorage.getItem("pp")})`}} alt="" className="toolbarImage centerComp contain"  ></IonImg>                        </IonAvatar>
+                        <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${sessionStorage.getItem("pp")})`}} alt="" className="toolbarImage centerComp contain"  ></IonImg>                        </IonAvatar>
                     </IonButtons>
                     <IonTitle>{username}</IonTitle>
                     <IonButtons slot='start'>

@@ -30,7 +30,7 @@ const EditGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
       else{
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("gid")}`,
+        fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem('gid')}`,
         {
           method: "Get",
           headers: {
