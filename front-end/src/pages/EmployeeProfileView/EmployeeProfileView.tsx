@@ -27,6 +27,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
     console.log(gymId);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
+    const [showDeleteEmployee, setShowDeleteEmployee] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     
@@ -68,18 +69,20 @@ const EmployeeProfileViewPage: React.FC = () =>{
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 
-                owner_email: localStorage.getItem("email"),
-                owner_password: localStorage.getItem("password"),
-                employee_email: employee_email!
+                owneremail: localStorage.getItem("email"),
+                ownerpassword: localStorage.getItem("password"),
+                employee_email: localStorage.getItem("employee_email")
             })
         })
         .then(response =>response.json())
         .then(response =>{
             console.log(response)
+            setShowDeleteEmployee(true)
             setLoading(false)
         })
         .catch(err => {
             console.log(err)
+            setShowFail(true)
             setLoading(false)
         })
     }
@@ -147,7 +150,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
                     <br></br>
 
-                                        <IonToast
+                    <IonToast
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -160,6 +163,13 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         message="Could not update. Try again later."
                         duration={1000}
                         color="danger"
+                    />
+                    <IonToast
+                        isOpen={showDeleteEmployee}
+                        onDidDismiss={() => setShowSuccess(false)}
+                        message="Employee deleted!"
+                        duration={1000}
+                        color="success"
                     />
                     <IonLoading 
                         isOpen={loading}
