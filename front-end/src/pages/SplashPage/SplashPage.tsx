@@ -7,17 +7,18 @@ export const SplashPage: React.FC = () =>
 {
     useIonViewWillEnter(()=>{
         setTimeout(() => {
+            if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
+            {
+                navigate()
+            }
+            else
+            {
+                window.location.href="http://localhost:3000/Login"
+
+            }
           }, 3000);
 
-        if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
-        {
-            navigate()
-        }
-        else
-        {
-            window.location.href="http://localhost:3000/Login"
-
-        }
+        
         
     })
     const navigate=()=>{
