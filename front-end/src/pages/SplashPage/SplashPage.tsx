@@ -1,17 +1,46 @@
-import { IonPage, IonContent, IonImg} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewWillEnter} from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 
 export const SplashPage: React.FC = () =>
 {
-return (
-    <IonPage>
-        <IonContent fullscreen className='splash'>
-            <IonImg src={logo} className="logo"></IonImg>
-        </IonContent>
-    </IonPage>
-)
+    useIonViewWillEnter(()=>{
+        setTimeout(() => {
+          }, 3000);
+
+        if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
+        {
+            navigate()
+        }
+        else
+        {
+            window.location.href="http://localhost:3000/Login"
+
+        }
+        
+    })
+    const navigate=()=>{
+        let usertype=localStorage.getItem("usertype")
+        if(usertype==="gym_user")
+        {
+            window.location.href="http://localhost:3000/userMap"
+        }
+        else if(usertype==="gym_owner")
+        {
+            window.location.href="http://localhost:3000/GymOwnerPage"
+        }
+        else{
+            window.location.href="http://localhost:3000/EmployeeHome"
+        }
+    }
+    return (
+        <IonPage>
+            <IonContent fullscreen className='splash'>
+                <IonImg src={logo} className="logo"></IonImg>
+            </IonContent>
+        </IonPage>
+    )
 }    
 
 
