@@ -16,6 +16,7 @@ export class ApprovalButton extends React.Component<props>{
         localStorage.setItem('user_email', this.userId);
         localStorage.setItem('user_badgeId', this.props.badgeId);
         localStorage.setItem('user_username', this.props.username);
+        localStorage.setItem('user_profile', this.props.profile);
 
     }
 
