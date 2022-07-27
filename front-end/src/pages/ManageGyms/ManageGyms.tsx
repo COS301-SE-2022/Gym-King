@@ -2,7 +2,7 @@
  * @file ManageGyms.tsx
  * @brief provides interface for an owner to manage all of his/her gyms
  */
-import {IonContent, IonPage, IonHeader, IonText, IonButton, useIonViewWillEnter, IonLoading, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
