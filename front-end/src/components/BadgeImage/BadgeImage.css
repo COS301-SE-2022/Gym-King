@@ -4,15 +4,102 @@
   position: absolute!important;
   top:7% !important;
   left:13% !important;
-  
   z-index:1 !important;
 }
 #badgeUnder{
   height:100px;
   width: 130px !important;
 }
+#pendingEmblem{
+    height: 30px;
+    width: 30px !important;
+    position: absolute!important;
+    top:10% !important;
+    left:.7% !important;
+    z-index:1 !important;
+}
+#pendingRank{
+    height:35px;
+    width: 35px !important;
+
+}
+#UploadEmblem{
+    height: 90px;
+    width: 100px !important;
+    position: absolute!important;
+    top:10% !important;
+    left:7.5% !important;
+    z-index:1 !important;
+}
+#UploadRank{
+    height:100px;
+    width: 200px !important;
+
+}
+@media (max-width:364px)
+{
+    
+    #UploadEmblem{
+        height: 90px;
+        width: 100px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:7% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    }
+}
+@media (max-width:360px)
+{
+    #UploadEmblem{
+        height: 90px;
+        width: 95px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:8% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    }
+}
+@media(max-width:350px)
+{
+    #UploadEmblem{
+        height: 90px;
+        width: 90px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:8% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    } 
+}
 @media (max-width:339px)
 {
+    #UploadEmblem{
+        height: 90px;
+        width: 90px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:8% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    }
     
     #badgeOver{ 
         height: 90px;
@@ -27,8 +114,53 @@
         width: 100px !important;
     }
 }
+@media(max-width:332px)
+{
+    #UploadEmblem{
+        height: 90px;
+        width: 90px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:7% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    } 
+}
+@media(max-width:324px)
+{
+    #UploadEmblem{
+        height: 90px;
+        width: 85px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:8% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    } 
+}
 @media (min-width:385px)
 {
+    #UploadEmblem{
+        height: 90px;
+        width: 100px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:8.5% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
+    }
     
     #badgeOver{ 
         height: 120px;
@@ -42,5 +174,21 @@
     #badgeUnder{
         height: 130px;
         width: 130px !important;
+    }
+}
+@media (min-width:414px)
+{
+    #UploadEmblem{
+        height: 90px;
+        width: 110px !important;
+        position: absolute!important;
+        top:10% !important;
+        left:9% !important;
+        z-index:1 !important;
+    }
+    #UploadRank{
+        height:100px;
+        width: 200px !important;
+    
     }
 }

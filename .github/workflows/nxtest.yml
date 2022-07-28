@@ -14,10 +14,20 @@ on:
         required: false
         type: string
 
+env: 
+  HEROKU_POSTGRESQL_CRIMSON_URL: ${{ secrets.HEROKU_POSTGRESQL_CRIMSON_URL }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+  FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+  FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+  FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+  TEST: ${{ secrets.TEST }}
+
 jobs:
   build:
     name: Generate cache
     runs-on: ubuntu-latest
+
     steps:
         #Checking out to the develop branch
       - name: Checkout develop
@@ -63,11 +73,6 @@ jobs:
       - name: Unit test affected
         if: inputs.testtype == 'unit' && inputs.test == 'affected'
         run: yarn nx affected:test --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
-        env:
-          FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
-          FIREBASE_CLIENT_EMAIL: ${{secrets.FIREBASE_CLIENT_EMAIL}}
-          FIREBASE_PRIVATE_KEY": ${{secrets.FIREBASE_PRIVATE_KEY}}
-          FIREBASE_DB_URL: ${{secrets.FIREBASE_DB_URL}}
 
       - name: E2E test affected
         if: inputs.testtype == 'e2e' && inputs.test == 'affected'

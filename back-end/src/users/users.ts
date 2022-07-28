@@ -391,7 +391,7 @@ const users = express.Router()
               res.status(400);
               res.json( { 'success': false, 'results':"invalid password" } );
             }else{
-              const results = { 'success': true };
+              const results = { 'success': true,'profile_picture': result.profile_picture };
               res.json( results );
             }
           }
@@ -421,7 +421,7 @@ const users = express.Router()
     try {
       const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
       const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results, body: req.body} );
+      res.json( {results, body: result} );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -498,7 +498,7 @@ const users = express.Router()
       const bcrypt = require('bcryptjs')
       let query = req.body;
       const user = await userRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, user.password)) {
+      if (user != null && bcrypt.compareSync(query.password, user.password)) {
         res.json(user)
       }
       else {
@@ -526,9 +526,9 @@ const users = express.Router()
       const query = req.body;
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, user.password)) {
+      if (user != null && bcrypt.compareSync(query.password, user.password)) {
         const result = await userRepository.updateUser(query.email,query.name,query.surname,query.number,query.username);
-        res.json(result);
+        res.json({'success': true});
       }
       else {
         res.json({'message':'Invalid email or password!'})
@@ -647,7 +647,7 @@ const users = express.Router()
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       let oldFileName = '';
-      if (user.profile_picture != null && user.profile_picture.includes('/')){
+      if (user != null && user.profile_picture != null && user.profile_picture != 'NONE' && user.profile_picture.includes('/')){
         oldFileName = user.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
@@ -660,14 +660,13 @@ const users = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, user.password)) {
+      if (user != null && bcrypt.compareSync(query.password, user.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await badgeOwnedRepository.deleteAllOwnedByEmail(user.email);
         result = await badgeClaimRepository.deleteAllClaimsByEmail(user.email);
         result = await userOTPRepository.deleteUserOTP(user.email);
         result = await userRepository.deleteUser(user.email);
-        const results = { 'success': true };
-        res.json(results);
+        res.json({ 'success': true });
       }
       else {
         res.json({'message':'Invalid email or password!'})

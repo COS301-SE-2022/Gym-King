@@ -22,9 +22,7 @@ const MyBadge: React.FC = () =>{
         })
         .then(response =>response.json())
         .then(response =>{
-            console.log(response)
             let arr=[];
-            console.log(response)
             for(let i=0; i<response.length;i++)
             {
                 arr.push({

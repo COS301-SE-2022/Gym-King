@@ -4,6 +4,7 @@ import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { badgeRepository } from "../repositories/badge.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
 import { storageRef } from "../firebase.connection";
+import { ownerRepository } from "../repositories/gym_owner.repository";
 
 const express = require("express");
 const cors = require("cors");
@@ -75,8 +76,8 @@ const employees = express.Router()
   .get("/claims/gym/:gid", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.params.gid;
-      let result = await badgeClaimRepository.findByGID(query);
-      res.json(result);
+      let claims = await badgeClaimRepository.findByGID(query);
+      res.json(claims);
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -132,7 +133,7 @@ const employees = express.Router()
      try {
        let query = req.body;
        let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
-       res.json(result);
+       res.json({'success':true});
      } catch (err) {
        const results = { success: false, results: err };
        console.error(err);
@@ -194,7 +195,7 @@ const employees = express.Router()
       const bcrypt = require('bcryptjs')
       let query = req.body;
       const employee = await employeeRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
         res.json(employee)
       }
       else {
@@ -250,9 +251,9 @@ const employees = express.Router()
       const query = req.body;
       const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
         const result = await employeeRepository.updateEmployee(query.email,query.name,query.surname,query.number,query.username);
-        res.json(result);
+        res.json({'success':true});
       }
       else {
         res.json({'message':'Invalid email or password!'})
@@ -291,7 +292,7 @@ const employees = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let newFileName = ``;
         if (file.mimetype == 'image/jpeg'){
@@ -365,7 +366,7 @@ const employees = express.Router()
         } else {
           result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         }
-        res.json(result);
+        res.json({'success':true});
       }
       else {
         res.status(404).json({'message': 'Claim does not exist.'})
@@ -392,7 +393,7 @@ const employees = express.Router()
     try {
       let query = req.body;
       let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
-      res.json(result);
+      res.json({'success':true});
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -411,7 +412,7 @@ const employees = express.Router()
       let result = await badgeClaimRepository.deleteAllClaimsByBID(query.bid);
       result = await badgeOwnedRepository.deleteAllOwnedByBID(query.bid);
       result = await badgeRepository.deleteBadge(query.bid);
-      res.json(result);
+      res.json({'success':true});
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -460,15 +461,17 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * DELETE - Delete an employee.
-   * @param {string} email employee email.
-   * @param {string} password employee password.
+   * @param {string} owneremail owner email.
+   * @param {string} ownerpassword owner password.
+   * @param {string} employeeemail employee email.
    * @returns message confirming deletion.
    */
    .delete("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
      try {
       let query = req.body;
       const bcrypt = require('bcryptjs')
-      const employee = await employeeRepository.findByEmail(query.email);
+      const employee = await employeeRepository.findByEmail(query.employeeemail);
+      const owner = await ownerRepository.findByEmail(query.owneremail);
       let oldFileName = '';
       if (employee.profile_picture != null && employee.profile_picture.includes('/')){
         oldFileName = employee.profile_picture.split('/');
@@ -483,10 +486,10 @@ const employees = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (owner != null && bcrypt.compareSync(query.ownerpassword, owner.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
-        let result = await employeeRepository.deleteEmployee(employee.email);
-        result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
+        let result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
+        result = await employeeRepository.deleteEmployee(employee.email);
         const results = { 'success': true };
         res.json(results);
       }
