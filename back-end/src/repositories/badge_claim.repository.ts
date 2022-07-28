@@ -19,21 +19,9 @@ export const badgeClaimRepository = GymKingDataSource.getRepository(badge_claim)
         return this.findOneBy({b_id: bid,email: email });
     },
     async findByGID(gid: string){
-        const badge_claims = await GymKingDataSource
-        .getRepository(badge_claim)
-        .createQueryBuilder("badge_claim")
-        .where((qb) => {
-            const subQuery = qb
-                .subQuery()
-                .select("badge.b_id")
-                .from(badge, "badge")
-                .where("badge.g_id = :gid")
-                .getQuery()
-            return "badge_claim.b_id IN " + subQuery
-        })
-        .setParameter("gid", gid)
-        .getMany()
-        return badge_claims
+        return badgeRepository.query(`SELECT gu.email, gu.username, gu.profile_picture, iv.b_id, iv.input1, iv.input2, iv.input3, iv.proof, iv.date FROM GYM_USER as gu  
+        inner join (SELECT * FROM BADGE_CLAIM WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '${gid}')) as iv 
+        on gu.email = iv.email`)
     },
     async saveClaim(bid: string, email: string, username: string, input1: string, input2: string, input3: string, proof: string) {
         const badgeEntity = new badge();
