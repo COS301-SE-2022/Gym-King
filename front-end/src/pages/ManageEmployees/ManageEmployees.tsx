@@ -14,12 +14,18 @@ const ManageEmployees: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
     let email = localStorage.getItem('email')
+    
 
     
     useIonViewDidEnter(()=>
     {
         var owner=localStorage.getItem('email')
+        var owner_pass = localStorage.getItem("password")
         setLoading(true)
+
+        console.log(owner)
+        sessionStorage.setItem("owner_email", owner!)
+        sessionStorage.setItem("owner_pass", owner_pass!)
 
         fetch(`https://gym-king.herokuapp.com/owners/employees/${owner}`, {
             "method":"GET"
