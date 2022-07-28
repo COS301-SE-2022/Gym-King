@@ -1,28 +1,52 @@
-import { IonPage, IonContent, useIonViewWillEnter} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewWillEnter} from '@ionic/react';
 import './splash-screen.css';
 import {AndroidPermissions } from '@awesome-cordova-plugins/android-permissions'
 //import auth0Client from '../Auth';
+import logo from './logo.png';
 
 
 
 export const SplashPage: React.FC = () =>
 {
+    useIonViewWillEnter(()=>{
+        setTimeout(() => {
+            if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
+            {
+                navigate()
+            }
+            else
+            {
+                window.location.href="http://localhost:3000/Login"
 
-    const getPermissons = async () => {
-        console.log("hey")
-        AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.LOCATION)
+            }
+          }, 3000);
+
+        
+        
+    })
+    const navigate=()=>{
+        let usertype=localStorage.getItem("usertype")
+        if(usertype==="gym_user")
+        {
+            window.location.href="http://localhost:3000/userMap"
+        }
+        else if(usertype==="gym_owner")
+        {
+            window.location.href="http://localhost:3000/GymOwnerPage"
+        }
+        else{
+            window.location.href="http://localhost:3000/EmployeeHome"
+        }
     }
-    useIonViewWillEnter(getPermissons)
-
     return (
         <IonPage>
-            <IonContent fullscreen className='splash-screen'>
-                <div className="loading-dot"> 
-                </div> 
+            <IonContent fullscreen className='splash'>
+                <IonImg src={logo} className="logo"></IonImg>
             </IonContent>
         </IonPage>
     )
-}
+}    
+
 
 /*function LoadingMessage()
 {

@@ -21,47 +21,68 @@ import BadgeCanvas from "../BadgeCanvas/BadgeCanvas";
 
 import './BadgeSlider.css';
 import AR from "../AR/AR";
-// Optional parameters to pass to the swiper instance.
-// See http://idangero.us/swiper/api/ for valid options.
+
+/**
+ * @brief the sliders components input props
+ */
 const slideOpts = {
   initialSlide: 0,
   speed: 400,
 
-  
 };
-
-export const value={
-    value: "bronze-bicep"
-}
+//=========================================================================================================//
+/**
+ * @brief badge sliders input props(used by badge canvas)
+ */
 export interface BadgeInputProps {
     name: string;
-    component?: JSX.Element;
     bIcon?: string;
-  }
-
+}
+//=========================================================================================================//
+/**
+ * @brief this component provide an interface to design a custom badge icon
+ * @param name - the name of the badge
+ * @param bIcon - this is set when used to modify an existing badge(loads in its  default values)
+ */
 export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
     
+    // slider for badge rank
     const mySlides1 = useRef<any>(null);
+    // slider for badge emblem
     const mySlides2 = useRef<any>(null);
 
+    // state to hold the badge's rank
     const [activeRank,setActvieRank] = useState(Bronze);
+    // state to hold the badge's emblem
     const [activeEmblem,setActvieEmblem] = useState(bicep);
 
-    
+    // state to hold the ar badge's rank
     const [activeARRank,setActvieARRank] = useState("b");
+    // state to hold the badge's emblem
     const [activeAREmblem,setActvieAREmblem] = useState("bicep");
 
-    const [activeRankId,setActvieRankId] = useState(0);
-    const [activeEmblemId,setActvieEmblemId] = useState(0);
+    //=========================================================================================================//
+    /**
+     * @brief saves badge icon to storage so that it can be accessed by the Edit/Create badge page
+     * @requires activeARRank - rank of the AR badge model
+     * @requires activeAREmblem - emblem of the AR badge model
+     * @result saves string to sessionStorage
+     */
     const setBadgeIcon = async () => {
         localStorage.setItem('badgeIcon', activeARRank+"_"+activeAREmblem);
-        console.log(activeARRank+"_"+activeAREmblem);
-        console.log(activeRankId)
-        console.log(activeEmblemId)
     }
+
+    
+    //=========================================================================================================//
+    /**
+     * @brief function used to set the values of the states for Rank
+     * @requires swiper - the rank swiper component
+     */
     const handleRankChange = async () => {
+        // get the rank swiper component
         const swiper =  await mySlides1.current.getSwiper();
-        setActvieRankId(swiper.activeIndex)
+
+        // check what its index is and sets the Rank states accordingly
         if(swiper.activeIndex===0){
             setActvieRank(Bronze);
             setActvieARRank("b");
@@ -73,10 +94,17 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
             setActvieARRank("g");
         }
     };
-
+    //=========================================================================================================//
+    /**
+     * @brief function used to set the values of the states for Emblem
+     * @requires swiper - the emblem swiper component
+     */
     const handleEmblemChange = async () => {
+
+        // get the emblem swiper component
         const swiper = await mySlides2.current.getSwiper();
-        setActvieEmblemId(swiper.activeIndex)
+
+        // check what its index is and sets the Emblem states accordingly
         if(swiper.activeIndex===0){
             setActvieEmblem(bicep);
             setActvieAREmblem("bicep");
@@ -114,29 +142,38 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
      * @returns boolean 
      */
     const validInputs = (rank:string, emblem:string) =>{
+        // valid emblems
         const embID:string[] = ["bicep","clean","cycle","dumbell","gym","pullup","run", "situp","treadmill"];
+        // valid ranks
         const rankID:string[] = ["b","s","g"];
 
+        // var to determine the swiper indices
         let count = 0;
+        // get the emblem swiper component
         const swiper2 = mySlides2.current.getSwiper();
+        // get the rank swiper component
         const swiper1 = mySlides1.current.getSwiper();
 
         let valid = false;
 
+        // look for a matching emblem and set the swiper's active index
         embID.forEach(element => {
             if(emblem === element) {
                 valid = true
                 swiper2.activeIndex = count
                 console.log(swiper2.activeIndex)
-                
             }
             count++;
         });
 
+        
+        // return if invalid
         if(!valid) return false
 
         valid = false
         count = 0;
+
+        // look for a matching rank and set the swiper's active index
         rankID.forEach(element => {
             if(rank === element) {
                 valid = true
@@ -182,36 +219,41 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
         let bIcon = sessionStorage.getItem("bi");
         // check if there is a predefined badge
         if(bIcon && bIcon!=='' ){
-            console.log(bIcon)
 
             // split the icon id into its rank and emblem
-            let split = bIcon.split("_")
-            console.log(split[0]);
-            console.log(split[1]);
+            let split = bIcon.split("_");
 
             // check if its inputs are vaild and set the swiper component
             if(validInputs(split[0], split[1])){
+
+                // list of emblem types
                 const embID:string[] = ["bicep","clean","cycle","dumbell","gym","pullup","run", "situp","treadmill"];
-                
+                // list of icon resources
                 const emb:any[] = [bicep,clean,cycle,dumbell,gym,pullup,running, situp,treadmill];
+
+                // get the rank icon (r), depending on the rank type (split[0])
                 let r:any;
                 if(split[0]==="b") r = Bronze;
                 else if(split[0]==="s") r = Silver;
                 else  r = Gold;
 
-                console.log(split[0]);
-                console.log(split[1]);
                 // set the badge canvas
                 setActvieRank(r);
                 setActvieARRank(split[0]);
+                // get the emblem icon, depending on the emblem type (split[0])
                 setActvieEmblem(emb[embID.indexOf(split[1])]);
                 setActvieAREmblem(split[1]);
                 setBadgeIcon()
             }
         }
     }
-
+    // on start event
     useIonViewDidEnter(setInitailCallbackLoop)
+
+    //=========================================================================================================//
+    /**
+     * @brief displays the badge icon, sliders for rank and emblem, name and AR button 
+     */
     return (
         <>
         
@@ -220,7 +262,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
         <IonCardHeader color="primary">
             <IonCardTitle className='inputHeading' class ="ion-text-center">Create Badge Icon</IonCardTitle> 
         </IonCardHeader>
-    <BadgeCanvas name={inp.name}rank={activeRank} emblem = {activeEmblem}/>
+            <BadgeCanvas name={inp.name}rank={activeRank} emblem = {activeEmblem}/>
             <IonSlides 
                 options={slideOpts}
                 ref={mySlides1}

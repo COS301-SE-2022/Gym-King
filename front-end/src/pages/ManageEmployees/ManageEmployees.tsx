@@ -1,15 +1,19 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter, IonItem, IonList, IonAvatar, IonLabel} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter, IonItem, IonList, IonLabel, IonAccordion, IonAccordionGroup} from '@ionic/react';
 import React, {useState} from 'react';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import './ManageEmployees.css';
 import { useHistory } from 'react-router-dom';
+import EmployeeList from '../../components/EmployeeList/EmployeeList';
 
 
 const ManageEmployees: React.FC = () =>{
     // eslint-disable-next-line
     const [employeeList, setEmployeeList] = useState(new Array())
+    // eslint-disable-next-line
+    const [gymList, setGymList] = useState(new Array())
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
+    let email = localStorage.getItem('email')
 
     
     useIonViewWillEnter(()=>
@@ -31,17 +35,28 @@ const ManageEmployees: React.FC = () =>{
             console.log(err)
             setLoading(false)
          })
+
+         //get the owner's gyms
+         fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
+                "method":"GET"
+            })
+            .then(response =>response.json())
+            .then(response =>{
+                console.log(response)
+                setGymList(response)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
     },[])
 
-    const goToProfile = (email:string, name:string, surname:string, username:string, phone:string, gid:string, profilePic:string)=>{
-        localStorage.setItem("employee_email", email);
-        localStorage.setItem("employee_name", name);
-        localStorage.setItem("employee_surname", surname);
-        localStorage.setItem("employee_username", username);
-        localStorage.setItem("employee_phone",phone);
-        localStorage.setItem("employee_gid", gid);
-        localStorage.setItem("employee_profilepicture", profilePic)
-        history.push("/EmployeeProfileView")
+    const getEmployeesByGym = (gid:string)=>{
+        // eslint-disable-next-line
+        return employeeList.filter( (e:any)=>{
+            if(e.g_id === gid)
+                return e;
+        }) 
     }
     return(
         <IonPage>
@@ -53,23 +68,20 @@ const ManageEmployees: React.FC = () =>{
                 <IonText className='PageTitle center'>My Employees</IonText>
                 <IonButton routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>
                 <br></br><br></br>
-                <IonList>
+                <IonAccordionGroup>
                 {
-                    employeeList?.map(el =>{
-                        return(
-        
-                            <IonItem  key={el.email}  onClick={() => goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id, el.profile_picture)} >
-                                <IonAvatar slot="start">
-                                <img src={el.profile_picture} alt=""/>
-                                </IonAvatar>
-                                <IonLabel>
-                                <h2>{el.name} {el.surname}</h2>
-                                </IonLabel>
-                            </IonItem>
-                        )
-                    })
-                }
-                </IonList>
+                    gymList.map((el:any)=>
+                        <IonAccordion key={el.g_id} value={el.g_id}>
+                            <IonItem slot="header">
+                                <IonLabel>{el.gym_brandname}</IonLabel>
+                             </IonItem>
+                             <IonList slot="content">
+                                <EmployeeList list={(getEmployeesByGym(el.g_id))} history={history}></EmployeeList>
+                            </IonList>
+                        </IonAccordion>
+                )}
+                </IonAccordionGroup>    
+                
                 <IonLoading 
                         isOpen={loading}
                         message={"Loading"}
@@ -84,4 +96,3 @@ const ManageEmployees: React.FC = () =>{
 }
 
 export default ManageEmployees;
-

@@ -1,7 +1,6 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import { useEffect } from 'react';
 
 
 
@@ -32,7 +31,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setLoading(true)
         //get employee information 
         setEmail(localStorage.getItem("employee_email"))
@@ -42,7 +41,6 @@ const EmployeeProfileViewPage: React.FC = () =>{
         setPhone(localStorage.getItem("employee_phone"))
         setGymId(localStorage.getItem("employee_gid"))
         setProfilePicture(localStorage.getItem("employee_profilepicture")!)
-        console.log()
 
         fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
             "method":"GET"
@@ -62,6 +60,29 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     },[])
 
+    const deleteEmployee=()=>{
+        fetch(`https://gym-king.herokuapp.com/employees/employee`, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                email: employee_email!,
+                password: employee_pass!
+            })
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            console.log(response)
+            setLoading(false)
+        })
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
+    }
+
    
         return(
             <IonPage color='#220FE' >
@@ -72,7 +93,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard class="profileCard" style={{"padding-bottom":"6%"}}>
+                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5' >
@@ -92,8 +113,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                             </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard >
+                                <IonCard className="profileCard">
                                     <IonCardHeader className="inputHeading">Employee Details</IonCardHeader>
                                     <IonCardContent>
                                         <IonGrid>
@@ -109,17 +129,17 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                         </IonGrid>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol>
-                                <IonCard className="gymCard">
+                                <IonCard className="profileCard">
                                     <IonCardContent>
                                         <IonText  className="inputHeading">{gymName}</IonText><br></br>
                                         <i className='smallFont'>{gymLocation}</i>
                                     </IonCardContent>
                                 </IonCard>
-                            </IonCol>
+                        </IonRow>
+                        <IonRow>
+                            <IonButton onClick={deleteEmployee}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>

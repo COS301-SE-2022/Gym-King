@@ -1,3 +1,7 @@
+/** 
+* @file SelectGymMap.tsx
+* @brief map component used by AddGymLocations.tsx
+*/
 import React, { useRef, useState } from "react";
 import { Map, Overlay} from "pigeon-maps";
 import { IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonItem, IonLabel, IonModal, IonRow, IonSearchbar, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
@@ -7,38 +11,52 @@ import { locate, location, lockClosed, lockOpen } from "ionicons/icons";
 import Geocoder from "react-native-geocoding";
 import { Geolocation } from '@ionic-native/geolocation';
 import { useHistory } from "react-router-dom";
-
 import image from '../../icons/gym.png'
+/**
+ * 
+ * @returns SelectGymMap component
+ */
 export function SelectGymMap() {
-
+//=================================================================================================
+//    VARIABLES & HOOKS
+//=================================================================================================
+  //-history variable, this variables uses the useHistory from react-router to navigate
   const history=useHistory()
-  let height=435;
-  let screenHeight=window.innerHeight;
-  if(screenHeight>=840)
-  {
-    height=700;
-  }
-  else if(screenHeight>=740)
-  {
-    height=560;
-  }
-  else if(screenHeight>=650)
-  {
-    height=500;
-  }
-
+  //-height variable{number}, height value of the map
+  let height:number=435;
+  //-screenHeight variable{number}, screenHeight is stored and used to determine the value of the height variable
+  let screenHeight:number=window.innerHeight;
+    if(screenHeight>=840)
+    {height=700;}
+    else if(screenHeight>=740)
+    {height=560;}
+    else if(screenHeight>=650)
+    {height=500;}
+  //-centre hook [number,number],maintains the coordinates of the maps current centre
   const [center, setCenter] = useState([-25.7545 ,28.2314 ])
+  //-gymCoord hook@brief [number,number], maintains coordinates of the gym
   const [gymCoord,setGymCoord]=useState([-25.7545 ,28.2314 ])
+  //-zoom hook {number},stores value for maps zoom 
   const [zoom, setZoom] = useState(17)
-
+  //-modal element,this component uses the IonModalElement
   const modal = useRef<HTMLIonModalElement>(null);
+  //-open hook {boolean},determines wether modal is open or closed
   const [open,setOpen]=useState(true)
-
+  //-gymAddress hook {string}, stores the address of the string
   const [gymAddress, setGymAddress] = useState<string>("address");
+  //-addresses {string[]}, stores address list obtained from geocoder
   const [addresses,setaddresses]=useState<any>([])
- 
+  //-icon hook{icon}, seticon of the lockbutton
   const [icon,setIcon]=useState(lockClosed)
+  //-lock {boolean}, determines whether map is locked on map or not
   const [lock,setLock]=useState(true)
+//=================================================================================================
+//    FUNCTIONS
+//=================================================================================================
+  /**
+   * ionViewWilleEnter
+   * @brief on component entry, gym address and coordinates will be taken from the sessionstorage and used to populate their relevant variables.model will be opened
+   */
   useIonViewWillEnter(()=>{
     if(sessionStorage.getItem("gymAddress")!=null)
       {
@@ -52,15 +70,28 @@ export function SelectGymMap() {
       setIcon(lockOpen)
       setLock(false)
   })
+  /**
+   * IonViewWillLeave
+   * @brief on exit the modal will be closed
+   */
   useIonViewWillLeave(()=>{
     setOpen(false)
   })
-
+  /**
+   * changeCoords function
+   * @brief changes coordinates of center of map aswell as gym
+   * @param {number} lat latitude coordinate
+   * @param {number} long  longitude coordinate
+   */
   function changeCoords(lat:number,long:number)
   {
     setCenter([lat,long]);
     setGymCoord([lat,long]);
   }
+  /**
+   * getLocation funtion
+   * @brief gets the users location aswell as address
+   */
   const getLocation = async() => {
     try {
 
@@ -81,8 +112,12 @@ export function SelectGymMap() {
         })
         .catch((error) => console.warn(error));
 }
-
-  const handleKeyDown = (event: { key: string }) => {
+/**
+ * hadleKeyDown event
+ * @brief detects an enter-key and then searched for address 
+ * @param event 
+ */
+const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       console.log("enter was pressed")
       console.log("using geocoding api");
@@ -106,7 +141,9 @@ export function SelectGymMap() {
         .catch((error) => console.warn(error));
     }
   };
-  
+//=================================================================================================
+//    FUNCTIONS
+//=================================================================================================  
   return (
     <div>
     <Map
@@ -165,12 +202,12 @@ export function SelectGymMap() {
                               onIonChange={(e: any) => {
                                   setGymAddress(e.target.value);
                               }} 
-                              onKeyDown={handleKeyDown} placeholder={"address"}></IonSearchbar>
+                              onKeyDown={handleKeyDown} placeholder={"address"} value={gymAddress}></IonSearchbar>
               </IonRow>
               <IonRow>
                 <IonButton  onClick={()=>{
                                           getLocation();
-                                          setGymAddress("Evander");
+                                          setGymAddress(gymAddress);
                                           modal.current?.setCurrentBreakpoint(0.25)
                                       }}>
                               <IonIcon slot="start" icon={location}></IonIcon>

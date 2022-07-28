@@ -20,8 +20,9 @@ Gym King is a product designed to use gamification to improve motivation with gy
 
 ## Demos
 ### Codebusters - Demo 1
-[DEMO 1](https://drive.google.com/drive/folders/1VpTER70Z11c56SIopSzqOxKkyGPETgnz?usp=sharing) <br>
-[DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing)
+[DEMO 1](https://drive.google.com/drive/folders/132bKBFuXsvhc-b2iAB62nvvUncE5EgON?usp=sharing) <br>
+[DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing) <br>
+[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing)
 
 ## Github Project Board
 [Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)
