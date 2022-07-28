@@ -21,15 +21,8 @@ jobs:
     steps:
       #Set env variables.
       - name: set env
-        runs: |
-          set DATABASE_URL={{secrets.DATABASE_URL}}
-          set FIREBASE_PROJECT_ID={{secrets.FIREBASE_PROJECT_ID}}
-          set FIREBASE_CLIENT_EMAIL={{secrets.FIREBASE_CLIENT_EMAIL}}
-          set FIREBASE_PRIVATE_KEY={{secrets.FIREBASE_PRIVATE_KEY}}
-          set FIREBASE_DB_URL={{secrets.FIREBASE_DB_URL}}
-          set HEROKU_POSTGRESQL_CRIMSON_URL={{secrets.HEROKU_POSTGRESQL_CRIMSON_URL}}
-          set DATABASE_URL={{secrets.DATABASE_URL}}
-          set TEST=true
+        runs: set HEROKU_POSTGRESQL_CRIMSON_URL={{secrets.HEROKU_POSTGRESQL_CRIMSON_URL}}
+        
     steps:
         #Checking out to the develop branch
       - name: Checkout develop
