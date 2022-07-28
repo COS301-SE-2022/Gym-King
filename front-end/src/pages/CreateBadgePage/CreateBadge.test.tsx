@@ -11,7 +11,9 @@ test('renders without crashing', () => {
 });
 
 
-describe('Testing API calls', () => {
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to api', () => {
 
     it('should load owned gym data', async () => {
         (async ()=>{
@@ -61,7 +63,7 @@ describe('Testing API calls', () => {
 
 })
 /*
-describe('Integration Tests', () => {
+describe('Testing integration of components and pages', () => {
     
     test('sending in a list of activity types displays correctly as a segment button', async () => {
         const {getByTestId } = render(<CreateBadge />);
@@ -75,5 +77,4 @@ describe('Integration Tests', () => {
         expect(getByTestId('rg')).toBeDefined()
     });
 })
-
 */

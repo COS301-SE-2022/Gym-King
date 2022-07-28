@@ -8,8 +8,9 @@ test('renders without crashing', () => {
 
 
 
+////////// INTEGRATION TESTS //////////
 
-describe('Testing API calls', () => {
+describe('Testing connection to api', () => {
 
   test('should create a user', async () => {
       (()=>{
