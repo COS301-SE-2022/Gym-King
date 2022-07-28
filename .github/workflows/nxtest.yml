@@ -19,6 +19,18 @@ jobs:
     name: Generate cache
     runs-on: ubuntu-latest
     steps:
+      #Set env variables.
+      - name: set env
+        runs: |
+          set DATABASE_URL={{secrets.DATABASE_URL}}
+          set FIREBASE_PROJECT_ID={{secrets.FIREBASE_PROJECT_ID}}
+          set FIREBASE_CLIENT_EMAIL={{secrets.FIREBASE_CLIENT_EMAIL}}
+          set FIREBASE_PRIVATE_KEY={{secrets.FIREBASE_PRIVATE_KEY}}
+          set FIREBASE_DB_URL={{secrets.FIREBASE_DB_URL}}
+          set HEROKU_POSTGRESQL_CRIMSON_URL={{secrets.HEROKU_POSTGRESQL_CRIMSON_URL}}
+          set DATABASE_URL={{secrets.DATABASE_URL}}
+          set TEST=true
+    steps:
         #Checking out to the develop branch
       - name: Checkout develop
         uses: actions/checkout@v2
@@ -63,11 +75,6 @@ jobs:
       - name: Unit test affected
         if: inputs.testtype == 'unit' && inputs.test == 'affected'
         run: yarn nx affected:test --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
-        env:
-          FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
-          FIREBASE_CLIENT_EMAIL: ${{secrets.FIREBASE_CLIENT_EMAIL}}
-          FIREBASE_PRIVATE_KEY": ${{secrets.FIREBASE_PRIVATE_KEY}}
-          FIREBASE_DB_URL: ${{secrets.FIREBASE_DB_URL}}
 
       - name: E2E test affected
         if: inputs.testtype == 'e2e' && inputs.test == 'affected'
