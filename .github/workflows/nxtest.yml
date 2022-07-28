@@ -20,9 +20,6 @@ jobs:
   build:
     name: Generate cache
     runs-on: ubuntu-latest
-    steps:
-      #Set env variables.
-      - name: set env
 
     steps:
         #Checking out to the develop branch
