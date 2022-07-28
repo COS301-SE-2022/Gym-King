@@ -41,7 +41,8 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",
     "prettify": "prettier src/**/*.ts --write",
-    "affected": "react-scripts affected"
+    "affected": "react-scripts affected",
+    "prod:app": "env-cmd -f .developing.env react-scripts start"
   },
   "eslintConfig": {
     "extends": [

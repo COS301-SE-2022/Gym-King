@@ -33,3 +33,6 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+
+.developing.env
+.testing.env

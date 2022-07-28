@@ -18,15 +18,27 @@ const corsOptions = {
   },
 };
 const pool = (() => {
-  return new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false
+  if (process.env.TEST == 'true'){
+    return new Pool({
+      connectionString: process.env.HEROKU_POSTGRESQL_CRIMSON_URL,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
       }
-    }
-  });
+    });
+  } else {
+    return new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
+    });
+  }
 })();
 const utils = express.Router()
   .options("*", cors(corsOptions))
