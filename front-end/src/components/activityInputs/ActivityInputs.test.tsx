@@ -17,7 +17,7 @@ test('renders without crashing', () => {
 describe('Testing prop text values', () => {
 
   test('correctly displays cardio activitytype inputs', async () => {
-    const {baseElement} = render(<ActivityInputs activityCategory='cardio' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
+    const {baseElement} = render(<ActivityInputs activityCategory='CARDIO' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
