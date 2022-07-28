@@ -206,7 +206,7 @@ const MapView: React.FC = () =>{
     }
 
     const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
-        return `https://api.maptiler.com/maps/pastel/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+        return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
     }
     return (
         
