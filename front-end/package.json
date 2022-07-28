@@ -42,7 +42,8 @@
     "lint": "eslint src/**/*.ts",
     "prettify": "prettier src/**/*.ts --write",
     "affected": "react-scripts affected",
-    "prod:app": "env-cmd -f .developing.env react-scripts start"
+    "prod:app": "env-cmd -f .developing.env react-scripts start",
+    "run": "react-scripts run"
   },
   "eslintConfig": {
     "extends": [
