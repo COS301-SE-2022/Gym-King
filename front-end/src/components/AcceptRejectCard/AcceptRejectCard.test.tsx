@@ -41,7 +41,7 @@ describe('Testing prop text values', () => {
   });
   
   test('correctly displays cardio activitytype inputs', async () => {
-    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename=""  badgechallenge=""i1="" i2="" i3="" activitytype="cardio" history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename=""  badgechallenge=""i1="" i2="" i3="" activitytype="CARDIO" history="" proof=""/>);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
