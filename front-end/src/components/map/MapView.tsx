@@ -286,16 +286,16 @@ const MapView: React.FC = () =>{
             <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
             {/* <IonBadge > */}
-                <IonCard style={{"margin":"0px"}} >
+                <IonCard style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
                         <IonCardTitle className='center Subheading'>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
-                    <IonCardContent id="buttonBox">
+                    <IonCardContent id="buttonBox" >
                         <IonButtons>
                             <IonButton  
                                 shape='round' 
-                                color="white"
-                                className='btn'
+                                color="dark"
+                                className='btnView'
                                 onClick={()=>{
 
                                     sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
@@ -308,7 +308,7 @@ const MapView: React.FC = () =>{
                             >
                                 View
                             </IonButton>
-                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btn'>Close</IonButton>
+                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btnClose' color="light">Close</IonButton>
                         </IonButtons>
                     
                     </IonCardContent>

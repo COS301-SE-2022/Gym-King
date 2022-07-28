@@ -1,5 +1,5 @@
 import { IonCol, IonGrid, IonLoading, IonRow, useIonViewDidEnter} from '@ionic/react';
-import { useState } from 'react';
+import { useState, } from 'react';
 import ViewBadgeCard from './ViewBadgeCard/ViewBadgeCard';
 
 export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
@@ -17,11 +17,11 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
             })
             .then(response =>response.json())
             .then(response =>{  
+                console.log(response)
                 let arr=[];
                 for(let i=0; i<response.length; i++)
                 {
                     let icon=response[i].badgeicon.split("_")
-                    console.log(response)
                     arr.push({
                         'b_id':response[i].b_id,
                         'badgename':response[i].badgename,

@@ -1,4 +1,4 @@
-import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText, IonToast} from '@ionic/react';
+import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import ActivityList from '../ActivityList/ActivityList';
