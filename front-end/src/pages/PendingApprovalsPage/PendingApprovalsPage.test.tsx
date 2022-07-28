@@ -6,8 +6,10 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
 });
 
+////////// INTEGRATION TESTS //////////
 
-describe('Testing API calls', () => {
+
+describe('Testing connection to api', () => {
 
     it('should load pending claims data', async () => {
         (()=>{
@@ -27,7 +29,7 @@ describe('Testing API calls', () => {
 
 })
 
-describe('Integration Tests', () => {
+describe('Testing integration of components and pages', () => {
     
     test('displays toolbar', async () => {
         const {getByTestId } = render(<PendingApprovalsPage />);
