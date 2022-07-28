@@ -1,6 +1,5 @@
 import { IonPage, IonContent, IonImg, useIonViewWillEnter} from '@ionic/react';
 import './splash-screen.css';
-import {AndroidPermissions } from '@awesome-cordova-plugins/android-permissions'
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 
