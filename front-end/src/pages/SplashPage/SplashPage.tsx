@@ -3,6 +3,8 @@ import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 
+
+
 export const SplashPage: React.FC = () =>
 {
     useIonViewDidEnter(()=>{
