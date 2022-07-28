@@ -1,12 +1,11 @@
-import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonImg, IonRow, IonText} from '@ionic/react';
+import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
-import {personCircleOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
 
 //creating a type so props can be entered
-export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any};
+export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any, profile:string};
 
 
 export class AcceptRejectCard extends React.Component<props>{
@@ -62,9 +61,13 @@ export class AcceptRejectCard extends React.Component<props>{
         
         return(
             <IonCard data-testid="ARC" className="glass arCard">
-                 <div style={{backgroundColor: "#321E93"}}>
-                    <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
+                 <div style={{"backgroundColor": "#321E93", "overflow":"hidden"}}>
+                    <IonAvatar style={{"marginTop":"5%", "marginLeft":"1em", "float":"left"}}>
+                        <IonImg  style={{"overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${this.props.profile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                    </IonAvatar>
+                    <div style={{"marginTop":"6%"}}>
                     <IonText className='username'>{this.props.username}</IonText>
+                    </div>
                 </div>
                 <IonCardContent>
                     <IonText className='Subheading'>

@@ -129,8 +129,8 @@ const MapView: React.FC = () =>{
             .then(response =>{
                 
                 if(response.success){
-                    console.info(Math.pow(1.5,(18-zoom)))
-                    console.info(response.results)
+                    //console.info(Math.pow(1.5,(18-zoom)))
+                    //console.info(response.results)
                     setGyms(response.results);
                     setPostWaiting(false);
 
@@ -154,7 +154,7 @@ const MapView: React.FC = () =>{
                 setFirst(false)
                 setRefresh(10000)
             }
-            console.log("Map Refresh")
+            //console.log("Map Refresh")
 
             
             getNearbyGyms();
@@ -254,7 +254,7 @@ const MapView: React.FC = () =>{
                 {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
                     return (
                         <Overlay 
-                            key={item.gid}
+                            key={item.gid + Math.random()}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[15,31]} 
                             

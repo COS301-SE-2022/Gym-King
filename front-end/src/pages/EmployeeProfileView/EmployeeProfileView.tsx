@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewDidEnter, IonButton} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -27,11 +27,12 @@ const EmployeeProfileViewPage: React.FC = () =>{
     console.log(gymId);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
+    const [showDeleteEmployee, setShowDeleteEmployee] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true)
         //get employee information 
         setEmail(localStorage.getItem("employee_email"))
@@ -68,17 +69,20 @@ const EmployeeProfileViewPage: React.FC = () =>{
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 
-                email: employee_email!,
-                password: employee_pass!
+                owneremail: localStorage.getItem("email"),
+                ownerpassword: localStorage.getItem("password"),
+                employee_email: localStorage.getItem("employee_email")
             })
         })
         .then(response =>response.json())
         .then(response =>{
             console.log(response)
+            setShowDeleteEmployee(true)
             setLoading(false)
         })
         .catch(err => {
             console.log(err)
+            setShowFail(true)
             setLoading(false)
         })
     }
@@ -93,11 +97,11 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
+                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5' >
-                                            <IonImg  style={{"overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
+                                            <IonImg  style={{"overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
@@ -146,7 +150,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
                     <br></br>
 
-                                        <IonToast
+                    <IonToast
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -159,6 +163,13 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         message="Could not update. Try again later."
                         duration={1000}
                         color="danger"
+                    />
+                    <IonToast
+                        isOpen={showDeleteEmployee}
+                        onDidDismiss={() => setShowSuccess(false)}
+                        message="Employee deleted!"
+                        duration={1000}
+                        color="success"
                     />
                     <IonLoading 
                         isOpen={loading}

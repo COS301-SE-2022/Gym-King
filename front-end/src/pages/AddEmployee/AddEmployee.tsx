@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewDidEnter} from '@ionic/react';
 import React, { useState} from 'react';
 import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
@@ -15,7 +15,7 @@ export const AddEmployee: React.FC = () =>{
     let history=useHistory()
     let formData : any;
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         let gymOwner = localStorage.getItem("email")
         fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
             "method":"GET"

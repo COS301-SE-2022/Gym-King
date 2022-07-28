@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter, IonItem, IonList, IonLabel, IonAccordion, IonAccordionGroup} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter, IonItem, IonList, IonLabel, IonAccordion, IonAccordionGroup} from '@ionic/react';
 import React, {useState} from 'react';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import './ManageEmployees.css';
@@ -16,7 +16,7 @@ const ManageEmployees: React.FC = () =>{
     let email = localStorage.getItem('email')
 
     
-    useIonViewWillEnter(()=>
+    useIonViewDidEnter(()=>
     {
         var owner=localStorage.getItem('email')
         setLoading(true)

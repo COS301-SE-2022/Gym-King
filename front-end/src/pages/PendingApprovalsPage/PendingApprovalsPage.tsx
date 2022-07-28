@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -20,7 +20,7 @@ const PendingApprovalsPage: React.FC = () =>{
 
 
     //GET REQUEST:
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true)
         //get employee information 
         fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
@@ -79,7 +79,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} ></ApprovalButton></div>)
+                            return ( <div onClick={goToAcceptReject} key={Math.random()}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} profile={el.profile_picture}></ApprovalButton></div>)
                         })
                     }
 
