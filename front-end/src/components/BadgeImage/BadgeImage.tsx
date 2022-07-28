@@ -15,7 +15,7 @@ import situp from '../../badges/emblem/situp.png'
 import treadmill from '../../badges/emblem/treadmill.png'
 
 
-export const BadgeImage=(props:{Badgerank:string,BadgeEmblem:string})=>{
+export const BadgeImage=(props:{Badgerank:string,BadgeEmblem:string,idRank:string,idEmblem:string})=>{
 
     let emblem;
     let rank;
@@ -65,8 +65,8 @@ export const BadgeImage=(props:{Badgerank:string,BadgeEmblem:string})=>{
    
     return (
         <div>
-            <img  id="badgeOver" src={emblem} alt = ''/>  
-            <img id="badgeUnder" src={rank} alt = ''/>  
+            <img  id={props.idEmblem} src={emblem} alt = ''/>  
+            <img id={props.idRank} src={rank} alt = ''/>  
         </div>
     );}
 
