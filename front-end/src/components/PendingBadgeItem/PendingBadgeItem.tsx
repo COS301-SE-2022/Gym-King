@@ -1,11 +1,11 @@
-import {IonIcon, IonItem, IonLabel} from '@ionic/react';
+import {IonItem, IonLabel} from '@ionic/react';
 import React from 'react'
 import './PendingBadgeItem.css'
-import {image} from 'ionicons/icons';
+import BadgeImage from '../BadgeImage/BadgeImage';
 
 
 //creating a type so props can be entered
-export type props = {badgeName:string};
+export type props = {badgeName:string,badgeIcon:string};
 
 
 export class PendingBadgeItem extends React.Component<props>{
@@ -14,7 +14,7 @@ export class PendingBadgeItem extends React.Component<props>{
         //console.log(this.userId);
         return(
             <IonItem class='btnApproval'>
-                <IonIcon icon={image} className='userProfile'></IonIcon>
+                <BadgeImage BadgeEmblem={this.props.badgeIcon.split("_")[1]} Badgerank={this.props.badgeIcon.split("_")[0]} idEmblem="pendingEmblem" idRank="pendingRank"></BadgeImage>
                 <IonLabel>{this.props.badgeName}</IonLabel>
             </IonItem>
         )

@@ -1,11 +1,11 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonIcon, IonToast, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonToast, IonLoading, useIonViewWillEnter, IonItem, IonCol} from '@ionic/react';
 import React, {  useRef, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import {shieldOutline} from 'ionicons/icons';
 import './UploadActivityPage.css';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
+import BadgeImage from '../../components/BadgeImage/BadgeImage';
 
 interface InternalValues {
     file: any;
@@ -17,6 +17,7 @@ const UploadActivityPage: React.FC = () =>{
         // STATES AND VARIABLES 
         const [isValid, setIsValid] = useState(false);
         const [submitted, setSubmitted] = useState(false);
+        const [Icon,setIcon]=useState<string[]>([""])
         let email = localStorage.getItem("email") 
         localStorage.setItem( 'e1', "");
         localStorage.setItem( 'e2', "");
@@ -73,12 +74,13 @@ const UploadActivityPage: React.FC = () =>{
             })
             .then(response =>response.json())
             .then(response =>{
-                //console.log(response)
+                //console.log("rsponse",response)
                 setB_id(response.b_id)
                 setAT( response.activitytype)
                 setDescription(response.badgechallenge)
                 setBadgename(response.badgename)
                 setLoading(false)
+                setIcon(response.badgeicon.split("_"))
             })
             .catch(err => {
                 console.log(err)
@@ -156,7 +158,17 @@ const UploadActivityPage: React.FC = () =>{
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonIcon icon={shieldOutline} className='badge center shadow'></IonIcon>
+                    <IonGrid  className="ion-align-items-center">
+                        <IonRow className="ion-align-items-center">
+                        <IonCol>
+                        </IonCol>
+                            <IonCol className='ion-align-self-center'>
+                                <BadgeImage BadgeEmblem={Icon[1]} Badgerank={Icon[0]} idEmblem="UploadEmblem" idRank='UploadRank'></BadgeImage>
+                            </IonCol>
+                            <IonCol>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
                     <IonText className='PageTitle center'>{badgename}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                     <form onSubmit={handleSubmit}>

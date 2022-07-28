@@ -19,7 +19,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 onClick={ () =>{setPopoverOpen(true)} }>
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
-                            <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.BadgeRank}></BadgeImage>
+                            <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.BadgeRank} idEmblem="badgeOver" idRank="badgeUnder"></BadgeImage>
                     </IonRow>
                     <IonRow class='BadgeDetails'>
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>

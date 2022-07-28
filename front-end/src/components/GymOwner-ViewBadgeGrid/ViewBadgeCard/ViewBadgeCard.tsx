@@ -20,7 +20,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
                     
-                        <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.Badgerank}></BadgeImage>
+                        <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.Badgerank} idEmblem="badgeOver" idRank="badgeUnder"></BadgeImage>
                     </IonRow>
                     <IonRow class='BadgeDetails'>
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
