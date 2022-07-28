@@ -47,7 +47,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 console.log(err)
                 setLoading(false);
             })
-        console.log(gymId);
+        console.log(localStorage.getItem("gid"));
         fetch(`https://gym-king.herokuapp.com/claims/gym/${localStorage.getItem("gid")}`,{
             "method":"GET"
         })

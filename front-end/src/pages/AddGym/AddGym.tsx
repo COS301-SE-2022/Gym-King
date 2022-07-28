@@ -22,7 +22,7 @@ const AddGym: React.FC = () => {
   //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
   //-gymName hook, hook that sets the name of a gym
-  const [gymName, setGymName] = useState<string>("name"); 
+  const [gymName, setGymName] = useState<string>(""); 
   //- gymAddress hook, hook that sets the address of a gym         
   const [gymAddress, setGymAddress] = useState<string>("address");
   //-coordinate hook, hook that sets the coordinates of the gym 
