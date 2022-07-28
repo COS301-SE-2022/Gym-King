@@ -133,7 +133,7 @@ const employees = express.Router()
      try {
        let query = req.body;
        let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
-       res.json(result);
+       res.json({'success':true});
      } catch (err) {
        const results = { success: false, results: err };
        console.error(err);
@@ -195,7 +195,7 @@ const employees = express.Router()
       const bcrypt = require('bcryptjs')
       let query = req.body;
       const employee = await employeeRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
         res.json(employee)
       }
       else {
@@ -251,9 +251,9 @@ const employees = express.Router()
       const query = req.body;
       const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
         const result = await employeeRepository.updateEmployee(query.email,query.name,query.surname,query.number,query.username);
-        res.json(result);
+        res.json({'success':true});
       }
       else {
         res.json({'message':'Invalid email or password!'})
@@ -292,7 +292,7 @@ const employees = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let newFileName = ``;
         if (file.mimetype == 'image/jpeg'){
@@ -366,7 +366,7 @@ const employees = express.Router()
         } else {
           result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         }
-        res.json(result);
+        res.json({'success':true});
       }
       else {
         res.status(404).json({'message': 'Claim does not exist.'})
@@ -393,7 +393,7 @@ const employees = express.Router()
     try {
       let query = req.body;
       let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
-      res.json(result);
+      res.json({'success':true});
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -412,7 +412,7 @@ const employees = express.Router()
       let result = await badgeClaimRepository.deleteAllClaimsByBID(query.bid);
       result = await badgeOwnedRepository.deleteAllOwnedByBID(query.bid);
       result = await badgeRepository.deleteBadge(query.bid);
-      res.json(result);
+      res.json({'success':true});
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -488,8 +488,8 @@ const employees = express.Router()
       }
       if (owner != null && bcrypt.compareSync(query.ownerpassword, owner.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
-        let result = await employeeRepository.deleteEmployee(employee.email);
-        result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
+        let result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
+        result = await employeeRepository.deleteEmployee(employee.email);
         const results = { 'success': true };
         res.json(results);
       }

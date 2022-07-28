@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { badge_claim } from "./badge_claim.entity";
 import { badge_owned } from "./badge_owned.entity";
@@ -28,7 +29,7 @@ export class badge {
     @OneToMany(() => badge_owned, (badge_owned) => badge_owned.b_id)
     badges_owned: badge_owned[]
 
-    @Column({length: 4})
+    @Column({type:"varchar",length: 4})
     @ManyToOne(() => gym, (gym) => gym.g_id)
     @JoinColumn({name: "g_id"})
     g_id: gym

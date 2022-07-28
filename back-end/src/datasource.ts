@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm"
-export const GymKingDataSource = new DataSource({
+let options:any;
+if (process.env.TEST == 'false'){
+    options = {
     type: "postgres",
     url: process.env.DATABASE_URL,
     entities: ["src/entities/*.ts"],
@@ -7,8 +9,25 @@ export const GymKingDataSource = new DataSource({
     synchronize: false,
     ssl: true,
     extra: {
-    ssl: {
-      rejectUnauthorized: false
+        ssl: {
+            rejectUnauthorized: false
+        }
     }
   }
-})
+} else {
+    options = {
+    type: "postgres",
+    url: process.env.HEROKU_POSTGRESQL_CRIMSON_URL,
+    entities: ["src/entities/*.ts"],
+    logging: true,
+    synchronize: true,
+    dropSchema: true,
+    ssl: true,
+    extra: {
+        ssl: {
+            rejectUnauthorized: false
+        }
+    }
+  }
+}
+export const GymKingDataSource = new DataSource(options)
