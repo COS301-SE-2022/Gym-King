@@ -7,7 +7,8 @@
     "compile": "chmod -R 777 Models/",
     "start": "ts-node ./src/index.ts",
     "dev:api": "env-cmd -f .developing.env heroku local web",
-    "test:api": "env-cmd -f .testing.env npx jest --runInBand"
+    "test:api": "env-cmd -f .testing.env npx jest --runInBand",
+    "test": "npx jest --runInBand"
   },
   "keywords": [],
   "author": "Ryan Broemer - Codebusters @ University of Pretoria COS301",
