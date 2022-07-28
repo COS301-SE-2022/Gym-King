@@ -27,7 +27,7 @@ import './theme/variables.css';
 import UploadActivityPage from './pages/UploadActivityPage/UploadActivityPage';
 import UserMap from './pages/UserMap/UserMap';
 import PendingApprovalsPage from './pages/PendingApprovalsPage/PendingApprovalsPage';
- /*Feature-PendingApprovalsPage*/
+/*Feature-PendingApprovalsPage*/
 
 import AcceptRejectPage from './pages/AcceptRejectPage/AcceptReject';
 import CreateBadge from './pages/CreateBadgePage/CreateBadge';
@@ -70,7 +70,7 @@ const App: React.FC = () => (
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/Login" />
+          <Redirect to="/Splash" />
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>

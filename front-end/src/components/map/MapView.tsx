@@ -1,14 +1,15 @@
-import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast, useIonViewWillEnter } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
-import { stamenToner } from 'pigeon-maps/providers';
 import { useHistory } from 'react-router-dom';
+
 
 import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
+import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 interface LocationError {
     showError: boolean;
     message?: String;
@@ -83,7 +84,6 @@ const MapView: React.FC = () =>{
 
         } catch(e){
             setLoading(false);
-            
             setError({showError: true, message: "Cannot get userlocation: Check Permissions"});
         }
     }    
@@ -129,8 +129,8 @@ const MapView: React.FC = () =>{
             .then(response =>{
                 
                 if(response.success){
-                    console.info(Math.pow(1.5,(18-zoom)))
-                    console.info(response.results)
+                    //console.info(Math.pow(1.5,(18-zoom)))
+                    //console.info(response.results)
                     setGyms(response.results);
                     setPostWaiting(false);
 
@@ -154,7 +154,7 @@ const MapView: React.FC = () =>{
                 setFirst(false)
                 setRefresh(10000)
             }
-            console.log("Map Refresh")
+            //console.log("Map Refresh")
 
             
             getNearbyGyms();
@@ -168,7 +168,18 @@ const MapView: React.FC = () =>{
 
 
     const [showModal, setShowModal] = useState(false);
-
+    const getPermissons = () => {
+        AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE).then(
+            result => {console.log('Has permission?',result.hasPermission)},
+            err =>{ AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE)},
+            
+          );
+          
+          AndroidPermissions.requestPermissions([AndroidPermissions.PERMISSION.LOCATION_HARDWARE, AndroidPermissions.PERMISSION.GET_ACCOUNTS]);
+          
+    }
+    useIonViewWillEnter(getPermissons)
+   
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;
 
@@ -194,6 +205,9 @@ const MapView: React.FC = () =>{
         return enterAnimation(baseEl).direction('reverse');
     }
 
+    const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
+        return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+    }
     return (
         
         <>  
@@ -214,7 +228,7 @@ const MapView: React.FC = () =>{
             />
 
             <Map 
-                provider={stamenToner}
+                provider={mapTiler}
                 center={[center[0],center[1]]}
                 zoom={zoom} 
                 maxZoom={maxZoom}
@@ -254,7 +268,7 @@ const MapView: React.FC = () =>{
                 {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
                     return (
                         <Overlay 
-                            key={item.gid}
+                            key={item.gid + Math.random()}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[15,31]} 
                             

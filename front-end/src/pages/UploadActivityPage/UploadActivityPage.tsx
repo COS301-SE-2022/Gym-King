@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonToast, IonLoading, useIonViewWillEnter, IonCol} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonToast, IonLoading, useIonViewDidEnter, IonCol} from '@ionic/react'
 import React, {  useRef, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './UploadActivityPage.css';
@@ -66,7 +66,7 @@ const UploadActivityPage: React.FC = () =>{
         }
 
         // GET BADGES GET REQUEST 
-        useIonViewWillEnter(()=>{
+        useIonViewDidEnter(()=>{
             let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
             fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{

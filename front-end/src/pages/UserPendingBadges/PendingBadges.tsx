@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -12,7 +12,7 @@ const PendingBadgesPage: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
     //GET REQUEST:
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true)
         fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
                 method: 'GET'
