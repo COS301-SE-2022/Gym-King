@@ -70,10 +70,7 @@ const App: React.FC = () => (
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/SplashPage" />
-        </Route>
-        <Route exact path="/SplashPage">
-          <SplashPage></SplashPage>
+          <Redirect to="/Splash" />
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
