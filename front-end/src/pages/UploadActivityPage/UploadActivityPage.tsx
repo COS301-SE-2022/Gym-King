@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonToast, IonLoading, useIonViewWillEnter, IonItem, IonCol} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonToast, IonLoading, useIonViewWillEnter, IonCol} from '@ionic/react';
 import React, {  useRef, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './UploadActivityPage.css';
