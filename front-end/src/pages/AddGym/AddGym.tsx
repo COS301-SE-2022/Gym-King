@@ -1,3 +1,7 @@
+/** 
+* @file AddGym.tsx
+* @brief provides interface for adding new gyms to map
+*/
 import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
@@ -6,24 +10,44 @@ import { Map, Overlay } from "pigeon-maps";
 import { stamenToner } from "pigeon-maps/providers";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
+
+
+/**
+ * const addGym
+ * @returns AddGym Page
+ */
 const AddGym: React.FC = () => {
-//###################################################################################################
-//# Initiaitng variables
+//=================================================================================================
+//    VARIABLES & HOOKS
+//=================================================================================================
+  //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
- //image
-  
-  //get request parameters via the url
-  //get name and name hook
-  const [gymName, setGymName] = useState<string>("");
+  //-gymName hook, hook that sets the name of a gym
+  const [gymName, setGymName] = useState<string>("name"); 
+  //- gymAddress hook, hook that sets the address of a gym         
   const [gymAddress, setGymAddress] = useState<string>("address");
-  const [coordinate, setCoordinate] = useState<[number, number]>([
-    -25.7545,
-    28.2314,
-  ]);
+  //-coordinate hook, hook that sets the coordinates of the gym 
+  const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
+  //-zoom  variable {number}, stores default zoom value for the map
+  const zoom: number = 16;
+  //-showToast1  hook, set showToast1 variable on successeful adding of a gym
+  const [showToast1, setShowToast1] = useState(false);
+  //-showToast2  hook ,set showToast2 variable on unsuccesseful adding of a gym
+  const [showToast2, setShowToast2] = useState(false);
+  //-gymIcon{string}, stores gym icon
+   let gymIcon: string = "logo";
+//=================================================================================================
+//    FUNCTIONS
+//=================================================================================================
+  /**
+   * OnIonEnter
+   * @brief checks if session storage has values and uses it to fill in gymName,gymAddress and coordinates else set the default
+   */
   useIonViewWillEnter(()=>{
       if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
+        console.log(gymName)
       }
       if(sessionStorage.getItem("gymAddress")!=null)
       {
@@ -37,15 +61,10 @@ const AddGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
   })
-  //zoom parameter fpr map
-  const zoom: number = 16;
-  //Toast
-    const [showToast1, setShowToast1] = useState(false);
-    const [showToast2, setShowToast2] = useState(false);
-//###################################################################################################
-//# API CALLS AND FUNCTION CALLS
-//ADD GYM API
-  let gymIcon: string = "logo";
+  /**
+   * AddGym function
+   * @brief calls the add gym api, and adds a gym record the gyms table, then calls the api to assign gym to an owner.
+   */
   const addGym = () => {
     
     fetch(`https://gym-king.herokuapp.com/gyms/gym`,
@@ -100,11 +119,9 @@ const AddGym: React.FC = () => {
     
 
   };
-//GEO CODER API
-  
-
-//###################################################################################################
-//# Page to render
+//=================================================================================================
+//    Render
+//=================================================================================================
   return (
     <IonPage>
       <IonHeader>
