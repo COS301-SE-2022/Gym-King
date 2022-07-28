@@ -1,4 +1,4 @@
-import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText} from '@ionic/react';
+import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText, IonToast} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import ActivityList from '../ActivityList/ActivityList';
@@ -24,9 +24,8 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .then(response =>response.json())
         .then(response =>{
-/*
-            let history=useHistory()
-            history.push("/PendingApprovals");*/
+
+            localStorage.setItem("claimAccepted", "true")
             this.props.history.goBack()
 
         })
@@ -47,11 +46,8 @@ export class AcceptRejectCard extends React.Component<props>{
         .then(response =>response.json())
         .then(response =>{
             console.log(response.results);
-            //display toast 
-            //redirect to PendingApprovals
-            /*
-            let history=useHistory()
-            history.push("/PendingApprovals"); */
+
+            localStorage.setItem("claimRejected", "true")
             this.props.history.goBack()
 
         })
