@@ -60,7 +60,7 @@ describe('Testing POST API Calls', () => {
     test('responds to correct GET user profile picture by email', async () => {
         const response = await request(server).get('/users/user/picture/test@example.com')
         expect(response.statusCode).toBe(200);
-        expect(response.body).toBe('NON');
+        expect(response.body).toBe('NONE');
     });
     test('responds to incorrect GET user profile picture by email', async () => {
         const response = await request(server).get('/users/user/picture/wrong')
