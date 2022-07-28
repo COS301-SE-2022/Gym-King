@@ -21,7 +21,7 @@ jobs:
     steps:
       #Set env variables.
       - name: set env
-        runs: set HEROKU_POSTGRESQL_CRIMSON_URL=${{secrets.HEROKU_POSTGRESQL_CRIMSON_URL}}
+        run: set HEROKU_POSTGRESQL_CRIMSON_URL=${{ secrets.HEROKU_POSTGRESQL_CRIMSON_URL }}
 
     steps:
         #Checking out to the develop branch
