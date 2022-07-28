@@ -3,11 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "3.5.1",
     "@capacitor/app": "1.1.1",
     "@capacitor/haptics": "1.1.4",
     "@capacitor/ios": "3.5.1",
     "@capacitor/keyboard": "1.2.2",
     "@capacitor/status-bar": "1.0.8",
+    "@capacitor/cli": "^3.6.0",
+    "@capacitor/core": "^3.6.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
@@ -26,7 +29,8 @@
     "workbox-range-requests": "^5.1.4",
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
+    "workbox-streams": "^5.1.4",
+    "react-scripts": "^5.0.1"
   },
   "jest": {
     "transformIgnorePatterns": [
@@ -41,7 +45,8 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",
     "prettify": "prettier src/**/*.ts --write",
-    "affected": "react-scripts affected"
+    "affected": "react-scripts affected",
+    "run": "react-scripts run"
   },
   "eslintConfig": {
     "extends": [
@@ -63,7 +68,6 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
-    "@capacitor/cli": "3.5.1",
     "eslint-plugin-prettier": "^4.0.0"
   },
   "description": "An Ionic project"
