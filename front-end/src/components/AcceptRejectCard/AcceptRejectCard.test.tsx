@@ -53,3 +53,59 @@ describe('Testing prop text values', () => {
   });
 });
 
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to api', () => {
+
+  it('should update claim data', async () => {
+      
+      ( ()=>{
+        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+            "method":"PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                bid: "",
+                email: ""
+            })
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            expect(response).toBeDefined()
+        })
+        .catch(err => {
+          console.log(err)
+          expect(err).toBeDefined()
+
+        }) 
+      } )
+  });
+
+  it('should reject a gym', async () => {
+      (()=>{
+        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+            "method":"DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                bid: "",
+                email: ""
+            })
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            expect(response).toBeDefined()
+
+        })
+        .catch(err => {
+          console.log(err)
+          expect(err).toBeDefined()
+        })
+      } )
+  });
+
+})
