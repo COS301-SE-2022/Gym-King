@@ -5,12 +5,9 @@ import { useHistory } from 'react-router-dom';
 
 const EmployeeProfileViewPage: React.FC = () =>{
     
-    let employee_email = localStorage.getItem("employee_email");
     //let employee_pass = localStorage.getItem("employee_pass");
     //console.log(employee_email);
     //console.log(employee_pass);
-    let owner=sessionStorage.getItem('owner_email')
-    let owner_pass = sessionStorage.getItem('owner_pass')
     let history=useHistory()
 
     //employee details 
