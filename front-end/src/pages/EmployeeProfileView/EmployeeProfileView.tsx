@@ -31,14 +31,13 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     useIonViewDidEnter(()=>{
         setLoading(true)
-        //get employee information 
-        setEmail(localStorage.getItem("employee_email"))
-        setName(localStorage.getItem("employee_name"))
-        setSurname(localStorage.getItem("employee_surname"))
-        setUsername(localStorage.getItem("employee_username"))
-        setPhone(localStorage.getItem("employee_phone"))
+        setEmail(sessionStorage.getItem("employee_email"))
+        setName(sessionStorage.getItem("employee_name"))
+        setSurname(sessionStorage.getItem("employee_surname"))
+        setUsername(sessionStorage.getItem("employee_username"))
+        setPhone(sessionStorage.getItem("employee_phone"))
         //setGymId(localStorage.getItem("employee_gid"))
-        setProfilePicture(localStorage.getItem("employee_profilepicture")!)
+        setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
 
         fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
             "method":"GET"
@@ -57,8 +56,16 @@ const EmployeeProfileViewPage: React.FC = () =>{
          })
 
     },[])
+    
+    const handleDelete = ()=>{
+        let owner= sessionStorage.getItem("owner_email")!
+        let owner_pass= localStorage.getItem("password")!
+        let employee_email= sessionStorage.getItem("employee_email")!
+        //deleteEmployee
+        deleteEmployee(owner, owner_pass, employee_email)
+    }
 
-    const deleteEmployee=()=>{
+    const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
         
         fetch(`https://gym-king.herokuapp.com/employees/employee`, {
             method: 'DELETE',
@@ -69,7 +76,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
             body: JSON.stringify({ 
                 owneremail: owner,
                 ownerpassword: owner_pass,
-                employee_email: employee_email
+                employeeemail: employee_email
             })
         })
         .then(response =>response.json())
@@ -142,7 +149,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton onClick={deleteEmployee}>Delete Employee</IonButton>
+                            <IonButton onClick={handleDelete}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>

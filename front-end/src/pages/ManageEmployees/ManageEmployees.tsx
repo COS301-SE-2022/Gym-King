@@ -19,6 +19,14 @@ const ManageEmployees: React.FC = () =>{
     
     useIonViewDidEnter(()=>
     {
+        sessionStorage.removeItem("employee_email");
+        sessionStorage.removeItem("employee_name");
+        sessionStorage.removeItem("employee_surname");
+        sessionStorage.removeItem("employee_username");
+        sessionStorage.removeItem("employee_phone");
+        sessionStorage.removeItem("employee_gid");
+        sessionStorage.removeItem("employee_profilepicture");
+
         var owner=localStorage.getItem('email')
         var owner_pass = localStorage.getItem("password")
         setLoading(true)
@@ -59,10 +67,11 @@ const ManageEmployees: React.FC = () =>{
 
     const getEmployeesByGym = (gid:string)=>{
         // eslint-disable-next-line
-        return employeeList.filter( (e:any)=>{
+        let list =  employeeList.filter( (e:any)=>{
             if(e.g_id === gid)
                 return e;
         }) 
+        return list
     }
     return(
         <IonPage>
