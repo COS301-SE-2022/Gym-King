@@ -10,7 +10,10 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
-describe('Testing API calls', () => {
+
+
+////////// INTEGRATION TESTS //////////
+describe('Testing connection to api', () => {
 
   it('should load employee data', async () => {
       (async ()=>{
@@ -38,7 +41,7 @@ describe('Testing API calls', () => {
       })
   });
 
-  it('should create a badge', async () => {
+  it('should update employee data', async () => {
       (()=>{
           fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
                 method: 'PUT',

@@ -8,7 +8,7 @@ export type props = {activityCategory: string, i1:string, i2:string, i3:string};
 
 export class  ActivityList extends React.Component<props>{
     render(){
-        if(this.props.activityCategory === 'cardio'){
+        if(this.props.activityCategory === 'CARDIO'){
             return(
                 <>
                 <IonChip className="chip" >

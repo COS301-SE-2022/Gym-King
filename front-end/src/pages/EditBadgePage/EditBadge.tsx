@@ -73,8 +73,10 @@ const EditBadge: React.FC = () =>{
                 setChallenge(response.badgechallenge)
                 setGymId(response.g_id)
                 setBadgeIcon(response.badgeicon)
+                console.log(badgeIcon)
                 console.log("get: "+response.badgeicon)
                 sessionStorage.setItem('bi',response.badgeicon)
+                console.log(sessionStorage.getItem("bi"))
                 sessionStorage.setItem('waiting',"false")
                 setLoading(false)
             })
@@ -179,7 +181,7 @@ const EditBadge: React.FC = () =>{
                         <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <BadgeSlider bIcon = {badgeIcon} name = {badgename}></BadgeSlider>
+                        <BadgeSlider bIcon={sessionStorage.getItem("bi")!} name = {badgename}></BadgeSlider>
                         
                         <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
                         
