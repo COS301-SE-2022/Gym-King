@@ -14,8 +14,7 @@
   "scripts": {
     "start": "nx serve",
     "start:client": "nx serve front-end",
-    "start:api": "nx prod:api back-end",
-    "prod:all": "start nx prod:api back-end && start nx prod:app front-end",
+    "start:api": "nx prod:api",
     "build": "nx build",
     "lint": "nx lint",
     "test": "nx test"

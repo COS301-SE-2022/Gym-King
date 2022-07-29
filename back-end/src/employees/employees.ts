@@ -143,12 +143,12 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * POST - Insert a badge into the database.
-   * @param {string} gid email used to find claim.
-   * @param {string} badgename badge ID used to find claim.
-   * @param {string} badgedescription email used to find claim.
-   * @param {string} badgechallenge badge ID used to find claim.
-   * @param {string} badgeicon email used to find claim.
-   * @param {string} activitytype email used to find claim.
+   * @param {string} gid the id of the gym the badge is being added to.
+   * @param {string} badgename the name of the badge.
+   * @param {string} badgedescription the description of the badge.
+   * @param {string} badgechallenge the challenge required to acheive the badge.
+   * @param {string} badgeicon ID of the badge image/ARmodel
+   * @param {string} activitytype  the type of activity (cardio/strength)
    * @returns A claim made by user for badge.
    */
   .post("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
