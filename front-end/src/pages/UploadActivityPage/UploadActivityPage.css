@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap');
+
+:root{
+    --ion-background-color: #220F7E;
+}
+
+
+
+.SmallDescription{
+    font-family: 'Comfortaa', cursive;
+    font-size:12px;
+}
+
+
+.centerLeft{
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+
+.topMargin
+{
+    margin-top: 10%;
+}
+
+.btnSubmit{
+    width: 40%;
+}
+
+.inputError{
+    color: red;
+    font-family:'Comfortaa', cursive; 
+    font-size:1em;
+    margin-left:1em;
+}
+
+.PageTitle{
+    text-align: center;
+}
+
+.SmallDescription{
+    text-align: center;
+    margin-left:1em;
+    margin-right:1em;
+}

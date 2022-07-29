@@ -1,0 +1,32 @@
+.container {
+    width:50%;
+    margin:auto;
+    position:relative;
+    height: auto;
+
+    
+    
+  }
+  
+ion-slides {
+    align-self:center;
+    margin-top: 20px;
+    height: 100%;
+
+  }
+  .container img.under {
+    padding: 3% 3% 3% 3%;
+      
+    width:100%;
+    height:auto;
+  }
+  .container img.over {
+    padding: 3% 3% 3% 3%;
+    position:absolute;
+    top:5%;
+    left:5%;
+    z-index:1;
+    width:90%;
+    margin:auto;
+    height:auto;
+  }

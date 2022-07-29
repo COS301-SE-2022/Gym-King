@@ -1,0 +1,10 @@
+.LeaderboardHeader{
+    background-color: rgba(1, 1, 1, .5);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-family:'Comfortaa', cursive;
+}
+
+.LeaderboardGrid{
+    padding:0;
+}

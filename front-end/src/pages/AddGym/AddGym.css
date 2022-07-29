@@ -1,0 +1,8 @@
+
+.glassForm{
+
+    background-color: rgba(255,255,255,0.13);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
+}

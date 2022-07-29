@@ -1,0 +1,45 @@
+{
+  "name": "gymkingserverheroku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "compile": "chmod -R 777 Models/",
+    "start": "ts-node ./src/index.ts",
+    "dev:api": "env-cmd -f .developing.env heroku local web",
+    "test:api": "env-cmd -f .testing.env npx jest --runInBand"
+  },
+  "keywords": [],
+  "author": "Ryan Broemer - Codebusters @ University of Pretoria COS301",
+  "license": "ISC",
+  "dependencies": {
+    "@firebase/app-types": "0.x",
+    "@google-cloud/storage": "^6.2.3",
+    "@types/express": "^4.17.13",
+    "@types/node": "*",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "env-cmd": "^10.1.0",
+    "express": "^4.18.1",
+    "firebase-admin": "^11.0.0",
+    "jest": "28.0.0",
+    "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.7.0",
+    "typeorm": "^0.3.7",
+    "typescript": "^4.7.3",
+    "uuid": "^8.3.2"
+  },
+  "repository": "https://git.heroku.com/gym-king.git",
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "@types/supertest": "^2.0.12",
+    "supertest": "^6.2.3",
+    "ts-jest": "^28.0.2"
+  }
+}

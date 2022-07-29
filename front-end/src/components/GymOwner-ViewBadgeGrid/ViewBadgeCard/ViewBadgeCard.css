@@ -1,0 +1,23 @@
+
+.BadgeDetails{
+    width:100%;
+}
+.ViewBadgeTitle{
+    font-size: small;
+}
+
+.ViewBadgeCard{
+    padding: 0%;
+    margin: 0px;
+    height: 14em;
+    width: 10em;
+    
+}
+.ViewBadgeImage{
+ margin: 0;
+ width: 100%;
+}
+.ViewBadgeImage img{
+    height: 125px;
+    width: 125px;
+}

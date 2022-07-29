@@ -1,0 +1,50 @@
+
+:root{
+    --ion-text-color: black;
+}
+
+.dropDown{
+    background-color: #620DEC;
+    width:75%;
+    opacity: 64%;
+    border-radius: 12px;
+}
+
+
+
+ion-select {
+    color: white !important; 
+    opacity: 0.4;
+}
+
+.alert-wrapper.sc-ion-alert-ios {
+    border-radius: 13px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    overflow: hidden;
+    background-color: white;
+    color: #0F005A;
+}
+
+.alert-head.sc-ion-alert-ios, .alert-message.sc-ion-alert-ios{
+    background-color: white;
+}
+
+.alert-radio-label.sc-ion-alert-ios 
+{
+    color:#0f005a;
+}
+
+.alert-button-inner.sc-ion-alert-ios:hover{
+    background-color: #620DEC;
+}
+
+.alert-button-inner.sc-ion-alert-ios
+{
+    color:#0f005a
+}
+
+[aria-checked=true].sc-ion-alert-ios .alert-radio-label.sc-ion-alert-ios
+{
+    color:white;
+}

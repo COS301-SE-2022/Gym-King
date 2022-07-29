@@ -1,0 +1,17 @@
+#leaderBoardCloseButton{
+    width: 20vw;
+    left: 72%;
+    height: 10vh;
+	position:fixed;
+    top: 15vw;
+	border-radius:5px !important; 
+    
+   
+}
+#main {--overflow: hidden}
+
+.gym{
+    padding:4%;
+    height:22em;
+    width:80%;
+}
