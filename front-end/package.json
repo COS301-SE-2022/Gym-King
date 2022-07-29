@@ -40,7 +40,7 @@
   "scripts": {
     "serve": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns",
+    "test": "react-scripts test --transformIgnorePatterns --watchAll=false",
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",
