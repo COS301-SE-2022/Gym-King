@@ -36,7 +36,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
         //setGymId(localStorage.getItem("employee_gid"))
         setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
 
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
+        fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("employee_gid")}`, {
             "method":"GET"
         })
         .then(response =>response.json())
