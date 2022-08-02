@@ -8,7 +8,9 @@ test('renders without crashing', () => {
 });
 
 
-describe('Testing API calls', () => {
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to API', () => {
 
     it('should login a user', async () => {
         (async ()=>{

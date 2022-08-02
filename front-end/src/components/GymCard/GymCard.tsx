@@ -80,14 +80,14 @@
    <div data-testid="GymCard">
      <IonCard
        color="primary"   
-       class="gymCard ion-padding"
+       class="ion-padding gymCardMargin"
        onClick={() => setShowActionSheet(true)}
      >
-       <IonCardTitle>
+       <IonCardTitle class="inputHeading">
          {prop.name}
        </IonCardTitle>
        
-       <IonCardSubtitle>
+       <IonCardSubtitle className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
          {prop.address}
        </IonCardSubtitle>
      </IonCard>

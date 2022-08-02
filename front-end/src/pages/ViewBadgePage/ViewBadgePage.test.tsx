@@ -10,8 +10,9 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
+////////// INTEGRATION TESTS //////////
 
-describe('Testing API calls', () => {
+describe('Testing connection to api', () => {
 
     test('should load badge info',  () => {
         
