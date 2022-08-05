@@ -1,11 +1,10 @@
-import {IonIcon, IonItem, IonLabel} from '@ionic/react';
+import {IonAvatar, IonImg, IonItem, IonLabel} from '@ionic/react';
 import React from 'react'
 import './approvalButton.css'
-import {personCircleOutline} from 'ionicons/icons';
 
 
 //creating a type so props can be entered
-export type props = {userID:number, username:string, badgeId:string};
+export type props = {userID:number, username:string, badgeId:string, profile:string};
 
 
 export class ApprovalButton extends React.Component<props>{
@@ -17,6 +16,7 @@ export class ApprovalButton extends React.Component<props>{
         localStorage.setItem('user_email', this.userId);
         localStorage.setItem('user_badgeId', this.props.badgeId);
         localStorage.setItem('user_username', this.props.username);
+        localStorage.setItem('user_profile', this.props.profile);
 
     }
 
@@ -25,7 +25,9 @@ export class ApprovalButton extends React.Component<props>{
         //console.log(this.userId);
         return(
             <IonItem button detail class='btnApproval' onClick={this.onClick} data-testid="aB">
-                <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
+                <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
+                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${this.props.profile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                </IonAvatar>
                 <IonLabel>{this.props.username}</IonLabel>
             </IonItem>
         )

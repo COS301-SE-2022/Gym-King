@@ -10,19 +10,24 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
+////////// INTEGRATION TESTS //////////
 
-describe('Testing API calls', () => {
+describe('Testing connection to api', () => {
 
-    it('should load badge info', async () => {
-        (async ()=>{
+    test('should load badge info',  () => {
+        
+        ( ()=>{
+            console.log("hello")
             fetch(`https://gym-king.herokuapp.com/badges/gym/${"gymid"}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
             .then(response =>{
+                console.log(response)
                 expect(response).toBeDefined()
             })
             .catch(err => {
+                console.log(err)
                 expect(err).toBeDefined()
             })
         })

@@ -59,8 +59,14 @@ ion-input{
    
 }
 
-.btn{
-    background-image: linear-gradient(to bottom right, #321E93, #873CFF);
+.btnView{
+    background-color: #ffc409;
+	border-radius:5px !important;
+    width:50%;
+}
+
+.btnClose{
+    background-color: #321E93;
 	border-radius:5px !important;
     width:50%;
 }

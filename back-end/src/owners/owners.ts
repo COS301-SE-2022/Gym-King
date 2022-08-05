@@ -172,7 +172,7 @@ const owners = express.Router()
     try {
       let query = req.body;
       let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
-      res.json(result);
+      res.json({'success':true});
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -211,7 +211,7 @@ const owners = express.Router()
       const bcrypt = require('bcryptjs')
       let query = req.body;
       const owner = await ownerRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, owner.password)) {
+      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
         res.json(owner)
       }
       else {
@@ -251,7 +251,7 @@ const owners = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, owner.password)) {
+      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let newFileName = ``;
         if (file.mimetype == 'image/jpeg'){
@@ -306,9 +306,9 @@ const owners = express.Router()
       const query = req.body;
       const bcrypt = require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email);
-      if (bcrypt.compareSync(query.password, owner.password)) {
+      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
         const result = await ownerRepository.updateOwner(query.email,query.name,query.surname,query.number,query.username);
-        res.json(result);
+        res.json({'success':true});
       }
       else {
         res.json({'message':'Invalid email or password!'})
@@ -337,7 +337,7 @@ const owners = express.Router()
      try {
        let query = req.body;
        let result = await gymRepository.updateGym(query.gid, query.brandname, query.address, query.lat, query.long, query.icon)
-        res.json(result);
+        res.json({'success':true});
      } catch (err) {
        const results = { success: false, results: err };
        console.error(err);
@@ -375,7 +375,7 @@ const owners = express.Router()
    //=========================================================================================================//
   /**
    * DELETE - Delete a gym.
-   * @param {string} email unique email used to delete the owner.
+   * @param {string} email unique owner email used to delete the gym.
    * @param {string} password owner password.
    * @param {string} gid gym id
    * @returns message confirming deletion.
@@ -387,24 +387,22 @@ const owners = express.Router()
       let query=req.body;
       const bcrypt=require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email)
-      if(bcrypt.compareSync(query.password,owner.password))
-      {
+      if(owner != null && bcrypt.compareSync(query.password,owner.password)) {
         let result;
         result=await badgeRepository.findByGID(query.gid);
         let badges=result;
-        for(let i=0;i<badges.length;i++)
-        {
-          result= await badgeOwnedRepository.deleteAllOwnedByBID(badges[i].b_id)
-          result=await badgeClaimRepository.deleteAllClaimsByBID(badges[i].b_id)
-        }
+        badges.forEach(async badge=> {
+          result= await badgeOwnedRepository.deleteAllOwnedByBID(badge.b_id)
+          result= await badgeClaimRepository.deleteAllClaimsByBID(badge.b_id)
+        });
         result= await gymOwnedRepository.deleteAllByGID(query.gid);
         result=await employeeRepository.deleteEmployeeByGID(query.gid);
-        result= await badgeRepository.deleteBadgeByGID(query.gid)
+        result=await badgeRepository.deleteBadgeByGID(query.gid)
         result=await gymRepository.deleteGym(query.gid)
-        res.json(result)
+        res.json({'success':true})
       }
       else {
-        res.json({success:false,'results':'invalid password'})
+        res.json({'message':'Invalid email or password!'})
       }
     }
     catch (err) 
@@ -427,7 +425,7 @@ const owners = express.Router()
        const bcrypt = require('bcryptjs')
        const owner = await ownerRepository.findByEmail(query.email);
        let oldFileName = '';
-      if (owner.profile_picture != null && owner.profile_picture.includes('/')){
+      if (owner != null && owner.profile_picture != null && owner.profile_picture.includes('/')){
         oldFileName = owner.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
@@ -440,13 +438,12 @@ const owners = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, owner.password)) {
+      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await gymOwnedRepository.deleteAllByEmail(owner.email);
         result = await ownerOTPRepository.deleteOwnerOTP(owner.email);
         result = await ownerRepository.deleteOwner(owner.email);
-        const results = { 'success': true };
-        res.json(results);
+        res.json({ 'success': true });
       }
       else {
         res.json({'message':'Invalid email or password!'})

@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonCol, IonGrid, IonRow, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, { useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
@@ -10,7 +10,7 @@ const ViewBadgePage: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
         //GET REQUEST:
-        useIonViewWillEnter(()=>
+        useIonViewDidEnter(()=>
         {
             let gymid = sessionStorage.getItem("gid");
             setLoading(true)

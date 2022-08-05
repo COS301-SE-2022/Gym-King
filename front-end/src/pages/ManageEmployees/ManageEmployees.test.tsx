@@ -10,6 +10,9 @@ test('renders without crashing', ()=> {
   expect(baseElement).toBeDefined();
 });
 
+
+////////// INTEGRATION TESTS //////////
+
 describe('Testing API calls', () => {
 
   it('should load owners employees', async () => {
@@ -19,11 +22,9 @@ describe('Testing API calls', () => {
         })
         .then(response =>response.json())
         .then(response =>{
-            console.log(response)
             expect(response).toBeDefined()
         })
         .catch(err => {
-            console.log(err)
             expect(err).toBeDefined()
         })
       })

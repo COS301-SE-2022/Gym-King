@@ -1,4 +1,4 @@
-import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, useIonViewDidEnter} from '@ionic/react';
 import React, {  useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
@@ -26,7 +26,7 @@ const Leaderboard: React.FC = () =>{
     const segmentChanged = (e: any)=>{
         setType(e.detail.value);
      }
-     useIonViewWillEnter(()=>
+     useIonViewDidEnter(()=>
     {
         var gymid=sessionStorage.getItem("gid");
         var index:number;

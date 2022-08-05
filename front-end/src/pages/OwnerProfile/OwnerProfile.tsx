@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewDidEnter} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./OwnerProfile.css";
@@ -35,7 +35,7 @@ const OwnerProfilePage: React.FC = () =>{
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
         fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
@@ -59,7 +59,7 @@ const OwnerProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
-                localStorage.setItem("profilepicture", profilePicture)
+                localStorage.setItem("pp", response.profile_picture)
                 
                 setLoading(false)
             })
@@ -170,6 +170,7 @@ const OwnerProfilePage: React.FC = () =>{
         history.push("/ManageEmployees")
     }
     const updateProfilePicture = () =>{
+        setLoading(true)
         fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
                 method: 'POST',
                 headers: {
@@ -185,6 +186,7 @@ const OwnerProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setProfilePicture(response.profile_picture)
+                localStorage.setItem("pp", response.profile_picture)
                 setLoading(false)
             })
             .catch(err => {
@@ -221,6 +223,7 @@ const OwnerProfilePage: React.FC = () =>{
                 .then(response =>{
                     console.log(response)
                     updateProfilePicture()
+                    setLoading(false)
                 })
                 .catch(err => {
                     console.log(err)
@@ -238,11 +241,11 @@ const OwnerProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
+                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"position":"absolute","overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain" ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">

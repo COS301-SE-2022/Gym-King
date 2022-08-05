@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
@@ -11,10 +11,12 @@ export const AcceptRejectPage: React.FC = () =>{
     let badgeId = localStorage.getItem('user_badgeId');
     let email = localStorage.getItem('user_email');
     let username = localStorage.getItem('user_username');
+    let profile = localStorage.getItem("user_profile")
     const [i1, setI1] = useState('');
     const [i2, setI2] = useState('');
     const [i3, setI3] = useState('');
     const [badgename, setBadgename] = useState('');
+    const [badgechallenge, setBadgechallenge] = useState('');
     const [activitytype, setActivityType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
     const [proof, setProof] = useState("");
@@ -22,7 +24,7 @@ export const AcceptRejectPage: React.FC = () =>{
 
 
     //GET THE CLAIM 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
             "method":"GET"
@@ -44,7 +46,7 @@ export const AcceptRejectPage: React.FC = () =>{
     },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
-        useIonViewWillEnter(()=>
+        useIonViewDidEnter(()=>
             {
                 fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"
@@ -54,6 +56,7 @@ export const AcceptRejectPage: React.FC = () =>{
                     console.log(response);
 
                     setBadgename(response.badgename)
+                    setBadgechallenge(response.badgechallenge)
                     setActivityType(response.activitytype)
                     //setG_id(response.results[0].g_id)
                 })
@@ -67,7 +70,7 @@ export const AcceptRejectPage: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
-                    <AcceptRejectCard proof={proof} userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history}></AcceptRejectCard>
+                    <AcceptRejectCard proof={proof} userID={email} username={username} badgeId={badgeId} badgename={badgename} badgechallenge={badgechallenge}i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history} profile={profile!}></AcceptRejectCard>
 <br></br><br></br>
                     <IonLoading 
                         isOpen={loading}
