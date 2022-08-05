@@ -33,7 +33,7 @@ const UserProfilePage: React.FC = () =>{
     
     const getNumberOfBadges = () =>{
         
-        fetch(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -44,7 +44,7 @@ const UserProfilePage: React.FC = () =>{
         })
     }
     const getNumberOfClaims = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -58,7 +58,7 @@ const UserProfilePage: React.FC = () =>{
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -94,7 +94,7 @@ const UserProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateUserDetails = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
@@ -157,7 +157,7 @@ const UserProfilePage: React.FC = () =>{
     
     const updateProfilePicture = () =>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -199,7 +199,7 @@ const UserProfilePage: React.FC = () =>{
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/user/picture`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/picture`,{
                 "method":"PUT",
                 body: formData
             })

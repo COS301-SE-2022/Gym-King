@@ -38,7 +38,10 @@
     ]
   },
   "scripts": {
-    "serve": "react-scripts start",
+
+    "serve:prod": "env-cmd -f .env.production react-scripts start",
+    "serve:dev": "env-cmd -f .env.development react-scripts start",
+
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns --watchAll=false",
     "eject": "react-scripts eject",

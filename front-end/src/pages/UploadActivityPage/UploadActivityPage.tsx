@@ -68,7 +68,7 @@ const UploadActivityPage: React.FC = () =>{
         useIonViewDidEnter(()=>{
             let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -86,7 +86,7 @@ const UploadActivityPage: React.FC = () =>{
                 setLoading(false)
             })
 
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -135,7 +135,7 @@ const UploadActivityPage: React.FC = () =>{
                 formData.append("input3", i3)
                 formData.append('proof', values.current.file, values.current.file.name);
                 console.log(formData);
-            fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
                 "method":"POST",
                 body: formData
             })

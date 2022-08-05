@@ -11,7 +11,7 @@ export type props = {proof:any, userID:any, username:any, badgeId:any, badgename
 export class AcceptRejectCard extends React.Component<props>{
     
     acceptClaim= ()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
@@ -32,7 +32,7 @@ export class AcceptRejectCard extends React.Component<props>{
         .catch(err => {console.log(err)}) 
     } 
     rejectClaim = () =>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',

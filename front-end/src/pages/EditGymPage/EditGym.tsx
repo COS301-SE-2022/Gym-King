@@ -49,7 +49,7 @@ const EditGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
     else{
-      fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("gid")}`,
+      fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
         {
           method: "Get",
           headers: {
@@ -77,7 +77,7 @@ const EditGym: React.FC = () => {
    * @brief calls api to update a gyms' details
   */
   const saveGym = () => {
-    fetch(`https://gym-king.herokuapp.com/owner/gym/info`,
+    fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
       {
         method: "PUT",
         headers: {

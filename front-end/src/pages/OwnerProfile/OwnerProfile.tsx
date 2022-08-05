@@ -38,7 +38,7 @@ const OwnerProfilePage: React.FC = () =>{
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -69,7 +69,7 @@ const OwnerProfilePage: React.FC = () =>{
             })
         
         //get number of gyms owned
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${localStorage.getItem("email")}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${localStorage.getItem("email")}`,{
             method: 'GET'
         })
         .then(response =>response.json())
@@ -85,7 +85,7 @@ const OwnerProfilePage: React.FC = () =>{
         }) 
 
         //get number of employees
-        fetch(`https://gym-king.herokuapp.com/owners/employees/${localStorage.getItem("email")}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${localStorage.getItem("email")}`,{
             method: 'GET'
         })
         .then(response =>response.json())
@@ -102,7 +102,7 @@ const OwnerProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
-        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
@@ -171,7 +171,7 @@ const OwnerProfilePage: React.FC = () =>{
     }
     const updateProfilePicture = () =>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -215,7 +215,7 @@ const OwnerProfilePage: React.FC = () =>{
             formData.append('profilepicture', values.current.file, values.current.file.name);
     
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/owners/owner/picture`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/picture`,{
                     "method":"PUT",
                     body: formData
                 })

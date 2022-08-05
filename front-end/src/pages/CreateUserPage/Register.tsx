@@ -32,7 +32,7 @@ import './Register.css';
         // CREATE BADGE POST REQUEST 
         const createUser=()=>{
 
-            fetch(`https://gym-king.herokuapp.com/users/user`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
               method: 'POST',
               headers: {
                 'Accept': 'application/json',

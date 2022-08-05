@@ -17,7 +17,7 @@ describe('Testing API calls', () => {
 
   it('should load owners employees', async () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/owners/employees/${"owner_email"}`, {
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${"owner_email"}`, {
           "method":"GET"
         })
         .then(response =>response.json())
@@ -31,7 +31,7 @@ describe('Testing API calls', () => {
   });
   it('should get owners gyms', async () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${"owner_email"}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"owner_email"}`,{
           "method":"GET"
         })
         .then(response =>response.json())

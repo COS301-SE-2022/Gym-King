@@ -85,7 +85,7 @@ const Leaderboard: React.FC = () =>{
             return bflag;
         }
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/leaderboard/score/${gymid}`,{
             "method":"GET"
         })
         .then(response =>response.json())

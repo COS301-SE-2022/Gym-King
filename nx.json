@@ -69,6 +69,14 @@
       "analyzeSourceFiles": false
     }
   },
-  
+
+  "configurations": {
+    "development": {
+      "envFiles": [
+        ".env.development",
+        ".env.production"
+      ]
+    }
+  },
   "defaultProject": "front-end"
 }

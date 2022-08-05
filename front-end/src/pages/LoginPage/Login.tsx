@@ -16,7 +16,7 @@ export const Login: React.FC = () =>{
 
     const loginSubmit= ()=>{
             setLoading(true)
-            fetch('https://gym-king.herokuapp.com/users/login',{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+'/users/login',{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',

@@ -14,7 +14,7 @@ const PendingBadgesPage: React.FC = () =>{
     //GET REQUEST:
     useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`,{
                 method: 'GET'
             })
             .then(response =>response.json())

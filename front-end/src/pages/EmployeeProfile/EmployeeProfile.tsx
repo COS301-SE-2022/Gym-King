@@ -39,7 +39,7 @@ const EmployeeProfilePage: React.FC = () =>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
         //get employee information 
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -73,7 +73,7 @@ const EmployeeProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
@@ -130,7 +130,7 @@ const EmployeeProfilePage: React.FC = () =>{
     }
 
     const updateProfilePicture= ()=>{
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -173,7 +173,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 formData.append('profilepicture', values.current.file, values.current.file.name);
         
                 setLoading(true)
-                fetch(`https://gym-king.herokuapp.com/employees/employee/picture`,{
+                fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/picture`,{
                         "method":"PUT",
                         body: formData
                     })
