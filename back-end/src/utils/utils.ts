@@ -218,22 +218,22 @@ const utils = express.Router()
   .delete("/tables/drop", async (req: any, res: any) => {
     try {
       const client = await pool.connect();
-      let result = await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
-      result = await client.query("DROP TABLE IF EXISTS USER_OTP");
-      result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
-      result = await client.query("DROP TABLE IF EXISTS OWNER_OTP");
-      result = await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
-      result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
-      result = await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
-      result = await client.query("DROP TABLE IF EXISTS BADGE_OWNED");
-      result = await client.query("DROP TABLE IF EXISTS BADGE");
-      result = await client.query("DROP TABLE IF EXISTS GYM_OWNED");
-      result = await client.query("DROP TABLE IF EXISTS GYM_USER");
-      result = await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
-      result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
-      result = await client.query("DROP TABLE IF EXISTS GYM")
-      const results = { success: true, results: result };
-      res.json(results);
+      // let result = await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
+      // result = await client.query("DROP TABLE IF EXISTS USER_OTP");
+      // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
+      // result = await client.query("DROP TABLE IF EXISTS OWNER_OTP");
+      // result = await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
+      // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
+      // result = await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
+      // result = await client.query("DROP TABLE IF EXISTS BADGE_OWNED");
+      // result = await client.query("DROP TABLE IF EXISTS BADGE");
+      // result = await client.query("DROP TABLE IF EXISTS GYM_OWNED");
+      // result = await client.query("DROP TABLE IF EXISTS GYM_USER");
+      // result = await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
+      // result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
+      // result = await client.query("DROP TABLE IF EXISTS GYM")
+      // const results = { success: true, results: result };
+      res.json({'message':'not implemented'});
       client.release();
     } catch (err) {
       const results = { success: false, results: err };
