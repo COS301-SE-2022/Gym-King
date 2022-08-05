@@ -40,7 +40,7 @@
     "defaultBase": "develop"
   },
   "generators": {
-    "@nrwl/eact:application": {
+    "@nrwl/react:application": {
       "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "jest",
