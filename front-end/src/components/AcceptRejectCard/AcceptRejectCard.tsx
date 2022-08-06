@@ -1,5 +1,5 @@
 /** 
-* @file AcceptReject.tsx
+* @file AcceptRejectCard.tsx
 * @brief card that allows employee to accept or reject a claim
 */
 
