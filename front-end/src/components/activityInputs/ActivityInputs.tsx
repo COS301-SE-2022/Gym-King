@@ -1,3 +1,9 @@
+/** 
+* @file ActivityInputs.tsx
+* @brief component that displays activity inputs for the UploadActivity page
+*/
+
+
 import {IonGrid, IonInput, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import "./ActivityInputs.css";
