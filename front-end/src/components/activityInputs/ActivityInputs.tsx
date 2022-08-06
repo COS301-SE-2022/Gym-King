@@ -2,16 +2,30 @@ import {IonGrid, IonInput, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import "./ActivityInputs.css";
 
-//creating a type so props can be entered
-
+//-props, activity category and activity inputs 
 export type props = {activityCategory: string, inputs:any};
+//-states, activity input values 
 export type states = {i1:string, i2:string, i3:string}
 
+/** 
+  * @param ? props, states
+  * @return ? - ActivityInputs component
+*/
 export class  ActivityInputs extends React.Component<props, states>{
-    
+
+      
+    //-activityStates hook, hook that sets the input activity states 
     activityStates: states = {i1:'', i2:'', i3:''}
     
+    //=================================================================================================
+    //    FUNCTIONS
+    //=================================================================================================
 
+    /** 
+     * @brief ! - sets the input values entered when submitted 
+     * @param ? - event, any
+     * @result ? - input activitied are updated 
+    */
     handleChange = (e:any) =>{
         let input = e.target.name;
         let value = e.target.value;
@@ -23,10 +37,11 @@ export class  ActivityInputs extends React.Component<props, states>{
             this.activityStates.i3=value;
     }
     
-
+    //=================================================================================================
+    //    Render
+    //=================================================================================================
     render(){
         
-
         if(this.props.activityCategory === 'CARDIO'){
             return(
 
