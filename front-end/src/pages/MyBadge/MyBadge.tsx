@@ -6,6 +6,7 @@ import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 import { useHistory } from 'react-router-dom';
 import {api} from '../../config';
+import axios from "axios";
 
 
 
@@ -18,10 +19,8 @@ const MyBadge: React.FC = () =>{
     
     useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`${api}/users/owned/${email}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(`${api}/users/owned/${email}`)
+        .then(response =>response.data)
         .then(response =>{
             let arr=[];
             for(let i=0; i<response.length;i++)
