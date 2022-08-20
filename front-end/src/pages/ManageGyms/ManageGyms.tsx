@@ -7,6 +7,8 @@ import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './ManageGyms.css';
+import axios from "axios";
+
 /**
  * @returns ManageGyms pages
  */
@@ -42,22 +44,11 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(`https://gym-king.herokuapp.com/gyms/owned/${email}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
-            setLoading(false)/*
-            let arr=[];
-            for(let i=0;i<response.length;i++)
-            {
-                arr.push({
-                    'id':response[i].g_id,
-                    'name':response[i].gym_brandname,
-                    'address':response[i].gym_address
-                })
-            }*/
+            setLoading(false)
             setGymList(response)
         })
         .catch(err => {
@@ -71,10 +62,8 @@ const ManageGyms: React.FC = () =>{
      */
         const deleteClicked= () => {
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(`https://gym-king.herokuapp.com/gyms/owned/${email}`)
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setLoading(false)
