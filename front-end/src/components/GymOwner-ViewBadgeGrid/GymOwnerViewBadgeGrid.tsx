@@ -1,6 +1,7 @@
 import { IonCol, IonGrid, IonLoading, IonRow, useIonViewDidEnter} from '@ionic/react';
 import { useState, } from 'react';
 import ViewBadgeCard from './ViewBadgeCard/ViewBadgeCard';
+import axios from 'axios';
 
 export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
      
@@ -12,10 +13,8 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         useIonViewDidEnter(()=>
         {
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/badges/gym/${props.gymID}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(`https://gym-king.herokuapp.com/badges/gym/${props.gymID}`)
+            .then(response =>response.data)
             .then(response =>{  
                 console.log(response)
                 let arr=[];
