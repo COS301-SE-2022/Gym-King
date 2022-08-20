@@ -2,8 +2,8 @@ import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, I
 import React, {useState } from 'react';
 import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
 import './GymOwnerViewBadge.css';
+import axios from "axios";
 
 
 const GymOwnerViewBadge: React.FC = () =>{
@@ -15,10 +15,8 @@ const GymOwnerViewBadge: React.FC = () =>{
         useIonViewWillEnter(()=>{
             var email=localStorage.getItem("email")
             setLoading(true);
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(`https://gym-king.herokuapp.com/gyms/owned/${email}`)
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setLoading(false)
