@@ -1,6 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
 import './Register.css';
+import axios from "axios";
 
 
  export const RegisterPage: React.FC = () =>{
@@ -32,22 +33,22 @@ import './Register.css';
         // CREATE BADGE POST REQUEST 
         const createUser=()=>{
 
-            fetch(`https://gym-king.herokuapp.com/users/user`,{
+            axios(`https://gym-king.herokuapp.com/users/user`,{
               method: 'POST',
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ 
+              data: { 
                   email: formData.email,
                   name: formData.name,
                   surname: formData.surname,
                   number: formData.number,
                   username: formData.username,
                   password:formData.password,
-               })
+               }
               })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //show toast
                 if(response.results.success){
