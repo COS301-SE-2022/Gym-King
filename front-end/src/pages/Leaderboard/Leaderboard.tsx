@@ -1,9 +1,10 @@
 import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, useIonViewDidEnter} from '@ionic/react';
 import React, {  useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
 import './Leaderboard.css';
 import LeaderboardValues from '../../components/LeaderBoardSwiper/LeaderBoardValues/LeaderboardValues';
+import axios from "axios";
+
 
 const Leaderboard: React.FC = () =>{
     const [overall, setOverall] = useState(new Array<any>());
@@ -85,10 +86,8 @@ const Leaderboard: React.FC = () =>{
             return bflag;
         }
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`)
+        .then(response =>response.data)
         .then(response =>{
             let results=response;
             
