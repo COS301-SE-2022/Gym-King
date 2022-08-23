@@ -20,7 +20,7 @@ const GymOwnerViewBadge: React.FC = () =>{
             })
             .then(response =>response.json())
             .then(response =>{
-                console.log("fetching gyms")
+                console.log(response)
                 setLoading(false)
                 var arr=[];
                 for(let i=0;i<response.length;i++)
@@ -34,13 +34,14 @@ const GymOwnerViewBadge: React.FC = () =>{
                     )
                 }
                 setBadgeList(arr)
+                console.log(arr)
             })
             .catch(err => {
                 console.log(err)
                 setLoading(false)
             })
 
-    })
+        },[])
 
     return(
         <IonPage >

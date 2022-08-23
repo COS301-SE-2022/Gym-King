@@ -1,4 +1,7 @@
-
+/** 
+* @file AR.tsx
+* @brief provides interface of AR component to view badges 
+*/
 import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';

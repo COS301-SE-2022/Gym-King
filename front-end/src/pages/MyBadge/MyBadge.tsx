@@ -5,6 +5,7 @@ import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 import { useHistory } from 'react-router-dom';
+import {api} from '../../config';
 
 
 
@@ -17,7 +18,7 @@ const MyBadge: React.FC = () =>{
     useIonViewWillEnter(()=>{
         let email=localStorage.getItem("email")
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/owned/${email}`,{
+        fetch(`${api}/users/owned/${email}`,{
             "method":"GET"
         })
         .then(response =>response.json())

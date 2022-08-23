@@ -43,6 +43,7 @@
     "@types/express": "^4.17.13",
     "@types/node": "*",
     "add": "^2.0.6",
+    "axois": "^0.0.1-security",
     "babel": "^6.23.0",
     "babel-loader": "^8.0.2",
     "bcrypt": "^5.0.1",

@@ -6,8 +6,9 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
   });
 
-/*
-  describe('Testing API calls', () => {
+////////// INTEGRATION TESTS //////////
+
+  describe('Testing connection to API', () => {
 
     it('should load badge data', async () => {
       (()=>{
@@ -47,7 +48,7 @@ test('renders without crashing', () => {
       });
 
   })
-
+/*
 
 describe('Integration Tests', () => {
 

@@ -1,16 +1,35 @@
-import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonImg, IonRow, IonText} from '@ionic/react';
+/** 
+* @file AcceptRejectCard.tsx
+* @brief card that allows employee to accept or reject a claim
+*/
+
+import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import {personCircleOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
 
-//creating a type so props can be entered
-export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any};
+//-props, claim information
+export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, badgechallenge:string,  i1:any, i2:any, i3:any, activitytype:any,history:any, profile:string};
 
-
+/** 
+  * @param ? props
+  * @return ? - AcceptRejectCard
+*/
 export class AcceptRejectCard extends React.Component<props>{
     
+
+    //=================================================================================================
+    //    FUNCTIONS
+    //=================================================================================================
+
+
+    /** 
+     * @brief ! - makes a call to add a badge from the badge_claim table to the badge_owned table
+     * @requires ? - a call to the api
+     * @result ? - claim is accepted or call to api fails 
+    */
     acceptClaim= ()=>{
         fetch(`https://gym-king.herokuapp.com/claims/claim`,{
             "method":"PUT",
@@ -25,14 +44,19 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .then(response =>response.json())
         .then(response =>{
-/*
-            let history=useHistory()
-            history.push("/PendingApprovals");*/
+
+            localStorage.setItem("claimAccepted", "true")
             this.props.history.goBack()
 
         })
         .catch(err => {console.log(err)}) 
     } 
+
+    /** 
+     * @brief ! -  makes a call to remove badge from badge_claim
+     * @requires ? - a call to the api
+     * @result ? - a claim is rejected or the api call fails 
+    */
     rejectClaim = () =>{
         fetch(`https://gym-king.herokuapp.com/claims/claim`,{
             "method":"DELETE",
@@ -48,16 +72,17 @@ export class AcceptRejectCard extends React.Component<props>{
         .then(response =>response.json())
         .then(response =>{
             console.log(response.results);
-            //display toast 
-            //redirect to PendingApprovals
-            /*
-            let history=useHistory()
-            history.push("/PendingApprovals"); */
+
+            localStorage.setItem("claimRejected", "true")
             this.props.history.goBack()
 
         })
         .catch(err => {console.log(err)})
     }
+
+    //=================================================================================================
+    //    Render
+    //=================================================================================================
     render(){
         
         return(
@@ -72,6 +97,9 @@ export class AcceptRejectCard extends React.Component<props>{
                     </IonText><br></br>
                     <IonText className='txtBadge'>
                         {this.props.badgename}
+                    </IonText><br></br><br></br>
+                    <IonText className="Subheading">
+                        <i>{this.props.badgechallenge}</i>
                     </IonText>
                     <br></br><br></br>
                     <ActivityList  activityCategory={this.props.activitytype} i1={this.props.i1} i2={this.props.i2} i3={this.props.i3}></ActivityList>
