@@ -7,7 +7,6 @@ import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
-import { stamenToner } from "pigeon-maps/providers";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 
@@ -118,7 +117,12 @@ const AddGym: React.FC = () => {
     });
     
 
+  
   };
+
+  const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
+    return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+  }
 //=================================================================================================
 //    Render
 //=================================================================================================
@@ -148,7 +152,7 @@ const AddGym: React.FC = () => {
                     height={200}
                     center={[coordinate[0], coordinate[1]]}
                     zoom={zoom}
-                    provider={stamenToner}
+                    provider={mapTiler}
                     data-testid="map"
                   >
                     <Overlay 

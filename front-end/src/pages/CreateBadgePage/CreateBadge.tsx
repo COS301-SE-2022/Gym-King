@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter} from '@ionic/react';
 
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {  useState } from 'react';
@@ -100,7 +100,7 @@ import { useHistory } from 'react-router-dom';
         }
 
         // OWNED GYMS GET REQUEST 
-        useIonViewWillEnter(()=>{
+        useIonViewDidEnter(()=>{
             let gymOwner = localStorage.getItem("email")
             fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
                 "method":"GET"

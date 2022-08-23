@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import ApprovalButton from './approvalButton'
 
 test('renders without crashing', () => {
-    const { baseElement } = render(<ApprovalButton userID={0} username="" badgeId=""  />);
+    const { baseElement } = render(<ApprovalButton userID={0} username="" badgeId=""  profile=""/>);
     expect(baseElement).toBeDefined();
   });
 
@@ -17,7 +17,7 @@ test('renders without crashing', () => {
 describe('Testing prop text values', () => {
 
   test('correctly displays cardio activitytype inputs', async () => {
-    const {baseElement} = render(<ApprovalButton userID={2} username='user1@example.com' badgeId='3'/>);
+    const {baseElement} = render(<ApprovalButton userID={2} username='user1@example.com' badgeId='3' profile=""/>);
     expect (baseElement).toHaveTextContent("user1@example.com");
   }); 
 });

@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
@@ -57,7 +57,7 @@ const EditBadge: React.FC = () =>{
 
         
         // GET BADGES REQUEST 
-        useIonViewWillEnter( ()=>{
+        useIonViewDidEnter( ()=>{
 
             setLoading(true)
             

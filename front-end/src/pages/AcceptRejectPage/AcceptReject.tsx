@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import { IonContent, IonHeader, IonText, IonPage, IonLoading, useIonViewDidEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import { useHistory } from 'react-router-dom';
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
@@ -11,6 +11,7 @@ export const AcceptRejectPage: React.FC = () =>{
     let badgeId = localStorage.getItem('user_badgeId');
     let email = localStorage.getItem('user_email');
     let username = localStorage.getItem('user_username');
+    let profile = localStorage.getItem("user_profile")
     const [i1, setI1] = useState('');
     const [i2, setI2] = useState('');
     const [i3, setI3] = useState('');
@@ -23,7 +24,7 @@ export const AcceptRejectPage: React.FC = () =>{
 
 
     //GET THE CLAIM 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setLoading(true);
         fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
             "method":"GET"
@@ -45,7 +46,7 @@ export const AcceptRejectPage: React.FC = () =>{
     },[badgeId, email])
     
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
-        useIonViewWillEnter(()=>
+        useIonViewDidEnter(()=>
             {
                 fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
                 "method":"GET"

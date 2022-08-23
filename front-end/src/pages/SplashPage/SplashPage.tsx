@@ -1,11 +1,13 @@
-import { IonPage, IonContent, IonImg, useIonViewWillEnter} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewDidEnter} from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 
+
+
 export const SplashPage: React.FC = () =>
 {
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setTimeout(() => {
             if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
             {

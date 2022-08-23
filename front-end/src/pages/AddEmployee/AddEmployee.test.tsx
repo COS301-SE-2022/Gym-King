@@ -18,7 +18,11 @@ test('correctly diplays labels ', async () => {
   expect (baseElement).toHaveTextContent("Gym");
 });
 
-describe('Testing API calls', () => {
+
+
+//////// INTEGRATION TESTS ///////////
+
+describe('Testing connection to api', () => {
   let badgeId= "XRQ"
   let email ="u20519517@tuks.co.za"
 
@@ -29,8 +33,12 @@ describe('Testing API calls', () => {
         })
         .then(response =>response.json())
         .then(response =>{
+            expect(response).toBeDefined()
         })
-        .catch(err => {console.log(err)}) 
+        .catch(err => {
+          console.log(err)
+          expect(err).toBeDefined()
+        }) 
         })
   });
 
@@ -55,9 +63,11 @@ describe('Testing API calls', () => {
         })
         .then(response =>response.json())
         .then(response =>{
+          expect(response).toBeDefined()
         })
         .catch(err => {
             console.log(err)
+            expect(err).toBeDefined()
       }) 
       })
   });

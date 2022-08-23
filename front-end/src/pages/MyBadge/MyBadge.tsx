@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import { arrowDown, arrowUp, funnel, swapVertical } from 'ionicons/icons';
 import React, { useState } from 'react';
 import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
@@ -13,10 +13,10 @@ const MyBadge: React.FC = () =>{
     const [badges, setBadges] = useState(new Array<any>());
     let history=useHistory()
     const [loading, setLoading] = useState<boolean>(false);
+        let email=localStorage.getItem("email")
 
     
-    useIonViewWillEnter(()=>{
-        let email=localStorage.getItem("email")
+    useIonViewDidEnter(()=>{
         setLoading(true)
         fetch(`${api}/users/owned/${email}`,{
             "method":"GET"
