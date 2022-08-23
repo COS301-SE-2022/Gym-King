@@ -1,15 +1,34 @@
+/** 
+* @file AcceptRejectCard.tsx
+* @brief card that allows employee to accept or reject a claim
+*/
+
 import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
 
-//creating a type so props can be entered
+//-props, claim information
 export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, badgechallenge:string,  i1:any, i2:any, i3:any, activitytype:any,history:any, profile:string};
 
-
+/** 
+  * @param ? props
+  * @return ? - AcceptRejectCard
+*/
 export class AcceptRejectCard extends React.Component<props>{
     
+
+    //=================================================================================================
+    //    FUNCTIONS
+    //=================================================================================================
+
+
+    /** 
+     * @brief ! - makes a call to add a badge from the badge_claim table to the badge_owned table
+     * @requires ? - a call to the api
+     * @result ? - claim is accepted or call to api fails 
+    */
     acceptClaim= ()=>{
         fetch(`https://gym-king.herokuapp.com/claims/claim`,{
             "method":"PUT",
@@ -31,6 +50,12 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .catch(err => {console.log(err)}) 
     } 
+
+    /** 
+     * @brief ! -  makes a call to remove badge from badge_claim
+     * @requires ? - a call to the api
+     * @result ? - a claim is rejected or the api call fails 
+    */
     rejectClaim = () =>{
         fetch(`https://gym-king.herokuapp.com/claims/claim`,{
             "method":"DELETE",
@@ -53,6 +78,10 @@ export class AcceptRejectCard extends React.Component<props>{
         })
         .catch(err => {console.log(err)})
     }
+
+    //=================================================================================================
+    //    Render
+    //=================================================================================================
     render(){
         
         return(
