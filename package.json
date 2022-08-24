@@ -28,6 +28,7 @@
     "test:api": "nx test:api back-end",
     "build": "nx build",
     "lint": "nx lint",
+    "test": "nx test",
     "run": "nx run"
   },
   "dependencies": {
