@@ -1,18 +1,22 @@
+/** 
+* @file BadgeCanvas.tsx
+* @brief provides a way to display the badges on the pages 
+*/
+
 import { IonCard, IonCardHeader, IonCardTitle, IonSlides } from '@ionic/react';
 import React, { useRef } from 'react';
 import './BadgeCanvas.css'
 
-//=========================================================================================================//
 /**
  * @brief input interface for the badge canvas
- */
+*/
 export interface BadgeCanvasInputProps {
     name:string,
     rank: string,
     emblem: string    
 }
 
-//=========================================================================================================//
+
 /**
  * @brief this component overlays two images to form the badge icon.
  * @param name - the name of the badge
@@ -26,13 +30,11 @@ export const BadgeCanvas: React.FC<BadgeCanvasInputProps> = ({
     emblem  
   }) => {
 
-    //=========================================================================================================//
     /**
      * @brief the container of the badge icon
      */
     const slidesEl = useRef(document.createElement('ion-slides'))
 
-    //=========================================================================================================//
     /**
      * @brief function that gets called as the component is rendered
      * @result make the slider container static(cant slide anymore)
@@ -41,7 +43,6 @@ export const BadgeCanvas: React.FC<BadgeCanvasInputProps> = ({
       slidesEl.current.lockSwipes(true)
     }
     
-    //=========================================================================================================//
     /**
      * @brief displays the badge name and its icon 
      */
