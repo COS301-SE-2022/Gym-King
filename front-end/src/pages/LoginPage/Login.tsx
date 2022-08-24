@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 import axios from "axios";
-import {api} from '../../config';
 
 export const Login: React.FC = () =>{
     
