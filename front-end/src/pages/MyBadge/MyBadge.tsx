@@ -18,7 +18,7 @@ const MyBadge: React.FC = () =>{
     
     useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`${api}/users/owned/${email}`,{
+        fetch(`${process.env["REACT_APP_GYM_KING_API"]}/users/owned/${email}`,{
             "method":"GET"
         })
         .then(response =>response.json())

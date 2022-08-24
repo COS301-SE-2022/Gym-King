@@ -17,7 +17,7 @@ export const Login: React.FC = () =>{
 
     const loginSubmit= ()=>{
             setLoading(true)
-            axios.post(`${api}/users/login`, 
+            axios.post(`${process.env["REACT_APP_GYM_KING_API"]}/users/login`, 
             {
                 email: formData.email,
                 password: formData.password,
