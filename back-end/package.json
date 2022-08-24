@@ -12,7 +12,6 @@
     "dev:api": "env-cmd -f .developing.env heroku local web",
     "test:api": "env-cmd -f .testing.env npx jest --runInBand",
 
-    "test": "npx jest --runInBand",
     "compile": "chmod -R 777 Models/"
   },
   "keywords": [],
