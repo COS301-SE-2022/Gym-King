@@ -25,10 +25,8 @@
     "prod:api": "nx prod:api back-end",
     "dev:api": "nx dev:api back-end",
     "test:client": "nx test front-end",
-    "test:api": "nx test:api back-end",
     "build": "nx build",
     "lint": "nx lint",
-    "test": "nx test",
     "run": "nx run"
   },
   "dependencies": {
