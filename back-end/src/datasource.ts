@@ -1,5 +1,6 @@
 
-const DataSource = require("typeorm") 
+
+import { DataSource } from "typeorm"
 let options:any;
 if (process.env.TEST == 'false'){
     options = {
