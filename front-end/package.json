@@ -52,7 +52,7 @@
     "serve:dev": "env-cmd -f .env.development react-scripts start",
 
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns --watchAll=false",
+    "test": "env-cmd -f .env.development react-scripts  test --transformIgnorePatterns --watchAll=false",
     
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
