@@ -36,7 +36,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
         //setGymId(localStorage.getItem("employee_gid"))
         setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
 
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("employee_gid")}`, {
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`, {
             "method":"GET"
         })
         .then(response =>response.json())
@@ -64,7 +64,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
         
-        fetch(`https://gym-king.herokuapp.com/employees/employee`, {
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
             method: 'DELETE',
             headers: {
               'Accept': 'application/json',

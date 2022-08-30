@@ -15,7 +15,7 @@ const GymOwnerViewBadge: React.FC = () =>{
         useIonViewWillEnter(()=>{
             var email=localStorage.getItem("email")
             setLoading(true);
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`,{
                 "method":"GET"
             })
             .then(response =>response.json())

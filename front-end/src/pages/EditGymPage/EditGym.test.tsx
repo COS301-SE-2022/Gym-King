@@ -18,7 +18,7 @@ describe('Testing connection to api', () => {
       
       ( ()=>{
           let badgeId="XRQ"
-          fetch(`https://gym-king.herokuapp.com/gyms/gym/123`,
+          fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
             {
               method: "Get",
               headers: {
@@ -37,7 +37,7 @@ describe('Testing connection to api', () => {
 
   it('should update a gym', async () => {
       (()=>{
-        fetch(`https://gym-king.herokuapp.com/owner/gym/info`,
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
         {
           method: "PUT",
           headers: {

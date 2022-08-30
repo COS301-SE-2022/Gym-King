@@ -1,4 +1,4 @@
-import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast, useIonViewWillEnter } from "@ionic/react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -9,7 +9,7 @@ import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
-import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
+
 interface LocationError {
     showError: boolean;
     message?: String;
@@ -113,7 +113,7 @@ const MapView: React.FC = () =>{
          */
         if(!postWaiting){
             setPostWaiting(true);
-            fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+'/gyms/aroundme',{
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
@@ -166,19 +166,18 @@ const MapView: React.FC = () =>{
         }
     })
 
-
     const [showModal, setShowModal] = useState(false);
-    const getPermissons = () => {
-        AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE).then(
-            result => {console.log('Has permission?',result.hasPermission)},
-            err =>{ AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE)},
+    // const getPermissons = () => {
+    //     AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE).then(
+    //         result => {console.log('Has permission?',result.hasPermission)},
+    //         err =>{ AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE)},
             
-          );
+    //       );
           
-          AndroidPermissions.requestPermissions([AndroidPermissions.PERMISSION.LOCATION_HARDWARE, AndroidPermissions.PERMISSION.GET_ACCOUNTS]);
+    //       AndroidPermissions.requestPermissions([AndroidPermissions.PERMISSION.LOCATION_HARDWARE, AndroidPermissions.PERMISSION.GET_ACCOUNTS]);
           
-    }
-    useIonViewWillEnter(getPermissons)
+    // }
+    // useIonViewWillEnter(getPermissons)
    
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;

@@ -73,7 +73,7 @@ import { useHistory } from 'react-router-dom';
             let bi = localStorage.getItem('badgeIcon');
 
  
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"POST",
                 headers: {
                     'Accept': 'application/json',
@@ -102,7 +102,7 @@ import { useHistory } from 'react-router-dom';
         // OWNED GYMS GET REQUEST 
         useIonViewDidEnter(()=>{
             let gymOwner = localStorage.getItem("email")
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`,{
                 "method":"GET"
             })
             .then(response =>response.json())

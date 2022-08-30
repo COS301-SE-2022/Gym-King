@@ -30,7 +30,7 @@ describe('Testing connection to api', () => {
         
         ( ()=>{
             let badgeId="XRQ"
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -54,7 +54,7 @@ describe('Testing connection to api', () => {
             let bc = "";
             let bd = "formData.badgeDescription";
             
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',
@@ -84,7 +84,7 @@ describe('Testing connection to api', () => {
 
     it('should delete a badge', async () => {
         (()=>{
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
                   'Accept': 'application/json',

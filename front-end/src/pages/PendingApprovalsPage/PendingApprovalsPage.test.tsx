@@ -14,7 +14,7 @@ describe('Testing connection to api', () => {
     it('should load pending claims data', async () => {
         (()=>{
             let gymId="lttD"
-            fetch(`https://gym-king.herokuapp.com/claims/claim?gid=${gymId}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?gid=${gymId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
