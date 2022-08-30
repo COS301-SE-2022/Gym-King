@@ -1,4 +1,4 @@
-import { IonPage, IonContent, IonImg, useIonViewDidEnter} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewDidEnter, useIonRouter} from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
@@ -15,7 +15,8 @@ export const SplashPage: React.FC = () =>
             }
             else
             {
-                window.location.href="http://localhost:3000/Login"
+                const router = useIonRouter();
+                router.push("/Login");
 
             }
           }, 3000);
