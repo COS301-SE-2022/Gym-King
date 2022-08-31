@@ -8,7 +8,6 @@ import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
-import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 
 
 interface LocationError {
