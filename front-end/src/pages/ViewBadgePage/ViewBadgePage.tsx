@@ -15,7 +15,7 @@ const ViewBadgePage: React.FC = () =>{
         {
             let gymid = sessionStorage.getItem("gid");
             setLoading(true)
-            axios.get(`https://gym-king.herokuapp.com/badges/gym/${gymid}`)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${gymid}`)
             .then(response =>response.data)
             .then(response =>{
                 let arr=[]

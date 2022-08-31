@@ -27,7 +27,7 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
-        axios.get(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`)
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -47,7 +47,7 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
         useIonViewDidEnter(()=>
             {
-                axios.get(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`)
+                axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
                 .then(response =>response.data)
                 .then(response =>{
                     console.log(response);

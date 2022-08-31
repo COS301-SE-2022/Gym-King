@@ -18,7 +18,7 @@ export const AddEmployee: React.FC = () =>{
 
     useIonViewDidEnter(()=>{
         let gymOwner = localStorage.getItem("email")
-        axios.get(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
         .then(response =>response.data)
         .then(response =>{
             setOwnedGyms(response);
@@ -50,7 +50,7 @@ export const AddEmployee: React.FC = () =>{
     const createEmployee=()=>{
         console.log(formData)
         
-        axios(`https://gym-king.herokuapp.com/employees/employee`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
                 "method":"POST",
                 headers: {
                     'Accept': 'application/json',

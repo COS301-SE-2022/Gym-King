@@ -31,7 +31,7 @@ const PendingApprovalsPage: React.FC = () =>{
 
         setLoading(true)
         //get employee information 
-        axios(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -56,7 +56,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 setLoading(false);
             })
         console.log(localStorage.getItem("gid"));
-        axios.get(`https://gym-king.herokuapp.com/claims/gym/${localStorage.getItem("gid")}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/gym/${localStorage.getItem("gid")}`)
         .then(response =>response.data)
         .then(response =>{
             console.log(response);

@@ -13,7 +13,7 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         useIonViewDidEnter(()=>
         {
             setLoading(true)
-            axios.get(`https://gym-king.herokuapp.com/badges/gym/${props.gymID}`)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${props.gymID}`)
             .then(response =>response.data)
             .then(response =>{  
                 console.log(response)

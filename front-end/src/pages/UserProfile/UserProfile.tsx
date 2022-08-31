@@ -34,7 +34,7 @@ const UserProfilePage: React.FC = () =>{
     
     const getNumberOfBadges = () =>{
         
-        axios.get(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
                 setNumBadges(response.length)
@@ -43,7 +43,7 @@ const UserProfilePage: React.FC = () =>{
         })
     }
     const getNumberOfClaims = () =>{
-        axios.get(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
                 setNumClaims(response.length)
@@ -55,7 +55,7 @@ const UserProfilePage: React.FC = () =>{
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
-        axios(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -91,7 +91,7 @@ const UserProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateUserDetails = () =>{
-        axios(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
@@ -154,7 +154,7 @@ const UserProfilePage: React.FC = () =>{
     
     const updateProfilePicture = () =>{
         setLoading(true)
-        axios(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -196,7 +196,7 @@ const UserProfilePage: React.FC = () =>{
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)
-        axios(`https://gym-king.herokuapp.com/users/user/picture`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/picture`,{
                 "method":"PUT",
                 data: formData
             })

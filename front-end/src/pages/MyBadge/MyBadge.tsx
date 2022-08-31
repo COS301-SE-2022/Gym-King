@@ -5,7 +5,6 @@ import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 import { useHistory } from 'react-router-dom';
-import {api} from '../../config';
 import axios from "axios";
 
 
@@ -19,7 +18,7 @@ const MyBadge: React.FC = () =>{
     
     useIonViewDidEnter(()=>{
         setLoading(true)
-        axios.get(`${api}/users/owned/${email}`)
+        axios.get(`${process.env["REACT_APP_GYM_KING_API"]}/users/owned/${email}`)
         .then(response =>response.data)
         .then(response =>{
             let arr=[];

@@ -50,7 +50,7 @@ const EditGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
     else{
-      axios(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("gid")}`,
+      axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
         {
           "method": "get",
           headers: {
@@ -78,7 +78,8 @@ const EditGym: React.FC = () => {
    * @brief calls api to update a gyms' details
   */
   const saveGym = () => {
-    axios(`https://gym-king.herokuapp.com/owner/gym/info`,
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+
       {
         method: "PUT",
         headers: {

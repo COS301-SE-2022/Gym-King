@@ -44,7 +44,7 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        axios.get(`https://gym-king.herokuapp.com/gyms/owned/${email}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -62,7 +62,7 @@ const ManageGyms: React.FC = () =>{
      */
         const deleteClicked= () => {
             setLoading(true)
-            axios.get(`https://gym-king.herokuapp.com/gyms/owned/${email}`)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)

@@ -63,7 +63,7 @@ const EditBadge: React.FC = () =>{
             setLoading(true)
             
             sessionStorage.setItem('waiting',"true")
-            axios.get(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
             .then(response =>response.data)
             .then(response =>{
                 setActivityType( response.activitytype)
@@ -95,7 +95,7 @@ const EditBadge: React.FC = () =>{
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
             
-            axios(`https://gym-king.herokuapp.com/badges/badge`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',
@@ -127,7 +127,7 @@ const EditBadge: React.FC = () =>{
         // DELETE BADGE DELETE REQUEST 
         const deleteBadge=()=>{
             
-            axios(`https://gym-king.herokuapp.com/badges/badge`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
                   'Accept': 'application/json',

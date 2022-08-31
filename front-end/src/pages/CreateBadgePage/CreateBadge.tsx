@@ -73,8 +73,7 @@ import axios from "axios";
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
 
- 
-            axios(`https://gym-king.herokuapp.com/badges/badge`,{
+             axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"POST",
                 headers: {
                     'Accept': 'application/json',
@@ -103,7 +102,7 @@ import axios from "axios";
         // OWNED GYMS GET REQUEST 
         useIonViewDidEnter(()=>{
             let gymOwner = localStorage.getItem("email")
-            axios.get(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
             .then(response =>response.data)
             .then(response =>{
                 setOwnedGyms(response);

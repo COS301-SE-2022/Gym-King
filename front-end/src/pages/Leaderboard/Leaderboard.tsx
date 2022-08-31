@@ -86,7 +86,7 @@ const Leaderboard: React.FC = () =>{
             return bflag;
         }
         setLoading(true)
-        axios.get(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/leaderboard/score/${gymid}`)
         .then(response =>response.data)
         .then(response =>{
             let results=response;

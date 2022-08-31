@@ -32,8 +32,7 @@ import axios from "axios";
 
         // CREATE BADGE POST REQUEST 
         const createUser=()=>{
-
-            axios(`https://gym-king.herokuapp.com/users/user`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
               method: 'POST',
               headers: {
                 'Accept': 'application/json',

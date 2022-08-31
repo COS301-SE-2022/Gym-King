@@ -16,7 +16,7 @@ describe('Testing connection to api', () => {
         var scores:any=[]
         var gymid="lttD"
 
-        fetch(`https://gym-king.herokuapp.com/leaderboard/score?gid=${gymid}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/leaderboard/score?gid=${gymid}`,{
             "method":"GET"
         })
         .then(response =>response.json())

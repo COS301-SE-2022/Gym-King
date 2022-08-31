@@ -25,7 +25,7 @@ describe('Testing connection to api', () => {
   it('should load owned gyms', async () => {
       
       ( ()=>{
-          fetch(`https://gym-king.herokuapp.com/gyms/owned/email`,{
+          fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
             "method":"GET"
           })
           .then(response =>response.json())
@@ -40,7 +40,7 @@ describe('Testing connection to api', () => {
 
   it('should delete a gym', async () => {
       (()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/email`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
                 "method":"GET"
             })
             .then(response =>response.json())

@@ -41,7 +41,8 @@
     */
    const deleteGym = (password:string) => {
    setLoading(true)
-     axios(`https://gym-king.herokuapp.com/owner/delete/gym`,
+     axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
+
      {
        method: "DELETE",
        headers: {

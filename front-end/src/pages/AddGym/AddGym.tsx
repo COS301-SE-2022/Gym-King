@@ -66,7 +66,7 @@ const AddGym: React.FC = () => {
    */
   const addGym = () => {
     
-    axios(`https://gym-king.herokuapp.com/gyms/gym`,
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym`,
     {
       method: "POST",
       headers: {
@@ -89,7 +89,7 @@ const AddGym: React.FC = () => {
       console.log(sessionStorage.getItem("new_gid"))
       setShowToast1(true)
       history.goBack()
-      axios(`https://gym-king.herokuapp.com/gyms/owned`,
+      axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned`,
       {
         method: "POST",
         headers: {
