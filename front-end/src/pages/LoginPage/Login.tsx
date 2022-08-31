@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 import axios from "axios";
-import {api} from '../../config';
 
 export const Login: React.FC = () =>{
     
@@ -17,7 +16,7 @@ export const Login: React.FC = () =>{
 
     const loginSubmit= ()=>{
             setLoading(true)
-            axios.post(`${api}/users/login`, 
+            axios.post(`${process.env["REACT_APP_GYM_KING_API"]}/users/login`, 
             {
                 email: formData.email,
                 password: formData.password,

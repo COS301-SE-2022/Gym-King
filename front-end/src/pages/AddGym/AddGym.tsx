@@ -66,7 +66,7 @@ const AddGym: React.FC = () => {
    */
   const addGym = () => {
     
-    fetch(`https://gym-king.herokuapp.com/gyms/gym`,
+    fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym`,
     {
       method: "POST",
       headers: {
@@ -89,7 +89,7 @@ const AddGym: React.FC = () => {
       console.log(sessionStorage.getItem("new_gid"))
       setShowToast1(true)
       history.goBack()
-      fetch(`https://gym-king.herokuapp.com/gyms/owned`,
+      fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned`,
       {
         method: "POST",
         headers: {

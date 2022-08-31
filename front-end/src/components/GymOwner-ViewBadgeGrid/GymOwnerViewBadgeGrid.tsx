@@ -12,7 +12,7 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         useIonViewDidEnter(()=>
         {
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/badges/gym/${props.gymID}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${props.gymID}`,{
                 "method":"GET"
             })
             .then(response =>response.json())

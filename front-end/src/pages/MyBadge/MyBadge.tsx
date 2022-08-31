@@ -5,7 +5,6 @@ import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 import { useHistory } from 'react-router-dom';
-import {api} from '../../config';
 
 
 
@@ -18,7 +17,7 @@ const MyBadge: React.FC = () =>{
     
     useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`${api}/users/owned/${email}`,{
+        fetch(`${process.env["REACT_APP_GYM_KING_API"]}/users/owned/${email}`,{
             "method":"GET"
         })
         .then(response =>response.json())

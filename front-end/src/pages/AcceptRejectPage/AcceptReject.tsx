@@ -26,7 +26,7 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
             "method":"GET"
         })
         .then(response =>response.json())
@@ -48,7 +48,7 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
         useIonViewDidEnter(()=>
             {
-                fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
+                fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`,{
                 "method":"GET"
                 })
                 .then(response =>response.json())

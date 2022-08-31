@@ -60,7 +60,7 @@ describe('Testing connection to api', () => {
   it('should update claim data', async () => {
       
       ( ()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
@@ -85,7 +85,7 @@ describe('Testing connection to api', () => {
 
   it('should reject a gym', async () => {
       (()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',

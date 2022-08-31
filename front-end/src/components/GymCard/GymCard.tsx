@@ -40,7 +40,7 @@
     */
    const deleteGym = (password:string) => {
    setLoading(true)
-     fetch(`https://gym-king.herokuapp.com/owner/delete/gym`,
+     fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
      {
        method: "DELETE",
        headers: {

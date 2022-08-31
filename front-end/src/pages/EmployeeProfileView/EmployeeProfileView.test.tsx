@@ -17,7 +17,7 @@ describe('Testing connection to API', () => {
 
     it('should load employee data', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/gyms/gym/${"gym_id"}`, {
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${"gym_id"}`, {
             "method":"GET"
             })
             .then(response =>response.json())
@@ -34,7 +34,7 @@ describe('Testing connection to API', () => {
     });
     it('should delete employee', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/employees/employee`, {
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
                 method: 'DELETE',
                 headers: {
                 'Accept': 'application/json',

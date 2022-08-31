@@ -16,7 +16,7 @@ describe('Testing connection to api', () => {
 
     it('should get badges', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/owned/${"email"}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${"email"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -30,7 +30,7 @@ describe('Testing connection to api', () => {
     });
     it('should get claims', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/claims/${"email"}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"email"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -44,7 +44,7 @@ describe('Testing connection to api', () => {
     });
     it('should get user info', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -67,7 +67,7 @@ describe('Testing connection to api', () => {
     });
     it('should update user info', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',

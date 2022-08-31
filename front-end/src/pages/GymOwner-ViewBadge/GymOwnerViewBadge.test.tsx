@@ -14,7 +14,7 @@ describe('Testing connection to api', () => {
     test("API fetch badges",()=>{
         let badges:any=[]    
         var email="u20519517@tuks.co.za"
-                fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${email}`,{
+                fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${email}`,{
                     "method":"GET"
                 })
                 .then(response =>response.json())

@@ -30,7 +30,7 @@ export class AcceptRejectCard extends React.Component<props>{
      * @result ? - claim is accepted or call to api fails 
     */
     acceptClaim= ()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
@@ -57,7 +57,7 @@ export class AcceptRejectCard extends React.Component<props>{
      * @result ? - a claim is rejected or the api call fails 
     */
     rejectClaim = () =>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',
