@@ -18,7 +18,7 @@ const MyBadge: React.FC = () =>{
     
     useIonViewDidEnter(()=>{
         setLoading(true)
-        axios.get(`${process.env["REACT_APP_GYM_KING_API"]}/users/owned/${email}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+` /users/owned/${email}`)
         .then(response =>response.data)
         .then(response =>{
             let arr=[];
