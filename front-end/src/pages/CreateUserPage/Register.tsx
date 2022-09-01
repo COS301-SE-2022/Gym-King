@@ -109,7 +109,10 @@ import './Register.css';
 
                         <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Register</IonButton>
                         <div className='center'>
-                        <IonText className="linkLabel">Already have an account?</IonText><a href="http://localhost:3000/Login" color="secondary" className='linkLabel'>Login</a>
+                        <IonText className="linkLabel">Already have an account?</IonText>
+                        
+                        <button  onClick= {() =>{history.push("/Login")}} color="secondary" className='puesdorHref'>Login</button>
+                        
                         </div>
                     </form>
                     <br></br><br></br>
