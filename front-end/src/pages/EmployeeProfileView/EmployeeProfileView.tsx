@@ -2,6 +2,7 @@ import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCar
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 const EmployeeProfileViewPage: React.FC = () =>{
     
@@ -36,10 +37,8 @@ const EmployeeProfileViewPage: React.FC = () =>{
         //setGymId(localStorage.getItem("employee_gid"))
         setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
 
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`, {
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setGymName(response.gym_brandname)
@@ -64,19 +63,20 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
         
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
+
             method: 'DELETE',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 owneremail: owner,
                 ownerpassword: owner_pass,
                 employeeemail: employee_email
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setShowDeleteEmployee(true)

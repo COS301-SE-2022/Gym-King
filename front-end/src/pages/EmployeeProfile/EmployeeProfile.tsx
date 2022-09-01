@@ -2,6 +2,7 @@ import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonBut
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./EmployeeProfile.css";
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -39,18 +40,18 @@ const EmployeeProfilePage: React.FC = () =>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
         //get employee information 
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setEmail(response.email);
@@ -73,13 +74,14 @@ const EmployeeProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: email,
                     name: name, 
                     surname: surname, 
@@ -88,7 +90,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     password: localStorage.getItem("password"), 
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)                
             })
@@ -130,18 +132,18 @@ const EmployeeProfilePage: React.FC = () =>{
     }
 
     const updateProfilePicture= ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
                 password: localStorage.getItem("password")
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
             setProfilePicture(response.profile_picture)
             setLoading(false)
@@ -173,11 +175,11 @@ const EmployeeProfilePage: React.FC = () =>{
                 formData.append('profilepicture', values.current.file, values.current.file.name);
         
                 setLoading(true)
-                fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/picture`,{
+                axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/picture`,{
                         "method":"PUT",
-                        body: formData
+                        data: formData
                     })
-                    .then(response =>response.json())
+                    .then(response =>response.data)
                     .then(response =>{
                         console.log(response)
                         updateProfilePicture()

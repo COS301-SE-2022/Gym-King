@@ -4,6 +4,7 @@ import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 export type UploadActivityStates = {act?:any}
@@ -30,18 +31,18 @@ const PendingApprovalsPage: React.FC = () =>{
 
         setLoading(true)
         //get employee information 
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
 
@@ -55,10 +56,8 @@ const PendingApprovalsPage: React.FC = () =>{
                 setLoading(false);
             })
         console.log(localStorage.getItem("gid"));
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/gym/${localStorage.getItem("gid")}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/gym/${localStorage.getItem("gid")}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response);
             setClaims(response)

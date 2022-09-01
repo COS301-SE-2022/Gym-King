@@ -4,6 +4,7 @@ import {ToolBar} from '../../components/toolbar/Toolbar';
 import './ManageEmployees.css';
 import { useHistory } from 'react-router-dom';
 import EmployeeList from '../../components/EmployeeList/EmployeeList';
+import axios from "axios";
 
 
 const ManageEmployees: React.FC = () =>{
@@ -35,10 +36,8 @@ const ManageEmployees: React.FC = () =>{
         sessionStorage.setItem("owner_email", owner!)
         sessionStorage.setItem("owner_pass", owner_pass!)
 
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${owner}`, {
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${owner}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setEmployeeList(response)
@@ -51,10 +50,8 @@ const ManageEmployees: React.FC = () =>{
          })
 
          //get the owner's gyms
-         fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setGymList(response)

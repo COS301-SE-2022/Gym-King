@@ -8,7 +8,7 @@ import React from 'react'
 import './AcceptRejectCard.css'
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
-
+import axios from "axios";
 //-props, claim information
 export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, badgechallenge:string,  i1:any, i2:any, i3:any, activitytype:any,history:any, profile:string};
 
@@ -30,18 +30,18 @@ export class AcceptRejectCard extends React.Component<props>{
      * @result ? - claim is accepted or call to api fails 
     */
     acceptClaim= ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 bid: this.props.badgeId,
                 email: this.props.userID
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
 
             localStorage.setItem("claimAccepted", "true")
