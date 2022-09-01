@@ -22,17 +22,12 @@
   "scripts": {
     "start:dev": "nx serve:dev front-end",
     "start:prod": "nx serve:prod front-end",
-
     "prod:api": "nx prod:api back-end",
     "dev:api": "nx dev:api back-end",
-
     "test:client": "nx test front-end",
     "test:api": "nx test:api back-end",
-
-
     "build": "nx build front-end",
     "run:android": "nx run:android front-end",
-
     "lint": "nx lint",
     "test": "nx test"
   },
@@ -47,6 +42,8 @@
     "@capacitor/core": "^3.6.0",
     "@firebase/app-types": "0.x",
     "@google-cloud/storage": "^6.2.3",
+    "@ionic-native/core": "^5.36.0",
+    "@ionic-native/geolocation": "^5.36.0",
     "@ionic/cli": "^6.19.0",
     "@ionic/react": "^6.1.14",
     "@ionic/react-router": "^6.1.14",
