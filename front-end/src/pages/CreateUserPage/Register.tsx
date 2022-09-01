@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { string } from 'yup/lib/locale';
 import './Register.css';
+import axios from "axios";
 
 
  export const RegisterPage: React.FC = () =>{
@@ -37,24 +38,23 @@ import './Register.css';
 
         // CREATE BADGE POST REQUEST 
         const createUser=()=>{
-
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
               method: 'POST',
               headers: {
                 'mode': 'no-cors',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ 
+              data: { 
                   email: formData.email,
                   name: formData.name,
                   surname: formData.surname,
                   number: formData.number,
                   username: formData.username,
                   password:formData.password,
-               })
+               }
               })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //show toast
                 if(response.results.success){

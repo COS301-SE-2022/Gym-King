@@ -4,6 +4,7 @@ import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
 import './AddEmployee.css';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 export const AddEmployee: React.FC = () =>{
 
@@ -17,10 +18,8 @@ export const AddEmployee: React.FC = () =>{
 
     useIonViewDidEnter(()=>{
         let gymOwner = localStorage.getItem("email")
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
+        .then(response =>response.data)
         .then(response =>{
             setOwnedGyms(response);
 
@@ -51,13 +50,13 @@ export const AddEmployee: React.FC = () =>{
     const createEmployee=()=>{
         console.log(formData)
         
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
                 "method":"POST",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: { 
                     email: formData.email,
                     name: formData.name,
                     surname: formData.surname,
@@ -65,9 +64,9 @@ export const AddEmployee: React.FC = () =>{
                     username: formData.username, 
                     password: formData.password,
                     gid: formData.gid
-                })
+                }
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //show toast
                 setShowSuccessToast(true);

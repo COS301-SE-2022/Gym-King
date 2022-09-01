@@ -6,6 +6,7 @@ import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -68,10 +69,8 @@ const UploadActivityPage: React.FC = () =>{
         useIonViewDidEnter(()=>{
             let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+            .then(response =>response.data)
             .then(response =>{
                 //console.log("rsponse",response)
                 setB_id(response.b_id)
@@ -86,18 +85,18 @@ const UploadActivityPage: React.FC = () =>{
                 setLoading(false)
             })
 
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setUsername(response.username);
                 console.log(username)
@@ -135,11 +134,11 @@ const UploadActivityPage: React.FC = () =>{
                 formData.append("input3", i3)
                 formData.append('proof', values.current.file, values.current.file.name);
                 console.log(formData);
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
                 "method":"POST",
-                body: formData
+                data: formData
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //console.log(response);
                 setShowToast1(true);

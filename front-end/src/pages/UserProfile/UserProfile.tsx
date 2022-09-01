@@ -3,6 +3,7 @@ import React, {useRef, useState, } from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -33,10 +34,8 @@ const UserProfilePage: React.FC = () =>{
     
     const getNumberOfBadges = () =>{
         
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`)
+            .then(response =>response.data)
             .then(response =>{
                 setNumBadges(response.length)
             })
@@ -44,10 +43,8 @@ const UserProfilePage: React.FC = () =>{
         })
     }
     const getNumberOfClaims = () =>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
+            .then(response =>response.data)
             .then(response =>{
                 setNumClaims(response.length)
             })
@@ -58,18 +55,18 @@ const UserProfilePage: React.FC = () =>{
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setEmail(response.email);
                 setName(response.name);
@@ -94,13 +91,13 @@ const UserProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateUserDetails = () =>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: email,
                     name: name, 
                     surname: surname, 
@@ -109,7 +106,7 @@ const UserProfilePage: React.FC = () =>{
                     password: localStorage.getItem("password"), 
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 
             })
@@ -157,18 +154,18 @@ const UserProfilePage: React.FC = () =>{
     
     const updateProfilePicture = () =>{
         setLoading(true)
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("profile_picture", response.profile_picture!)
@@ -199,11 +196,11 @@ const UserProfilePage: React.FC = () =>{
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/picture`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/picture`,{
                 "method":"PUT",
-                body: formData
+                data: formData
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 updateProfilePicture()
             })
