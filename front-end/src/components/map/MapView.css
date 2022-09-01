@@ -40,6 +40,7 @@ main {
 }
 
 ion-content {
+    --overflow: hidden !important;
     --background: linear-gradient(to bottom right, #321E93, #a974ff) no-repeat center/cover fixed;
   }
 

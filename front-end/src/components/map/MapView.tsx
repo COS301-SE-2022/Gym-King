@@ -211,7 +211,7 @@ const MapView: React.FC = () =>{
     return (
         
         <>  
-            <IonContent >
+            <IonContent  overflow-scroll="false" >
                 
             <GymSearchBar></GymSearchBar>
             <IonLoading 
