@@ -3,12 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "3.7.0",
     "@capacitor/app": "1.1.1",
     "@capacitor/cli": "^3.6.0",
-    "@capacitor/core": "^3.6.0",
     "@capacitor/haptics": "1.1.4",
-    "@capacitor/ios": "3.5.1",
+    "@capacitor/ios": "3.7.0",
     "@capacitor/keyboard": "1.2.2",
     "@capacitor/status-bar": "1.0.8",
     "@testing-library/jest-dom": "^5.11.9",
@@ -47,11 +45,12 @@
   "scripts": {
     "serve:prod": "env-cmd -f .env.production react-scripts start",
     "serve:dev": "env-cmd -f .env.development react-scripts start",
-    
-    "build": " ionic cap build android env-cmd -f .env.production",
 
+    "build:ios": " ionic cap build ios env-cmd -f .env.production",
+    "build:android": " ionic cap build android env-cmd -f .env.production",
 
     "test": "env-cmd -f .env.development react-scripts  test --transformIgnorePatterns --watchAll=false",
+    
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",

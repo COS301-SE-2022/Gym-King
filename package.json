@@ -22,12 +22,15 @@
   "scripts": {
     "start:dev": "nx serve:dev front-end",
     "start:prod": "nx serve:prod front-end",
+
     "prod:api": "nx prod:api back-end",
     "dev:api": "nx dev:api back-end",
+
     "test:client": "nx test front-end",
     "test:api": "nx test:api back-end",
-    "build": "nx build front-end",
-    "run:android": "nx run:android front-end",
+
+    "build": "nx build:android front-end && nx build:ios front-end",
+
     "lint": "nx lint",
     "test": "nx test"
   },
@@ -40,6 +43,7 @@
     "@capacitor/android": "^3.6.0",
     "@capacitor/cli": "^3.6.0",
     "@capacitor/core": "^3.6.0",
+    "@capacitor/ios": "^3.6.0",
     "@firebase/app-types": "0.x",
     "@google-cloud/storage": "^6.2.3",
     "@ionic-native/core": "^5.36.0",
@@ -87,7 +91,7 @@
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.0.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7",
+    "rxjs": "^6.5.0",
     "swiper": "^8.2.6",
     "ts-config": "^20.10.0",
     "ts-node": "^10.7.0",
