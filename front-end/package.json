@@ -48,7 +48,7 @@
     "serve:prod": "env-cmd -f .env.production react-scripts start",
     "serve:dev": "env-cmd -f .env.development react-scripts start",
     
-    "build": "env-cmd -f .env.production ionic cap build android",
+    "build": " ionic cap build android env-cmd -f .env.production",
 
 
     "test": "env-cmd -f .env.development react-scripts  test --transformIgnorePatterns --watchAll=false",

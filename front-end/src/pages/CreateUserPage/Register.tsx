@@ -1,6 +1,7 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import { string } from 'yup/lib/locale';
 import './Register.css';
 
 
@@ -9,6 +10,8 @@ import './Register.css';
         // used for routing
         let history=useHistory()
         
+        const [debugMessage, setDebugMessage] = useState("");
+
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
         const [showError2Toast, setShowError2Toast] = useState(false);
@@ -38,6 +41,7 @@ import './Register.css';
             fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
               method: 'POST',
               headers: {
+                'mode': 'no-cors',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
               },
@@ -67,12 +71,16 @@ import './Register.css';
                   }
                   else
                   {
+                    
+                    const s =process.env["REACT_APP_GYM_KING_API"]
+                    
+                    setDebugMessage(response.results.code);
                     setShowError2Toast(true);
                   }
                 }
             })
             .catch(err => { 
-                console.log(err)
+                setDebugMessage(err);
                 setShowError2Toast(true);
             }) 
         }
@@ -133,7 +141,7 @@ import './Register.css';
                     <IonToast
                         isOpen={showError2Toast}
                         onDidDismiss={() => setShowError2Toast(false)}
-                        message="Internal Error. Please try again later."
+                        message={debugMessage}
                         duration={1000}
                         color="danger"
                     />
