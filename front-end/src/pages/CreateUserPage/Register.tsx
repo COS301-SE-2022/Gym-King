@@ -1,7 +1,6 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { string } from 'yup/lib/locale';
 import './Register.css';
 import axios from "axios";
 
@@ -41,7 +40,6 @@ import axios from "axios";
             axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
               method: 'POST',
               headers: {
-                'mode': 'no-cors',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
               },
@@ -71,8 +69,7 @@ import axios from "axios";
                   }
                   else
                   {
-                    
-                    const s =process.env["REACT_APP_GYM_KING_API"]
+        
                     
                     setDebugMessage(response.results.code);
                     setShowError2Toast(true);
