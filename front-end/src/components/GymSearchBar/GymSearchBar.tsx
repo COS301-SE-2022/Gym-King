@@ -5,7 +5,7 @@ import { IonContent, IonPage, IonItem, IonLabel, IonInput, useIonModal, IonSearc
 function GymSearchBar() {
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
-  
+    const [isShowing, setIsShowing] = useState(false);
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
   
     useEffect(() => {
@@ -30,19 +30,23 @@ function GymSearchBar() {
             }}
           >
 
-            <IonSearchbar>
-
+            <IonSearchbar
+                onClick = {()=>setIsShowing(true)}
+            >
             </IonSearchbar>
           </div>
           <IonModal
             ref={modal}
             trigger="open-modal"
-            isOpen={true}
+            isOpen={isShowing}
             initialBreakpoint={0.25}
-            breakpoints={[0.25, 0.5, 0.75]}
+            breakpoints={[0.0,0.25, 0.5, 0.75]}
             backdropDismiss={true}
             backdropBreakpoint={0.5}
+        
             presentingElement={presentingElement!}
+            onWillDismiss={()=>setIsShowing(false)}
+
           >
             <IonContent  onClick={() => modal.current?.setCurrentBreakpoint(0.75)} className="ion-padding">
               <IonList>

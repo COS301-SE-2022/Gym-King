@@ -285,7 +285,7 @@ const MapView: React.FC = () =>{
 
             </Map>
 
-            <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+            <IonModal  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
             {/* <IonBadge > */}
                 <IonCard style={{"margin":"0px", "height":"100%"}}  >
