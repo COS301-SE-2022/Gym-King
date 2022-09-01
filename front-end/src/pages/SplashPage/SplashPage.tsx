@@ -7,6 +7,8 @@ import logo from './logo.png';
 
 export const SplashPage: React.FC = () =>
 {
+    
+    const router = useIonRouter();
     useIonViewDidEnter(()=>{
         setTimeout(() => {
             if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
@@ -15,7 +17,6 @@ export const SplashPage: React.FC = () =>
             }
             else
             {
-                const router = useIonRouter();
                 router.push("/Login");
 
             }
@@ -28,14 +29,14 @@ export const SplashPage: React.FC = () =>
         let usertype=localStorage.getItem("usertype")
         if(usertype==="gym_user")
         {
-            window.location.href="http://localhost:3000/userMap"
+            router.push("userMap");
         }
         else if(usertype==="gym_owner")
         {
-            window.location.href="http://localhost:3000/GymOwnerPage"
+            router.push("GymOwnerPage");
         }
         else{
-            window.location.href="http://localhost:3000/EmployeeHome"
+            router.push("EmployeeHome");
         }
     }
     return (
