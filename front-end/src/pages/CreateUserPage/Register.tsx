@@ -1,10 +1,13 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import './Register.css';
 
 
  export const RegisterPage: React.FC = () =>{
 
+        // used for routing
+        let history=useHistory()
         
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
@@ -54,7 +57,7 @@ import './Register.css';
                   setShowSuccessToast(true);
 
                   //redirect to login
-                  window.location.href = "http://localhost:3000/Login";
+                  history.push("/Login");
                 }else{
                   console.log( response.results);
                   //code:23505 = user already exists 
