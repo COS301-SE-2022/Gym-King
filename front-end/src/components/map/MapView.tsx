@@ -9,6 +9,7 @@ import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
+import GymSearchBar from "../GymSearchBar/GymSearchBar";
 
 interface LocationError {
     showError: boolean;
@@ -211,6 +212,8 @@ const MapView: React.FC = () =>{
         
         <>  
             <IonContent >
+                
+            <GymSearchBar></GymSearchBar>
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}

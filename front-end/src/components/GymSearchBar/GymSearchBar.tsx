@@ -1,41 +1,66 @@
-import React, { useState, useRef } from 'react';
-import { IonContent, IonPage, IonItem, IonLabel, IonInput, useIonModal, IonSearchbar,
+import React, { useState, useRef, useEffect } from 'react';
+import { IonContent, IonPage, IonItem, IonLabel, IonInput, useIonModal, IonSearchbar, IonModal, IonList, IonAvatar, IonImg,
 } from '@ionic/react';
-import { OverlayEventDetail } from '@ionic/core/components';
-
-const SearchPage = ({
-  onDismiss,
-}: {
-  onDismiss: (data?: string | null | undefined | number, role?: string) => void;
-}) => {
-  const inputRef = useRef<HTMLIonInputElement>(null);
-  return (
-      <IonContent className="ion-padding">
-        <IonSearchbar></IonSearchbar>
-      </IonContent>
-  );
-};
 
 function GymSearchBar() {
-  const [present, dismiss] = useIonModal(SearchPage, {
-    onDismiss: (data: string, role: string) => dismiss(data, role),
-  });
+    const modal = useRef<HTMLIonModalElement>(null);
+    const page = useRef(null);
+  
+    const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
+  
+    useEffect(() => {
+      setPresentingElement(page.current);
+    }, []);
+  
+    function dismiss() {
+      modal.current?.dismiss();
+    }
+  
+    return (
+        <>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              position:'absolute',
+              zIndex:10,
+              width: '100%'
+              
+            }}
+          >
 
-  function openModal() {
-    present({
-      onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
-        if (ev.detail.role === 'confirm') {
-        }
-      },
-    });
-  }
+            <IonSearchbar>
 
-  return (
-      <IonContent className="ion-padding">
-        <IonSearchbar onClick={() => openModal()}>
-        </IonSearchbar>
-      </IonContent>
-  );
+            </IonSearchbar>
+          </div>
+          <IonModal
+            ref={modal}
+            trigger="open-modal"
+            isOpen={true}
+            initialBreakpoint={0.25}
+            breakpoints={[0.25, 0.5, 0.75]}
+            backdropDismiss={true}
+            backdropBreakpoint={0.5}
+            presentingElement={presentingElement!}
+          >
+            <IonContent  onClick={() => modal.current?.setCurrentBreakpoint(0.75)} className="ion-padding">
+              <IonList>
+                <IonItem>
+                  <IonAvatar slot="start">
+                    <IonImg src="" />
+                  </IonAvatar>
+                  <IonLabel>
+                    <h2>Gym</h2>
+                    <p>Address</p>
+                  </IonLabel>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonModal>
+          </>
+    );
+    
 }
 
 export default GymSearchBar;
