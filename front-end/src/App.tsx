@@ -54,6 +54,7 @@ import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
 import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
+import GymSearchBar from './components/GymSearchBar/GymSearchBar';
 /*develop*/
 
 
@@ -66,6 +67,10 @@ const App: React.FC = () => (
 
     <IonReactRouter>
       <IonRouterOutlet>
+        
+        <Route exact path="/test">
+          <GymSearchBar></GymSearchBar>
+        </Route>
         <Route exact path="/home">
           <Home />
         </Route>
