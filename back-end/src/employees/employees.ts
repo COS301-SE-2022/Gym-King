@@ -193,11 +193,16 @@ const employees = express.Router()
    .post('/employees/employee/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let result = await employeeOTPRepository.deleteEmployeeOTP(query.email);
-      const newOTP = createID2(6);
-      result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
-      const results = { 'success': true };
-      res.json(results);
+      let employee = await employeeRepository.findByEmail(query.email);
+      console.log(employee);
+      if(employee != null && employee.email == query.email) {
+        let result = await employeeOTPRepository.deleteEmployeeOTP(query.email);
+        const newOTP = createID2(6);
+        result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
+        res.json({ 'success': true });
+      } else {
+        res.json({ 'success': false ,'message':'Employee does not exist!' });
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
