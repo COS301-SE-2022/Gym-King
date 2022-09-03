@@ -16,8 +16,12 @@ const ownerpicture = multer();
 const { v4: uuidv4 } = require('uuid');
 
 const allowedOrigins = [
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
+  'http://localhost:8080',
+  'http://localhost:8100',
   'http://localhost:3000',
-  'http://localhost:8100'
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -171,8 +175,13 @@ const owners = express.Router()
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
-      res.json({'success':true});
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
+        res.json({'success':true});
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
