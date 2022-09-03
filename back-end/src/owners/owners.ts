@@ -197,11 +197,15 @@ const owners = express.Router()
    .post('/owners/owner/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let result = await ownerOTPRepository.deleteOwnerOTP(query.email);
-      const newOTP = createID2(6);
-      result = await ownerOTPRepository.saveOwnerOTP(query.email,newOTP);
-      const results = { 'success': true };
-      res.json(results);
+      let owner = await ownerRepository.findByEmail(query.email);
+      if(owner != null && owner.email == query.email) {
+        let result = await ownerOTPRepository.deleteOwnerOTP(query.email);
+        const newOTP = createID2(6);
+        result = await ownerOTPRepository.saveOwnerOTP(query.email,newOTP);
+        res.json({ 'success': true });
+      } else {
+        res.json({ 'success': false ,'message':'Owner does not exist!' });
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
