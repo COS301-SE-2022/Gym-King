@@ -43,18 +43,33 @@ beforeAll(async () => {
     });
 });
 describe('Testing POST API Calls', () => {
-    test('responds to POST insert employee', async () => {
-        const response = await request(server).post('/employees/employee').send({
-            "email": "test@example.com",
-            "name": "Test",
-            "surname": "Test",
-            "number": "0123456789",
-            "username":"Test",
-            "password":"Test",
-            "gid":gid
-        });
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toStrictEqual({'success':true})
+    describe('responds to POST insert employee', () => {
+        test('responds to correct POST insert employee', async () => {
+            const response = await request(server).post('/employees/employee').send({
+                "email": "test@example.com",
+                "name": "Test",
+                "surname": "Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test",
+                "gid":gid
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+        })
+        test('responds to incorrect POST insert employee', async () => {
+            const response = await request(server).post('/employees/employee').send({
+                "email": "InvalidEmail",
+                "name": "Test",
+                "surname": "Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test",
+                "gid":gid
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid email entered!'})
+        })
     });
     test('responds to POST insert a badge', async () => {
         let response = await request(server).post('/badges/badge').send({

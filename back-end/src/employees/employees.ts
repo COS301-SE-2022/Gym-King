@@ -12,10 +12,26 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const employeepicture = multer();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+//=============================================================================================//
+//Nodemailer email connection 
+//=============================================================================================//
+var emailer = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  }
+});
 
 const allowedOrigins = [
-  'http://localhost:3000',
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
+  'http://localhost:8080',
   'http://localhost:8100',
+  'http://localhost:3000',
   'http://localhost:5000'
 ];
 const corsOptions = {
@@ -130,16 +146,21 @@ const employees = express.Router()
    * @returns Message confirming insertion.
    */
    .post("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
-     try {
-       let query = req.body;
-       let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
-       res.json({'success':true});
-     } catch (err) {
-       const results = { success: false, results: err };
-       console.error(err);
-       res.json(results);
-     }
-   })
+    try {
+      let query = req.body;
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
+        res.json({'success':true});
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   //=========================================================================================================//
   /**
    * POST - Insert a badge into the database.
