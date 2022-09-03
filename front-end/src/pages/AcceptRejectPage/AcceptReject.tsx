@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './AcceptReject.css';
+import axios from "axios";
 
 export const AcceptRejectPage: React.FC = () =>{
 
@@ -26,10 +27,8 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setI1(response.input1);
@@ -48,10 +47,8 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
         useIonViewDidEnter(()=>
             {
-                fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
-                "method":"GET"
-                })
-                .then(response =>response.json())
+                axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+                .then(response =>response.data)
                 .then(response =>{
                     console.log(response);
 

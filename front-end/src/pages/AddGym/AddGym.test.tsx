@@ -19,7 +19,7 @@ describe('Testing connection to api', () => {
 
   it('should add a gym', async () => {
       (()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/gym`,
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym`,
         {
           method: "POST",
           headers: {
@@ -51,7 +51,7 @@ describe('Testing connection to api', () => {
       
       (()=>
       {
-          fetch(`https://gym-king.herokuapp.com/gyms/owned`,
+          fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned`,
           {
             method: "POST",
             headers: {

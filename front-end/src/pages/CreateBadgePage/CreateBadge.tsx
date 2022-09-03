@@ -9,6 +9,7 @@ import RadioGroup from '../../components/radioGroup/radioGroup';
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 import "./CreateBadge.css";
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 //export type CreateBadge = {act?:any}
@@ -72,23 +73,22 @@ import { useHistory } from 'react-router-dom';
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
 
- 
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+             axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"POST",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data:{ 
                     gid: gymId,
                     badgename: bn,
                     badgedescription: bd,
                     badgechallenge: bc,
                     badgeicon: bi,
                     activitytype: at,
-                })
+                }
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //show toast
                 setShowToast(true);
@@ -102,10 +102,8 @@ import { useHistory } from 'react-router-dom';
         // OWNED GYMS GET REQUEST 
         useIonViewDidEnter(()=>{
             let gymOwner = localStorage.getItem("email")
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${gymOwner}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
+            .then(response =>response.data)
             .then(response =>{
                 setOwnedGyms(response);
 

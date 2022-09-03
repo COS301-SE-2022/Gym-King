@@ -3,7 +3,7 @@ import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPa
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
-
+import axios from "axios";
 
 export const Login: React.FC = () =>{
     
@@ -16,19 +16,19 @@ export const Login: React.FC = () =>{
 
     const loginSubmit= ()=>{
             setLoading(true)
-            fetch('https://gym-king.herokuapp.com/users/login',{
-                method: 'POST',
+            axios.post(`${process.env["REACT_APP_GYM_KING_API"]}/users/login`, 
+            {
+                email: formData.email,
+                password: formData.password,
+                usertype: formData.usertype
+            },
+            {
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    email: formData.email,
-                    password: formData.password,
-                    usertype: formData.usertype
-                 })
-                })
-            .then(response =>response.json())
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response =>response.data)
             .then(response =>{
                 if(response.success){
                     console.log(response)
