@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
+import axios from "axios";
 
 /**
  * const EditGym
@@ -49,14 +50,14 @@ const EditGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
     else{
-      fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
+      axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
         {
-          method: "Get",
+          "method": "get",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }})
-      .then((response) => response.json())
+      .then((response) => response.data)
       .then((response) => {
         sessionStorage.setItem("gymName",response.gym_brandname)
         sessionStorage.setItem("gymAddress",response.gym_address)
@@ -77,14 +78,15 @@ const EditGym: React.FC = () => {
    * @brief calls api to update a gyms' details
   */
   const saveGym = () => {
-    fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+
       {
         method: "PUT",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        data: JSON.stringify({ 
           gid:sessionStorage.getItem("gid"),
           brandname: gymName, 
           address:gymAddress,
@@ -94,7 +96,7 @@ const EditGym: React.FC = () => {
         })
       }
     )
-    .then((response) => response.json())
+    .then((response) => response.data)
     .then((response) => {
       setShowToast1(true)
       history.goBack()

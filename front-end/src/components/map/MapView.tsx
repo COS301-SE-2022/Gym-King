@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Geolocation } from '@ionic-native/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { useHistory } from 'react-router-dom';
-
-
+import axios from 'axios';
 import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
+
 
 interface LocationError {
     showError: boolean;
@@ -113,19 +113,19 @@ const MapView: React.FC = () =>{
          */
         if(!postWaiting){
             setPostWaiting(true);
-            fetch(process.env["REACT_APP_GYM_KING_API"]+'/gyms/aroundme',{
+            axios(process.env["REACT_APP_GYM_KING_API"]+'/gyms/aroundme',{
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     latCoord: center[0],
                     longCoord: center[1],
                     radius: Math.pow(1.5,(18-zoom))
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 
                 if(response.success){

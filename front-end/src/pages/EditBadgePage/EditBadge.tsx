@@ -5,6 +5,7 @@ import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import { useHistory } from 'react-router-dom';
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
+import axios from "axios";
 
 
 const EditBadge: React.FC = () =>{
@@ -62,10 +63,8 @@ const EditBadge: React.FC = () =>{
             setLoading(true)
             
             sessionStorage.setItem('waiting',"true")
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+            .then(response =>response.data)
             .then(response =>{
                 setActivityType( response.activitytype)
                 setDescription(response.badgedescription)
@@ -96,13 +95,13 @@ const EditBadge: React.FC = () =>{
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
             
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     bid: badgeId,
                     gid: gymId,
                     badgename: bn,
@@ -112,7 +111,7 @@ const EditBadge: React.FC = () =>{
                     activitytype: at
                  })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //console.log(response)
 
@@ -128,17 +127,17 @@ const EditBadge: React.FC = () =>{
         // DELETE BADGE DELETE REQUEST 
         const deleteBadge=()=>{
             
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     bid: badgeId
                  })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //console.log(response);
                 
