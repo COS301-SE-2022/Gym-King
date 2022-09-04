@@ -64,12 +64,23 @@ const MapView: React.FC = () =>{
      */
     const getLocation = async(load: boolean) => {
         try {
-            
+            Geolocation.checkPermissions().then(
+                result => {
+                    console.log("permissions granted")
+                },
+                err =>{ 
+                    console.log(err)
+                    Geolocation.requestPermissions()
+                },
+                
+            );   
             if(load) {
                 setLoading(true)
                 
             };
-            const position = await Geolocation.getCurrentPosition();
+            const position = await Geolocation.getCurrentPosition({
+                enableHighAccuracy: true
+            });
           
             setUserLoc([position.coords.latitude, position.coords.longitude]) 
 

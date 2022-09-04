@@ -2,14 +2,25 @@ import { IonPage, IonContent, IonImg, useIonViewDidEnter, useIonRouter} from '@i
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
+import { Geolocation } from '@capacitor/geolocation';
 
 
 
 export const SplashPage: React.FC = () =>
 {
-    
+    const getPermissons = () => {
+
+        Geolocation.checkPermissions().then(
+            result => {console.log("permissions granted")},
+            err =>{ console.log(err)
+                Geolocation.requestPermissions();},
+            
+        );    
+          
+    }
     const router = useIonRouter();
     useIonViewDidEnter(()=>{
+        getPermissons();
         setTimeout(() => {
             if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
             {
