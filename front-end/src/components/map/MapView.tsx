@@ -1,15 +1,15 @@
 import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { useHistory } from 'react-router-dom';
-
-
+import axios from 'axios';
 import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
 import GymSearchBar from "../GymSearchBar/GymSearchBar";
+
 
 interface LocationError {
     showError: boolean;
@@ -65,12 +65,27 @@ const MapView: React.FC = () =>{
      */
     const getLocation = async(load: boolean) => {
         try {
-            
+ 
             if(load) {
                 setLoading(true)
                 
             };
-            const position = await Geolocation.getCurrentPosition();
+
+            Geolocation.checkPermissions().then(
+                result => {
+                    if(result==null) Geolocation.requestPermissions()
+                    else console.log("permissions granted")
+                },
+                err =>{ 
+                    console.log(err)
+                    Geolocation.requestPermissions()
+                },
+                
+            );  
+            
+            const position = await Geolocation.getCurrentPosition({
+                enableHighAccuracy: true
+            });
           
             setUserLoc([position.coords.latitude, position.coords.longitude]) 
 
@@ -85,7 +100,7 @@ const MapView: React.FC = () =>{
 
         } catch(e){
             setLoading(false);
-            setError({showError: true, message: "Cannot get userlocation: Check Permissions"});
+            setError({showError: true, message: " Please Enable your GPS location"});
         }
     }    
 
@@ -114,19 +129,19 @@ const MapView: React.FC = () =>{
          */
         if(!postWaiting){
             setPostWaiting(true);
-            fetch(process.env["REACT_APP_GYM_KING_API"]+'/gyms/aroundme',{
+            axios(process.env["REACT_APP_GYM_KING_API"]+'/gyms/aroundme',{
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     latCoord: center[0],
                     longCoord: center[1],
                     radius: Math.pow(1.5,(18-zoom))
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 
                 if(response.success){
@@ -168,17 +183,7 @@ const MapView: React.FC = () =>{
     })
 
     const [showModal, setShowModal] = useState(false);
-    // const getPermissons = () => {
-    //     AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE).then(
-    //         result => {console.log('Has permission?',result.hasPermission)},
-    //         err =>{ AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.LOCATION_HARDWARE)},
-            
-    //       );
-          
-    //       AndroidPermissions.requestPermissions([AndroidPermissions.PERMISSION.LOCATION_HARDWARE, AndroidPermissions.PERMISSION.GET_ACCOUNTS]);
-          
-    // }
-    // useIonViewWillEnter(getPermissons)
+
    
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;

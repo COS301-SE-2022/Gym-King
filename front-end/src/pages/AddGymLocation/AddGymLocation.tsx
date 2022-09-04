@@ -9,7 +9,6 @@ import {SelectGymMap } from '../../components/SelectGym-Map/SelectGymMap';
 import React from 'react'
 import ToolBar from '../../components/toolbar/Toolbar';
 
-
 /**
  * AddgymLocation
  * @returns AddGymLocation page
