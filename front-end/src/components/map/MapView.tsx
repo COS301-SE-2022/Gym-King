@@ -64,20 +64,24 @@ const MapView: React.FC = () =>{
      */
     const getLocation = async(load: boolean) => {
         try {
+ 
+            if(load) {
+                setLoading(true)
+                
+            };
+
             Geolocation.checkPermissions().then(
                 result => {
-                    console.log("permissions granted")
+                    if(result==null) Geolocation.requestPermissions()
+                    else console.log("permissions granted")
                 },
                 err =>{ 
                     console.log(err)
                     Geolocation.requestPermissions()
                 },
                 
-            );   
-            if(load) {
-                setLoading(true)
-                
-            };
+            );  
+            
             const position = await Geolocation.getCurrentPosition({
                 enableHighAccuracy: true
             });
@@ -95,7 +99,7 @@ const MapView: React.FC = () =>{
 
         } catch(e){
             setLoading(false);
-            setError({showError: true, message: "Cannot get userlocation: Check Permissions"});
+            setError({showError: true, message: " Please Enable your GPS location"});
         }
     }    
 
