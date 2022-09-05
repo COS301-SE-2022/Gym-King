@@ -3,10 +3,12 @@ import { IonButton, IonContent, IonHeader, IonPage, IonText, IonToast} from '@io
 import React, { useState } from "react";
 import  './OTP.css';
 import OtpInput from 'react-otp-input';
+import { useHistory } from 'react-router';
 
 
 export const OTP: React.FC = () =>{
-    
+    // for routing
+    let history=useHistory()
     const [showToast, setShowToast] = useState(false);
     //const [correctOTP, setCorrectOTP]= useState("");
     const [enteredOTP, setEnteredOTP] = useState("");
@@ -65,7 +67,7 @@ export const OTP: React.FC = () =>{
                             <br></br>
                             <IonButton onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Submit</IonButton>
                             <br></br>
-                            <a href="http://localhost:3000/home" color="secondary" className='linkLabel center'>Resend OTP</a>
+                            <button  onClick= {() =>{history.push("/")}} id = "center" color="secondary" className='puesdorHref centerBtn'>Resend OTP</button>
                     </form>
                 </IonContent>
 

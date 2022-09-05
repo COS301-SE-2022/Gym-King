@@ -120,10 +120,10 @@ export const Login: React.FC = () =>{
                             <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
                             <br></br>
                             <div className='center'>
-                                <IonText className="linkLabel">Don't have an account?</IonText><a href="http://localhost:3000/Register" color="secondary" className='linkLabel'>Register</a>
+                                <IonText className="linkLabel">Don't have an account?</IonText><button  onClick= {() =>{history.push("/Register")}}  color="secondary" className='linkLabel puesdorHref'>Register</button>
                             </div>
                             <br></br>
-                            <a href="http://localhost:3000/OTP" color="secondary" className='linkLabel center'>Forgot Password?</a>
+                            <button  onClick= {() =>{history.push("/OTP")}} color="secondary" className='puesdorHref centerBtn'>Forgot Password?</button>
                     </form>
                 </IonContent>
 
