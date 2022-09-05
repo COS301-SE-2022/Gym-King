@@ -19,3 +19,19 @@
     outline:none;
     border:none;
 }
+
+.puesdorHref {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    /*input has OS specific font-family*/
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .centerBtn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+  }

@@ -1,14 +1,11 @@
-import {IonContent, IonPage, IonToast} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonToast,} from '@ionic/react';
 import React, { useState } from 'react';
 import './Register.css';
-
 import RegisterForm from '../../components/Register/RegisterForm';
 
 
  export const RegisterPage: React.FC = () =>{
 
-
-        
         
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
@@ -25,7 +22,7 @@ import RegisterForm from '../../components/Register/RegisterForm';
             gym:string
         }
 
-      /*
+      
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
 
@@ -89,14 +86,16 @@ import RegisterForm from '../../components/Register/RegisterForm';
         }*/
 
 
-          
-
         return(
         
             <IonPage color='#220FE' >
-                <IonContent>
+                <IonHeader>
+                </IonHeader>
+                <br></br>
+                <IonContent fullscreen className='Content'>
+
                     <RegisterForm></RegisterForm>
-                    <br></br><br></br>
+
                     <IonToast
                         isOpen={showSuccessToast}
                         onDidDismiss={() => setShowSuccessToast(false)}
@@ -121,6 +120,7 @@ import RegisterForm from '../../components/Register/RegisterForm';
                 </IonContent>
             </IonPage>
         )
-
+        
 }
+
 export default RegisterPage;
