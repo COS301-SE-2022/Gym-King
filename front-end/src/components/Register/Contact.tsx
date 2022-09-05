@@ -23,10 +23,10 @@ export class Contact extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Email*</IonText>
-                <IonInput name='email' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regEmail', e.target.email.value)} defaultValue={this.props.values.email}></IonInput><br></br>
+                <IonInput name='email' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regEmail', e.target.email.value)} defaultValue={sessionStorage.getItem('regEmail')!}></IonInput><br></br>
 
                 <IonText className="smallHeading">Phone Number*</IonText>
-                <IonInput name='number' type='number' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regNumber', e.target.number.value)} defaultValue={this.props.values.number}></IonInput><br></br>
+                <IonInput name='number' type='number' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regNumber', e.target.number.value)} defaultValue={sessionStorage.getItem('regNumber')!}></IonInput><br></br>
 
                 <IonGrid>
                     <IonRow>

@@ -23,10 +23,10 @@ export class Password extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Password*</IonText>
-                <IonInput name='pwd' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regPassword', e.target.pwd.value)} defaultValue={this.props.values.password}></IonInput><br></br>
+                <IonInput name='pwd' type='password' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regPassword', e.target.pwd.value)} defaultValue={sessionStorage.getItem('regPassword')!}></IonInput><br></br>
 
                 <IonText className="smallHeading">Confirm Password*</IonText>
-                <IonInput name='confirmPwd' type='text' className='textInput' required  defaultValue={this.props.values.confirmPassword}></IonInput><br></br>
+                <IonInput name='confirmPwd' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('confirmPassword', e.target.confirmPwd.value)} defaultValue={sessionStorage.getItem('confirmPassword')!}></IonInput><br></br>
 
                 <IonGrid>
                     <IonRow>

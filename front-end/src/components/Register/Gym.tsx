@@ -22,7 +22,7 @@ export class Gym extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Please select your gym*</IonText>
-                <IonInput name='gym' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regGym', e.target.gym.value)} defaultValue={this.props.values.gym}></IonInput><br></br>
+                <IonInput name='gym' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regGym', e.target.gym.value)} defaultValue={sessionStorage.getItem('regGym')!}></IonInput><br></br>
     
                 <IonGrid>
                     <IonRow>

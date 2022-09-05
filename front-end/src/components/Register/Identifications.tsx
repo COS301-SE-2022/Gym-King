@@ -30,13 +30,13 @@ export class Identifications extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Name*</IonText>
-                <IonInput name='name' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regName', e.target.name.value)} defaultValue={this.props.values.name}></IonInput><br></br>
+                <IonInput name='name' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regName', e.target.name.value)} defaultValue={sessionStorage.getItem('regName')!}></IonInput><br></br>
 
                 <IonText className="smallHeading">Surname*</IonText>
-                <IonInput name='surname' type='text' className='textInput' required  onChange={(e:any)=>sessionStorage.setItem('regSurname', e.target.surname.value)} defaultValue={this.props.values.surname}></IonInput><br></br>
+                <IonInput name='surname' type='text' className='textInput' required  onChange={(e:any)=>sessionStorage.setItem('regSurname', e.target.surname.value)} defaultValue={sessionStorage.getItem('regSurname')!}></IonInput><br></br>
 
                 <IonText className="smallHeading">Username*</IonText>
-                <IonInput name='username' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regUsername', e.target.username.value)} defaultValue={this.props.values.username}></IonInput><br></br>
+                <IonInput name='username' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regUsername', e.target.username.value)} defaultValue={sessionStorage.getItem('regUsername')!}></IonInput><br></br>
 
                 <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.continue}>Next</IonButton>
                 <br></br> <br></br>
