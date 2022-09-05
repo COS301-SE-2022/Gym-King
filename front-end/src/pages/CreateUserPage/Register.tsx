@@ -1,12 +1,17 @@
 import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import './Register.css';
 import axios from "axios";
 
 
  export const RegisterPage: React.FC = () =>{
 
+        // used for routing
+        let history=useHistory()
         
+        const [debugMessage, setDebugMessage] = useState("");
+
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
         const [showError2Toast, setShowError2Toast] = useState(false);
@@ -54,7 +59,7 @@ import axios from "axios";
                   setShowSuccessToast(true);
 
                   //redirect to login
-                  window.location.href = "http://localhost:3000/Login";
+                  history.push("/Login");
                 }else{
                   console.log( response.results);
                   //code:23505 = user already exists 
@@ -64,12 +69,15 @@ import axios from "axios";
                   }
                   else
                   {
+        
+                    
+                    setDebugMessage(response.results.code);
                     setShowError2Toast(true);
                   }
                 }
             })
             .catch(err => { 
-                console.log(err)
+                setDebugMessage(err);
                 setShowError2Toast(true);
             }) 
         }
@@ -106,7 +114,10 @@ import axios from "axios";
 
                         <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Register</IonButton>
                         <div className='center'>
-                        <IonText className="linkLabel">Already have an account?</IonText><a href="http://localhost:3000/Login" color="secondary" className='linkLabel'>Login</a>
+                        <IonText className="linkLabel">Already have an account?</IonText>
+                        
+                        <button  onClick= {() =>{history.push("/Login")}} color="secondary" className='puesdorHref'>Login</button>
+                        
                         </div>
                     </form>
                     <br></br><br></br>
@@ -127,7 +138,7 @@ import axios from "axios";
                     <IonToast
                         isOpen={showError2Toast}
                         onDidDismiss={() => setShowError2Toast(false)}
-                        message="Internal Error. Please try again later."
+                        message={debugMessage}
                         duration={1000}
                         color="danger"
                     />

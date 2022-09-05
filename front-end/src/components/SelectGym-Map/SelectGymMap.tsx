@@ -8,7 +8,7 @@ import { IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonItem,
 import "./SelectGymMap.css"
 import { locate, location, lockClosed, lockOpen } from "ionicons/icons";
 import Geocoder from "react-native-geocoding";
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@capacitor/geolocation';
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 /**

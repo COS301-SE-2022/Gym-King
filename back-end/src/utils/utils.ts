@@ -5,8 +5,12 @@ const fs = require('fs');
 
 const { Pool } = require("pg");
 const allowedOrigins = [
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
+  'http://localhost:8080',
+  'http://localhost:8100',
   'http://localhost:3000',
-  'http://localhost:8100'
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
