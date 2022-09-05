@@ -458,7 +458,7 @@ const users = express.Router()
    */
   .post('/gyms/aroundme', cors(corsOptions), async (req: any, res: any) => {
     try {
-      if (req.body.latCoord != null && req.body.longCoord != null) {
+      if (req.body.latCoord != null || req.body.longCoord != null) {
         let lat = parseFloat(req.body.latCoord);
         let long = parseFloat(req.body.longCoord);
         let rad = 20.0;
@@ -480,6 +480,21 @@ const users = express.Router()
         res.status(400);
         res.json(  { 'success': false, 'results':'user coordinates not given'} );
       }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  .get('/gyms/getAllGyms', cors(corsOptions), async (req: any, res: any) => {
+    try {
+        // SQL statement to get all gyms
+        var gyms = await gymRepository.findAll();
+
+        const results = { 'success': true, 'results': gyms };
+        res.json(results);
+      
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
