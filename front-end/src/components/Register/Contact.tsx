@@ -1,4 +1,4 @@
-import {IonButton, IonInput, IonText} from '@ionic/react';
+import {IonButton, IonCol, IonGrid, IonInput, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import '../../theme/variables.css'
 //creating a type so props can be entered
@@ -28,8 +28,16 @@ export class Contact extends React.Component<props>{
                 <IonText className="smallHeading">Phone Number*</IonText>
                 <IonInput name='number' type='number' className='textInput' required onChange={(e) => this.props.handleChange('number', e)} defaultValue={this.props.values.number}></IonInput><br></br>
 
-                <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.prev}>Previous</IonButton>
-                <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.continue}>Next</IonButton>
+                <IonGrid>
+                    <IonRow>
+                        <IonCol size='6'>
+                            <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={this.prev}>Previous</IonButton>
+                        </IonCol>
+                        <IonCol size='6'>
+                            <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.continue} style={{"width":"100%", "margin":"0"}}>Next</IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
 
             </form>
         )
