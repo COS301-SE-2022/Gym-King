@@ -16,6 +16,18 @@ const path = require('path');
 const multer = require('multer');
 const userpicture = multer();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+//=============================================================================================//
+//Nodemailer email connection 
+//=============================================================================================//
+var emailer = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  }
+});
 
 //=============================================================================================//
 //Helper Functions 
@@ -423,9 +435,13 @@ const users = express.Router()
    */
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
     try {
-      const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results, body: result} );
+      if (req.body.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
+        res.json({'success':true})
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -442,7 +458,7 @@ const users = express.Router()
    */
   .post('/gyms/aroundme', cors(corsOptions), async (req: any, res: any) => {
     try {
-      if (req.body.latCoord != null && req.body.longCoord != null) {
+      if (req.body.latCoord != null || req.body.longCoord != null) {
         let lat = parseFloat(req.body.latCoord);
         let long = parseFloat(req.body.longCoord);
         let rad = 20.0;
@@ -470,6 +486,23 @@ const users = express.Router()
       res.json(results);
     }
   })
+
+  .get('/gyms/getAllGyms', cors(corsOptions), async (req: any, res: any) => {
+    try {
+        // SQL statement to get all gyms
+        var gyms = await gymRepository.findAll();
+        gyms.forEach(element => {
+          element.key = element.g_id;
+        });
+        const results = { 'success': true, 'results': gyms };
+        res.json(results);
+      
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   //=========================================================================================================//
   /**
    * POST - create OTP for user.
@@ -479,11 +512,17 @@ const users = express.Router()
    .post('/users/user/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let result = await userOTPRepository.deleteUserOTP(query.email);
-      const newOTP = createID2(6);
-      result = await userOTPRepository.saveUserOTP(query.email,newOTP);
-      const results = { 'success': true };
-      res.json(results);
+      let user = await userRepository.findByEmail(query.email);
+      console.log(user);
+      if(user != null && user.email == query.email)
+      {
+        let result = await userOTPRepository.deleteUserOTP(query.email);
+        const newOTP = createID2(6);
+        result = await userOTPRepository.saveUserOTP(query.email,newOTP);
+        res.json({ 'success': true });
+      } else {
+        res.json({ 'success': false ,'message':'User does not exist!' });
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
