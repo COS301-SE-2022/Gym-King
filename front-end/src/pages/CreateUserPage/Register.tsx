@@ -2,6 +2,7 @@ import {IonContent, IonPage, IonHeader, IonToast,} from '@ionic/react';
 import React, { useState } from 'react';
 import './Register.css';
 import RegisterForm from '../../components/Register/RegisterForm';
+import { useHistory } from 'react-router-dom';
 
 
  export const RegisterPage: React.FC = () =>{
@@ -10,6 +11,8 @@ import RegisterForm from '../../components/Register/RegisterForm';
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
         const [showError2Toast, setShowError2Toast] = useState(false);
+        let history=useHistory()
+
         /*
         let formData:any;
         let userInfo = {
@@ -94,7 +97,7 @@ import RegisterForm from '../../components/Register/RegisterForm';
                 <br></br>
                 <IonContent fullscreen className='Content'>
 
-                    <RegisterForm></RegisterForm>
+                    <RegisterForm history={history}></RegisterForm>
 
                     <IonToast
                         isOpen={showSuccessToast}

@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import Contact from './Contact';
 import Gym from './Gym';
 import Identifications from './Identifications';
 import Password from './Password';
+export type props = { history:any};
 
-export class RegisterForm extends Component {
+export class RegisterForm extends Component<props> {
 
+    
     state = {
         slide:1, 
         name:"", 
@@ -44,9 +47,19 @@ export class RegisterForm extends Component {
                   next={this.nextSlide}
                   handleChange={this.handleChange}
                   values={values}
+                  history ={this.props.history}
                 />
               );
             case 2:
+              return (
+                <Contact
+                  next={this.nextSlide}
+                  prev={this.prevSlide}
+                  handleChange={this.handleChange}
+                  values={values}
+                />
+              );
+            case 3:
               return (
                 <Password
                   next={this.nextSlide}
@@ -55,7 +68,7 @@ export class RegisterForm extends Component {
                   values={values}
                 />
               );
-            case 3:
+            case 4:
               return (
                 <Gym
                   next={this.nextSlide}
