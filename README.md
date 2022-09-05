@@ -1,16 +1,32 @@
+<div id="top"></div>
+
+<!-- PROJECT LOGO -->
+<!-- Gym King -->
+
+<!-- PROJECT SHIELDS -->
+<div align="center">
+
 # Gym-King
 ![](https://img.shields.io/github/issues/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/issues-pr/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/issues-pr-closed/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/last-commit/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+
+</div>
+</div>
+
+# About
+## Gym King - Codebusters
+Gym King is an application designed to give gym goers an extra motivatinal boost. Gym King will allow gym users to improve their workout and earn badges for doing so. The application achieves this using a combination of Artifical Intelligence, Augmented Reality and Open Source Technologies. 
+
+Gym King is a collaborative project between the University of Pretoria's COS 301 module team Codebusters and EPI-USE Labs. The Codebusters team members are Robyn Hancock, Jade Peche, Dylan Whiteford, Thivessh Jhugroo and Ryan Broemer. The EPI-USE members are Gianni Volpi, Egor Kharatyan and Marnes Prinsloo. 
+
 ## Basic Commands
 - yarn run start
 - yarn run build
 - yarn run test
 - yarn run lint
-## Codebusters - Gym King - Project Description
-Gym King is a product designed to use gamification to improve motivation with gym settings. Using open source and Augmented Reality (AR), Gym King aims to allow Gyms to issue badges to their users for achieving workout goals and allow them to work up the Gym leaderboard and become the ultimate Gym King.
 
 ## Documentation
 [SRS](https://github.com/COS301-SE-2022/Gym-King/files/9214442/Gym.King.-SRS.-.Demo.3.pdf) <br>
@@ -20,8 +36,7 @@ Gym King is a product designed to use gamification to improve motivation with gy
 [Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9213653/Gym.King.-.Technical.Installation.Manual.-.Demo.3.pdf)
 
 
-## Demos
-### Codebusters - Demo 1
+## Demo Links
 [DEMO 1](https://drive.google.com/drive/folders/132bKBFuXsvhc-b2iAB62nvvUncE5EgON?usp=sharing) <br>
 [DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing) <br>
 [DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing)
@@ -29,7 +44,7 @@ Gym King is a product designed to use gamification to improve motivation with gy
 ## Github Project Board
 [Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)
 
-## Team Profile
+## Team Codebusters
 ### Robyn Hancock
 I am currently studying BSc Information and Knowledge Systems at the University of Pretoria. I was drawn to the field of Information Technology because of how dynamic it is. Whilst there have been times where I felt a little lost when learning new programming languages and concepts, I love a good challenge and learning more about something I enjoy. 
 I believe that the University of Pretoria gives its students a wonderful opportunity to be able to have a small taste of the industry before we dive in headfirst once we graduate, and I look forward to hopefully working with you and your company on this exciting project.<br> <br>
