@@ -34,8 +34,19 @@ export class RegisterForm extends Component<props> {
     };
 
     handleChange = (input:any, e:any) => {
+        console.log(input);
         this.setState({ [input]: e.target.value });
     };
+
+    register = () =>{
+        this.setState({
+            slide: 1
+        });
+        console.log(this.state);
+
+        
+    }
+
   render() {
     const { slide } = this.state;
     const { name, surname, username, email, phone, password, gym } = this.state;
@@ -71,7 +82,7 @@ export class RegisterForm extends Component<props> {
             case 4:
               return (
                 <Gym
-                  next={this.nextSlide}
+                  next={this.register}
                   prev={this.prevSlide}
                   values={values}
                   handleChange={this.handleChange}

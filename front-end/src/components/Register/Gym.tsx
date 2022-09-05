@@ -2,7 +2,7 @@ import {IonButton, IonCol, IonGrid, IonInput, IonRow, IonText} from '@ionic/reac
 import React from 'react'
 import '../../theme/variables.css'
 //creating a type so props can be entered
-export type props = { handleChange:any, values:any, next:any, prev:any};
+export type props = { handleChange:any, values:any, next:any, prev:any, };
 
 export class Gym extends React.Component<props>{
 
@@ -22,7 +22,7 @@ export class Gym extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Please select your gym*</IonText>
-                <IonInput name='gym' type='text' className='textInput' required onChange={(e) => this.props.handleChange('gym', e)} defaultValue={this.props.values.gym}></IonInput><br></br>
+                <IonInput name='gym' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regGym', e.target.gym.value)} defaultValue={this.props.values.gym}></IonInput><br></br>
     
                 <IonGrid>
                     <IonRow>
@@ -30,7 +30,7 @@ export class Gym extends React.Component<props>{
                             <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={this.prev}>Previous</IonButton>
                         </IonCol>
                         <IonCol size='6'>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.continue} style={{"width":"100%", "margin":"0"}}>Next</IonButton>
+                            <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.continue} style={{"width":"100%", "margin":"0"}}>Register</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

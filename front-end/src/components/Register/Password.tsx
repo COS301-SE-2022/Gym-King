@@ -23,7 +23,7 @@ export class Password extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Password*</IonText>
-                <IonInput name='pwd' type='text' className='textInput' required onChange={(e) => this.props.handleChange('password', e)} defaultValue={this.props.values.password}></IonInput><br></br>
+                <IonInput name='pwd' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regPassword', e.target.pwd.value)} defaultValue={this.props.values.password}></IonInput><br></br>
 
                 <IonText className="smallHeading">Confirm Password*</IonText>
                 <IonInput name='confirmPwd' type='text' className='textInput' required  defaultValue={this.props.values.confirmPassword}></IonInput><br></br>
