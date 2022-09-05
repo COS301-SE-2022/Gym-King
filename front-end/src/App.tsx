@@ -162,6 +162,7 @@ const App: React.FC = () => (
         <Route exact path='/Splash'>
           <SplashPage></SplashPage>
         </Route>
+
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

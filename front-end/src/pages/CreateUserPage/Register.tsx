@@ -1,18 +1,31 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast} from '@ionic/react';
+import {IonContent, IonPage, IonToast} from '@ionic/react';
 import React, { useState } from 'react';
 import './Register.css';
-import axios from "axios";
+
+import RegisterForm from '../../components/Register/RegisterForm';
 
 
  export const RegisterPage: React.FC = () =>{
 
+
+        
         
         const [showSuccessToast, setShowSuccessToast] = useState(false);
         const [showError1Toast, setShowError1Toast] = useState(false);
         const [showError2Toast, setShowError2Toast] = useState(false);
+        /*
         let formData:any;
+        let userInfo = {
+            name:string, 
+            surname: string, 
+            username: string, 
+            email:string, 
+            phone: string, 
+            password:string,
+            gym:string
+        }
 
-      
+      /*
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
 
@@ -24,8 +37,9 @@ import axios from "axios";
                 number: e.target.number.value,
                 username: e.target.username.value,
                 password:e.target.password.value,
+                gym:""
             };
-                createUser();
+            createUser();
         
         }
 
@@ -72,43 +86,16 @@ import axios from "axios";
                 console.log(err)
                 setShowError2Toast(true);
             }) 
-        }
-        
+        }*/
+
+
+          
 
         return(
         
             <IonPage color='#220FE' >
-                <IonHeader>
-                </IonHeader>
-                <br></br>
-                <IonContent fullscreen className='Content'>
-                    <form onSubmit={handleSubmit} className="registerForm" >
-                        <IonText className='center inputHeading'>Register</IonText>
-                        <br></br>
-
-                        <IonText className="smallHeading">Email*</IonText>
-                        <IonInput name='email' type='text' className='textInput' required></IonInput><br></br>
-
-                        <IonText className="smallHeading">Name*</IonText>
-                        <IonInput name='name' type='text' className='textInput' required ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Surname*</IonText>
-                        <IonInput name='surname' type='text' className='textInput' required ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Username*</IonText>
-                        <IonInput name='username' type='text' className='textInput' required ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Phone Number*</IonText>
-                        <IonInput name='number' type='number' className='textInput' required ></IonInput><br></br>
-
-                        <IonText className="smallHeading">Password*</IonText>
-                        <IonInput name='password' type='password' className='textInput' required></IonInput>
-
-                        <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Register</IonButton>
-                        <div className='center'>
-                        <IonText className="linkLabel">Already have an account?</IonText><a href="http://localhost:3000/Login" color="secondary" className='linkLabel'>Login</a>
-                        </div>
-                    </form>
+                <IonContent>
+                    <RegisterForm></RegisterForm>
                     <br></br><br></br>
                     <IonToast
                         isOpen={showSuccessToast}
@@ -134,7 +121,6 @@ import axios from "axios";
                 </IonContent>
             </IonPage>
         )
-        
-}
 
+}
 export default RegisterPage;
