@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IonContent, IonPage, IonItem, IonLabel, IonInput, useIonModal, IonSearchbar, IonModal, IonList, IonAvatar, IonImg,
+import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg,
 } from '@ionic/react';
 
 function GymSearchBar() {

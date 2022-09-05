@@ -10,12 +10,12 @@ const UserMap: React.FC = () => {
                      {'caption':'Settings','icon':'cog','route':'/Settings'}] 
 
   return (
-    <IonPage overflow-scroll="false">
+    <IonPage >
       <IonHeader>
         <ToolBar menu={true}></ToolBar>
       </IonHeader>
       <BurgerMenu listItems={Menulist}/>
-      <IonContent id="main"  overflow-scroll="false">
+      <IonContent id="main">
         <MapView></MapView>
       </IonContent>
     </IonPage>

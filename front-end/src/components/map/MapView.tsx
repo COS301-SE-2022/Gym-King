@@ -1,4 +1,4 @@
-import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast, useIonViewDidEnter } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -25,15 +25,10 @@ const MapView: React.FC = () =>{
     //=========================================================================================================//
     const maxZoom = 17.4
     const minZoom = 13
-    const [gyms, setGyms] = useState<{[key: string]: any}>([{
-        key: "",
-        g_id: "",
-        gym_brandname: "",
-        gym_address: "",
-        gym_coord_lat: 0,
-        gym_coord_long: 0,
-        gym_icon: ".."
-    }]);
+    const [gyms, setGyms] = useState<{[key: string]: any}>();
+
+    const [gymsInView, setGymsinView] = useState<{[key: string]: any}>();
+    
     const [loading, setLoading] = useState<boolean>(false);
 
     // Location Vars------------------------------------------------------------------------------------------//
@@ -102,15 +97,121 @@ const MapView: React.FC = () =>{
             setLoading(false);
             setError({showError: true, message: " Please Enable your GPS location"});
         }
-    }    
-
-    
+    }  
     const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
 
         setGymData(activeGym);
         setShowModal(true);
     }
+
+
+    const getAllGyms = async() => {
+        if(!postWaiting){
+            setPostWaiting(true);
+            axios(process.env["REACT_APP_GYM_KING_API"]+'/gyms/getAllGyms',{
+                method: 'GET',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                }
+            })
+            .then(response =>response.data)
+            .then(response =>{
+                
+                if(response.success){
+                    setGyms(response.results);
+                    setPostWaiting(false);
+
+                }else{
+                    console.log(response.success)
+                    console.log(response.results)
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+    }
+
+
+    //=============================================================================================//
+    //Helper Functions 
+    //=============================================================================================//
+   
+
+    //=========================================================================================================//
+    /**
+     * Converts numeric degrees to radians
+     * @param {float} Value a value in degree format
+     * @returns {float} value in radians
+     */
+    function toRad(Value:any) 
+    {
+        return Value * Math.PI / 180;
+    }
+   
+    //=========================================================================================================//
+    /**
+     * Helper functions to get the distance between two coordinates
+     * @param {float} lat1 = toX
+     * @param {float} lon1
+     * @param {float} lat2
+     * @param {float} lon2
+     * @returns {float} distance between points 
+     */
+    function calcCrow(lat1: number, lon1: number, lat2: number, lon2: number)  
+    {
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var latNew1 = toRad(lat1);
+      var latNew2 = toRad(lat2);
+  
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latNew1) * Math.cos(latNew2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+ 
+    //=========================================================================================================//
+    /**
+     * 
+     * @param {rad} . search radius
+     */
+    function setGymsInMapView() 
+    {   
+        let rad = Math.pow(1.5,(18-zoom));
+        let outGyms:any = [];
+        let lat= center[0];
+        let long = center[1];
+        gyms?.forEach((element: { gym_coord_lat: number; gym_coord_long: number; }) => {
+            // get magnitde between user and each gym coordinate
+            let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
+            // If magnitude is within radius then add it to the results
+            if(magnitude <= rad){
+                outGyms.push(element);
+            }
+        });
+
+        setGymsinView(outGyms);
+    }
+    
+    //=========================================================================================================//
+    /**
+     * OnAwake
+     */
+    
+    useIonViewDidEnter(()=>{
+        getLocation(first);
+        
+        setFirst(false);
+        setRefresh(10000);
+
+        getAllGyms();
+        setGymsInMapView();
+    })
     
     //=========================================================================================================//
     /**
@@ -145,8 +246,6 @@ const MapView: React.FC = () =>{
             .then(response =>{
                 
                 if(response.success){
-                    //console.info(Math.pow(1.5,(18-zoom)))
-                    //console.info(response.results)
                     setGyms(response.results);
                     setPostWaiting(false);
 
@@ -165,15 +264,12 @@ const MapView: React.FC = () =>{
     useEffect(() => {
 
         const interval = setInterval(() => {
-            getLocation(first);
-            if(first){
-                setFirst(false)
-                setRefresh(10000)
-            }
+            getLocation(false);
+
             //console.log("Map Refresh")
 
             
-            getNearbyGyms();
+            setGymsInMapView();
         }, refresh);
         
         return () => 
@@ -181,6 +277,8 @@ const MapView: React.FC = () =>{
             clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
         }
     })
+
+    
 
     const [showModal, setShowModal] = useState(false);
 
@@ -244,10 +342,8 @@ const MapView: React.FC = () =>{
                 onBoundsChanged={({ center, zoom }) => { 
                     setCenter(center) ;
                     setZoom(zoom) ;
-                    
-                    getLocation(false)
-                    getNearbyGyms()
                     setShowModal(false)
+                    setGymsInMapView();
                 }} 
                 onAnimationStart={()=>{
                                 
@@ -261,21 +357,21 @@ const MapView: React.FC = () =>{
                 
                 
             >
-                <button id="float" onClick={() => { 
+                <IonButton id="float" onClick={() => { 
                     
                     getLocation(true)
-                    getNearbyGyms()
+                    setGymsInMapView()
                 }}>
                     <i id="fa fa-plus my-float"></i>
                     <img src={recenter} alt =""></img>
-                </button>
+                </IonButton>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
+                {gymsInView?.map((item: { gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string;}) => {
                     return (
                         <Overlay 
-                            key={item.gid + Math.random()}
+                            key={item.gid}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[15,31]} 
                             
