@@ -18,8 +18,10 @@
 
 # About
 ## Gym King - Codebusters
-<img src="https://user-images.githubusercontent.com/92938217/188442468-c3e5085f-6838-40b2-8187-0fad4300546d.jpg" align="center" height="150px" />
-<img src="https://user-images.githubusercontent.com/92938217/188444931-66ffa168-5839-411d-9907-0af707e60883.jpg" align="center" height="150px" />
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/92938217/188442468-c3e5085f-6838-40b2-8187-0fad4300546d.jpg" align="center" height="150px" />
+  <img src="https://user-images.githubusercontent.com/92938217/188444931-66ffa168-5839-411d-9907-0af707e60883.jpg" align="center" height="150px" />
+</p>
 
 Gym King is an application designed to give gym goers an extra motivatinal boost. Gym King will allow gym users to improve their workout and earn badges for doing so. The application achieves this using a combination of Artifical Intelligence, Augmented Reality and Open Source Technologies. 
 
