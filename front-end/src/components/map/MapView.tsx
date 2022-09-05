@@ -23,11 +23,11 @@ const MapView: React.FC = () =>{
     //=========================================================================================================//
     //                                                       MAP                                               //
     //=========================================================================================================//
-    const maxZoom = 17.4
-    const minZoom = 13
+    const maxZoom = 20
+    const minZoom = 14
     const [gyms, setGyms] = useState<{[key: string]: any}>();
 
-    const [gymsInView, setGymsinView] = useState<{[key: string]: any}>();
+    const [gymsInView, setGymsinView] = useState<{[key: string]: any}>([{key:"xxx",g_id:"xxx"}]);
     
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -182,11 +182,11 @@ const MapView: React.FC = () =>{
      */
     function setGymsInMapView() 
     {   
-        let rad = Math.pow(1.5,(18-zoom));
+        let rad =  (18-zoom);
         let outGyms:any = [];
         let lat= center[0];
         let long = center[1];
-        gyms?.forEach((element: { gym_coord_lat: number; gym_coord_long: number; }) => {
+        gyms?.forEach((element: { gid: string; gym_coord_lat: number; gym_coord_long: number; key: string;}) => {
             // get magnitde between user and each gym coordinate
             let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
             // If magnitude is within radius then add it to the results
@@ -194,7 +194,7 @@ const MapView: React.FC = () =>{
                 outGyms.push(element);
             }
         });
-
+        console.log(outGyms)
         setGymsinView(outGyms);
     }
     
@@ -204,13 +204,7 @@ const MapView: React.FC = () =>{
      */
     
     useIonViewDidEnter(()=>{
-        getLocation(first);
-        
-        setFirst(false);
-        setRefresh(10000);
 
-        getAllGyms();
-        setGymsInMapView();
     })
     
     //=========================================================================================================//
@@ -264,11 +258,17 @@ const MapView: React.FC = () =>{
     useEffect(() => {
 
         const interval = setInterval(() => {
-            getLocation(false);
+            if(first) {
+                getLocation(first);
+                setRefresh(10000);
+                setFirst(false);
+                getAllGyms();
+            }
+            else    
+                getLocation(false);
 
             //console.log("Map Refresh")
 
-            
             setGymsInMapView();
         }, refresh);
         
@@ -350,34 +350,32 @@ const MapView: React.FC = () =>{
                     setShowModal(false)
                 }}
                 onClick={()=>{
-                                
+                     
                     setShowModal(false)
-                }}
-                
-                
-                
+                }}        
             >
                 <IonButton id="float" onClick={() => { 
                     
                     getLocation(true)
                     setGymsInMapView()
                 }}>
+
                     <i id="fa fa-plus my-float"></i>
                     <img src={recenter} alt =""></img>
                 </IonButton>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gymsInView?.map((item: { gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string;}) => {
+                {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string;}) => {
                     return (
                         <Overlay 
-                            key={item.gid}
+                            key={item.key}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[15,31]} 
                             
                         > 
                             <img onClick={() => {gymButtonClick(item)}} id ="GymPicture" src={gym} alt='' />
-                        </Overlay> 
+                        </Overlay>
                     )                 
                 })}
 
