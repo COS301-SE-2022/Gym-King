@@ -6,7 +6,6 @@ export const GymSearchBar=(props:{
     gyms: any[]; 
     callback(): any;
   })=>{
- 
     const searchInput = useRef<HTMLIonSearchbarElement>(null)
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
@@ -59,7 +58,6 @@ export const GymSearchBar=(props:{
             isOpen={isShowing}
             initialBreakpoint={0.25}
             breakpoints={[0.0,0.25, 0.5, 0.75]}
-            backdropDismiss={false}
             backdropBreakpoint={0.5}
         
             presentingElement={presentingElement!}

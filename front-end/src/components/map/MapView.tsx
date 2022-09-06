@@ -1,5 +1,5 @@
 import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonIcon,  IonLoading, IonModal, IonToast, useIonViewDidEnter } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { useHistory } from 'react-router-dom';
@@ -55,6 +55,7 @@ const MapView: React.FC = () =>{
         gym_coord_long: 0,
         gym_icon: ".."
     });
+
     //=========================================================================================================//
     /**
      * Function that gets the users location
@@ -103,7 +104,6 @@ const MapView: React.FC = () =>{
     }  
     const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
-
         setGymData(activeGym);
         setShowModal(true);
     }
@@ -237,7 +237,7 @@ const MapView: React.FC = () =>{
     //=========================================================================================================//
     /**
      * 
-     * @param {rad} . search radius
+     * 
      */
     function setGymsInMapView() 
     {   
@@ -256,16 +256,6 @@ const MapView: React.FC = () =>{
         console.log(outGyms)
         setGymsinView(outGyms);
     }
-    
-    //=========================================================================================================//
-    /**
-     * OnAwake
-     */
-    
-    useIonViewDidEnter(()=>{
-
-    })
-    
 
     
     useEffect(() => {
@@ -329,7 +319,16 @@ const MapView: React.FC = () =>{
         <>  
             <IonContent  overflow-scroll="false" >
                 
-            <GymSearchBar gyms={gymsInSearchTab} callback = {() =>getNearbyGyms()}></GymSearchBar>
+            <GymSearchBar 
+                gyms={gymsInSearchTab} 
+                callback = {() =>{
+                        setShowModal(false);
+                        getNearbyGyms()
+                    }
+                }
+            />
+                
+                
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}

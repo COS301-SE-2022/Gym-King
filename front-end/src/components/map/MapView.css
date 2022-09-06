@@ -18,6 +18,7 @@
   
 
 #float{
+    z-index: 10;
 	position:fixed;
 	width:15vw;
 	height: 15vw;
@@ -35,8 +36,6 @@
     max-width: 35px;
     width: 35px;
 }
-
-
 
 main {
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
