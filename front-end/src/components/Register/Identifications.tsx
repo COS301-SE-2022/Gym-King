@@ -2,7 +2,7 @@ import {IonButton, IonInput, IonText} from '@ionic/react';
 import React from 'react'
 import '../../theme/variables.css'
 //creating a type so props can be entered
-export type props = { handleChange:any, values:any, next:any, history:any};
+export type props = { handleChange:any, next:any, history:any};
 
 
 export class Identifications extends React.Component<props>{
@@ -10,6 +10,10 @@ export class Identifications extends React.Component<props>{
 
     continue = (e:any) => {
         e.preventDefault();
+        sessionStorage.setItem('regName', e.target.name.value)
+        sessionStorage.setItem('regSurname', e.target.surname.value)
+        sessionStorage.setItem('regUsername', e.target.username.value)
+
         this.props.next();
     };
 
@@ -25,20 +29,20 @@ export class Identifications extends React.Component<props>{
 
     render(){
         return(
-            <form className='registerForm' onSubmit={this.handleSubmit}>
+            <form className='registerForm' onSubmit={this.continue}>
                 <IonText className='center inputHeading'>Register</IonText>
                 <br></br>
 
                 <IonText className="smallHeading">Name*</IonText>
-                <IonInput name='name' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regName', e.target.name.value)} defaultValue={sessionStorage.getItem('regName')!}></IonInput><br></br>
+                <IonInput name='name' type='text' className='textInput' required value={sessionStorage.getItem('regName')!}></IonInput><br></br>
 
                 <IonText className="smallHeading">Surname*</IonText>
-                <IonInput name='surname' type='text' className='textInput' required  onChange={(e:any)=>sessionStorage.setItem('regSurname', e.target.surname.value)} defaultValue={sessionStorage.getItem('regSurname')!}></IonInput><br></br>
+                <IonInput name='surname' type='text' className='textInput' required  value={sessionStorage.getItem('regSurname')!}></IonInput><br></br>
 
                 <IonText className="smallHeading">Username*</IonText>
-                <IonInput name='username' type='text' className='textInput' required onChange={(e:any)=>sessionStorage.setItem('regUsername', e.target.username.value)} defaultValue={sessionStorage.getItem('regUsername')!}></IonInput><br></br>
+                <IonInput name='username' type='text' className='textInput' required value={sessionStorage.getItem('regUsername')!}></IonInput><br></br>
 
-                <IonButton color="warning" className=" btnLogin ion-margin-top" onClick={this.continue}>Next</IonButton>
+                <IonButton type="submit" color="warning" className=" btnLogin ion-margin-top">Next</IonButton>
                 <br></br> <br></br>
                 <div className='center'>
                     <IonText className="linkLabel">Already have an account?</IonText><button  onClick= {() =>{this.props.history.go(-1)}}  color="secondary" className='linkLabel puesdorHref'>Login</button>
