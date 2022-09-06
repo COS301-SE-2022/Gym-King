@@ -1,4 +1,4 @@
-import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast, useIonViewDidEnter } from "@ionic/react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonIcon,  IonLoading, IonModal, IonToast, useIonViewDidEnter } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
@@ -367,14 +367,13 @@ const MapView: React.FC = () =>{
                     setShowModal(false)
                 }}        
             >
-                <IonButton id="float" onClick={() => { 
+                <IonButton shape="round" id="float" onClick={() => { 
                     
                     getLocation(true)
                     setGymsInMapView()
                 }}>
 
-                    <i id="fa fa-plus my-float"></i>
-                    <img src={recenter} alt =""></img>
+                    <img id = "btnIcon"  src={recenter} ></img>
                 </IonButton>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
