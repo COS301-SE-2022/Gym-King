@@ -68,22 +68,31 @@ export class RegisterForm extends Component<props> {
         .then(response =>response.data)
         .then(response =>{
             //show toast
-            if(response.results.success){
+            if(response.success){
               //this.props.showSuccessToast()
 
-              //redirect to login
-              this.props.history.push("/Login")
+              
+                sessionStorage.removeItem("regName")
+                sessionStorage.removeItem("regSurname")
+                sessionStorage.removeItem("regUsername")
+                sessionStorage.removeItem("regEmail") 
+                sessionStorage.removeItem("regNumber") 
+                sessionStorage.removeItem("regPassword")
+                sessionStorage.removeItem("regGym")
+
+                //redirect to login
+                this.props.history.push("/Login")
             }else{
-              console.log( response.results);
+              console.log( response.results);/*
               //code:23505 = user already exists 
-              if(response.results.code ==="23505")
+              if(response..code ==="23505")
               {
                 //this.props.showError1Toast()
               }
               else
               {
                 //this.props.showError2Toast()
-              }
+              }*/
             }
         })
         .catch(err => { 
