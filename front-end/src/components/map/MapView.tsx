@@ -17,6 +17,8 @@ interface LocationError {
 
 }
 
+
+
 const MapView: React.FC = () =>{
     let history=useHistory()
 
@@ -28,6 +30,7 @@ const MapView: React.FC = () =>{
     const [gyms, setGyms] = useState<{[key: string]: any}>();
 
     const [gymsInView, setGymsinView] = useState<{[key: string]: any}>([{key:"xxx",g_id:"xxx"}]);
+    const [gymsInSearchTab, setGymsInSearchTab] = useState<any[]>([]);
     
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -105,6 +108,62 @@ const MapView: React.FC = () =>{
         setShowModal(true);
     }
 
+    //=========================================================================================================//
+    /**
+     * Function that gets the location of nearby gyms
+     * @requires position users coordinates
+     * @returns all nearby gyms
+     */    
+    const getNearbyGyms = async () => {
+
+        let outGyms: {                    
+            g_id: any; 
+            gym_coord_lat: number;
+            gym_coord_long: number; 
+        }[] = [];
+
+        if(gyms){
+
+            for(let x = 0;x<5;x++){
+                let closetGym:any;
+
+                gyms.forEach((elementx: {
+                    g_id: any; 
+                    gym_coord_lat: number;
+                    gym_coord_long: number;
+                }) => {
+
+
+                    let isAlreadyInList = false;
+
+                    outGyms.forEach((elementy: { g_id: any; }) => {
+                        if(elementy.g_id===elementx.g_id){
+                            isAlreadyInList = true;
+                        }
+                    });
+
+                    if(!isAlreadyInList){
+                        if(closetGym==null)
+                            closetGym = elementx;
+                        else{
+                            var newMag = calcCrow(userLocation[0],userLocation[1],elementx.gym_coord_lat,elementx.gym_coord_long)
+                            var oldMag = calcCrow(userLocation[0],userLocation[1],closetGym.gym_coord_lat,closetGym.gym_coord_long)
+                            if(oldMag > newMag){
+                                closetGym = elementx;
+                            }       
+                        }
+
+                    }
+
+                });
+                if(closetGym!=null)
+                    outGyms.push(closetGym)
+            }
+
+            setGymsInSearchTab(outGyms);
+        }
+        
+    }
 
     const getAllGyms = async() => {
         if(!postWaiting){
@@ -207,53 +266,7 @@ const MapView: React.FC = () =>{
 
     })
     
-    //=========================================================================================================//
-    /**
-     * Function that gets the location of nearby gyms
-     * @requires position users coordinates
-     * @returns all nearby gyms
-     */    
-    const getNearbyGyms = async () => {
-        
-        
-        //=========================================================================================================//
-        /**
-         * POST request to get nearby gyms
-         * makes use of gym-king API
-         * @param userLocation
-         */
-        if(!postWaiting){
-            setPostWaiting(true);
-            axios(process.env["REACT_APP_GYM_KING_API"]+'/gyms/aroundme',{
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                },
-                data: JSON.stringify({ 
-                    latCoord: center[0],
-                    longCoord: center[1],
-                    radius: Math.pow(1.5,(18-zoom))
-                })
-            })
-            .then(response =>response.data)
-            .then(response =>{
-                
-                if(response.success){
-                    setGyms(response.results);
-                    setPostWaiting(false);
 
-                }else{
-                    console.log(response.success)
-                    console.log(response.results)
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
-        
-    }
     
     useEffect(() => {
 
@@ -316,7 +329,7 @@ const MapView: React.FC = () =>{
         <>  
             <IonContent  overflow-scroll="false" >
                 
-            <GymSearchBar></GymSearchBar>
+            <GymSearchBar gyms={gymsInSearchTab} callback = {() =>getNearbyGyms()}></GymSearchBar>
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}

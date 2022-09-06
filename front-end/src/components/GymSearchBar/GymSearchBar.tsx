@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg,
 } from '@ionic/react';
 
-function GymSearchBar() {
+export const GymSearchBar=(props:{
+    gyms: any[]; 
+    callback(): any;
+  })=>{
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
@@ -31,7 +34,12 @@ function GymSearchBar() {
           >
 
             <IonSearchbar
-                onClick = {()=>setIsShowing(true)}
+                onClick = {()=>{
+                  
+                  props.callback()
+                  setIsShowing(true)
+                  console.log(props.gyms)
+                }}
             >
             </IonSearchbar>
           </div>
@@ -50,15 +58,26 @@ function GymSearchBar() {
           >
             <IonContent  onClick={() => modal.current?.setCurrentBreakpoint(0.75)} className="ion-padding">
               <IonList>
-                <IonItem>
-                  <IonAvatar slot="start">
-                    <IonImg src="" />
-                  </IonAvatar>
-                  <IonLabel>
-                    <h2>Gym</h2>
-                    <p>Address</p>
-                  </IonLabel>
-                </IonItem>
+
+              {props.gyms.map((item: {key:string; gid:string;gym_brandname:string;gym_address:string;}) => {
+                    return (
+
+                      <IonItem 
+                        key={item.key}>
+                      <IonAvatar slot="start">
+                        <IonImg src="" />
+                      </IonAvatar>
+
+                      <IonLabel>
+                        <h2>{item.gym_brandname}</h2>
+                        <p>{item.gym_address}</p>
+                      </IonLabel>
+                      </IonItem>
+
+
+                    )                 
+                })}
+               
               </IonList>
             </IonContent>
           </IonModal>
@@ -68,3 +87,4 @@ function GymSearchBar() {
 }
 
 export default GymSearchBar;
+
