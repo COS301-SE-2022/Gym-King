@@ -72,7 +72,7 @@ export const Login: React.FC = () =>{
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
         formData={
-            email: e.target.email.value,
+            email: e.target.email.value.trim(),
             password: e.target.userPassword.value,
             usertype: userType
         };

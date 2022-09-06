@@ -8,7 +8,7 @@ export class Contact extends React.Component<props>{
 
     continue = (e:any) => {
         e.preventDefault();
-        sessionStorage.setItem('regEmail', e.target.email.value)
+        sessionStorage.setItem('regEmail', e.target.email.value.trim())
         sessionStorage.setItem('regNumber', e.target.number.value)
         this.props.next();
     };

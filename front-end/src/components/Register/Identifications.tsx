@@ -10,9 +10,9 @@ export class Identifications extends React.Component<props>{
 
     continue = (e:any) => {
         e.preventDefault();
-        sessionStorage.setItem('regName', e.target.name.value)
-        sessionStorage.setItem('regSurname', e.target.surname.value)
-        sessionStorage.setItem('regUsername', e.target.username.value)
+        sessionStorage.setItem('regName', e.target.name.value.trim())
+        sessionStorage.setItem('regSurname', e.target.surname.value.trim())
+        sessionStorage.setItem('regUsername', e.target.username.value.trim())
 
         this.props.next();
     };
