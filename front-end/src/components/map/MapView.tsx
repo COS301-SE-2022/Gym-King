@@ -68,25 +68,35 @@ const MapView: React.FC = () =>{
             gym_coord_lat: number;
             gym_coord_long: number; 
         }[] = [];
+        // check if query is not empty
+        if(query.length > 0){
+            // loop through all the gyms in memory
+            gyms?.forEach((element: any) => {
 
-        // loop through all the gyms in memory
-        gyms?.forEach((element: any) => {
 
-            // set all strings to lowercase
-            let qAdjusted = query.toLocaleLowerCase();
-            let nameAdjusted = element.gym_brandname.toLocaleLowerCase();
-            let addresAdjusted = element.gym_address.toLocaleLowerCase();
+                    // set all strings to lowercase
+                    let qAdjusted = query.toLocaleLowerCase();
+                    let nameAdjusted = element.gym_brandname.toLocaleLowerCase();
+                    let addresAdjusted = element.gym_address.toLocaleLowerCase();
 
-            // check name similarity
-            if(stringSimilarity(qAdjusted, nameAdjusted) >= 0.5)
-                outGyms.push(element)
 
-            // check address similarity
-            else if(stringSimilarity(qAdjusted, addresAdjusted) >= 0.5)
-                outGyms.push(element)
-        });
+                    // check name similarity
+                    if(stringSimilarity(qAdjusted, nameAdjusted) >= 0.5)
+                        outGyms.push(element)
 
-        setGymsInSearchTab(outGyms);
+                    // check address similarity
+                    else if(stringSimilarity(qAdjusted, addresAdjusted) >= 0.5)
+                        outGyms.push(element)
+
+                });
+
+                
+
+                setGymsInSearchTab(outGyms);
+        }
+        else
+            getNearbyGyms()
+        
     }
     
     //=========================================================================================================//
@@ -123,7 +133,7 @@ const MapView: React.FC = () =>{
 
             if(load){
                 setCenter([position?.coords.latitude, position?.coords.longitude]) 
-                setZoom(17.4) 
+                setZoom(18) 
             }
 
             setError({showError: false, message: "no error here"})
@@ -274,10 +284,17 @@ const MapView: React.FC = () =>{
      */
     function setGymsInMapView() 
     {   
-        let rad =  (18-zoom);
+        // the radius grows with the zoom depth
+        let rad =  (20-zoom);
+
+        //the gyms we find in the radius will be added here
         let outGyms:any = [];
+
+        //get the center coordinates
         let lat= center[0];
         let long = center[1];
+
+        // loop through all gyms
         gyms?.forEach((element: { gid: string; gym_coord_lat: number; gym_coord_long: number; key: string;}) => {
             // get magnitde between user and each gym coordinate
             let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
@@ -286,7 +303,8 @@ const MapView: React.FC = () =>{
                 outGyms.push(element);
             }
         });
-        console.log(outGyms)
+
+        //chagne the state of gyms in view 
         setGymsinView(outGyms);
     }
 
@@ -296,7 +314,7 @@ const MapView: React.FC = () =>{
         const interval = setInterval(() => {
             if(first) {
                 getLocation(first);
-                setRefresh(10000);
+                setRefresh(20000);
                 setFirst(false);
                 getAllGyms();
             }
@@ -363,6 +381,13 @@ const MapView: React.FC = () =>{
                         searchQueryAction(searchQuery)
                     }
                 }
+
+                setGymFocus = {(lat: number, long:number) =>{
+
+                    setCenter([lat, long]) ;
+                    setZoom(18) ;
+                    setGymsInMapView()
+                }}
             />
                 
                 

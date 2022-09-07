@@ -1,25 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg,
+import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg, IonHeader,
 } from '@ionic/react';
 
 export const GymSearchBar=(props:{
     gyms: any[]; 
     nearByCallBack(): any; 
     searchCallBack(searchQuery:string | null | undefined): any;
+    setGymFocus(lat:number, long:number): any;
   })=>{
     const searchInput = useRef<HTMLIonSearchbarElement>(null)
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
-  
+    const [searchTabHeading, setSearchTabHeading] = useState("Gyms Near You")
     useEffect(() => {
       setPresentingElement(page.current);
     }, []);
   
-    function dismiss() {
-      modal.current?.dismiss();
-    }
   
     return (
         <>
@@ -38,7 +36,8 @@ export const GymSearchBar=(props:{
             <IonSearchbar
                 ref={searchInput}
                 onClick = {()=>{
-                  
+                  setSearchTabHeading("")
+                        
                   props.nearByCallBack()
                   setIsShowing(true)
                   console.log(props.gyms)
@@ -46,7 +45,22 @@ export const GymSearchBar=(props:{
                 }}
                 onFocus={()=>console.log("focused")}
                 onKeyUp ={()=>{
-                    props.searchCallBack(searchInput.current?.value);
+                    let searchVal = searchInput.current?.value;
+                    props.searchCallBack(searchVal);
+
+                    if(searchVal==="")
+                      setSearchTabHeading("Gyms Near You")
+                    else
+                      {
+                        console.log(props.gyms.length)
+                        if(props.gyms.length===0 || props.gyms==null ){
+                          setSearchTabHeading("search for '" + searchVal+"': none found")
+                        }
+                        else{
+                          
+                          setSearchTabHeading("search for '" + searchVal+"':")
+                        }
+                      }
                   }
                 }
                 
@@ -62,7 +76,17 @@ export const GymSearchBar=(props:{
             backdropBreakpoint={0.5}
         
             presentingElement={presentingElement!}
-            onWillDismiss={()=>setIsShowing(false)}
+            onWillDismiss={()=>{
+              setIsShowing(false)
+              
+            }}
+
+            onDidDismiss={()=>{
+              
+              if(searchInput)
+                if(searchInput.current)
+                  searchInput.current.value = "";
+            }}
 
             onAnimationEnd={()=>{
               console.log("change")
@@ -73,26 +97,45 @@ export const GymSearchBar=(props:{
 
           >
             <IonContent className="ion-padding">
+              <IonHeader>{searchTabHeading}</IonHeader>
               <IonList>
 
-              {props.gyms.map((item: {key:string; gid:string; gym_icon:string; gym_brandname:string;gym_address:string;}) => {
-                    return (
+                
+              {  
+              props.gyms.map((item: {
+                key:string; 
+                gid:string; 
+                gym_icon:string; 
+                gym_brandname:string;
+                gym_address:string; 
+                gym_coord_lat:number; 
+                gym_coord_long:number
+              }) => {
 
-                      <IonItem 
-                        key={item.key}>
-                      <IonAvatar slot="start">
-                        <IonImg src={item.gym_icon} />
-                      </IonAvatar>
+                      return (
+                        
+                          <IonItem
+                            className="ion-align-items-center ion-margin-vertical border-light"
+                            onClick={()=>{
+                              modal.current?.setCurrentBreakpoint(0.25);
+                              props.setGymFocus(item.gym_coord_lat, item.gym_coord_long)
+                            }}
+                            key={item.key}>
+                          <IonAvatar slot="start">
+                            <IonImg src={item.gym_icon} />
+                          </IonAvatar>
 
-                      <IonLabel>
-                        <h2>{item.gym_brandname}</h2>
-                        <p>{item.gym_address}</p>
-                      </IonLabel>
-                      </IonItem>
+                          <IonLabel>
+                            <h2>{item.gym_brandname}</h2>
+                            <p>{item.gym_address}</p>
+                          </IonLabel>
+                          </IonItem>
 
 
-                    )                 
-                })}
+                      )                 
+                  }) 
+                }
+
                
               </IonList>
             </IonContent>
