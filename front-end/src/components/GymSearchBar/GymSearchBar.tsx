@@ -8,16 +8,17 @@ export const GymSearchBar=(props:{
     searchCallBack(searchQuery:string | null | undefined): any;
     setGymFocus(lat:number, long:number): any;
   })=>{
+
     const searchInput = useRef<HTMLIonSearchbarElement>(null)
     const modal = useRef<HTMLIonModalElement>(null);
     const page = useRef(null);
     const [isShowing, setIsShowing] = useState(false);
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
     const [searchTabHeading, setSearchTabHeading] = useState("Gyms Near You")
+
     useEffect(() => {
       setPresentingElement(page.current);
     }, []);
-  
   
     return (
         <>
@@ -43,7 +44,6 @@ export const GymSearchBar=(props:{
                   console.log(props.gyms)
                   
                 }}
-                onFocus={()=>console.log("focused")}
                 onKeyUp ={()=>{
                     let searchVal = searchInput.current?.value;
                     props.searchCallBack(searchVal);
@@ -52,7 +52,6 @@ export const GymSearchBar=(props:{
                       setSearchTabHeading("Gyms Near You")
                     else
                       {
-                        console.log(props.gyms.length)
                         if(props.gyms.length===0 || props.gyms==null ){
                           setSearchTabHeading("search for '" + searchVal+"': none found")
                         }
@@ -89,8 +88,6 @@ export const GymSearchBar=(props:{
             }}
 
             onAnimationEnd={()=>{
-              console.log("change")
-              
               searchInput.current?.setFocus();
             }
           }
@@ -100,7 +97,6 @@ export const GymSearchBar=(props:{
               <IonHeader>{searchTabHeading}</IonHeader>
               <IonList>
 
-                
               {  
               props.gyms.map((item: {
                 key:string; 
@@ -131,11 +127,9 @@ export const GymSearchBar=(props:{
                           </IonLabel>
                           </IonItem>
 
-
                       )                 
                   }) 
                 }
-
                
               </IonList>
             </IonContent>

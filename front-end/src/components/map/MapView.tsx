@@ -346,8 +346,6 @@ const MapView: React.FC = () =>{
             else    
                 getLocation(false);
 
-            //console.log("Map Refresh")
-
             setGymsInMapView();
         }, refresh);
         
