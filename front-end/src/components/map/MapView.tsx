@@ -27,9 +27,8 @@ const MapView: React.FC = () =>{
     const maxZoom = 20
     const minZoom = 14
     const [gyms, setGyms] = useState<{[key: string]: any}>();
-
     const [gymsInView, setGymsinView] = useState<{[key: string]: any}>([{key:"xxx",g_id:"xxx"}]);
-    const [gymsInSearchTab, setGymsInSearchTab] = useState<any[]>([]);
+    
     
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -54,6 +53,12 @@ const MapView: React.FC = () =>{
         gym_coord_long: 0,
         gym_icon: ".."
     });
+    
+    const [gymsInSearchTab, setGymsInSearchTab] = useState<any[]>([]);
+    
+    // state that controls the selectedGymMenu display
+    const [showModal, setShowModal] = useState(false);
+
 
 
     //=========================================================================================================//
@@ -68,6 +73,7 @@ const MapView: React.FC = () =>{
             gym_coord_lat: number;
             gym_coord_long: number; 
         }[] = [];
+
         // check if query is not empty
         if(query.length > 0){
             // loop through all the gyms in memory
@@ -91,9 +97,10 @@ const MapView: React.FC = () =>{
                 });
 
                 
-
+                // set the gyms array for the search tab
                 setGymsInSearchTab(outGyms);
         }
+        // display nearby gyms
         else
             getNearbyGyms()
         
@@ -107,44 +114,58 @@ const MapView: React.FC = () =>{
      */
     const getLocation = async(load: boolean) => {
         try {
- 
+            
+            // display loading bar?
             if(load) {
                 setLoading(true)
-                
             };
 
+            // check if we have location permissons
             Geolocation.checkPermissions().then(
                 result => {
-                    if(result==null) Geolocation.requestPermissions()
+                    // no permissions granted 
+                    if(result.location!=="granted") 
+
+                        Geolocation.requestPermissions()
                     else console.log("permissions granted")
                 },
                 err =>{ 
+                    // big error
                     console.log(err)
                     Geolocation.requestPermissions()
                 },
                 
             );  
             
+            // get the users location
             const position = await Geolocation.getCurrentPosition({
                 enableHighAccuracy: true
             });
           
+            // reset user coordinates
             setUserLoc([position.coords.latitude, position.coords.longitude]) 
 
+            // recenter users view to their location
             if(load){
                 setCenter([position?.coords.latitude, position?.coords.longitude]) 
                 setZoom(18) 
             }
 
+            // clear 
             setError({showError: false, message: "no error here"})
-     
             setLoading(false);
 
+        // locations is probably not enabled
         } catch(e){
             setLoading(false);
-            setError({showError: true, message: " Please Enable your GPS location"});
+            setError({showError: true, message: "Please Enable your GPS location"});
         }
     }  
+
+    /**
+     * onClick event for a gym marker on the map
+     * @param activeGym 
+     */
     const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
         setGymData(activeGym);
@@ -153,7 +174,7 @@ const MapView: React.FC = () =>{
 
     //=========================================================================================================//
     /**
-     * Function that gets the location of nearby gyms
+     * Function that gets the 5 nearest gyms to the users
      * @requires position users coordinates
      * @returns all nearby gyms
      */    
@@ -208,6 +229,9 @@ const MapView: React.FC = () =>{
         
     }
 
+    /**
+     * function that makes an api call to get all the gyms
+     */
     const getAllGyms = async() => {
         if(!postWaiting){
             setPostWaiting(true);
@@ -236,6 +260,35 @@ const MapView: React.FC = () =>{
         }
     }
 
+    //=========================================================================================================//
+    /**
+     * function that displayds all the gyms within the view of the users map
+     */
+     function setGymsInMapView() 
+     {   
+         // the radius grows with the zoom depth
+         let rad =  (20-zoom);
+ 
+         //the gyms we find in the radius will be added here
+         let outGyms:any = [];
+ 
+         //get the center coordinates
+         let lat= center[0];
+         let long = center[1];
+ 
+         // loop through all gyms
+         gyms?.forEach((element: { gid: string; gym_coord_lat: number; gym_coord_long: number; key: string;}) => {
+             // get magnitde between user and each gym coordinate
+             let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
+             // If magnitude is within radius then add it to the results
+             if(magnitude <= rad){
+                 outGyms.push(element);
+             }
+         });
+ 
+         //chagne the state of gyms in view 
+         setGymsinView(outGyms);
+     }
 
     //=============================================================================================//
     //Helper Functions 
@@ -256,10 +309,10 @@ const MapView: React.FC = () =>{
     //=========================================================================================================//
     /**
      * Helper functions to get the distance between two coordinates
-     * @param {float} lat1 = toX
-     * @param {float} lon1
-     * @param {float} lat2
-     * @param {float} lon2
+     * @param {float} lat1 = fromLat
+     * @param {float} lon1 = fromLong
+     * @param {float} lat2 = toLat
+     * @param {float} lon2 = toLong
      * @returns {float} distance between points 
      */
     function calcCrow(lat1: number, lon1: number, lat2: number, lon2: number)  
@@ -276,39 +329,11 @@ const MapView: React.FC = () =>{
       var d = R * c;
       return d;
     }
- 
-    //=========================================================================================================//
+
     /**
-     * 
-     * 
+     * function that loops every few minutes 
+     * gets an updated list of gyms
      */
-    function setGymsInMapView() 
-    {   
-        // the radius grows with the zoom depth
-        let rad =  (20-zoom);
-
-        //the gyms we find in the radius will be added here
-        let outGyms:any = [];
-
-        //get the center coordinates
-        let lat= center[0];
-        let long = center[1];
-
-        // loop through all gyms
-        gyms?.forEach((element: { gid: string; gym_coord_lat: number; gym_coord_long: number; key: string;}) => {
-            // get magnitde between user and each gym coordinate
-            let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
-            // If magnitude is within radius then add it to the results
-            if(magnitude <= rad){
-                outGyms.push(element);
-            }
-        });
-
-        //chagne the state of gyms in view 
-        setGymsinView(outGyms);
-    }
-
-    
     useEffect(() => {
 
         const interval = setInterval(() => {
@@ -331,12 +356,10 @@ const MapView: React.FC = () =>{
             clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
         }
     })
-
     
-
-    const [showModal, setShowModal] = useState(false);
-
-   
+    /**
+     * animation for opening the selected gym menu
+     */
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;
 
@@ -358,10 +381,21 @@ const MapView: React.FC = () =>{
         .addAnimation([backdropAnimation, wrapperAnimation]);
     }
 
+    /**
+     * animation for closing the selected gym menu
+     */
     const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
     }
 
+    /**
+     * a function that gets map tiles from the map provider
+     * @param x latitude
+     * @param y longitude
+     * @param z zoom
+     * @param dpr resolution
+     * @returns png for pidgeon maps
+     */
     const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
         return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
     }
@@ -388,8 +422,7 @@ const MapView: React.FC = () =>{
                     setZoom(18) ;
                     setGymsInMapView()
                 }}
-            />
-                
+            /> 
                 
             <IonLoading 
                 isOpen={loading}
@@ -452,14 +485,10 @@ const MapView: React.FC = () =>{
                     )                 
                 })}
 
-                
-            
-
             </Map>
 
             <IonModal  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
-        
-            {/* <IonBadge > */}
+
                 <IonCard style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
                         <IonCardTitle className='center Subheading'>{gymData.gym_brandname}</IonCardTitle>
@@ -487,7 +516,7 @@ const MapView: React.FC = () =>{
                     
                     </IonCardContent>
                 </IonCard>
-            {/* </IonBadge > */}
+
             
             </IonModal>   
             </IonContent>
