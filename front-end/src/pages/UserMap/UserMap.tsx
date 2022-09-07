@@ -10,7 +10,7 @@ const UserMap: React.FC = () => {
                      {'caption':'Settings','icon':'cog','route':'/Settings'}] 
 
   return (
-    <IonPage>
+    <IonPage >
       <IonHeader>
         <ToolBar menu={true}></ToolBar>
       </IonHeader>

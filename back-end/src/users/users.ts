@@ -491,7 +491,9 @@ const users = express.Router()
     try {
         // SQL statement to get all gyms
         var gyms = await gymRepository.findAll();
-
+        gyms.forEach(element => {
+          element.key = element.g_id;
+        });
         const results = { 'success': true, 'results': gyms };
         res.json(results);
       

@@ -81,6 +81,7 @@
     "react-toastify": "^9.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.0",
+    "string-similarity-js": "^2.1.4",
     "swiper": "^8.2.6",
     "ts-config": "^20.10.0",
     "ts-node": "^10.7.0",
