@@ -37,7 +37,8 @@ export const GymSearchBar=(props:{
             <IonSearchbar
                 ref={searchInput}
                 onClick = {()=>{
-                  setSearchTabHeading("")
+                  
+                  setSearchTabHeading("Gyms Near You")
                         
                   props.nearByCallBack()
                   setIsShowing(true)
