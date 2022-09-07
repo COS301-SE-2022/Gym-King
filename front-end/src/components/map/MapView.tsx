@@ -9,8 +9,7 @@ import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
 import GymSearchBar from "../GymSearchBar/GymSearchBar";
-
-
+import  stringSimilarity  from "string-similarity-js";
 interface LocationError {
     showError: boolean;
     message?: String;
