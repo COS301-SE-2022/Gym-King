@@ -14,6 +14,18 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const ownerpicture = multer();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+//=============================================================================================//
+//Nodemailer email connection 
+//=============================================================================================//
+var emailer = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  }
+});
 
 const allowedOrigins = [
   'capacitor://localhost',

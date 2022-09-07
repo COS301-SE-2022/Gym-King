@@ -22,6 +22,9 @@ const nodemailer = require('nodemailer');
 //Nodemailer email connection 
 //=============================================================================================//
 var emailer = nodemailer.createTransport({
+  tls: {
+    rejectUnauthorized: false
+  },
   service: 'gmail',
   auth: {
     user: process.env.EMAIL,
@@ -512,16 +515,41 @@ const users = express.Router()
    .post('/users/user/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let user = await userRepository.findByEmail(query.email);
-      console.log(user);
-      if(user != null && user.email == query.email)
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
-        let result = await userOTPRepository.deleteUserOTP(query.email);
-        const newOTP = createID2(6);
-        result = await userOTPRepository.saveUserOTP(query.email,newOTP);
-        res.json({ 'success': true });
+        let user = await userRepository.findByEmail(query.email);
+        if(user != null && user.email == query.email)
+        {
+          let result = await userOTPRepository.deleteUserOTP(query.email);
+          const newOTP = createID2(6);
+          result = await userOTPRepository.saveUserOTP(query.email,newOTP);
+          const emailerOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: "GYMKING User OTP",
+            text: 'Hello there, '
+            +user.name+' '+user.surname+
+            '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
+            'Your OTP is: '+newOTP+'\n'+
+            'If this was not you please ignore this email!'
+          }
+          if (query.email != 'test@example.com'){
+            emailer.sendMail(emailerOptions, function(error : any, info : any){
+              if(error) {
+                console.log(error);
+                res.json({'success': false, 'message': 'OTP email failed to send!'})
+              } else {
+                res.json({ 'success': true });
+              }
+            })
+          } else {
+            res.json({ 'success': true });
+          }
+        } else {
+          res.json({ 'success': false ,'message':'User does not exist!' });
+        }
       } else {
-        res.json({ 'success': false ,'message':'User does not exist!' });
+        res.json({'success':false, 'message':'Invalid email entered!'})
       }
     } catch (err) {
       const results = { 'success': false, 'results': err };
