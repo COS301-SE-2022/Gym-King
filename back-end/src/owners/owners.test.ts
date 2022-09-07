@@ -153,10 +153,17 @@ describe('Testing POST API Calls', () => {
     describe('responds to POST insert owner OTP', () => {
         test('responds to incorrect POST insert owner OTP', async () => {
             const response = await request(server).post('/owners/owner/OTP').send({
-                "email": "InvalidEmail",
+                "email": "fakeEmail@example.com",
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({ 'success': false ,'message':'Owner does not exist!' });
+        })
+        test('responds to incorrect POST insert owner OTP', async () => {
+            const response = await request(server).post('/owners/owner/OTP').send({
+                "email": "InvalidEmail",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid email entered!'});
         })
         test('responds to correct POST insert owner OTP', async () => {
             const response = await request(server).post('/owners/owner/OTP').send({
