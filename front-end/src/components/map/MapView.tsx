@@ -60,10 +60,33 @@ const MapView: React.FC = () =>{
     /**
      * used to search the list of gyms for the specefed query
      */
-    const searchQuery = async(query: string) => {
+    const searchQueryAction = async(query: string) => {
+
+        // the list of gyms that match the search query
+        let outGyms: {                    
+            g_id: any; 
+            gym_coord_lat: number;
+            gym_coord_long: number; 
+        }[] = [];
+
+        // loop through all the gyms in memory
         gyms?.forEach((element: any) => {
-            console.log(element);
+
+            // set all strings to lowercase
+            let qAdjusted = query.toLocaleLowerCase();
+            let nameAdjusted = element.gym_brandname.toLocaleLowerCase();
+            let addresAdjusted = element.gym_address.toLocaleLowerCase();
+
+            // check name similarity
+            if(stringSimilarity(qAdjusted, nameAdjusted) >= 0.5)
+                outGyms.push(element)
+
+            // check address similarity
+            else if(stringSimilarity(qAdjusted, addresAdjusted) >= 0.5)
+                outGyms.push(element)
         });
+
+        setGymsInSearchTab(outGyms);
     }
     
     //=========================================================================================================//
@@ -337,7 +360,7 @@ const MapView: React.FC = () =>{
                     }
                 }
                 searchCallBack = {(searchQuery:string) => {
-                        console.log(searchQuery)
+                        searchQueryAction(searchQuery)
                     }
                 }
             />
