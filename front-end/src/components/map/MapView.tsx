@@ -1,5 +1,5 @@
 import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonIcon,  IonLoading, IonModal, IonToast, useIonViewDidEnter } from "@ionic/react";
-import React, { Component, useEffect, useRef, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { useHistory } from 'react-router-dom';
@@ -56,6 +56,17 @@ const MapView: React.FC = () =>{
         gym_icon: ".."
     });
 
+
+    //=========================================================================================================//
+    /**
+     * used to search the list of gyms for the specefed query
+     */
+    const searchQuery = async(query: string) => {
+        gyms?.forEach((element: any) => {
+            console.log(element);
+        });
+    }
+    
     //=========================================================================================================//
     /**
      * Function that gets the users location
@@ -321,9 +332,13 @@ const MapView: React.FC = () =>{
                 
             <GymSearchBar 
                 gyms={gymsInSearchTab} 
-                callback = {() =>{
+                nearByCallBack = {() =>{
                         setShowModal(false);
                         getNearbyGyms()
+                    }
+                }
+                searchCallBack = {(searchQuery:string) => {
+                        console.log(searchQuery)
                     }
                 }
             />

@@ -4,7 +4,8 @@ import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAva
 
 export const GymSearchBar=(props:{
     gyms: any[]; 
-    callback(): any;
+    nearByCallBack(): any; 
+    searchCallBack(searchQuery:string | null | undefined): any;
   })=>{
     const searchInput = useRef<HTMLIonSearchbarElement>(null)
     const modal = useRef<HTMLIonModalElement>(null);
@@ -38,14 +39,14 @@ export const GymSearchBar=(props:{
                 ref={searchInput}
                 onClick = {()=>{
                   
-                  props.callback()
+                  props.nearByCallBack()
                   setIsShowing(true)
                   console.log(props.gyms)
                   
                 }}
                 onFocus={()=>console.log("focused")}
-                onKeyDown ={()=>{
-
+                onKeyUp ={()=>{
+                    props.searchCallBack(searchInput.current?.value);
                   }
                 }
                 
@@ -62,12 +63,13 @@ export const GymSearchBar=(props:{
         
             presentingElement={presentingElement!}
             onWillDismiss={()=>setIsShowing(false)}
-            onIonModalDidPresent={()=>{
-                console.log("change")
-                
-                searchInput.current?.setFocus();
-              }
+
+            onAnimationEnd={()=>{
+              console.log("change")
+              
+              searchInput.current?.setFocus();
             }
+          }
 
           >
             <IonContent className="ion-padding">
