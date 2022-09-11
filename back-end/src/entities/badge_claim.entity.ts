@@ -30,6 +30,4 @@ export class badge_claim {
     @ManyToOne(() => gym_user, (gym_user) => gym_user.email)
     @JoinColumn({name: "email"})
     email: gym_user
-
-    
 }

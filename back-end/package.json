@@ -4,14 +4,11 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "serve":  "env-cmd -f .developing.env heroku local web",
-
+    "serve": "env-cmd -f .developing.env heroku local web",
     "start": "ts-node ./src/index.ts",
-
     "prod:api": "env-cmd -f .production.env heroku local web",
     "dev:api": "env-cmd -f .developing.env heroku local web",
     "test:api": "env-cmd -f .testing.env npx jest --runInBand",
-
     "compile": "chmod -R 777 Models/"
   },
   "keywords": [],
@@ -32,6 +29,7 @@
     "firebase-admin": "^11.0.0",
     "jest": "28.0.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.7.8",
     "path": "^0.12.7",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
