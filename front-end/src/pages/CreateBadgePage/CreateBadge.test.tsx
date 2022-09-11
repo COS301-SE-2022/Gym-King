@@ -11,12 +11,14 @@ test('renders without crashing', () => {
 });
 
 
-describe('Testing API calls', () => {
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to api', () => {
 
     it('should load owned gym data', async () => {
         (async ()=>{
             let gymOwner = "u20519517@tuks.co.za"
-            await fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${gymOwner}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -33,7 +35,7 @@ describe('Testing API calls', () => {
     it('should create a badge', async () => {
         (()=>{
 
-        fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
             "method":"POST",
             headers: {
                 'Accept': 'application/json',
@@ -61,7 +63,7 @@ describe('Testing API calls', () => {
 
 })
 /*
-describe('Integration Tests', () => {
+describe('Testing integration of components and pages', () => {
     
     test('sending in a list of activity types displays correctly as a segment button', async () => {
         const {getByTestId } = render(<CreateBadge />);
@@ -75,5 +77,4 @@ describe('Integration Tests', () => {
         expect(getByTestId('rg')).toBeDefined()
     });
 })
-
 */

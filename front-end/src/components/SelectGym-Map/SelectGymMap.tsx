@@ -6,10 +6,9 @@ import React, { useRef, useState } from "react";
 import { Map, Overlay} from "pigeon-maps";
 import { IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonItem, IonLabel, IonModal, IonRow, IonSearchbar, useIonViewWillEnter, useIonViewWillLeave} from "@ionic/react";
 import "./SelectGymMap.css"
-import { stamenToner } from 'pigeon-maps/providers'
 import { locate, location, lockClosed, lockOpen } from "ionicons/icons";
 import Geocoder from "react-native-geocoding";
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@capacitor/geolocation';
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 /**
@@ -141,6 +140,12 @@ const handleKeyDown = (event: { key: string }) => {
         .catch((error) => console.warn(error));
     }
   };
+
+
+  
+  const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
+    return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+  }
 //=================================================================================================
 //    FUNCTIONS
 //=================================================================================================  
@@ -148,7 +153,7 @@ const handleKeyDown = (event: { key: string }) => {
     <div>
     <Map
     
-     provider={stamenToner}
+     provider={mapTiler}
      height={height}
      center={[center[0],center[1]]} 
      zoom={zoom}

@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 
+# env
 
 # testing
 /coverage
@@ -33,6 +34,3 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
-
-.developing.env
-.testing.env

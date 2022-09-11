@@ -7,10 +7,9 @@ import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
-import { stamenToner } from "pigeon-maps/providers";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
-
+import axios from "axios";
 
 /**
  * const addGym
@@ -23,7 +22,7 @@ const AddGym: React.FC = () => {
   //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
   //-gymName hook, hook that sets the name of a gym
-  const [gymName, setGymName] = useState<string>("name"); 
+  const [gymName, setGymName] = useState<string>(""); 
   //- gymAddress hook, hook that sets the address of a gym         
   const [gymAddress, setGymAddress] = useState<string>("address");
   //-coordinate hook, hook that sets the coordinates of the gym 
@@ -67,43 +66,43 @@ const AddGym: React.FC = () => {
    */
   const addGym = () => {
     
-    fetch(`https://gym-king.herokuapp.com/gyms/gym`,
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym`,
     {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
+      data: { 
         gymBrandName: gymName,
         gymAddress: gymAddress,
         gymCoordLong: coordinate[1],
         gymCoordLat: coordinate[0],
         gymIcon: gymIcon
-      })
+      }
     }
   )
-    .then((response) => response.json())
+    .then((response) => response.data)
     .then((response) => {
       console.log(response);
       sessionStorage.setItem("new_gid", response.g_id)
       console.log(sessionStorage.getItem("new_gid"))
       setShowToast1(true)
       history.goBack()
-      fetch(`https://gym-king.herokuapp.com/gyms/owned`,
+      axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned`,
       {
         method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        data:{ 
           email: localStorage.getItem('email'),
           gid: sessionStorage.getItem("new_gid")
-        })
+        }
       }
     )
-      .then((response) => response.json())
+      .then((response) => response.data)
       .then((response) => {
         console.log(response);
         sessionStorage.removeItem("new_gid")
@@ -118,7 +117,12 @@ const AddGym: React.FC = () => {
     });
     
 
+  
   };
+
+  const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
+    return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+  }
 //=================================================================================================
 //    Render
 //=================================================================================================
@@ -148,7 +152,7 @@ const AddGym: React.FC = () => {
                     height={200}
                     center={[coordinate[0], coordinate[1]]}
                     zoom={zoom}
-                    provider={stamenToner}
+                    provider={mapTiler}
                     data-testid="map"
                   >
                     <Overlay 

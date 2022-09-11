@@ -11,13 +11,26 @@ test('renders without crashing', () => {
 });
 
 
-describe('Testing API calls', () => {
+/*
+describe('Integration Tests', () => {
+    
+    test('sending in a list of activity types displays correctly as a segment button', async () => {
+        const {getByTestId } = render(<EditBadge />);
+    
+        expect(getByTestId('segBtn').innerHTML).toBeDefined()
+    });
+
+})*/
+
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to api', () => {
 
     it('should load badge data', async () => {
         
         ( ()=>{
             let badgeId="XRQ"
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -41,7 +54,7 @@ describe('Testing API calls', () => {
             let bc = "";
             let bd = "formData.badgeDescription";
             
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',
@@ -71,7 +84,7 @@ describe('Testing API calls', () => {
 
     it('should delete a badge', async () => {
         (()=>{
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
                   'Accept': 'application/json',
@@ -93,13 +106,3 @@ describe('Testing API calls', () => {
     });
 
 })
-/*
-describe('Integration Tests', () => {
-    
-    test('sending in a list of activity types displays correctly as a segment button', async () => {
-        const {getByTestId } = render(<EditBadge />);
-    
-        expect(getByTestId('segBtn').innerHTML).toBeDefined()
-    });
-
-})*/

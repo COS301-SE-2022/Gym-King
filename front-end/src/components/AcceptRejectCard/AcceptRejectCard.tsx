@@ -1,40 +1,63 @@
-import {IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonIcon, IonImg, IonRow, IonText} from '@ionic/react';
+/** 
+* @file AcceptRejectCard.tsx
+* @brief card that allows employee to accept or reject a claim
+*/
+
+import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText} from '@ionic/react';
 import React from 'react'
 import './AcceptRejectCard.css'
-import {personCircleOutline} from 'ionicons/icons';
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
+//-props, claim information
+export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, badgechallenge:string,  i1:any, i2:any, i3:any, activitytype:any,history:any, profile:string};
 
-//creating a type so props can be entered
-export type props = {proof:any, userID:any, username:any, badgeId:any, badgename:any, i1:any, i2:any, i3:any, activitytype:any,history:any};
-
-
+/** 
+  * @param ? props
+  * @return ? - AcceptRejectCard
+*/
 export class AcceptRejectCard extends React.Component<props>{
     
+
+    //=================================================================================================
+    //    FUNCTIONS
+    //=================================================================================================
+
+
+    /** 
+     * @brief ! - makes a call to add a badge from the badge_claim table to the badge_owned table
+     * @requires ? - a call to the api
+     * @result ? - claim is accepted or call to api fails 
+    */
     acceptClaim= ()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 bid: this.props.badgeId,
                 email: this.props.userID
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
-/*
-            let history=useHistory()
-            history.push("/PendingApprovals");*/
+
+            localStorage.setItem("claimAccepted", "true")
             this.props.history.goBack()
 
         })
         .catch(err => {console.log(err)}) 
     } 
+
+    /** 
+     * @brief ! -  makes a call to remove badge from badge_claim
+     * @requires ? - a call to the api
+     * @result ? - a claim is rejected or the api call fails 
+    */
     rejectClaim = () =>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',
@@ -48,23 +71,28 @@ export class AcceptRejectCard extends React.Component<props>{
         .then(response =>response.json())
         .then(response =>{
             console.log(response.results);
-            //display toast 
-            //redirect to PendingApprovals
-            /*
-            let history=useHistory()
-            history.push("/PendingApprovals"); */
+
+            localStorage.setItem("claimRejected", "true")
             this.props.history.goBack()
 
         })
         .catch(err => {console.log(err)})
     }
+
+    //=================================================================================================
+    //    Render
+    //=================================================================================================
     render(){
         
         return(
             <IonCard data-testid="ARC" className="glass arCard">
-                 <div style={{backgroundColor: "#321E93"}}>
-                    <IonIcon icon={personCircleOutline} className='userProfile'></IonIcon>
+                 <div style={{"backgroundColor": "#321E93", "overflow":"hidden"}}>
+                    <IonAvatar style={{"marginTop":"5%", "marginLeft":"1em", "float":"left"}}>
+                        <IonImg  style={{"overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${this.props.profile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                    </IonAvatar>
+                    <div style={{"marginTop":"6%"}}>
                     <IonText className='username'>{this.props.username}</IonText>
+                    </div>
                 </div>
                 <IonCardContent>
                     <IonText className='Subheading'>
@@ -72,6 +100,9 @@ export class AcceptRejectCard extends React.Component<props>{
                     </IonText><br></br>
                     <IonText className='txtBadge'>
                         {this.props.badgename}
+                    </IonText><br></br><br></br>
+                    <IonText className="Subheading">
+                        <i>{this.props.badgechallenge}</i>
                     </IonText>
                     <br></br><br></br>
                     <ActivityList  activityCategory={this.props.activitytype} i1={this.props.i1} i2={this.props.i2} i3={this.props.i3}></ActivityList>

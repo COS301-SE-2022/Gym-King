@@ -18,26 +18,34 @@ test('correctly diplays labels ', async () => {
   expect (baseElement).toHaveTextContent("Gym");
 });
 
-describe('Testing API calls', () => {
+
+
+//////// INTEGRATION TESTS ///////////
+
+describe('Testing connection to api', () => {
   let badgeId= "XRQ"
   let email ="u20519517@tuks.co.za"
 
   it('should load claim data', async () => {
       (()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`,{
           "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
+            expect(response).toBeDefined()
         })
-        .catch(err => {console.log(err)}) 
+        .catch(err => {
+          console.log(err)
+          expect(err).toBeDefined()
+        }) 
         })
   });
 
   it('should load claim data', async () => {
       (()=>
       {
-        fetch(`https://gym-king.herokuapp.com/employees/employee`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
             "method":"POST",
             headers: {
                 'Accept': 'application/json',
@@ -55,9 +63,11 @@ describe('Testing API calls', () => {
         })
         .then(response =>response.json())
         .then(response =>{
+          expect(response).toBeDefined()
         })
         .catch(err => {
             console.log(err)
+            expect(err).toBeDefined()
       }) 
       })
   });

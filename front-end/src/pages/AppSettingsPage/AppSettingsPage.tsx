@@ -1,10 +1,17 @@
+/** 
+* @file AppSettingsPage.tsx
+* @brief provides the ability to change app settings
+*/
+
 import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './AppSettingsPage.css';
 
 const AppSettingsPage: React.FC = () =>{
 
-
+    //=================================================================================================
+    //    Render
+    //=================================================================================================
         return(
             <IonPage color='#220FE' >
                 <IonHeader>
@@ -22,37 +29,3 @@ const AppSettingsPage: React.FC = () =>{
 }
 
 export default AppSettingsPage;
-
-/*
-<IonCard className="glass">
-    <IonCardHeader className="inputHeading">Notifications</IonCardHeader>
-    <IonCardContent>
-        <IonGrid>
-            <IonRow>
-                <IonCol size="3">
-                    <IonToggle color='tertiary' checked></IonToggle>
-                </IonCol>
-                <IonCol size="9">
-                    <IonText className='Subheading'>New badges are added to my gyms</IonText>
-                </IonCol>
-            </IonRow>
-            <IonRow>
-                <IonCol size="3">
-                    <IonToggle color='tertiary' checked></IonToggle>
-                </IonCol>
-                <IonCol size="9">
-                    <IonText className='Subheading'>My badges are accepted</IonText>
-                </IonCol>
-            </IonRow>
-            <IonRow>
-                <IonCol size="3">
-                    <IonToggle color='tertiary' checked></IonToggle>
-                </IonCol>
-                <IonCol size="9">
-                    <IonText className='Subheading'>My badges are rejected</IonText>
-                </IonCol>
-            </IonRow>
-        </IonGrid>
-    </IonCardContent>
-</IonCard>
-*/

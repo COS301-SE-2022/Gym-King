@@ -1,10 +1,11 @@
-import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import { arrowDown, arrowUp, funnel, swapVertical } from 'ionicons/icons';
 import React, { useState } from 'react';
 import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './MyBadge';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 
@@ -12,15 +13,13 @@ const MyBadge: React.FC = () =>{
     const [badges, setBadges] = useState(new Array<any>());
     let history=useHistory()
     const [loading, setLoading] = useState<boolean>(false);
+        let email=localStorage.getItem("email")
 
     
-    useIonViewWillEnter(()=>{
-        let email=localStorage.getItem("email")
+    useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/owned/${email}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+` /users/owned/${email}`)
+        .then(response =>response.data)
         .then(response =>{
             let arr=[];
             for(let i=0; i<response.length;i++)

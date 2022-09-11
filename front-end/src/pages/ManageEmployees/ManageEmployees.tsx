@@ -1,9 +1,10 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewWillEnter, IonItem, IonList, IonLabel, IonAccordion, IonAccordionGroup} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter, IonItem, IonList, IonLabel, IonAccordion, IonAccordionGroup} from '@ionic/react';
 import React, {useState} from 'react';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import './ManageEmployees.css';
 import { useHistory } from 'react-router-dom';
 import EmployeeList from '../../components/EmployeeList/EmployeeList';
+import axios from "axios";
 
 
 const ManageEmployees: React.FC = () =>{
@@ -14,17 +15,29 @@ const ManageEmployees: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
     let email = localStorage.getItem('email')
+    
 
     
-    useIonViewWillEnter(()=>
+    useIonViewDidEnter(()=>
     {
+        sessionStorage.removeItem("employee_email");
+        sessionStorage.removeItem("employee_name");
+        sessionStorage.removeItem("employee_surname");
+        sessionStorage.removeItem("employee_username");
+        sessionStorage.removeItem("employee_phone");
+        sessionStorage.removeItem("employee_gid");
+        sessionStorage.removeItem("employee_profilepicture");
+
         var owner=localStorage.getItem('email')
+        var owner_pass = localStorage.getItem("password")
         setLoading(true)
 
-        fetch(`https://gym-king.herokuapp.com/owners/employees/${owner}`, {
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        console.log(owner)
+        sessionStorage.setItem("owner_email", owner!)
+        sessionStorage.setItem("owner_pass", owner_pass!)
+
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${owner}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setEmployeeList(response)
@@ -37,10 +50,8 @@ const ManageEmployees: React.FC = () =>{
          })
 
          //get the owner's gyms
-         fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setGymList(response)
@@ -53,10 +64,11 @@ const ManageEmployees: React.FC = () =>{
 
     const getEmployeesByGym = (gid:string)=>{
         // eslint-disable-next-line
-        return employeeList.filter( (e:any)=>{
+        let list =  employeeList.filter( (e:any)=>{
             if(e.g_id === gid)
                 return e;
         }) 
+        return list
     }
     return(
         <IonPage>

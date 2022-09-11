@@ -1,9 +1,10 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter, IonToast} from '@ionic/react';
 import React, {useState} from 'react'
 import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 export type UploadActivityStates = {act?:any}
@@ -15,26 +16,33 @@ const PendingApprovalsPage: React.FC = () =>{
     const [claims, setClaims] = useState(new Array());
     const [loading, setLoading] = useState<boolean>(false);
     const [gymId, setGymId] = useState("");
+    const [showAcceptToast, setShowAcceptToast] = useState(false);
+    const [showRejectToast, setShowRejectToast] = useState(false);
+
     let history=useHistory()
 
 
 
     //GET REQUEST:
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
+
+        setShowAcceptToast(localStorage.getItem('claimAccepted')==="true")
+        setShowRejectToast(localStorage.getItem('claimRejected')==="true")
+
         setLoading(true)
         //get employee information 
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
 
@@ -47,11 +55,9 @@ const PendingApprovalsPage: React.FC = () =>{
                 console.log(err)
                 setLoading(false);
             })
-        console.log(gymId);
-        fetch(`https://gym-king.herokuapp.com/claims/gym/${localStorage.getItem("gid")}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        console.log(localStorage.getItem("gid"));
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/gym/${localStorage.getItem("gid")}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response);
             setClaims(response)
@@ -79,7 +85,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     
                     {
                         claims?.map(el =>{
-                            return ( <div onClick={goToAcceptReject}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} ></ApprovalButton></div>)
+                            return ( <div onClick={goToAcceptReject} key={Math.random()}><ApprovalButton userID={el.email} username={el.username} badgeId={el.b_id} key={el.email + el.b_id} profile={el.profile_picture}></ApprovalButton></div>)
                         })
                     }
 
@@ -93,6 +99,20 @@ const PendingApprovalsPage: React.FC = () =>{
                         
                     />
                 </IonContent>
+                <IonToast
+                    isOpen={showAcceptToast}
+                    onDidDismiss={() => {setShowAcceptToast(false); localStorage.setItem("claimAccepted", "false")}}
+                    message = "Claim accepted!"
+                    duration={1000}
+                    color="success"
+                />
+                <IonToast
+                    isOpen={showRejectToast}
+                    onDidDismiss={() => {setShowRejectToast(false); localStorage.setItem("claimRejected", "false")}}
+                    message = "Claim rejected."
+                    duration={1000}
+                    color="danger"
+                />
             </IonPage>
         )
         

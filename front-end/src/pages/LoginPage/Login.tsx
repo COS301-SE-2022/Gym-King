@@ -3,7 +3,7 @@ import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPa
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
-
+import axios from "axios";
 
 export const Login: React.FC = () =>{
     
@@ -16,19 +16,19 @@ export const Login: React.FC = () =>{
 
     const loginSubmit= ()=>{
             setLoading(true)
-            fetch('https://gym-king.herokuapp.com/users/login',{
-                method: 'POST',
+            axios.post(`${process.env["REACT_APP_GYM_KING_API"]}/users/login`, 
+            {
+                email: formData.email,
+                password: formData.password,
+                usertype: formData.usertype
+            },
+            {
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    email: formData.email,
-                    password: formData.password,
-                    usertype: formData.usertype
-                 })
-                })
-            .then(response =>response.json())
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response =>response.data)
             .then(response =>{
                 if(response.success){
                     console.log(response)
@@ -37,7 +37,7 @@ export const Login: React.FC = () =>{
                    localStorage.setItem("password", formData.password)
                    localStorage.setItem("usertype",formData.usertype)
                    localStorage.setItem("profile_picture", response.profile_picture)
-                   sessionStorage.setItem("pp", response.profile_picture)
+                   localStorage.setItem("pp", response.profile_picture)
 
                    setLoading(false)
                    navigate();
@@ -120,10 +120,10 @@ export const Login: React.FC = () =>{
                             <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
                             <br></br>
                             <div className='center'>
-                                <IonText className="linkLabel">Don't have an account?</IonText><a href="http://localhost:3000/Register" color="secondary" className='linkLabel'>Register</a>
+                                <IonText className="linkLabel">Don't have an account?</IonText><button  onClick= {() =>{history.push("/Register")}}  color="secondary" className='linkLabel puesdorHref'>Register</button>
                             </div>
                             <br></br>
-                            <a href="http://localhost:3000/OTP" color="secondary" className='linkLabel center'>Forgot Password?</a>
+                            <button  onClick= {() =>{history.push("/OTP")}} color="secondary" className='puesdorHref centerBtn'>Forgot Password?</button>
                     </form>
                 </IonContent>
 

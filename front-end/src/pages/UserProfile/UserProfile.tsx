@@ -1,8 +1,9 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewDidEnter} from '@ionic/react';
 import React, {useRef, useState, } from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -33,49 +34,40 @@ const UserProfilePage: React.FC = () =>{
     
     const getNumberOfBadges = () =>{
         
-        fetch(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`)
+            .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 setNumBadges(response.length)
             })
             .catch(err => {
-                console.log(err)
         })
     }
     const getNumberOfClaims = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
+            .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 setNumClaims(response.length)
             })
             .catch(err => {
-                console.log(err)
         })
     }
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 setEmail(response.email);
                 setName(response.name);
                 setSurname( response.surname);
@@ -89,7 +81,6 @@ const UserProfilePage: React.FC = () =>{
                 
             })
             .catch(err => {
-                console.log(err)
                 setLoading(false)
             })
         
@@ -100,13 +91,13 @@ const UserProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateUserDetails = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: email,
                     name: name, 
                     surname: surname, 
@@ -115,13 +106,11 @@ const UserProfilePage: React.FC = () =>{
                     password: localStorage.getItem("password"), 
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 
             })
             .catch(err => {
-                console.log(err)
             })
     }
 
@@ -165,26 +154,24 @@ const UserProfilePage: React.FC = () =>{
     
     const updateProfilePicture = () =>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("profile_picture", response.profile_picture!)
                 setLoading(false)
             })
             .catch(err => {
-                console.log(err)
                 setLoading(false)
             })
     }
@@ -209,17 +196,15 @@ const UserProfilePage: React.FC = () =>{
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/user/picture`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/picture`,{
                 "method":"PUT",
-                body: formData
+                data: formData
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 updateProfilePicture()
             })
             .catch(err => {
-                console.log(err)
                 setLoading(false)
             }) 
         
@@ -235,11 +220,11 @@ const UserProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow >
-                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
+                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"position":"absolute","overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">

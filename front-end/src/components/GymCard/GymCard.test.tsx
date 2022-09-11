@@ -1,4 +1,5 @@
 import {render,screen} from '@testing-library/react';
+import { response } from 'express';
 import GymCard from './GymCard';
 /*UNIT TESTING*/
 //test if pages rendered
@@ -16,10 +17,37 @@ describe('Testing prop text values', () => {
         expect(screen.getByText(/123 street/i)).toBeInTheDocument();
     }); 
   });
-/*describe('testing clickables',()=>{
-  test('action sheet opens', async () => {
-        expect(screen.getByText(/Edit/i)).toBeInTheDocument();
-        expect(screen.getByText(/Delete/i)).toBeInTheDocument();
-        expect(screen.getByText(/Cancel/i)).toBeInTheDocument();
-    });
-})*/
+
+
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to api', () => {
+
+  test('should delete a badge',  () => {
+      
+      ( ()=>{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
+        {
+            method: "DELETE",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+              gid:"",
+              "email":"",
+              "password":"",
+            })
+          }
+        )
+          .then((response) => response.json())
+          .then((response) => {
+              expect(response).toBeDefined()
+          })
+          .catch((err) => {
+            expect(err).toBeDefined()
+          });
+      })
+  });
+})
+

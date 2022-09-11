@@ -10,11 +10,14 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
-describe('Testing API calls', () => {
+////////// INTEGRATION TESTS //////////
+
+
+describe('Testing connection to api', () => {
 
   it('should load owner info', async () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -36,7 +39,7 @@ describe('Testing API calls', () => {
   });
   it('should load owner owned gyms', async () => {
     (async ()=>{
-      fetch(`https://gym-king.herokuapp.com/gyms/owned/${"email"}`,{
+      fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"email"}`,{
         method: 'GET'
       })
       .then(response =>response.json())
@@ -50,7 +53,7 @@ describe('Testing API calls', () => {
   });
   it('should load owner owned gyms', async () => {
     (async ()=>{
-      fetch(`https://gym-king.herokuapp.com/owners/employees/empl_email`,{
+      fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/empl_email`,{
           method: 'GET'
       })
       .then(response =>response.json())
@@ -65,7 +68,7 @@ describe('Testing API calls', () => {
 
   it('should update owner info', async () => {
     (async ()=>{
-      fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+      fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
           method: 'PUT',
           headers: {
             'Accept': 'application/json',

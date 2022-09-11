@@ -7,31 +7,24 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
 });
 
-test("API fetch badges",()=>{
-    let badges:any=[]    
-    var email="u20519517@tuks.co.za"
-            fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
-            .then(response =>{
-                console.log("fetching gyms")
-                var arr=[];
-                for(let i=0;i<response.results.length;i++)
-                {
-                    
-                    arr.push(
-                        {
-                            'GymName':response.results[i].gym_brandname,
-                            'GymID':response.results[i].g_id,
-                        }
-                    )
-                }
-                badges=arr
-            })
-            .catch(err => {console.log(err)})
-    expect(badges).toBeDefined();
-   
-}
-)
-//
+
+
+////////// INTEGRATION TESTS //////////
+describe('Testing connection to api', () => {
+    test("API fetch badges",()=>{
+        let badges:any=[]    
+        var email="u20519517@tuks.co.za"
+                fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${email}`,{
+                    "method":"GET"
+                })
+                .then(response =>response.json())
+                .then(response =>{
+                    expect(response).toBeDefined()
+                })
+                .catch(err => {
+                    expect(err).toBeDefined()
+                })
+            
+    
+    })
+})

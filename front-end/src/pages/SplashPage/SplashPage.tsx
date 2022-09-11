@@ -1,11 +1,26 @@
-import { IonPage, IonContent, IonImg, useIonViewWillEnter} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewDidEnter, useIonRouter} from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
+import { Geolocation } from '@capacitor/geolocation';
+
+
 
 export const SplashPage: React.FC = () =>
 {
-    useIonViewWillEnter(()=>{
+    const getPermissons = () => {
+
+        Geolocation.checkPermissions().then(
+            result => {console.log("permissions granted")},
+            err =>{ console.log(err)
+                Geolocation.requestPermissions();},
+            
+        );    
+          
+    }
+    const router = useIonRouter();
+    useIonViewDidEnter(()=>{
+        getPermissons();
         setTimeout(() => {
             if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
             {
@@ -13,7 +28,7 @@ export const SplashPage: React.FC = () =>
             }
             else
             {
-                window.location.href="http://localhost:3000/Login"
+                router.push("/Login");
 
             }
           }, 3000);
@@ -25,14 +40,14 @@ export const SplashPage: React.FC = () =>
         let usertype=localStorage.getItem("usertype")
         if(usertype==="gym_user")
         {
-            window.location.href="http://localhost:3000/userMap"
+            router.push("userMap");
         }
         else if(usertype==="gym_owner")
         {
-            window.location.href="http://localhost:3000/GymOwnerPage"
+            router.push("GymOwnerPage");
         }
         else{
-            window.location.href="http://localhost:3000/EmployeeHome"
+            router.push("EmployeeHome");
         }
     }
     return (

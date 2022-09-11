@@ -1,7 +1,8 @@
-import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonButton, IonButtons, IonCard, IonCardHeader, IonCardContent, IonLabel, IonInput, IonModal, IonTitle, IonToolbar, IonToast, IonLoading, IonImg, useIonViewDidEnter} from '@ionic/react';
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./EmployeeProfile.css";
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -35,22 +36,22 @@ const EmployeeProfilePage: React.FC = () =>{
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
 
-    useIonViewWillEnter(()=>{
+    useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
         //get employee information 
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setEmail(response.email);
@@ -73,13 +74,14 @@ const EmployeeProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: email,
                     name: name, 
                     surname: surname, 
@@ -88,7 +90,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     password: localStorage.getItem("password"), 
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)                
             })
@@ -130,18 +132,18 @@ const EmployeeProfilePage: React.FC = () =>{
     }
 
     const updateProfilePicture= ()=>{
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
                 password: localStorage.getItem("password")
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
             setProfilePicture(response.profile_picture)
             setLoading(false)
@@ -173,11 +175,11 @@ const EmployeeProfilePage: React.FC = () =>{
                 formData.append('profilepicture', values.current.file, values.current.file.name);
         
                 setLoading(true)
-                fetch(`https://gym-king.herokuapp.com/employees/employee/picture`,{
+                axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/picture`,{
                         "method":"PUT",
-                        body: formData
+                        data: formData
                     })
-                    .then(response =>response.json())
+                    .then(response =>response.data)
                     .then(response =>{
                         console.log(response)
                         updateProfilePicture()
@@ -198,11 +200,11 @@ const EmployeeProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard className="profileCard" style={{"padding-bottom":"2em"}}>
+                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg   style={{"position":"absolute","overflow":"hidden","border-radius":"50%","background-image":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg   style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
                                         <IonCol size="7">
