@@ -21,7 +21,7 @@ export class gym_user {
     @Column({length: 300})
     password: string
 
-    @Column({length: 65535, default:"NONE"})
+    @Column({length: 65535, default:"NONE",nullable: true})
     profile_picture: string
 
     @OneToMany(() => badge_claim, (badge_claim) => badge_claim.email)

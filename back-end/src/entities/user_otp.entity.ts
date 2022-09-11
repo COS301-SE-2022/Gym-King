@@ -8,7 +8,7 @@ export class user_otp {
     @JoinColumn({name: "email"})
     email: gym_user
 
-    @Column({length: 6})
+    @Column({length: 6,nullable: true})
     otp: string
 
     @Column({type: "date", default: "NOW()"})

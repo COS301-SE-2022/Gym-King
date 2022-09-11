@@ -50,17 +50,17 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
 
 
         let ret=[];
-        reqs.forEach((req: { isPending: boolean; fromUser: string; }) => {
+        reqs.forEach((req: { isPending: boolean; toUser: string; }) => {
             if(req.isPending==false){
-                ret.push(req.fromUser)
+                ret.push(req.toUser)
             }
 
         });
         reqs =await this.findBy({ toUser: userEmail})
 
-        reqs.forEach((req: { isPending: boolean; toUser: string; }) => {
+        reqs.forEach((req: { isPending: boolean; fromUser: string; }) => {
             if(req.isPending==false){
-                ret.push(req.toUser)
+                ret.push(req.fromUser)
             }
 
         });

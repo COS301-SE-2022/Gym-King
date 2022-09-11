@@ -205,7 +205,7 @@ const utils = express.Router()
           "Date DATE DEFAULT NOW()," +
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (email) REFERENCES GYM_EMPLOYEE(email)" +
-          ")"
+        ")"
       );
       result = await client.query(
         "CREATE TABLE IF NOT EXISTS OWNER_OTP(" +
@@ -215,6 +215,17 @@ const utils = express.Router()
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (email) REFERENCES GYM_OWNER(email)" +
           ")"
+      );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS FRIEND(" +
+        "fromUser VARCHAR(320)," +
+        "toUser VARCHAR(320)," +
+        "isPending BOOLEAN,"+
+        "PRIMARY KEY(fromUser)," +
+        "FOREIGN KEY (fromUser) REFERENCES GYM_USER(email)," +
+        "PRIMARY KEY(toUser)," +
+        "FOREIGN KEY (toUser) REFERENCES GYM_USER(email)" +
+      ")"
       );
       const results = { success: true};
       res.json(results);
