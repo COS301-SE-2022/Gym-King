@@ -5,7 +5,7 @@
 import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
-
+import DeviceInfo from 'react-native-device-info';
 
 /**
  * @brief input inteface for IonToast 
@@ -105,7 +105,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
     
     //=========================================================================================================//
     /**
-     * @brief this function is used to determine what kind of ios device is being used and if it is compatible with ARkit
+     * @brief this function is used to determine what kind of android device is being used and if it is compatible with ARcore
      * @returns boolean
      */
     const IsAndroid = () =>{
@@ -115,7 +115,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
     
     //=========================================================================================================//
     /**
-     * Function that determines phone device an calls AR intent
+     * Function that determines phone device and calls AR intent
      * @requires rank a valid badge rank Identifier
      * @requires emblem a valid badge emblem Identifier
      * saves users location to a var
