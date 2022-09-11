@@ -1,4 +1,2 @@
 node_modules
-.testing.env
-.developing.env
-.production.env
+*.env
