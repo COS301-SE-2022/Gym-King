@@ -8,6 +8,8 @@ import { userRepository } from "../repositories/gym_user.repository";
 import { userOTPRepository } from "../repositories/user_otp.repository"; 
 import { storageRef } from "../firebase.connection";
 import { friendRepository } from "../repositories/friend.repository";
+import { subscription } from "../entities/subscription.entity";
+import { subscriptionRepository } from "../repositories/subscription.repository";
 
 const express = require('express');
 const cors = require('cors');
@@ -760,15 +762,24 @@ const users = express.Router()
     try {
       let query = req.body;
       if(query.fromEmail && query.toEmail){
+        
+
+        let a = (await friendRepository.findByFromTo(query.fromEmail,query.toEmail))
+        let b = (await friendRepository.findByFromTo(query.toEmail,query.fromEmail))
+
         // the user has already made the request
-        if((await friendRepository.findByFromTo(query.fromEmail,query.toEmail))!=null){
+        if( a != null){
           throw "this request has already been created"
         }
         // the friend has sent the user a request
-        else if((await friendRepository.findByFromTo(query.toEmail,query.fromEmail))!=null){
-          // set the pending status to false. the friend request was accepted
-          let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
-          res.json({'success':true, 'results': 'request already exists, request was accepted'});    
+        else if(b!=null){
+          
+          if(b.isPending){
+            // set the pending status to false. the friend request was accepted
+            let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
+            res.json({'success':true, 'results': 'request already exists, request was accepted'});    
+          }
+          else throw "this request has already been created and accepted";
         }
         // no request exists
         else{
@@ -778,7 +789,7 @@ const users = express.Router()
       }
       else throw "missing email";
     } catch (err){
-      const results = { success: false, results: "could not create request" };
+      const results = { success: false, results: "could not create request" ,reason: err};
       console.error(err);
       res.json(results);
     }
@@ -857,8 +868,8 @@ const users = express.Router()
 
   //=========================================================================================================//
   /**
-   * DELETE - delete a friend request or relation
-   * @param {string} fromEmail the user sending the request.
+   * DELETE - delete a friend request or relation (the order of emails doesnt matter, this deletes any request that matches the given emails)
+   * @param {string} fromEmail the user who sent the request.
    * @param {string} toEmail the user receiving the request.
    **/
   .delete("/users/user/deleteRequest", cors(corsOptions), async (req: any, res: any) => {
@@ -884,6 +895,116 @@ const users = express.Router()
         }
       }
       else throw "missing email";
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST create a subscription relation. also checks for an existing subscription between the user and gym
+   * @param {string} fromEmail the user making the subscription.
+   * @param {string} toEmail the user receiving the request.
+   * @returns message confirming creation.
+   */
+  .post('/users/user/createSubscription', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.gid){
+        // no subsription found 
+        if((await subscriptionRepository.findByFromTo(query.fromEmail,query.gid))==null){
+          let result = await subscriptionRepository.createSubscription(query.fromEmail,query.gid);
+          res.json({'success':true, 'results': 'subsription was added'});    
+       
+        }
+        // subsription already exsists
+        else{
+          throw "subsription already exsists"
+        }
+      }
+      else throw "missing email or gym";
+    } 
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST get the gyms a user is subsribed to
+   * @param {string} fromEmail the users email.
+   * @returns the list of all gyms.
+   */
+  .post('/users/user/getGymSubscriptions', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.fromEmail){
+        let result = await subscriptionRepository.findBySubscriber(query.fromEmail);
+        res.json({'success':true, 'results': result});    
+      }
+      else{
+        throw "missing email"
+      }
+
+    }
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST get the subcribers of a gym
+   * @param {string} gid the gym id of the gym your searching.
+   * @returns the list of all subscribers.
+   */
+  .post('/users/user/getSubscribedUsers', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.gid){
+        let result = await subscriptionRepository.findBySubbed(query.gid);
+        res.json({'success':true, 'results': result});    
+      }
+      else{
+        throw "missing gym id"
+      }
+    }
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * DELETE - delete a subscription relation
+   * @param {string} fromEmail the subsribed user
+   * @param {string} toGym the gym that is subsribed to.
+   * @returns success status
+   **/
+  .delete("/users/user/deleteSubscription", cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.gid){
+        // the user has already made the request
+        if((await subscriptionRepository.findByFromTo(query.fromEmail,query.gid))!=null){
+          let result = await subscriptionRepository.removeSubsription(query.fromEmail,query.gid);
+          res.json({'success':true, 'results': 'subsription was removed'});    
+       
+        }
+
+        // no subsription exists
+        else{
+          throw "subsription not found"
+        }
+      }
+      else throw "missing email or gym";
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
