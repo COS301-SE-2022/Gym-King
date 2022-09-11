@@ -6,6 +6,7 @@ import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
 import DeviceInfo from 'react-native-device-info';
+import compList from './compatibleDevices'
 
 /**
  * @brief input inteface for IonToast 
@@ -109,8 +110,17 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
      * @returns boolean
      */
     const IsAndroid = () =>{
-        var ua = navigator.userAgent.toLowerCase();
-        return ua.indexOf("android") > -1;
+        return isCompatible();
+    }
+
+    const isCompatible= () =>{
+        let model = DeviceInfo.getModel()
+        console.log(model);
+        if(compList.indexOf(model)>=0)
+            return true
+        else
+            return false
+
     }
     
     //=========================================================================================================//
