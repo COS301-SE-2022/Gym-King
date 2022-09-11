@@ -5,8 +5,9 @@ import { gymRepository } from "../repositories/gym.repository";
 import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
-import { userOTPRepository } from "../repositories/user_otp.repository";
+import { userOTPRepository } from "../repositories/user_otp.repository"; 
 import { storageRef } from "../firebase.connection";
+import { friendRepository } from "../repositories/friend.repository";
 
 const express = require('express');
 const cors = require('cors');
@@ -742,6 +743,147 @@ const users = express.Router()
       else {
         res.json({'message':'Invalid email or password!'})
       }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - create a request. also checks for an existing request between the two users and sets it to accpeted
+   * @param {string} fromEmail the user sending the request.
+   * @param {string} toEmail the user receiving the request.
+   * @returns message confirming creation.
+   */
+  .post('/users/user/CreateRequest', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.fromEmail && query.toEmail){
+        // the user has already made the request
+        if((await friendRepository.findByFromTo(query.fromEmail,query.toEmail))!=null){
+          throw "this request has already been created"
+        }
+        // the friend has sent the user a request
+        else if((await friendRepository.findByFromTo(query.toEmail,query.fromEmail))!=null){
+          // set the pending status to false. the friend request was accepted
+          let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
+          res.json({'success':true, 'results': 'request already exists, request was accepted'});    
+        }
+        // no request exists
+        else{
+          let result = await friendRepository.createRequest(query.fromEmail,query.toEmail);
+          res.json({'success':true,'results': 'request was created'});
+        }
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: "could not create request" };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users friends
+   * @param {string} userEmail the user whos friends you want to get.
+   * @returns list of friends' emails .
+   */
+  .post('/users/user/getFriends', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findFriends(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users received requests
+   * @param {string} userEmail the user whos received requests you want to get.
+   */
+  .post('/users/user/getReceivedRequests', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findReceivedRequests(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users sent requests
+   * @param {string} userEmail the user whos sent requests you want to get.
+   */
+  .post('/users/user/getSentRequests', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findSentRequests(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .get("/users/user/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let Requests = await friendRepository.findAll();
+      res.json(Requests);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json({results});
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * DELETE - delete a friend request or relation
+   * @param {string} fromEmail the user sending the request.
+   * @param {string} toEmail the user receiving the request.
+   **/
+  .delete("/users/user/deleteRequest", cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.toEmail){
+        // the user has already made the request
+        if((await friendRepository.findByFromTo(query.fromEmail,query.toEmail))!=null){
+          let result = await friendRepository.deleteRequest(query.fromEmail,query.toEmail);
+          res.json({'success':true, 'results': 'request was deleted'});    
+       
+        }
+        // the friend has sent the user a request
+        else if((await friendRepository.findByFromTo(query.toEmail,query.fromEmail))!=null){
+          // set the pending status to false. the friend request was accepted
+          let result = await friendRepository.deleteRequest(query.toEmail,query.fromEmail);
+          res.json({'success':true, 'results': 'request was deleted'});    
+        }
+        // no request exists
+        else{
+          throw "request not found"
+        }
+      }
+      else throw "missing email";
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
