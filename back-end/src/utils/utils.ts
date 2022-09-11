@@ -193,7 +193,7 @@ const utils = express.Router()
         "CREATE TABLE IF NOT EXISTS USER_OTP(" +
           "email VARCHAR(320)," +
           "otp VARCHAR(50)," +
-          "Date DATE DEFAULT NOW()," +
+          "otptimestamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP," +
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
           ")"
@@ -202,7 +202,7 @@ const utils = express.Router()
         "CREATE TABLE IF NOT EXISTS EMPLOYEE_OTP(" +
           "email VARCHAR(320)," +
           "otp VARCHAR(50)," +
-          "Date DATE DEFAULT NOW()," +
+          "otptimestamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP," +
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (email) REFERENCES GYM_EMPLOYEE(email)" +
         ")"
@@ -211,7 +211,7 @@ const utils = express.Router()
         "CREATE TABLE IF NOT EXISTS OWNER_OTP(" +
           "email VARCHAR(320)," +
           "otp VARCHAR(50)," +
-          "Date DATE DEFAULT NOW()," +
+          "otptimestamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP," +
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (email) REFERENCES GYM_OWNER(email)" +
           ")"
@@ -221,9 +221,8 @@ const utils = express.Router()
         "fromUser VARCHAR(320)," +
         "toUser VARCHAR(320)," +
         "isPending BOOLEAN,"+
-        "PRIMARY KEY(fromUser)," +
+        "PRIMARY KEY(fromUser,toUser)," +
         "FOREIGN KEY (fromUser) REFERENCES GYM_USER(email)," +
-        "PRIMARY KEY(toUser)," +
         "FOREIGN KEY (toUser) REFERENCES GYM_USER(email)" +
       ")"
       );
@@ -249,6 +248,9 @@ const utils = express.Router()
       // result = await client.query("DROP TABLE IF EXISTS USER_OTP");
       // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
       // result = await client.query("DROP TABLE IF EXISTS OWNER_OTP");
+      // result = await client.query("DROP TABLE IF EXISTS FRIEND");
+      // result = await client.query("DROP TABLE IF EXISTS REQUEST_EMPLOYEE");
+      // result = await client.query("DROP TABLE IF EXISTS SUBSCRIPTION");
       // result = await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
       // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
       // result = await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
@@ -261,7 +263,7 @@ const utils = express.Router()
       // result = await client.query("DROP TABLE IF EXISTS GYM")
       // const results = { success: true, results: result };
       res.json({'message':'not implemented!'});
-      //client.release();
+      // client.release();
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);

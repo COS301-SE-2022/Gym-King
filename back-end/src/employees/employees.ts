@@ -211,6 +211,7 @@ const employees = express.Router()
             +employeee.name+' '+employeee.surname+
             '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
             'Your OTP is: '+newOTP+'\n'+
+            'This OTP will only be valid for 5 minutes!\n'+
             'If this was not you please ignore this email!'
           }
           if (query.email != 'test@example.com'){
@@ -272,16 +273,20 @@ const employees = express.Router()
    .put('/employees/employee/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const employee = await employeeRepository.findByEmail(query.email);
-      const otp = await employeeOTPRepository.findByEmail(query.email);
-      if (otp != null && otp.otp == query.otp) {
-        const result = await employeeRepository.updateEmployeePassword(employee.email, query.newpassword);
-        const otp = await employeeOTPRepository.deleteEmployeeOTP(query.email);
-        const results = { 'success': true };
-        res.json(results);
-      }
-      else {
-        res.json({'message':'Invalid email or OTP!'})
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const employee = await employeeRepository.findByEmail(query.email);
+        const otp = await employeeOTPRepository.findByEmail(query.email);
+        if (otp != null && otp.otp == query.otp && (new Date().getTime() - new Date(otp.otptimestamp).getTime())*0.001/60 < 5) {
+          const result = await employeeRepository.updateEmployeePassword(employee.email, query.newpassword);
+          const otp = await employeeOTPRepository.deleteEmployeeOTP(query.email);
+          res.json({ 'success': true });
+        }
+        else {
+          res.json({'message':'Invalid email or OTP!'});
+        }
+      } else {
+        res.json({'message':'Invalid email!'});
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };

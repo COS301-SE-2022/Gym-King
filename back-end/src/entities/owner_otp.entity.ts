@@ -11,6 +11,6 @@ export class owner_otp {
     @Column({length: 6,nullable: true})
     otp: string
 
-    @Column({type: "date", default: "NOW()"})
-    date: Date
+    @Column({type: "timestamptz", default: () => 'CURRENT_TIMESTAMP'})
+    otptimestamp: string
 }

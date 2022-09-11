@@ -346,6 +346,15 @@ describe('Testing PUT API Calls', () => {
         });
     });
     describe('Testing PUT update employee password', () => {
+        test('responds to incorrect invalid email PUT change employee password', async () => {
+            let response = await request(server).put('/employees/employee/password').send({
+                "email": "InvalidEmail",
+                "otp":otp,
+                "newpassword": "Changed",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'message':'Invalid email!'})
+        });
         test('responds to incorrect otp PUT change employee password', async () => {
             let response = await request(server).put('/employees/employee/password').send({
                 "email": "test@example.com",
