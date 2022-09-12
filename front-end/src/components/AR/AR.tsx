@@ -5,7 +5,7 @@
 import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
-import DeviceInfo from 'react-native-device-info';
+import { Device } from '@capacitor/device';
 import compList from './compatibleDevices'
 
 /**
@@ -109,14 +109,14 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
      * @brief this function is used to determine what kind of android device is being used and if it is compatible with ARcore
      * @returns boolean
      */
-    const IsAndroid = () =>{
-        return isCompatible();
+    const IsAndroid = async () =>{
+        return await isCompatible();
     }
 
-    const isCompatible= () =>{
-        let model = DeviceInfo.getModel()
-        console.log(model);
-        if(compList.indexOf(model)>=0)
+    const isCompatible= async () =>{
+        const info = await Device.getInfo();
+        console.log(info.model);
+        if(compList.indexOf(info.model)>=0)
             return true
         else
             return false
@@ -130,7 +130,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
      * @requires emblem a valid badge emblem Identifier
      * saves users location to a var
      */    
-    const ViewAR = () =>{
+    const ViewAR = async () =>{
 
         // check if the component inputs are valid
         if(validInputs()){    
@@ -147,7 +147,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
                 anchor.click(); 
             }
             // check if Android device
-            else if (IsAndroid() ){
+            else if (await IsAndroid() ){
 
                 // build the href intent to open up arcore
                 var href = "https://arvr.google.com/scene-viewer/1.0?";

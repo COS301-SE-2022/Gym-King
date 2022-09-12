@@ -1,5 +1,6 @@
 
-export const compList = ["ASUS_A002",
+export const compList = [
+"ASUS_A002",
 "ASUS_A002_1",
 "ASUS_A002_2",
 "ASUS_AI2201",
