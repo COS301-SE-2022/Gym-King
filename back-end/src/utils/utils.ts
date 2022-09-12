@@ -22,15 +22,27 @@ const corsOptions = {
   },
 };
 const pool = (() => {
-  return new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false
+  if (process.env.TEST == 'true'){
+    return new Pool({
+      connectionString: process.env.HEROKU_POSTGRESQL_CRIMSON_URL,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
       }
-    }
-  });
+    });
+  } else {
+    return new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
+    });
+  }
 })();
 const utils = express.Router()
   .options("*", cors(corsOptions))
@@ -221,7 +233,7 @@ const utils = express.Router()
    */
   .delete("/tables/drop", async (req: any, res: any) => {
     try {
-      const client = await pool.connect();
+      // const client = await pool.connect();
       // let result = await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
       // result = await client.query("DROP TABLE IF EXISTS USER_OTP");
       // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
@@ -237,8 +249,8 @@ const utils = express.Router()
       // result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
       // result = await client.query("DROP TABLE IF EXISTS GYM")
       // const results = { success: true, results: result };
-      res.json({'message':'not implemented'});
-      client.release();
+      res.json({'message':'not implemented!'});
+      //client.release();
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
