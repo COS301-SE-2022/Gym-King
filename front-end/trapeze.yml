@@ -1,0 +1,32 @@
+platforms:
+  android:
+    incrementVersionCode: true
+    manifest:
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-feature android:name="android.hardware.location.gps" />
+  ios:
+    incrementVersionCode: true
+    targets:
+      App:
+        plist:
+          - replace: true
+            entries:
+              - NSLocationWhenInUseUsageDescription:
+                - This App Requires your location as a core feautre
+
+          - replace: true
+            entries:
+              - NSLocationAlwaysUsageDescription:
+                - This App Requires your location as a core feautre
+
+
+
