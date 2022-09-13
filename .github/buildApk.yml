@@ -7,6 +7,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Build Android Studio Project
+        run: yarn nx build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
+      
+      - name: Navigatate To Project
+        run: cd front-end/android
+        
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
