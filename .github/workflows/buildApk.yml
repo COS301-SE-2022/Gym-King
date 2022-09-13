@@ -29,7 +29,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Android Studio Project
-        run: yarn build
+        run: yarn nx build build:android
       
       - name: Navigatate To Project
         run: cd front-end/android
