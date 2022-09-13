@@ -46,6 +46,7 @@
     "@material/button": "^14.0.0",
     "@nxtend/capacitor": "^13.0.0",
     "@testing-library/dom": "7.21.4",
+    "@trapezedev/configure": "^5.0.3",
     "@types/express": "^4.17.13",
     "@types/node": "*",
     "add": "^2.0.6",
