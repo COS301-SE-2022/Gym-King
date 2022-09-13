@@ -15,49 +15,37 @@ export const Identifications: React.FC<props> = (props) => {
     });
 
 
-      const handleError = (error:string, input:string) => {
+    const handleError = (error:string, input:string) => {
         setErrors(prevState => ({...prevState, [input]: error}));
     };
 
     const  validate = async () => {
         let isValid = true;
-        // console.log(name);
-        // console.log(surname);
-        // console.log(username);
         let name = sessionStorage.getItem('regName')
         let surname = sessionStorage.getItem('regSurname')
         let username = sessionStorage.getItem('regUsername')
 
         if(name && onlyLetters(name)) {
-            console.log("failed")
-          handleError('Please input a valid name', 'name');
-          isValid = false;
+            handleError('Please input a valid name', 'name');
+            isValid = false;
         }
         else
-        {
             handleError('', 'name');
-        }
     
         if(surname && onlyLetters(surname)) {
             handleError('Please input a valid surname', 'surname');
             isValid = false;
         }
         else
-        {
             handleError('', 'surname');
-        }
 
         if(username && !onlyAlphanumericAndUnderscore(username)) {
             handleError('Please input a valid username', 'username');
             isValid = false;
         }
         else
-        {
             handleError('', 'username');
-        }
 
-      
-    
         return isValid;
     }
 
@@ -68,10 +56,6 @@ export const Identifications: React.FC<props> = (props) => {
         sessionStorage.setItem('regSurname', e.target.surname.value.trim())
         sessionStorage.setItem('regUsername', e.target.username.value.trim())
 
-        // console.log(errors)
-        // console.log(name);
-        // console.log(surname);
-        // console.log(username);
         let isValid = await validate()
         
         if(isValid)
