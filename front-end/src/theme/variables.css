@@ -64,6 +64,8 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-tint: #f5f6f9;
   --ion-text-color: #ffffff;
 
+  --ion-color-darkorange: darkorange;
+
   
 }
 
@@ -130,6 +132,10 @@ ion-button{
   margin-right:10%;
 }
 
+.errText{
+  --ion-color:var(--ion-color-danger);
+  font-size: 14px;
+}
 .PageTitle
 {
     font-size:2em;
