@@ -14,25 +14,32 @@ platforms:
         target: manifest
         inject: <uses-feature android:name="android.hardware.location.gps" />
     gradle:  
-      - file: build.gradle
-        insert: |
-          signingConfigs {
-            release {
-              def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
-              def allFilesFromDir = new File(tmpFilePath).listFiles()
+      - file: app/build.gradle
+        target: 
+          android:
+            signingConfigs:
+        replace: 
+          signingConfigs: |
+              {
+                release {
+                  def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+                  def allFilesFromDir = new File(tmpFilePath).listFiles()
 
-              if (allFilesFromDir != null) {
-                def keystoreFile = allFilesFromDir.first()
-                keystoreFile.renameTo("keystore/your_keystore.jks")
+                  if (allFilesFromDir != null) {
+                    def keystoreFile = allFilesFromDir.first()
+                    keystoreFile.renameTo("keystore/Gym-King.jks")
+                  }
+
+                  storeFile = file("keystore/Gym-King.jks")
+                  storePassword System.getenv("SIGNING_STORE_PASSWORD")
+                  keyAlias System.getenv("SIGNING_KEY_ALIAS")
+                  keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+                }
               }
+            
 
-              storeFile = file("keystore/your_keystore.jks")
-              storePassword System.getenv("SIGNING_STORE_PASSWORD")
-              keyAlias System.getenv("SIGNING_KEY_ALIAS")
-              keyPassword System.getenv("SIGNING_KEY_PASSWORD")
-            }
-          }
-  
+          
+
   ios:
     incrementVersionCode: true
     targets:
