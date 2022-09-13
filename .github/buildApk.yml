@@ -7,13 +7,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      #Installs node.js
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+        #installs yarn
+      - name: Install yarn
+        run: npm install yarn -g
+
+      - name: Cache Yarn Packages
+        id: cache-yarn-packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache
+          key: yarn-packages-${{ hashFiles('**/yarn.lock') }}
+
+        #installs the yarn lockfile
+      - name: Install packages
+        run: yarn install --frozen-lockfile
 
       - name: Build Android Studio Project
-        run: yarn nx build --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
+        run: yarn build
       
       - name: Navigatate To Project
         run: cd front-end/android
-        
+
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
