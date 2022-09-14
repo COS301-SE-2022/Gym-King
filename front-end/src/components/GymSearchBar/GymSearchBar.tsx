@@ -117,6 +117,7 @@ export const GymSearchBar=(props:{
                             onClick={()=>{
                               modal.current?.setCurrentBreakpoint(0.25);
                               props.setGymFocus(item.gym_coord_lat, item.gym_coord_long)
+                              setIsShowing(false);
                             }}
                             key={item.key}>
                           <IonAvatar slot="start">
