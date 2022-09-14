@@ -17,10 +17,10 @@ export class badge {
     @Column({length: 300})
     badgechallenge: string
 
-    @Column({length: 65535})
+    @Column({length: 65535,nullable: true})
     badgeicon: string
 
-    @Column({length: 8})
+    @Column({length: 8,nullable: true})
     activitytype: string
 
     @OneToMany(() => badge_claim, (badge_claim) => badge_claim.b_id)

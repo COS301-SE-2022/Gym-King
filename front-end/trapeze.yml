@@ -1,0 +1,59 @@
+platforms:
+  android:
+    incrementVersionCode: true
+    manifest:
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-feature android:name="android.hardware.location.gps" />
+    gradle:  
+      - file: app/build.gradle
+        target: 
+          android:
+            signingConfigs:
+        replace: 
+          signingConfigs: |
+              {
+                release {
+                  def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+                  def allFilesFromDir = new File(tmpFilePath).listFiles()
+
+                  if (allFilesFromDir != null) {
+                    def keystoreFile = allFilesFromDir.first()
+                    keystoreFile.renameTo("keystore/Gym-King.jks")
+                  }
+
+                  storeFile = file("keystore/Gym-King.jks")
+                  storePassword System.getenv("SIGNING_STORE_PASSWORD")
+                  keyAlias System.getenv("SIGNING_KEY_ALIAS")
+                  keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+                }
+              }
+            
+
+          
+
+  ios:
+    incrementVersionCode: true
+    targets:
+      App:
+        plist:
+          - replace: true
+            entries:
+              - NSLocationWhenInUseUsageDescription:
+                - This App Requires your location as a core feautre
+
+          - replace: true
+            entries:
+              - NSLocationAlwaysUsageDescription:
+                - This App Requires your location as a core feautre
+
+
+

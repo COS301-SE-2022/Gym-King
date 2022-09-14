@@ -14,6 +14,21 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const ownerpicture = multer();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+//=============================================================================================//
+//Nodemailer email connection 
+//=============================================================================================//
+var emailer = nodemailer.createTransport({
+  tls: {
+    rejectUnauthorized: false
+  },
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  }
+});
 
 const allowedOrigins = [
   'capacitor://localhost',
@@ -175,8 +190,13 @@ const owners = express.Router()
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
-      res.json({'success':true});
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
+        res.json({'success':true});
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -192,11 +212,43 @@ const owners = express.Router()
    .post('/owners/owner/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let result = await ownerOTPRepository.deleteOwnerOTP(query.email);
-      const newOTP = createID2(6);
-      result = await ownerOTPRepository.saveOwnerOTP(query.email,newOTP);
-      const results = { 'success': true };
-      res.json(results);
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let owner = await ownerRepository.findByEmail(query.email);
+        if(owner != null && owner.email == query.email)
+        {
+          let result = await ownerOTPRepository.deleteOwnerOTP(query.email);
+          const newOTP = createID2(6);
+          result = await ownerOTPRepository.saveOwnerOTP(query.email,newOTP);
+          const emailerOptions = {
+            from: process.env.EMAIL,
+            to: owner.email,
+            subject: "GYMKING Owner OTP",
+            text: 'Hello there, '
+            +owner.name+' '+owner.surname+
+            '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
+            'Your OTP is: '+newOTP+'\n'+
+            'This OTP will only be valid for 5 minutes!\n'+
+            'If this was not you please ignore this email!'
+          }
+          if (query.email != 'owner@example.com'){
+            emailer.sendMail(emailerOptions, function(error : any, info : any){
+              if(error) {
+                console.log(error);
+                res.json({'success': false, 'message': 'OTP email failed to send!'})
+              } else {
+                res.json({ 'success': true });
+              }
+            })
+          } else {
+            res.json({ 'success': true });
+          }
+        } else {
+          res.json({ 'success': false ,'message':'Owner does not exist!' });
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -359,16 +411,20 @@ const owners = express.Router()
    .put('/owners/owner/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const owner = await ownerRepository.findByEmail(query.email);
-      const otp = await ownerOTPRepository.findByEmail(query.email);
-      if (otp != null && otp.otp == query.otp) {
-        const result = await ownerRepository.updateOwnerPassword(owner.email, query.newpassword);
-        const otp = await ownerOTPRepository.deleteOwnerOTP(query.email);
-        const results = { 'success': true };
-        res.json(results);
-      }
-      else {
-        res.json({'message':'Invalid email or OTP!'})
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const owner = await ownerRepository.findByEmail(query.email);
+        const otp = await ownerOTPRepository.findByEmail(query.email);
+        if (otp != null && otp.otp == query.otp && (new Date().getTime() - new Date(otp.otptimestamp).getTime())*0.001/60 < 5) {
+          const result = await ownerRepository.updateOwnerPassword(owner.email, query.newpassword);
+          const otp = await ownerOTPRepository.deleteOwnerOTP(query.email);
+          res.json({ 'success': true });
+        }
+        else {
+          res.json({'message':'Invalid email or OTP!'})
+        }
+      } else {
+        res.json({'message':'Invalid email!'});
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
