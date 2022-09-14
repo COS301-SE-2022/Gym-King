@@ -118,6 +118,10 @@ http://ionicframework.com/docs/theming/ */
     margin-right:10%;
 }
 
+.inner-scroll.scroll-y.overscroll{
+  background-color: #873CFF;
+}
+
 .Content
 {
     padding:5em;
@@ -131,6 +135,7 @@ ion-button{
   margin-left: 10%;
   margin-right:10%;
 }
+
 
 .errText{
   --ion-color:var(--ion-color-danger);
