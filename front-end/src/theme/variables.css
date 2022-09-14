@@ -160,7 +160,14 @@ ion-card{
   box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
 }
 
+.searchbar-input-container{
 
+  background-color: rgba(255,255,255,0.13);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 12px rgb(25 10 143 / 40%); 
+   border-radius: 2em;
+    color: black;
+}
 .textInput{
   background-color: rgba(255,255,255,0.07);
   border-radius: 7%;

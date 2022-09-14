@@ -35,6 +35,7 @@ export const GymSearchBar=(props:{
           >
 
             <IonSearchbar
+            
                 ref={searchInput}
                 onClick = {()=>{
                   
