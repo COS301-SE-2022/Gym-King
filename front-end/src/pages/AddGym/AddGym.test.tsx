@@ -13,7 +13,8 @@ test('renders without crashing', () => {
 
 test('correctly displays labels', async () => {
   const {baseElement} = render(<AddGym/>);
-  expect (baseElement).toHaveTextContent("gymName");
+  expect (baseElement).toHaveTextContent("Name:");
+  expect (baseElement).toHaveTextContent("Address:");
 });
 
 
