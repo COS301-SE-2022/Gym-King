@@ -6,6 +6,7 @@ import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -26,7 +27,6 @@ const UploadActivityPage: React.FC = () =>{
         const [showToast1, setShowToast1] = useState(false);
         const [b_id, setB_id] = useState('');
         const [badgename, setBadgename] = useState('');
-        const [activitytype, setAT] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [loading, setLoading] = useState<boolean>(false);
         const [username, setUsername]=useState("");
@@ -69,14 +69,12 @@ const UploadActivityPage: React.FC = () =>{
         useIonViewDidEnter(()=>{
             let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+            .then(response =>response.data)
             .then(response =>{
                 //console.log("rsponse",response)
                 setB_id(response.b_id)
-                setAT( response.activitytype)
+                localStorage.setItem("activitytype", response.activitytype)
                 setDescription(response.badgechallenge)
                 setBadgename(response.badgename)
                 setLoading(false)
@@ -87,18 +85,18 @@ const UploadActivityPage: React.FC = () =>{
                 setLoading(false)
             })
 
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
                     password: localStorage.getItem("password")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setUsername(response.username);
                 console.log(username)
@@ -136,11 +134,11 @@ const UploadActivityPage: React.FC = () =>{
                 formData.append("input3", i3)
                 formData.append('proof', values.current.file, values.current.file.name);
                 console.log(formData);
-            fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
                 "method":"POST",
-                body: formData
+                data: formData
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //console.log(response);
                 setShowToast1(true);
@@ -173,7 +171,7 @@ const UploadActivityPage: React.FC = () =>{
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                     <form onSubmit={handleSubmit}>
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>
-                        <ActivityInputs activityCategory={activitytype} inputs={updateInputs}></ActivityInputs> <br></br>
+                        <ActivityInputs activityCategory={localStorage.getItem("activitytype")!} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }

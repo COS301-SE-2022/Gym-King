@@ -10,27 +10,28 @@ test('renders without crashing', ()=> {
   expect(baseElement).toBeDefined();
 });
 
+
+////////// INTEGRATION TESTS //////////
+
 describe('Testing API calls', () => {
 
   it('should load owners employees', async () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/owners/employees/${"owner_email"}`, {
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${"owner_email"}`, {
           "method":"GET"
         })
         .then(response =>response.json())
         .then(response =>{
-            console.log(response)
             expect(response).toBeDefined()
         })
         .catch(err => {
-            console.log(err)
             expect(err).toBeDefined()
         })
       })
   });
   it('should get owners gyms', async () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${"owner_email"}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"owner_email"}`,{
           "method":"GET"
         })
         .then(response =>response.json())

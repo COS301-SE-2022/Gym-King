@@ -36,7 +36,7 @@ describe('Testing connection to api', () => {
 
     it('should load claim data', async () => {
         (()=>{
-            fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -53,7 +53,7 @@ describe('Testing connection to api', () => {
         
         (()=>
         {
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
             })
             .then(response =>response.json())

@@ -1,30 +1,25 @@
 import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonToast, IonLoading, IonImg, useIonViewDidEnter, IonButton} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
-
-
+import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 const EmployeeProfileViewPage: React.FC = () =>{
     
-    let employee_email = localStorage.getItem("employee_email");
-    let employee_pass = localStorage.getItem("employee_pass");
-    console.log(employee_email);
-    console.log(employee_pass);
+    //let employee_pass = localStorage.getItem("employee_pass");
+    //console.log(employee_email);
+    //console.log(employee_pass);
+    let history=useHistory()
 
-
+    //employee details 
     const [email, setEmail] = useState<any>()
     const [name, setName] = useState<any>("")
     const [surname, setSurname]= useState<any>("")
     const [username, setUsername]= useState<any>("")
     const [phone, setPhone]= useState<any>("")
-    const [gymId, setGymId] = useState<any>("");
     const [gymName, setGymName] = useState<any>("");
     const [gymLocation, setGymLocation] = useState<any>("");
     const [profilePicture, setProfilePicture] = useState('');
-
-
-    console.log(gymId);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
     const [showDeleteEmployee, setShowDeleteEmployee] = useState(false);
@@ -34,19 +29,16 @@ const EmployeeProfileViewPage: React.FC = () =>{
 
     useIonViewDidEnter(()=>{
         setLoading(true)
-        //get employee information 
-        setEmail(localStorage.getItem("employee_email"))
-        setName(localStorage.getItem("employee_name"))
-        setSurname(localStorage.getItem("employee_surname"))
-        setUsername(localStorage.getItem("employee_username"))
-        setPhone(localStorage.getItem("employee_phone"))
-        setGymId(localStorage.getItem("employee_gid"))
-        setProfilePicture(localStorage.getItem("employee_profilepicture")!)
+        setEmail(sessionStorage.getItem("employee_email"))
+        setName(sessionStorage.getItem("employee_name"))
+        setSurname(sessionStorage.getItem("employee_surname"))
+        setUsername(sessionStorage.getItem("employee_username"))
+        setPhone(sessionStorage.getItem("employee_phone"))
+        //setGymId(localStorage.getItem("employee_gid"))
+        setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
 
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${localStorage.getItem("employee_gid")}`, {
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setGymName(response.gym_brandname)
@@ -60,31 +52,42 @@ const EmployeeProfileViewPage: React.FC = () =>{
          })
 
     },[])
+    
+    const handleDelete = ()=>{
+        let owner= sessionStorage.getItem("owner_email")!
+        let owner_pass= localStorage.getItem("password")!
+        let employee_email= sessionStorage.getItem("employee_email")!
+        //deleteEmployee
+        deleteEmployee(owner, owner_pass, employee_email)
+    }
 
-    const deleteEmployee=()=>{
-        fetch(`https://gym-king.herokuapp.com/employees/employee`, {
+    const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
+        
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
+
             method: 'DELETE',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-                owneremail: localStorage.getItem("email"),
-                ownerpassword: localStorage.getItem("password"),
-                employee_email: localStorage.getItem("employee_email")
+            data: JSON.stringify({ 
+                owneremail: owner,
+                ownerpassword: owner_pass,
+                employeeemail: employee_email
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setShowDeleteEmployee(true)
             setLoading(false)
+            history.goBack()
         })
         .catch(err => {
             console.log(err)
             setShowFail(true)
             setLoading(false)
-        })
+        }) 
     }
 
    
@@ -143,7 +146,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton onClick={deleteEmployee}>Delete Employee</IonButton>
+                            <IonButton onClick={handleDelete}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>

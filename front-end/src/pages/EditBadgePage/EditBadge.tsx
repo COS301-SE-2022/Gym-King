@@ -5,6 +5,7 @@ import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import { useHistory } from 'react-router-dom';
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
+import axios from "axios";
 
 
 const EditBadge: React.FC = () =>{
@@ -62,10 +63,8 @@ const EditBadge: React.FC = () =>{
             setLoading(true)
             
             sessionStorage.setItem('waiting',"true")
-            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+            .then(response =>response.data)
             .then(response =>{
                 setActivityType( response.activitytype)
                 setDescription(response.badgedescription)
@@ -73,8 +72,10 @@ const EditBadge: React.FC = () =>{
                 setChallenge(response.badgechallenge)
                 setGymId(response.g_id)
                 setBadgeIcon(response.badgeicon)
+                console.log(badgeIcon)
                 console.log("get: "+response.badgeicon)
                 sessionStorage.setItem('bi',response.badgeicon)
+                console.log(sessionStorage.getItem("bi"))
                 sessionStorage.setItem('waiting',"false")
                 setLoading(false)
             })
@@ -94,13 +95,13 @@ const EditBadge: React.FC = () =>{
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
             
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     bid: badgeId,
                     gid: gymId,
                     badgename: bn,
@@ -110,7 +111,7 @@ const EditBadge: React.FC = () =>{
                     activitytype: at
                  })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //console.log(response)
 
@@ -126,17 +127,17 @@ const EditBadge: React.FC = () =>{
         // DELETE BADGE DELETE REQUEST 
         const deleteBadge=()=>{
             
-            fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     bid: badgeId
                  })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 //console.log(response);
                 
@@ -179,7 +180,7 @@ const EditBadge: React.FC = () =>{
                         <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <BadgeSlider bIcon = {badgeIcon} name = {badgename}></BadgeSlider>
+                        <BadgeSlider bIcon={sessionStorage.getItem("bi")!} name = {badgename}></BadgeSlider>
                         
                         <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
                         

@@ -7,9 +7,9 @@ import "./EditGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
 import { Map, Overlay } from "pigeon-maps";
-import { stamenToner } from "pigeon-maps/providers";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
+import axios from "axios";
 
 /**
  * const EditGym
@@ -50,14 +50,14 @@ const EditGym: React.FC = () => {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
     else{
-      fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("gid")}`,
+      axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
         {
-          method: "Get",
+          "method": "get",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }})
-      .then((response) => response.json())
+      .then((response) => response.data)
       .then((response) => {
         sessionStorage.setItem("gymName",response.gym_brandname)
         sessionStorage.setItem("gymAddress",response.gym_address)
@@ -78,14 +78,15 @@ const EditGym: React.FC = () => {
    * @brief calls api to update a gyms' details
   */
   const saveGym = () => {
-    fetch(`https://gym-king.herokuapp.com/owner/gym/info`,
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+
       {
         method: "PUT",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        data: JSON.stringify({ 
           gid:sessionStorage.getItem("gid"),
           brandname: gymName, 
           address:gymAddress,
@@ -95,7 +96,7 @@ const EditGym: React.FC = () => {
         })
       }
     )
-    .then((response) => response.json())
+    .then((response) => response.data)
     .then((response) => {
       setShowToast1(true)
       history.goBack()
@@ -107,6 +108,10 @@ const EditGym: React.FC = () => {
     
 
  };
+
+ const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
+  return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+}
 //=================================================================================================
 //    RENDER
 //=================================================================================================
@@ -136,7 +141,7 @@ const EditGym: React.FC = () => {
                   height={200}
                   center={[coordinate[0], coordinate[1]]}
                   zoom={zoom}
-                  provider={stamenToner}
+                  provider={mapTiler}
                   data-testid="map"
                 >
                   <Overlay 

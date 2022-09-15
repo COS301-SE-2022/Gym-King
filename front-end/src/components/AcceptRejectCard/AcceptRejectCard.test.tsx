@@ -4,7 +4,7 @@ import AcceptRejectCard from './AcceptRejectCard'
 
 
 test('renders without crashing', () => {
-    const { baseElement } = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
+    const { baseElement } = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
     expect(baseElement).toBeDefined();
   });
 
@@ -24,32 +24,88 @@ describe('Testing prop text values', () => {
   let badgename = "Badge"
 
   test('correctly displays username', async () => {
-      const {baseElement} = render(<AcceptRejectCard profile="" userID="" username={username} badgeId="" badgename="" i1="" i2="" i3="" activitytype="" history="" proof="" />);
+      const {baseElement} = render(<AcceptRejectCard profile="" userID="" username={username} badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof="" />);
       expect (baseElement).toHaveTextContent(username);
   });
   test('correctly displays strength activitytype inputs', async () => {
-    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="STRENGTH" history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="STRENGTH" history="" proof=""/>);
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");
     expect (baseElement).toHaveTextContent("Reps");
   });
   test('correctly diplays input values', async () => {
-    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" i1="1" i2="2" i3="3" activitytype="STRENGTH"  history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="1" i2="2" i3="3" activitytype="STRENGTH"  history="" proof=""/>);
     expect (baseElement).toHaveTextContent("1");
     expect (baseElement).toHaveTextContent("2");
     expect (baseElement).toHaveTextContent("3");
   });
   
   test('correctly displays cardio activitytype inputs', async () => {
-    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" i1="" i2="" i3="" activitytype="cardio" history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename=""  badgechallenge=""i1="" i2="" i3="" activitytype="CARDIO" history="" proof=""/>);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
   });  
 
   test('correctly displays badgename', async () => {
-    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="badge" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
+    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="badge" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
     expect (baseElement).toHaveTextContent("badge");
   });
 });
 
+////////// INTEGRATION TESTS //////////
+
+describe('Testing connection to api', () => {
+
+  it('should update claim data', async () => {
+      
+      ( ()=>{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+            "method":"PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                bid: "",
+                email: ""
+            })
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            expect(response).toBeDefined()
+        })
+        .catch(err => {
+          console.log(err)
+          expect(err).toBeDefined()
+
+        }) 
+      } )
+  });
+
+  it('should reject a gym', async () => {
+      (()=>{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+            "method":"DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                bid: "",
+                email: ""
+            })
+        })
+        .then(response =>response.json())
+        .then(response =>{
+            expect(response).toBeDefined()
+
+        })
+        .catch(err => {
+          console.log(err)
+          expect(err).toBeDefined()
+        })
+      } )
+  });
+
+})

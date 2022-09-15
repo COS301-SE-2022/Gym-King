@@ -6,13 +6,14 @@ test('renders without crashing', () => {
     expect(baseElement).toBeDefined();
   });
 
-/*
-  describe('Testing API calls', () => {
+////////// INTEGRATION TESTS //////////
+
+  describe('Testing connection to API', () => {
 
     it('should load badge data', async () => {
       (()=>{
         let badgeId='XRQ'
-        fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+        fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
         })
         .then(response =>response.json())
@@ -33,7 +34,7 @@ test('renders without crashing', () => {
           let i1=""
           let i2= ""
           let i3= ""
-          fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
+          fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
               "method":"POST"
           })
           .then(response =>response.json())
@@ -47,7 +48,7 @@ test('renders without crashing', () => {
       });
 
   })
-
+/*
 
 describe('Integration Tests', () => {
 

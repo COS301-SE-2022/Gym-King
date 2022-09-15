@@ -10,12 +10,13 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
+////////// INTEGRATION TESTS //////////
 
-describe('Testing API calls', () => {
+describe('Testing connection to api', () => {
 
     it('should load pending badges', async () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/claims/${"useremail"}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"useremail"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())

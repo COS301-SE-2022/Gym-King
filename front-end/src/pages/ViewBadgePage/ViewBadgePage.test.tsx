@@ -10,14 +10,15 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
+////////// INTEGRATION TESTS //////////
 
-describe('Testing API calls', () => {
+describe('Testing connection to api', () => {
 
     test('should load badge info',  () => {
         
         ( ()=>{
             console.log("hello")
-            fetch(`https://gym-king.herokuapp.com/badges/gym/${"gymid"}`,{
+            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${"gymid"}`,{
                 "method":"GET"
             })
             .then(response =>response.json())

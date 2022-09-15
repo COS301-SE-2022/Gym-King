@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './AcceptReject.css';
+import axios from "axios";
 
 export const AcceptRejectPage: React.FC = () =>{
 
@@ -16,6 +17,7 @@ export const AcceptRejectPage: React.FC = () =>{
     const [i2, setI2] = useState('');
     const [i3, setI3] = useState('');
     const [badgename, setBadgename] = useState('');
+    const [badgechallenge, setBadgechallenge] = useState('');
     const [activitytype, setActivityType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
     const [proof, setProof] = useState("");
@@ -25,10 +27,8 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
-        fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setI1(response.input1);
@@ -47,14 +47,13 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
         useIonViewDidEnter(()=>
             {
-                fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
-                "method":"GET"
-                })
-                .then(response =>response.json())
+                axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+                .then(response =>response.data)
                 .then(response =>{
                     console.log(response);
 
                     setBadgename(response.badgename)
+                    setBadgechallenge(response.badgechallenge)
                     setActivityType(response.activitytype)
                     //setG_id(response.results[0].g_id)
                 })
@@ -68,7 +67,7 @@ export const AcceptRejectPage: React.FC = () =>{
                 <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Accept/Reject</IonText>
-                    <AcceptRejectCard proof={proof} userID={email} username={username} badgeId={badgeId} badgename={badgename} i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history} profile={profile!}></AcceptRejectCard>
+                    <AcceptRejectCard proof={proof} userID={email} username={username} badgeId={badgeId} badgename={badgename} badgechallenge={badgechallenge}i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history} profile={profile!}></AcceptRejectCard>
 <br></br><br></br>
                     <IonLoading 
                         isOpen={loading}

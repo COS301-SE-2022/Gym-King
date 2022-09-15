@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
 import './ViewBadgePage.css';
+import axios from "axios";
 
 
 const ViewBadgePage: React.FC = () =>{
@@ -14,10 +15,8 @@ const ViewBadgePage: React.FC = () =>{
         {
             let gymid = sessionStorage.getItem("gid");
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/badges/gym/${gymid}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${gymid}`)
+            .then(response =>response.data)
             .then(response =>{
                 let arr=[]
                 for(let i=0;i<response.length;i++)

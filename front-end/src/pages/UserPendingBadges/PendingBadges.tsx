@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingBadges.css';
+import axios from "axios";
 
 const PendingBadgesPage: React.FC = () =>{
 
@@ -14,10 +15,8 @@ const PendingBadgesPage: React.FC = () =>{
     //GET REQUEST:
     useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
+            .then(response =>response.data)
             .then(response =>{
                 console.log("PENDING BADGES",response)
                 setClaims(response)

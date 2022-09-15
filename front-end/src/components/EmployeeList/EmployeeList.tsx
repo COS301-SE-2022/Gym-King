@@ -7,13 +7,13 @@ export type Props = {list?:Array<string>, history:any};
 export class EmployeeList extends React.Component<Props>{
 
     goToProfile = (email:string, name:string, surname:string, username:string, phone:string, gid:string, profilePic:string)=>{
-        localStorage.setItem("employee_email", email);
-        localStorage.setItem("employee_name", name);
-        localStorage.setItem("employee_surname", surname);
-        localStorage.setItem("employee_username", username);
-        localStorage.setItem("employee_phone",phone);
-        localStorage.setItem("employee_gid", gid);
-        localStorage.setItem("employee_profilepicture", profilePic)
+        sessionStorage.setItem("employee_email", email);
+        sessionStorage.setItem("employee_name", name);
+        sessionStorage.setItem("employee_surname", surname);
+        sessionStorage.setItem("employee_username", username);
+        sessionStorage.setItem("employee_phone",phone);
+        sessionStorage.setItem("employee_gid", gid);
+        sessionStorage.setItem("employee_profilepicture", profilePic)
         this.props.history.push("/EmployeeProfileView")
     }
 

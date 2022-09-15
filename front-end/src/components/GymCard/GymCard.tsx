@@ -7,6 +7,7 @@
  import { useState } from 'react';
  import { useHistory } from 'react-router-dom';
  import './GymCard.css'
+ import axios from 'axios';
  /**
   * 
   * @param prop takes in id{any},name{string}, address{string}, deleteClicked{any}
@@ -40,21 +41,22 @@
     */
    const deleteGym = (password:string) => {
    setLoading(true)
-     fetch(`https://gym-king.herokuapp.com/owner/delete/gym`,
+     axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
+
      {
        method: "DELETE",
        headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json',
        },
-       body: JSON.stringify({ 
+       data: JSON.stringify({ 
          gid:prop.id,
          "email":localStorage.getItem("email"),
          "password":password,
        })
      }
    )
-     .then((response) => response.json())
+     .then((response) => response.data)
      .then((response) => {
        setLoading(false)
        console.log(response)
@@ -80,14 +82,14 @@
    <div data-testid="GymCard">
      <IonCard
        color="primary"   
-       class="gymCard ion-padding"
+       class="ion-padding gymCardMargin"
        onClick={() => setShowActionSheet(true)}
      >
-       <IonCardTitle>
+       <IonCardTitle class="inputHeading">
          {prop.name}
        </IonCardTitle>
        
-       <IonCardSubtitle>
+       <IonCardSubtitle className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
          {prop.address}
        </IonCardSubtitle>
      </IonCard>

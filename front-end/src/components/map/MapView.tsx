@@ -1,19 +1,22 @@
 import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import { Geolocation } from '@ionic-native/geolocation';
+import React, {  useEffect, useState } from "react";
+import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
-import { stamenToner } from 'pigeon-maps/providers';
 import { useHistory } from 'react-router-dom';
-
+import axios from 'axios';
 import gym from '../../icons/gym.png'
 import location from '../../icons/location.png'
 import recenter from '../../icons/recenter.png'
 import './MapView.css';
+import GymSearchBar from "../GymSearchBar/GymSearchBar";
+import  stringSimilarity  from "string-similarity-js";
 interface LocationError {
     showError: boolean;
     message?: String;
 
 }
+
+
 
 const MapView: React.FC = () =>{
     let history=useHistory()
@@ -21,17 +24,12 @@ const MapView: React.FC = () =>{
     //=========================================================================================================//
     //                                                       MAP                                               //
     //=========================================================================================================//
-    const maxZoom = 17.4
-    const minZoom = 13
-    const [gyms, setGyms] = useState<{[key: string]: any}>([{
-        key: "",
-        g_id: "",
-        gym_brandname: "",
-        gym_address: "",
-        gym_coord_lat: 0,
-        gym_coord_long: 0,
-        gym_icon: ".."
-    }]);
+    const maxZoom = 20
+    const minZoom = 14
+    const [gyms, setGyms] = useState<{[key: string]: any}>();
+    const [gymsInView, setGymsinView] = useState<{[key: string]: any}>([{key:"xxx",g_id:"xxx"}]);
+    
+    
     const [loading, setLoading] = useState<boolean>(false);
 
     // Location Vars------------------------------------------------------------------------------------------//
@@ -55,6 +53,59 @@ const MapView: React.FC = () =>{
         gym_coord_long: 0,
         gym_icon: ".."
     });
+    
+    const [gymsInSearchTab, setGymsInSearchTab] = useState<any[]>([]);
+    
+    // state that controls the selectedGymMenu display
+    const [showModal, setShowModal] = useState(false);
+
+
+
+    //=========================================================================================================//
+    /**
+     * used to search the list of gyms for the specefed query
+     */
+    const searchQueryAction = async(query: string) => {
+
+        // the list of gyms that match the search query
+        let outGyms: {                    
+            g_id: any; 
+            gym_coord_lat: number;
+            gym_coord_long: number; 
+        }[] = [];
+
+        // check if query is not empty
+        if(query.length > 0){
+            // loop through all the gyms in memory
+            gyms?.forEach((element: any) => {
+
+
+                    // set all strings to lowercase
+                    let qAdjusted = query.toLocaleLowerCase();
+                    let nameAdjusted = element.gym_brandname.toLocaleLowerCase();
+                    let addresAdjusted = element.gym_address.toLocaleLowerCase();
+
+
+                    // check name similarity
+                    if(stringSimilarity(qAdjusted, nameAdjusted) >= 0.5)
+                        outGyms.push(element)
+
+                    // check address similarity
+                    else if(stringSimilarity(qAdjusted, addresAdjusted) >= 0.5)
+                        outGyms.push(element)
+
+                });
+
+                
+                // set the gyms array for the search tab
+                setGymsInSearchTab(outGyms);
+        }
+        // display nearby gyms
+        else
+            getNearbyGyms()
+        
+    }
+    
     //=========================================================================================================//
     /**
      * Function that gets the users location
@@ -64,73 +115,137 @@ const MapView: React.FC = () =>{
     const getLocation = async(load: boolean) => {
         try {
             
+            // display loading bar?
             if(load) {
                 setLoading(true)
-                
             };
-            const position = await Geolocation.getCurrentPosition();
+
+            // check if we have location permissons
+            Geolocation.checkPermissions().then(
+                result => {
+                    // no permissions granted 
+                    if(result.location!=="granted") 
+
+                        Geolocation.requestPermissions()
+                    else console.log("permissions granted")
+                },
+                err =>{ 
+                    // big error
+                    console.log(err)
+                    Geolocation.requestPermissions()
+                },
+                
+            );  
+            
+            // get the users location
+            const position = await Geolocation.getCurrentPosition({
+                enableHighAccuracy: true
+            });
           
+            // reset user coordinates
             setUserLoc([position.coords.latitude, position.coords.longitude]) 
 
+            // recenter users view to their location
             if(load){
                 setCenter([position?.coords.latitude, position?.coords.longitude]) 
-                setZoom(17.4) 
+                setZoom(18) 
             }
 
+            // clear 
             setError({showError: false, message: "no error here"})
-     
             setLoading(false);
 
+        // locations is probably not enabled
         } catch(e){
             setLoading(false);
-            
-            setError({showError: true, message: "Cannot get userlocation: Check Permissions"});
+            setError({showError: true, message: "Please Enable your GPS location"});
         }
-    }    
+    }  
 
-    
+    /**
+     * onClick event for a gym marker on the map
+     * @param activeGym 
+     */
     const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
-
         setGymData(activeGym);
         setShowModal(true);
     }
-    
+
     //=========================================================================================================//
     /**
-     * Function that gets the location of nearby gyms
+     * Function that gets the 5 nearest gyms to the users
      * @requires position users coordinates
      * @returns all nearby gyms
      */    
     const getNearbyGyms = async () => {
+
+        let outGyms: {                    
+            g_id: any; 
+            gym_coord_lat: number;
+            gym_coord_long: number; 
+        }[] = [];
+
+        if(gyms){
+
+            for(let x = 0;x<5;x++){
+                let closetGym:any;
+
+                gyms.forEach((elementx: {
+                    g_id: any; 
+                    gym_coord_lat: number;
+                    gym_coord_long: number;
+                }) => {
+
+
+                    let isAlreadyInList = false;
+
+                    outGyms.forEach((elementy: { g_id: any; }) => {
+                        if(elementy.g_id===elementx.g_id){
+                            isAlreadyInList = true;
+                        }
+                    });
+
+                    if(!isAlreadyInList){
+                        if(closetGym==null)
+                            closetGym = elementx;
+                        else{
+                            var newMag = calcCrow(userLocation[0],userLocation[1],elementx.gym_coord_lat,elementx.gym_coord_long)
+                            var oldMag = calcCrow(userLocation[0],userLocation[1],closetGym.gym_coord_lat,closetGym.gym_coord_long)
+                            if(oldMag > newMag){
+                                closetGym = elementx;
+                            }       
+                        }
+
+                    }
+
+                });
+                if(closetGym!=null)
+                    outGyms.push(closetGym)
+            }
+
+            setGymsInSearchTab(outGyms);
+        }
         
-        
-        //=========================================================================================================//
-        /**
-         * POST request to get nearby gyms
-         * makes use of gym-king API
-         * @param userLocation
-         */
+    }
+
+    /**
+     * function that makes an api call to get all the gyms
+     */
+    const getAllGyms = async() => {
         if(!postWaiting){
             setPostWaiting(true);
-            fetch('https://gym-king.herokuapp.com/gyms/aroundme',{
-                method: 'POST',
+            axios(process.env["REACT_APP_GYM_KING_API"]+'/gyms/getAllGyms',{
+                method: 'GET',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    latCoord: center[0],
-                    longCoord: center[1],
-                    radius: Math.pow(1.5,(18-zoom))
-                })
+                }
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 
                 if(response.success){
-                    //console.info(Math.pow(1.5,(18-zoom)))
-                    //console.info(response.results)
                     setGyms(response.results);
                     setPostWaiting(false);
 
@@ -143,21 +258,95 @@ const MapView: React.FC = () =>{
                 console.log(err);
             })
         }
-        
     }
-    
+
+    //=========================================================================================================//
+    /**
+     * function that displayds all the gyms within the view of the users map
+     */
+     function setGymsInMapView() 
+     {   
+         // the radius grows with the zoom depth
+         let rad =  (20-zoom);
+ 
+         //the gyms we find in the radius will be added here
+         let outGyms:any = [];
+ 
+         //get the center coordinates
+         let lat= center[0];
+         let long = center[1];
+ 
+         // loop through all gyms
+         gyms?.forEach((element: { gid: string; gym_coord_lat: number; gym_coord_long: number; key: string;}) => {
+             // get magnitde between user and each gym coordinate
+             let magnitude = calcCrow(lat,long,element.gym_coord_lat,element.gym_coord_long);
+             // If magnitude is within radius then add it to the results
+             if(magnitude <= rad){
+                 outGyms.push(element);
+             }
+         });
+ 
+         //chagne the state of gyms in view 
+         setGymsinView(outGyms);
+     }
+
+    //=============================================================================================//
+    //Helper Functions 
+    //=============================================================================================//
+   
+
+    //=========================================================================================================//
+    /**
+     * Converts numeric degrees to radians
+     * @param {float} Value a value in degree format
+     * @returns {float} value in radians
+     */
+    function toRad(Value:any) 
+    {
+        return Value * Math.PI / 180;
+    }
+   
+    //=========================================================================================================//
+    /**
+     * Helper functions to get the distance between two coordinates
+     * @param {float} lat1 = fromLat
+     * @param {float} lon1 = fromLong
+     * @param {float} lat2 = toLat
+     * @param {float} lon2 = toLong
+     * @returns {float} distance between points 
+     */
+    function calcCrow(lat1: number, lon1: number, lat2: number, lon2: number)  
+    {
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var latNew1 = toRad(lat1);
+      var latNew2 = toRad(lat2);
+  
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latNew1) * Math.cos(latNew2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+    /**
+     * function that loops every few minutes 
+     * gets an updated list of gyms
+     */
     useEffect(() => {
 
         const interval = setInterval(() => {
-            getLocation(first);
-            if(first){
-                setFirst(false)
-                setRefresh(10000)
+            if(first) {
+                getLocation(first);
+                setRefresh(20000);
+                setFirst(false);
+                getAllGyms();
             }
-            //console.log("Map Refresh")
+            else    
+                getLocation(false);
 
-            
-            getNearbyGyms();
+            setGymsInMapView();
         }, refresh);
         
         return () => 
@@ -165,10 +354,10 @@ const MapView: React.FC = () =>{
             clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
         }
     })
-
-
-    const [showModal, setShowModal] = useState(false);
-
+    
+    /**
+     * animation for opening the selected gym menu
+     */
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;
 
@@ -190,14 +379,49 @@ const MapView: React.FC = () =>{
         .addAnimation([backdropAnimation, wrapperAnimation]);
     }
 
+    /**
+     * animation for closing the selected gym menu
+     */
     const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
     }
 
+    /**
+     * a function that gets map tiles from the map provider
+     * @param x latitude
+     * @param y longitude
+     * @param z zoom
+     * @param dpr resolution
+     * @returns png for pidgeon maps
+     */
+    const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
+        return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
+    }
     return (
         
         <>  
-            <IonContent >
+            <IonContent  overflow-scroll="false" >
+                
+            <GymSearchBar 
+                gyms={gymsInSearchTab} 
+                nearByCallBack = {() =>{
+                        setShowModal(false);
+                        getNearbyGyms()
+                    }
+                }
+                searchCallBack = {(searchQuery:string) => {
+                        searchQueryAction(searchQuery)
+                    }
+                }
+
+                setGymFocus = {(lat: number, long:number) =>{
+
+                    setCenter([lat, long]) ;
+                    setZoom(18) ;
+                    setGymsInMapView()
+                }}
+            /> 
+                
             <IonLoading 
                 isOpen={loading}
                 message={"Loading"}
@@ -214,7 +438,7 @@ const MapView: React.FC = () =>{
             />
 
             <Map 
-                provider={stamenToner}
+                provider={mapTiler}
                 center={[center[0],center[1]]}
                 zoom={zoom} 
                 maxZoom={maxZoom}
@@ -223,65 +447,56 @@ const MapView: React.FC = () =>{
                 onBoundsChanged={({ center, zoom }) => { 
                     setCenter(center) ;
                     setZoom(zoom) ;
-                    
-                    getLocation(false)
-                    getNearbyGyms()
                     setShowModal(false)
+                    setGymsInMapView();
                 }} 
                 onAnimationStart={()=>{
                                 
                     setShowModal(false)
                 }}
                 onClick={()=>{
-                                
+                     
                     setShowModal(false)
-                }}
-                
-                
-                
+                }}        
             >
-                <button id="float" onClick={() => { 
+                <IonButton shape="round" id="float" onClick={() => { 
                     
                     getLocation(true)
-                    getNearbyGyms()
+                    setGymsInMapView()
                 }}>
-                    <i id="fa fa-plus my-float"></i>
-                    <img src={recenter} alt =""></img>
-                </button>
+
+                    <img id = "btnIcon" alt="" src={recenter} ></img>
+                </IonButton>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gyms.map((item: { gym_coord_lat: number; gym_coord_long: number; gid:string;gym_brandname:string;}) => {
+                {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string;}) => {
                     return (
                         <Overlay 
-                            key={item.gid + Math.random()}
+                            key={item.key}
                             anchor={[item.gym_coord_lat,item.gym_coord_long]} 
                             offset={[15,31]} 
                             
                         > 
                             <img onClick={() => {gymButtonClick(item)}} id ="GymPicture" src={gym} alt='' />
-                        </Overlay> 
+                        </Overlay>
                     )                 
                 })}
 
-                
-            
-
             </Map>
 
-            <IonModal  id = "overlay"   showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
-        
-            {/* <IonBadge > */}
-                <IonCard style={{"margin":"0px"}} >
+            <IonModal  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+
+                <IonCard style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
                         <IonCardTitle className='center Subheading'>{gymData.gym_brandname}</IonCardTitle>
                     </IonCardHeader >
-                    <IonCardContent id="buttonBox">
+                    <IonCardContent id="buttonBox" >
                         <IonButtons>
                             <IonButton  
                                 shape='round' 
-                                color="white"
-                                className='btn'
+                                color="dark"
+                                className='btnView'
                                 onClick={()=>{
 
                                     sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
@@ -294,12 +509,12 @@ const MapView: React.FC = () =>{
                             >
                                 View
                             </IonButton>
-                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btn'>Close</IonButton>
+                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btnClose' color="light">Close</IonButton>
                         </IonButtons>
                     
                     </IonCardContent>
                 </IonCard>
-            {/* </IonBadge > */}
+
             
             </IonModal>   
             </IonContent>

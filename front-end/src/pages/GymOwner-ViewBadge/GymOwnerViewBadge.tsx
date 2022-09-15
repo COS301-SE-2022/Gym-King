@@ -1,9 +1,9 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewDidEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import React, {useState } from 'react';
 import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
 import './GymOwnerViewBadge.css';
+import axios from "axios";
 
 
 const GymOwnerViewBadge: React.FC = () =>{
@@ -12,15 +12,13 @@ const GymOwnerViewBadge: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
         //GET REQUEST:
-        useIonViewDidEnter(()=>{
+        useIonViewWillEnter(()=>{
             var email=localStorage.getItem("email")
             setLoading(true);
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            .then(response =>response.data)
             .then(response =>{
-                console.log("fetching gyms")
+                console.log(response)
                 setLoading(false)
                 var arr=[];
                 for(let i=0;i<response.length;i++)
@@ -34,13 +32,14 @@ const GymOwnerViewBadge: React.FC = () =>{
                     )
                 }
                 setBadgeList(arr)
+                console.log(arr)
             })
             .catch(err => {
                 console.log(err)
                 setLoading(false)
             })
 
-    })
+        },[])
 
     return(
         <IonPage >

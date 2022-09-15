@@ -1,25 +1,26 @@
-import { IonCol, IonGrid, IonRow} from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { IonCol, IonGrid, IonLoading, IonRow, useIonViewDidEnter} from '@ionic/react';
+import { useState, } from 'react';
 import ViewBadgeCard from './ViewBadgeCard/ViewBadgeCard';
+import axios from 'axios';
 
 export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
      
     const [badges, setBadges] = useState(new Array<any>());
+    const [loading, setLoading] = useState<boolean>(false);
+
     
         //GET REQUEST:
-        useEffect(()=>
+        useIonViewDidEnter(()=>
         {
-            
-            fetch(`https://gym-king.herokuapp.com/badges/gym/${props.gymID}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            setLoading(true)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${props.gymID}`)
+            .then(response =>response.data)
             .then(response =>{  
+                console.log(response)
                 let arr=[];
                 for(let i=0; i<response.length; i++)
                 {
                     let icon=response[i].badgeicon.split("_")
-                    console.log(response)
                     arr.push({
                         'b_id':response[i].b_id,
                         'badgename':response[i].badgename,
@@ -28,8 +29,12 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
                     })
                 }
                 setBadges(arr)
+                setLoading(false)
             })
-            .catch(err => {console.log(err)})
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
         },[props.gymID])
 
     return(
@@ -41,6 +46,16 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
                 <ViewBadgeCard  BadgeID={el.b_id} BadgeTitle={el.badgename} BadgeDesc={el.badgedescription} Badgerank={el.icon[0]} BadgeEmblem={el.icon[1]}></ViewBadgeCard>
              </IonCol>)}
         </IonRow>
+
+        <IonLoading 
+            isOpen={loading}
+            message={"Loading"}
+            duration={2000}
+            spinner={"circles"}
+            onDidDismiss={() => setLoading(false)}
+            cssClass={"spinner"}
+            
+        />
 
     </IonGrid>
         )

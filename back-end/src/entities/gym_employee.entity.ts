@@ -20,7 +20,7 @@ export class gym_employee {
     @Column({length: 300})
     password: string
 
-    @Column({length: 65535, default:"NONE"})
+    @Column({length: 65535, default:"NONE",nullable: true})
     profile_picture: string
 
     @Column({type: "varchar" ,length: 4})
