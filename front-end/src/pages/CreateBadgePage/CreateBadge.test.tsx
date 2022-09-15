@@ -11,7 +11,7 @@ test('renders without crashing', () => {
 });
 
 test('correctly displays labels', async () => {
-    const {baseElement} = render<CreateBadge/>);
+    const {baseElement} = render<CreateBadge />);
     expect (baseElement).toHaveTextContent("Badge Name:");
     expect (baseElement).toHaveTextContent("Activity Type:");
     expect (baseElement).toHaveTextContent("Gym Location:");
