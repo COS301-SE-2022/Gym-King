@@ -57,9 +57,9 @@ jobs:
         with:
           java-version: 1.8
       - name: Make gradlew executable
-        run: ls && cd ./front-end/android && chmod +x gradlew
+        run:  chmod +x gradlew
       - name: build prod
-        run: ls && cd ./front-end/android && gradlew app:bundleRelease
+        run: sh ./gradleBuild.sh
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
