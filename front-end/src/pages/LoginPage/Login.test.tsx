@@ -7,6 +7,12 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
+test('correctly displays labels', async () => {
+  const {baseElement} = render(<Login />);
+  expect (baseElement).toHaveTextContent("Email*");
+  expect (baseElement).toHaveTextContent("Password*");
+});
+
 
 ////////// INTEGRATION TESTS //////////
 
