@@ -54,7 +54,10 @@ jobs:
         with:
           java-version: 1.8
       - name: build prod
-        run: sh ./gradleBuild.sh
+        working-directory: ./front-end/android
+        run: |
+          chmod +x gradlew
+          ./gradlew bundleRelease
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
