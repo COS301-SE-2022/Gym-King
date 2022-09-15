@@ -7,7 +7,7 @@ test('renders without crashing', () => {
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} = render(<Register/>);
+  const {baseElement} = render(<RegisterPage/>);
   expect (baseElement).toHaveTextContent("Email*");
   expect (baseElement).toHaveTextContent("Name*");
   expect (baseElement).toHaveTextContent("Surname*");
