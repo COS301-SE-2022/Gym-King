@@ -37,6 +37,8 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/preset-env": "^7.0.0",
     "@capacitor/device": "^4.0.1",
+    "@capacitor/push-notifications": "^4.1.0",
+    "@capacitor/toast": "^4.0.1",
     "@firebase/app-types": "0.x",
     "@google-cloud/storage": "^6.2.3",
     "@ionic/cli": "^6.19.0",
