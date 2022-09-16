@@ -14,6 +14,7 @@ import { Capacitor, Plugins } from '@capacitor/core';
 import { VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capacitor-video-recorder';
 import {MediaFile, VideoCapturePlusOptions, VideoCapturePlus,} from "@ionic-native/video-capture-plus";
 import { boolean } from 'yup/lib/locale';
+import NNAlert from '../../components/NN_outcome/NN_outcome';
 interface LocalFile{
     name:string;
     path:string;
@@ -24,8 +25,29 @@ interface InternalValues {
 }
 const IMAGE_DIR='GymKing-media'
 export type UploadActivityStates = {act?:any}
-
+const config: VideoRecorderPreviewFrame = {
+    id: 'video-record',
+    stackPosition: 'front', // 'front' overlays your app', 'back' places behind your app.
+    width: 'fill',
+    height: 'fill',
+    x: 0,
+    y: 0,
+    borderRadius: 0
+};
 const UploadActivityPage: React.FC = () =>{
+    
+    const { VideoRecorder } = Plugins;
+
+    const doMediaCapture = async () => {
+        await VideoRecorder.initialize({
+            camera: VideoRecorderCamera.FRONT, // Can use BACK
+            previewFrames: [config]
+        });
+        VideoRecorder.startRecording();
+        const res = await VideoRecorder.stopRecording();
+        // The video url is the local file path location of the video output.
+            return res.videoUrl;
+      };
         const [message,setMessage]=useState<string>("loading")
         const [model,setModel]=useState<any>()       
         const [acitvity,setActivity]=useState<string>("")
@@ -172,7 +194,7 @@ const UploadActivityPage: React.FC = () =>{
             }
             else{
                 setBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected :"+reps)
-                console.log("Incorrect activity."+acitvity+" detected")
+                console.log("Isufficient reps. expected "+reps_needed +", but detected :"+reps)
                 setAward(false)
             }
            }
@@ -183,11 +205,11 @@ const UploadActivityPage: React.FC = () =>{
             console.log("Incorrect activity."+acitvity+" detected")
             setAward(false)
         }
-        setAlert(true)
+       
     }
     const handleSubmit = async (e:any) =>{
        // saveImage(values.current.file)
-       console.log("model:",model)
+        console.log("model:",model)
        setMessage("Calculating")
        setLoading(true)
         console.log("extracting frames")
@@ -205,6 +227,8 @@ const UploadActivityPage: React.FC = () =>{
         console.log("done")
     
      setLoading(false)
+      setAlert(true)
+    
             /*var image = values.current.file;
             console.log(image)
             var reader=new FileReader();
@@ -285,7 +309,7 @@ const UploadActivityPage: React.FC = () =>{
         
                 console.log("loading model")
                 const model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
-                 setModel(model)
+                setModel(model)
             }
             catch(err)
             {
@@ -378,6 +402,9 @@ const UploadActivityPage: React.FC = () =>{
             .catch(err => {console.log(err)}) 
         }
     */
+        const reset= () => {
+           setAlert(false)
+        }
         return(
         
             <IonPage color='#220FE' >
@@ -399,7 +426,32 @@ const UploadActivityPage: React.FC = () =>{
                     </IonGrid>
                     <IonText className='PageTitle center'>{badgename}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
-                    <form onSubmit={handleSubmit}>
+                    <IonButton onClick={ handleSubmit} className="btnSubmit centerComp" color="warning">TEST NN</IonButton>
+                    <IonToast
+                        isOpen={showToast1}
+                        onDidDismiss={() => setShowToast1(false)}
+                        message="Your claim has been uploaded."
+                        duration={500}
+                        color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={message}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
+                    <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} BadgeEmblem={Icon[1]} Badgerank={Icon[0]} idEmblem="UploadEmblem" idRank='UploadRank'></NNAlert>
+                </IonContent>
+            </IonPage>
+        )
+        
+}
+
+export default UploadActivityPage;
+/*
+<form onSubmit={handleSubmit}>
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={localStorage.getItem("activitytype")!} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
@@ -417,25 +469,4 @@ const UploadActivityPage: React.FC = () =>{
                     <IonButton onClick={ handleSubmit} className="btnSubmit centerComp" color="warning">TEST NN4</IonButton>
                     <br></br>
                     <br></br>
-                    <IonToast
-                        isOpen={showToast1}
-                        onDidDismiss={() => setShowToast1(false)}
-                        message="Your claim has been uploaded."
-                        duration={500}
-                        color="success"
-                    />
-                    <IonLoading 
-                        isOpen={loading}
-                        message={message}
-                        spinner={"circles"}
-                        onDidDismiss={() => setLoading(false)}
-                        cssClass={"spinner"}
-                        
-                    />
-                </IonContent>
-            </IonPage>
-        )
-        
-}
-
-export default UploadActivityPage;
+*/

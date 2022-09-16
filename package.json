@@ -113,7 +113,7 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/react": "^13.8.3",
     "@nrwl/tao": "13.8.3",
-    "@nrwl/workspace": "13.8.3",
+    "@nrwl/workspace": "^14.7.5",
     "@nxtend/ionic-react": "^13.0.0",
     "@types/jest": "^27.5.1",
     "@types/passport-jwt": "^3.0.6",
