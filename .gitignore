@@ -46,3 +46,6 @@ testem.log
 
 #back-end
 back-end/node_modules
+
+#Key Store
+/Keystore

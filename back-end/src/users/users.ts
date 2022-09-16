@@ -5,8 +5,11 @@ import { gymRepository } from "../repositories/gym.repository";
 import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
-import { userOTPRepository } from "../repositories/user_otp.repository";
+import { userOTPRepository } from "../repositories/user_otp.repository"; 
 import { storageRef } from "../firebase.connection";
+import { friendRepository } from "../repositories/friend.repository";
+import { subscription } from "../entities/subscription.entity";
+import { subscriptionRepository } from "../repositories/subscription.repository";
 
 const express = require('express');
 const cors = require('cors');
@@ -531,6 +534,7 @@ const users = express.Router()
             +user.name+' '+user.surname+
             '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
             'Your OTP is: '+newOTP+'\n'+
+            'This OTP will only be valid for 5 minutes!\n'+
             'If this was not you please ignore this email!'
           }
           if (query.email != 'test@example.com'){
@@ -688,16 +692,20 @@ const users = express.Router()
    .put('/users/user/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const user = await userRepository.findByEmail(query.email);
-      const otp = await userOTPRepository.findByEmail(query.email);
-      if (otp != null && otp.otp == query.otp) {
-        const result = await userRepository.updateUserPassword(user.email, query.newpassword);
-        const otp = await userOTPRepository.deleteUserOTP(query.email);
-        const results = { 'success': true };
-        res.json(results);
-      }
-      else {
-        res.json({'message':'Invalid email or OTP!'})
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const user = await userRepository.findByEmail(query.email);
+        const otp = await userOTPRepository.findByEmail(query.email);
+        if (otp != null && otp.otp == query.otp && (new Date().getTime() - new Date(otp.otptimestamp).getTime())*0.001/60 < 5) {
+          const result = await userRepository.updateUserPassword(user.email, query.newpassword);
+          const otp = await userOTPRepository.deleteUserOTP(query.email);
+          res.json({ 'success': true });
+        }
+        else {
+          res.json({'message':'Invalid email or OTP!'})
+        }
+      } else {
+        res.json({'message':'Invalid email!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -742,6 +750,266 @@ const users = express.Router()
       else {
         res.json({'message':'Invalid email or password!'})
       }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - create a request. also checks for an existing request between the two users and sets it to accpeted
+   * @param {string} fromEmail the user sending the request.
+   * @param {string} toEmail the user receiving the request.
+   * @returns message confirming creation.
+   */
+  .post('/users/user/CreateRequest', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.fromEmail && query.toEmail){
+        
+
+        let a = (await friendRepository.findByFromTo(query.fromEmail,query.toEmail))
+        let b = (await friendRepository.findByFromTo(query.toEmail,query.fromEmail))
+
+        // the user has already made the request
+        if( a != null){
+          throw "this request has already been created"
+        }
+        // the friend has sent the user a request
+        else if(b!=null){
+          
+          if(b.isPending){
+            // set the pending status to false. the friend request was accepted
+            let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
+            res.json({'success':true, 'results': 'request already exists, request was accepted'});    
+          }
+          else throw "this request has already been created and accepted";
+        }
+        // no request exists
+        else{
+          let result = await friendRepository.createRequest(query.fromEmail,query.toEmail);
+          res.json({'success':true,'results': 'request was created'});
+        }
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: "could not create request" ,reason: err};
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users friends
+   * @param {string} userEmail the user whos friends you want to get.
+   * @returns list of friends' emails .
+   */
+  .post('/users/user/getFriends', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findFriends(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users received requests
+   * @param {string} userEmail the user whos received requests you want to get.
+   */
+  .post('/users/user/getReceivedRequests', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findReceivedRequests(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users sent requests
+   * @param {string} userEmail the user whos sent requests you want to get.
+   */
+  .post('/users/user/getSentRequests', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findSentRequests(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .get("/users/user/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let Requests = await friendRepository.findAll();
+      res.json(Requests);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json({results});
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * DELETE - delete a friend request or relation (the order of emails doesnt matter, this deletes any request that matches the given emails)
+   * @param {string} fromEmail the user who sent the request.
+   * @param {string} toEmail the user receiving the request.
+   **/
+  .delete("/users/user/deleteRequest", cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.toEmail){
+        // the user has already made the request
+        if((await friendRepository.findByFromTo(query.fromEmail,query.toEmail))!=null){
+          let result = await friendRepository.deleteRequest(query.fromEmail,query.toEmail);
+          res.json({'success':true, 'results': 'request was deleted'});    
+       
+        }
+        // the friend has sent the user a request
+        else if((await friendRepository.findByFromTo(query.toEmail,query.fromEmail))!=null){
+          // set the pending status to false. the friend request was accepted
+          let result = await friendRepository.deleteRequest(query.toEmail,query.fromEmail);
+          res.json({'success':true, 'results': 'request was deleted'});    
+        }
+        // no request exists
+        else{
+          throw "request not found"
+        }
+      }
+      else throw "missing email";
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST create a subscription relation. also checks for an existing subscription between the user and gym
+   * @param {string} fromEmail the user making the subscription.
+   * @param {string} toEmail the user receiving the request.
+   * @returns message confirming creation.
+   */
+  .post('/users/user/createSubscription', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.gid){
+        // no subsription found 
+        if((await subscriptionRepository.findByFromTo(query.fromEmail,query.gid))==null){
+          let result = await subscriptionRepository.createSubscription(query.fromEmail,query.gid);
+          res.json({'success':true, 'results': 'subsription was added'});    
+       
+        }
+        // subsription already exsists
+        else{
+          throw "subsription already exsists"
+        }
+      }
+      else throw "missing email or gym";
+    } 
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST get the gyms a user is subsribed to
+   * @param {string} fromEmail the users email.
+   * @returns the list of all gyms.
+   */
+  .post('/users/user/getGymSubscriptions', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.fromEmail){
+        let result = await subscriptionRepository.findBySubscriber(query.fromEmail);
+        res.json({'success':true, 'results': result});    
+      }
+      else{
+        throw "missing email"
+      }
+
+    }
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST get the subcribers of a gym
+   * @param {string} gid the gym id of the gym your searching.
+   * @returns the list of all subscribers.
+   */
+  .post('/users/user/getSubscribedUsers', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.gid){
+        let result = await subscriptionRepository.findBySubbed(query.gid);
+        res.json({'success':true, 'results': result});    
+      }
+      else{
+        throw "missing gym id"
+      }
+    }
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * DELETE - delete a subscription relation
+   * @param {string} fromEmail the subsribed user
+   * @param {string} toGym the gym that is subsribed to.
+   * @returns success status
+   **/
+  .delete("/users/user/deleteSubscription", cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.gid){
+        // the user has already made the request
+        if((await subscriptionRepository.findByFromTo(query.fromEmail,query.gid))!=null){
+          let result = await subscriptionRepository.removeSubsription(query.fromEmail,query.gid);
+          res.json({'success':true, 'results': 'subsription was removed'});    
+       
+        }
+
+        // no subsription exists
+        else{
+          throw "subsription not found"
+        }
+      }
+      else throw "missing email or gym";
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
