@@ -46,16 +46,31 @@ beforeAll(async () => {
     bid2 = response.body.b_id;
 });
 describe('Testing POST API Calls', () => {
-    test('responds to POST insert user', async () => {
-        const response = await request(server).post('/users/user').send({
-            "email": "test@example.com",
-            "name": "Test",
-            "surname": "Test",
-            "number": "0123456789",
-            "username":"Test",
-            "password":"Test"
-        });
-        expect(response.statusCode).toBe(200);
+    describe('responds to POST insert user', () => {
+        test('responds to incorrect insert user', async () => {
+            const response = await request(server).post('/users/user').send({
+                "email": "WrongEmail",
+                "name": "Test",
+                "surname": "Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid email entered!'})
+        })
+        test('responds to correct insert user', async () => {
+            const response = await request(server).post('/users/user').send({
+                "email": "test@example.com",
+                "name": "Test",
+                "surname": "Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+        })
     });
     test('responds to correct GET user profile picture by email', async () => {
         const response = await request(server).get('/users/user/picture/test@example.com')
@@ -96,14 +111,30 @@ describe('Testing POST API Calls', () => {
             expect(response.body).toStrictEqual({ 'success': false, 'results':'invalid email or password'})
         });
     });
-    test('responds to POST insert user OTP', async () => {
-        const response = await request(server).post('/users/user/OTP').send({
-            "email": "test@example.com",
-        });
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toStrictEqual({'success':true});
-        otp = await userOTPRepository.findByEmail("test@example.com");
-        otp = otp.otp;
+    describe('responds to POST insert user OTP', () => {
+        test('responds to incorrect POST insert user OTP', async () => {
+            const response = await request(server).post('/users/user/OTP').send({
+                "email": "InvalidEmail",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid email entered!'});
+        })
+        test('responds to incorrect POST insert user OTP', async () => {
+            const response = await request(server).post('/users/user/OTP').send({
+                "email": "fakeEmail@example.com",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({ 'success': false ,'message':'User does not exist!' });
+        })
+        test('responds to correct POST insert user OTP', async () => {
+            const response = await request(server).post('/users/user/OTP').send({
+                "email": "test@example.com",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true});
+            otp = await userOTPRepository.findByEmail("test@example.com");
+            otp = otp.otp;
+        })
     });
     describe('responds to POST get user info', () => {
         test('responds to correct POST get user info', async () => {
@@ -245,7 +276,7 @@ describe('Testing GET API Calls', () => {
 });
 describe('Testing PUT API Calls', () => {
     describe('Testing PUT update user info', () => {
-        test('responds to correct password PUST update user info', async () => {
+        test('responds to correct password PUT update user info', async () => {
             let response = await request(server).put('/users/user/info').send({
                 "email": "test@example.com",
                 "password":"Test",
@@ -296,6 +327,15 @@ describe('Testing PUT API Calls', () => {
         });
     });
     describe('Testing PUT update user password', () => {
+        test('responds to incorrect invalid email PUT change user password', async () => {
+            let response = await request(server).put('/users/user/password').send({
+                "email": "InvalidEmail",
+                "otp":otp,
+                "newpassword": "Changed",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'message':'Invalid email!'})
+        });
         test('responds to incorrect otp PUT change user password', async () => {
             let response = await request(server).put('/users/user/password').send({
                 "email": "test@example.com",
