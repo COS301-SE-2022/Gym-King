@@ -276,7 +276,7 @@ describe('Testing GET API Calls', () => {
 });
 describe('Testing PUT API Calls', () => {
     describe('Testing PUT update user info', () => {
-        test('responds to correct password PUST update user info', async () => {
+        test('responds to correct password PUT update user info', async () => {
             let response = await request(server).put('/users/user/info').send({
                 "email": "test@example.com",
                 "password":"Test",
@@ -327,6 +327,15 @@ describe('Testing PUT API Calls', () => {
         });
     });
     describe('Testing PUT update user password', () => {
+        test('responds to incorrect invalid email PUT change user password', async () => {
+            let response = await request(server).put('/users/user/password').send({
+                "email": "InvalidEmail",
+                "otp":otp,
+                "newpassword": "Changed",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'message':'Invalid email!'})
+        });
         test('responds to incorrect otp PUT change user password', async () => {
             let response = await request(server).put('/users/user/password').send({
                 "email": "test@example.com",
