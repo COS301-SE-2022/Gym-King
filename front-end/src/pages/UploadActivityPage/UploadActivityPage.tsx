@@ -7,14 +7,54 @@ import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
 import axios from "axios";
-
+import * as tf from "@tensorflow/tfjs"
+import {Camera,CameraResultType,CameraSource,Photo} from '@capacitor/camera'
+import { Directory, Filesystem, WriteFileResult} from '@capacitor/filesystem';
+import { Capacitor, Plugins } from '@capacitor/core';
+import { VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capacitor-video-recorder';
+import {MediaFile, VideoCapturePlusOptions, VideoCapturePlus,} from "@ionic-native/video-capture-plus";
+import { boolean } from 'yup/lib/locale';
+import NNAlert from '../../components/NN_outcome/NN_outcome';
+interface LocalFile{
+    name:string;
+    path:string;
+    data:string;
+}
 interface InternalValues {
     file: any;
 }
+const IMAGE_DIR='GymKing-media'
 export type UploadActivityStates = {act?:any}
-
+const config: VideoRecorderPreviewFrame = {
+    id: 'video-record',
+    stackPosition: 'front', // 'front' overlays your app', 'back' places behind your app.
+    width: 'fill',
+    height: 'fill',
+    x: 0,
+    y: 0,
+    borderRadius: 0
+};
 const UploadActivityPage: React.FC = () =>{
-        
+    
+    const { VideoRecorder } = Plugins;
+
+    const doMediaCapture = async () => {
+        await VideoRecorder.initialize({
+            camera: VideoRecorderCamera.FRONT, // Can use BACK
+            previewFrames: [config]
+        });
+        VideoRecorder.startRecording();
+        const res = await VideoRecorder.stopRecording();
+        // The video url is the local file path location of the video output.
+            return res.videoUrl;
+      };
+        const [message,setMessage]=useState<string>("loading")
+        const [model,setModel]=useState<any>()       
+        const [acitvity,setActivity]=useState<string>("")
+        const [reps,setReps]=useState<number>(0)
+        const [award,setAward]=useState<boolean>(false)
+        const [badgeMessage,setBadgeMessage]=useState<string>("unsuccessful")
+        const [Alert,setAlert]=useState<boolean>(false)
         // STATES AND VARIABLES 
         const [isValid, setIsValid] = useState(false);
         const [submitted, setSubmitted] = useState(false);
@@ -33,8 +73,206 @@ const UploadActivityPage: React.FC = () =>{
         let history=useHistory()
         
         //METHODS 
-        const handleSubmit = async (e:any) =>{
-            e.preventDefault();
+        const selectImage=async()=>{
+            const image=await Camera.getPhoto({
+                quality:90,
+                allowEditing:true,
+                resultType:CameraResultType.Base64,
+                source:CameraSource.Camera
+            })
+            console.log(image)
+            if(image){
+                saveImage(image)
+            }
+            
+        }
+        const saveImage=async(media:Photo)=>{
+            const fileName=new Date().getTime()+'.mp4'
+            const base64Data=await ToBase64(media) as string
+            const savedFile=await Filesystem.writeFile({
+                directory:Directory.Data,
+                path: `${IMAGE_DIR}/${fileName}`,
+                data:base64Data
+            })
+            console.log('saved:',savedFile)
+        }
+        const ToBase64=async(photo:Photo)=>
+        {
+            if (Capacitor.getPlatform()==="hybrid") {
+                const file = await Filesystem.readFile({
+                  path: String(photo.path)
+                });
+                return file.data;
+              }
+              else {
+                // Fetch the photo, read as a blob, then convert to base64 format
+                const response = await fetch(String(photo.webPath));
+                const blob = await response.blob();
+            
+                return await convertBlobToBase64(blob) as string;
+              }
+        }
+       const convertBlobToBase64 = (blob:Blob) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.readAsDataURL(blob);
+        });
+
+    const categroize=async(image:ImageData)=>{
+        let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
+        let tensorImg =   tf.browser.fromPixels(image).resizeNearestNeighbor([300, 300]).div(tf.scalar(255)).expandDims();
+        let prediction= await model.predict(tensorImg).data();
+        let index=0;
+        let max=prediction[0]
+        for(let i=1;i<prediction.length;i++)
+        {
+            if(prediction[i]>max)
+            {
+                max=prediction[i];
+                index=i;
+            }
+        }
+        console.log(categories[index])
+        return categories[index]
+
+    }
+    const determineActivityandReps=async(predictions:string[])=>{
+        console.log(predictions)
+         let num:number[]=[]
+         let activities_predicted:string[]=[]
+         for(let i=0;i<predictions.length;i++)
+         {
+            if(activities_predicted.includes(predictions[i].split("_")[0]))
+            {
+                let index = activities_predicted.indexOf(predictions[i].split("_")[0])
+                num[index]=num[index]+1
+            }
+            else{
+                activities_predicted.push(predictions[i].split("_")[0])
+                num.push(1)
+            }
+         }
+         let max=num[0];
+         let index=0;
+         for(let i=1;i<activities_predicted.length;i++)
+         {
+            if(num[i]>max)
+            {
+                index=i;
+                max=num[i]
+            }
+         }
+         console.log('there is a ',num[index]/predictions.length*100,'% chance the activity is ',activities_predicted[index])
+         setActivity(activities_predicted[index])
+         let rep_count=0;
+         let current_position=predictions[0];
+         for(let i=0 ;i<predictions.length;i++)
+         {
+            if(current_position!==predictions[i]&& predictions[i].includes(activities_predicted[index]))
+            {
+                rep_count++;
+            }
+         }
+         rep_count=Math.ceil(rep_count/2)
+         setReps(rep_count)
+         console.log("rep_count",rep_count)
+    }
+
+    const awardBadge=async()=>{
+        if(badgename.replaceAll(" ","").replaceAll("-","").toUpperCase().includes(acitvity.toUpperCase()))
+        {
+           let reps_needed=badgedescription.match(/\b\d+\b/g)?.map(Number)
+           if(reps_needed)
+           {
+            if(reps_needed[0]<=reps)
+            {
+                console.log("congrats")
+                setAward(true)
+            }
+            else{
+                setBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected :"+reps)
+                console.log("Isufficient reps. expected "+reps_needed +", but detected :"+reps)
+                setAward(false)
+            }
+           }
+        }
+        else
+        {
+            setBadgeMessage("Incorrect activity."+acitvity+" detected")
+            console.log("Incorrect activity."+acitvity+" detected")
+            setAward(false)
+        }
+       
+    }
+    const handleSubmit = async (e:any) =>{
+       // saveImage(values.current.file)
+        console.log("model:",model)
+       setMessage("Calculating")
+       setLoading(true)
+        console.log("extracting frames")
+        await VideoToFrames.getFrames('./assets/video.mp4', VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+            console.log("running through neural network")
+            console.log(frame)
+            var data:string[]=[]
+            for(let j=0;j<frame.length;j++)
+            {
+                data.push(await categroize(frame[j]))
+            }
+            await determineActivityandReps(data)
+        });
+        await awardBadge() 
+        console.log("done")
+    
+     setLoading(false)
+      setAlert(true)
+    
+            /*var image = values.current.file;
+            console.log(image)
+            var reader=new FileReader();
+            reader.readAsArrayBuffer(image) 
+            console.log(reader.result)*/
+        /*    console.log(values.current.file)
+            let tensorImg =   tf.browser.fromPixels(await createImageBitmap(values.current.file)).resizeNearestNeighbor([300, 300]).div(tf.scalar(255)).expandDims();
+            console.log(tensorImg)
+            let prediction= await model.predict(tensorImg).data();
+            let index=0;
+            let max=prediction[0]
+            for(let i=1;i<prediction.length;i++)
+            {
+                if(prediction[i]>max)
+                {
+                    max=prediction[i];
+                    index=i;
+                }
+            }
+            console.log(prediction)
+            console.log(categories[index])
+        }
+        catch(err)
+        {
+            console.log(err,"couldnt load Neural Network")
+        } 
+        setLoading(false)  
+            /*const image = new Image(300, 300);
+            image.src = values.current.file.name;
+            let tensorImg =   tf.browser.fromPixels(image).resizeNearestNeighbor([300, 300]).toFloat().expandDims();
+            let arr2d=[]
+            for(let i =0;i<300;i++)
+            {
+                let arr1d=[];
+                for(let j=0;j<300;j++)
+                {
+                    arr1d.push([1, 1, 1])
+                }
+                arr2d.push(arr1d)
+            }
+            console.log(tensorImg)
+            let prediction = await excercise_NN.predict([arr2d]);
+            
+           /*e.preventDefault();
             formdata={
                 i1: e.target.i1.value,
                 i2: e.target.i2.value,
@@ -57,16 +295,32 @@ const UploadActivityPage: React.FC = () =>{
                 //handle post request 
                 sendClaim();
                
-            }
+            }*/
             
         }
         
         const updateInputs = (e:any) =>{
         
         }
-
+        const loadModel=async()=>{
+            setMessage("Loading neural Network")
+            setLoading(true)
+            try{ 
+        
+                console.log("loading model")
+                const model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
+                setModel(model)
+            }
+            catch(err)
+            {
+                console.log(err,"couldnt load Neural Network")
+            } 
+            setLoading(false)
+            setMessage("Loading")
+        }
         // GET BADGES GET REQUEST 
         useIonViewDidEnter(()=>{
+            loadModel()
             let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
@@ -121,7 +375,7 @@ const UploadActivityPage: React.FC = () =>{
             }    
         }
         // SEND CLAIM POST REQUEST 
-        const sendClaim=()=>{
+       /* const sendClaim=()=>{
             let i1= formdata.i1;
             let i2= formdata.i2;
             let i3= formdata.i3;
@@ -147,7 +401,10 @@ const UploadActivityPage: React.FC = () =>{
             })
             .catch(err => {console.log(err)}) 
         }
-    
+    */
+        const reset= () => {
+           setAlert(false)
+        }
         return(
         
             <IonPage color='#220FE' >
@@ -169,7 +426,32 @@ const UploadActivityPage: React.FC = () =>{
                     </IonGrid>
                     <IonText className='PageTitle center'>{badgename}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
-                    <form onSubmit={handleSubmit}>
+                    <IonButton onClick={ handleSubmit} className="btnSubmit centerComp" color="warning">TEST NN</IonButton>
+                    <IonToast
+                        isOpen={showToast1}
+                        onDidDismiss={() => setShowToast1(false)}
+                        message="Your claim has been uploaded."
+                        duration={500}
+                        color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={message}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                        
+                    />
+                    <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} BadgeEmblem={Icon[1]} Badgerank={Icon[0]} idEmblem="UploadEmblem" idRank='UploadRank'></NNAlert>
+                </IonContent>
+            </IonPage>
+        )
+        
+}
+
+export default UploadActivityPage;
+/*
+<form onSubmit={handleSubmit}>
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={localStorage.getItem("activitytype")!} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
@@ -180,31 +462,11 @@ const UploadActivityPage: React.FC = () =>{
                                 <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
-                        <input  type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
+                        <input  type="file" accept=".jpg, .png, video/*" onChange={(ev) => onFileChange(ev)} />
                         <br></br>
                         <IonButton className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
+                    <IonButton onClick={ handleSubmit} className="btnSubmit centerComp" color="warning">TEST NN4</IonButton>
                     <br></br>
                     <br></br>
-                    <IonToast
-                        isOpen={showToast1}
-                        onDidDismiss={() => setShowToast1(false)}
-                        message="Your claim has been uploaded."
-                        duration={500}
-                        color="success"
-                    />
-                    <IonLoading 
-                        isOpen={loading}
-                        message={"Loading"}
-                        spinner={"circles"}
-                        onDidDismiss={() => setLoading(false)}
-                        cssClass={"spinner"}
-                        
-                    />
-                </IonContent>
-            </IonPage>
-        )
-        
-}
-
-export default UploadActivityPage;
+*/

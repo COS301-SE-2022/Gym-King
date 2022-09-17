@@ -3,8 +3,8 @@ import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
-
-
+import {Camera} from '@capacitor/camera'
+import {Filesystem} from '@capacitor/filesystem'
 
 export const SplashPage: React.FC = () =>
 {
@@ -15,7 +15,21 @@ export const SplashPage: React.FC = () =>
             err =>{ console.log(err)
                 Geolocation.requestPermissions();},
             
-        );    
+        );  
+        Camera.checkPermissions().then(
+            result=>{console.log("camera permission granted")}
+            ,err=>{
+                    console.log(err)
+                    Camera.requestPermissions()
+                }               
+        )  
+        Filesystem.checkPermissions().then(
+            result=>{console.log("filesystem permission granted")}
+            ,err=>{
+                    console.log(err)
+                    Filesystem.requestPermissions()
+                }               
+        )  
           
     }
     const router = useIonRouter();
