@@ -6,7 +6,7 @@ import { employeeRepository } from "../repositories/gym_employee.repository";
 import { gymOwnedRepository } from "../repositories/gym_owned.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
-import { storageRef } from "../firebase.connection";
+import { firebase_admin } from "../firebase.connection";
 import { gymBrandRepository } from "../repositories/gym_brand.repository";
 
 const express = require("express");
@@ -18,6 +18,7 @@ const brandlogo = multer();
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 
+const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
 //=============================================================================================//
 //Nodemailer email connection 
 //=============================================================================================//

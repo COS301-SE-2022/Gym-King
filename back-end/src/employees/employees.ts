@@ -3,7 +3,7 @@ import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { badgeRepository } from "../repositories/badge.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
-import { storageRef } from "../firebase.connection";
+import { firebase_admin } from "../firebase.connection";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 
 const express = require("express");
@@ -14,6 +14,7 @@ const employeepicture = multer();
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 
+const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
 //=============================================================================================//
 //Nodemailer email connection 
 //=============================================================================================//

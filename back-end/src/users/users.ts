@@ -6,7 +6,7 @@ import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
 import { userOTPRepository } from "../repositories/user_otp.repository"; 
-import { storageRef } from "../firebase.connection";
+import { firebase_admin } from "../firebase.connection";
 import { friendRepository } from "../repositories/friend.repository";
 import { subscription } from "../entities/subscription.entity";
 import { subscriptionRepository } from "../repositories/subscription.repository";
@@ -22,6 +22,7 @@ const userpicture = multer();
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 
+const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
 //=============================================================================================//
 //Nodemailer email connection 
 //=============================================================================================//
