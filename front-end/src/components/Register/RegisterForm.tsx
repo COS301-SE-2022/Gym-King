@@ -35,8 +35,7 @@ export class RegisterForm extends Component<props> {
 
     register = () =>{
         let formData = {
-            name:sessionStorage.getItem("regName"), 
-            surname: sessionStorage.getItem("regSurname"), 
+            name:sessionStorage.getItem("regFullname"), 
             username: sessionStorage.getItem("regUsername"), 
             email:sessionStorage.getItem("regEmail"), 
             phone: sessionStorage.getItem("regNumber"), 
@@ -45,7 +44,7 @@ export class RegisterForm extends Component<props> {
         }
         console.log(formData);
 
-        this.createUser(formData);
+        //this.createUser(formData);
         
     }
 
@@ -63,6 +62,7 @@ export class RegisterForm extends Component<props> {
               number: formData.phone,
               username: formData.username,
               password:formData.password,
+              membership: formData.gym
            }
           })
         .then(response =>response.data)

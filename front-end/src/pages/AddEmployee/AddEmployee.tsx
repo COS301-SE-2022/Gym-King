@@ -38,7 +38,6 @@ export const AddEmployee: React.FC = () =>{
         formData={
             email: e.target.email.value,
             name: e.target.name.value,
-            surname: e.target.surname.value,
             number: e.target.number.value,
             username: e.target.username.value,
             password: e.target.password.value,
@@ -58,8 +57,7 @@ export const AddEmployee: React.FC = () =>{
                 },
                 data: { 
                     email: formData.email,
-                    name: formData.name,
-                    surname: formData.surname,
+                    fullname: formData.name,
                     number: formData.number, 
                     username: formData.username, 
                     password: formData.password,
@@ -96,9 +94,6 @@ export const AddEmployee: React.FC = () =>{
 
                         <IonText className="smallHeading leftMargin">Name*</IonText>
                         <IonInput name='name' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
-
-                        <IonText className="smallHeading leftMargin">Surname*</IonText>
-                        <IonInput name='surname' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
                         <IonText className="smallHeading leftMargin">Phone Number*</IonText>
                         <IonInput name='number' type='number' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>

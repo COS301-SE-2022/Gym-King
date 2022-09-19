@@ -10,7 +10,6 @@ export const Identifications: React.FC<props> = (props) => {
 
     const [errors, setErrors] = useState({
         name: '',
-        surname: '',
         username: '',
     });
 
@@ -45,7 +44,7 @@ export const Identifications: React.FC<props> = (props) => {
     const next = async (e:any) => {
         e.preventDefault();        
 
-        sessionStorage.setItem('regName', e.target.name.value.trim())
+        sessionStorage.setItem('regFullname', e.target.name.value.trim())
         sessionStorage.setItem('regUsername', e.target.username.value.trim())
 
         let isValid = await validate()
