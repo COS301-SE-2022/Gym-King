@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonFooter, IonList, IonCard, IonCardContent, IonItem, IonLabel, IonListHeader, IonText, IonButtons, IonMenuButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonFooter, IonList, IonCard, IonCardContent, IonItem, IonLabel, IonListHeader, IonText, IonButtons, IonMenuButton, IonToast } from '@ionic/react';
 import { PushNotificationSchema, PushNotifications, Token, ActionPerformed } from '@capacitor/push-notifications';
-import './Home.css';
-import { Toast } from "@capacitor/toast";
 
 export default function PushNotificationsContainer() {
     const nullEntry: any[] = []
@@ -28,7 +26,6 @@ export default function PushNotificationsContainer() {
     },[])
     
     const register = () => {
-        console.log('Initializing HomePage');
 
         // Register with Apple / Google to receive push via APNS/FCM
         PushNotifications.register();
@@ -37,6 +34,7 @@ export default function PushNotificationsContainer() {
         PushNotifications.addListener('registration',
             (token: Token) => {
                 showToast('Push registration success');
+                console.log(token);
             }
         );
 
@@ -63,35 +61,16 @@ export default function PushNotificationsContainer() {
     }
 
     const showToast = async (msg: string) => {
-        await Toast.show({
-            text: msg
-        })
+        setIsToastOpen(true)
+        setToastMessage(msg)
     }
+
+    const [isToastOpen, setIsToastOpen] = useState(false);
+    const [toastMeassage , setToastMessage] = useState("")
 
     return (
         <IonPage id='main'>
-            <IonHeader>
-                <IonToolbar color="primary">
-                    <IonTitle slot="start"> Push Notifications</IonTitle>
-                </IonToolbar>
-                <IonToolbar color="light">
-                    <IonTitle slot="start">By Enappd Team</IonTitle>
-                </IonToolbar>
-            </IonHeader>
             <IonContent className="ion-padding">
-                <div>
-                    <IonList>
-                        <IonCard>
-                            <IonCardContent>
-                                1. Register for Push by clicking the footer button.<br></br>
-                                2. Once registered, you can send push from the Firebase console. <br></br>
-                                <a href="https://enappd.gitbook.io/ionic-5-react-capacitor-full-app/features/push-notifications" target="_blank">Check documentation</a><br></br>
-                                3. Once your app receives notifications, you'll see the data here in the list
-                            </IonCardContent>
-                        </IonCard>
-                    </IonList>
-
-                </div>
                 <IonListHeader mode="ios" lines="full">
                     <IonLabel>Notifications</IonLabel>
                 </IonListHeader>
@@ -117,6 +96,14 @@ export default function PushNotificationsContainer() {
                     <IonButton color="success" expand="full" onClick={register}>Register for Push</IonButton>
                 </IonToolbar>
             </IonFooter>
+
+            <IonToast
+                isOpen={isToastOpen}
+                onDidDismiss={() => setIsToastOpen(false)}
+                message={toastMeassage}
+                duration={1000}
+                color="danger"
+                />
         </IonPage >
     )
 }
