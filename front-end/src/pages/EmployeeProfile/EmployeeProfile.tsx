@@ -54,7 +54,7 @@ const EmployeeProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setEmail(response.email);
-                setName(response.name);
+                setName(response.fullname);
                 setPhone( response.number);
                 setUsername(response.username);
                 setGymName(response.g_id.gym_brandname);
@@ -267,7 +267,7 @@ const EmployeeProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
 
-                                <IonLabel className="smallHeading" position="floating">Name</IonLabel>
+                                <IonLabel className="smallHeading" position="floating">Full name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
                                 <br></br>

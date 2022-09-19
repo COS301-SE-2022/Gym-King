@@ -72,8 +72,7 @@ export class RegisterForm extends Component<props> {
               //this.props.showSuccessToast()
 
               
-                sessionStorage.removeItem("regName")
-                sessionStorage.removeItem("regSurname")
+                sessionStorage.removeItem("regFullname")
                 sessionStorage.removeItem("regUsername")
                 sessionStorage.removeItem("regEmail") 
                 sessionStorage.removeItem("regNumber") 

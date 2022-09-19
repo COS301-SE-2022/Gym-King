@@ -302,7 +302,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
 
                                 <br></br>
-                                <IonLabel className="smallHeading" position="floating">Name</IonLabel>
+                                <IonLabel className="smallHeading" position="floating">Full name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
                                 <br></br>

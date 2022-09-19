@@ -92,7 +92,7 @@ export const AddEmployee: React.FC = () =>{
                         <IonText className="smallHeading leftMargin">Email*</IonText>
                         <IonInput name='email' type='text' className='textInput  smallerTextBox leftMargin' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Name*</IonText>
+                        <IonText className="smallHeading leftMargin">Full name*</IonText>
                         <IonInput name='name' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
 
                         <IonText className="smallHeading leftMargin">Phone Number*</IonText>
