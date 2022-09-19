@@ -1,6 +1,7 @@
-import {IonButton, IonCol, IonGrid, IonInput, IonRow, IonText} from '@ionic/react';
+import {IonButton, IonCol, IonGrid, IonInput, IonRow, IonSelect, IonSelectOption, IonText} from '@ionic/react';
 import React from 'react'
 import '../../theme/variables.css'
+import DropDown from '../dropdown/dropdown';
 //creating a type so props can be entered
 export type props = { handleChange:any, next:any, prev:any, };
 
@@ -24,7 +25,8 @@ export class Gym extends React.Component<props>{
                 <br></br>
 
                 <IonText className="smallHeading">Please select your gym*</IonText>
-                <IonInput name='gym' type='text' className='textInput' required  value={sessionStorage.getItem('regGym')!}></IonInput><br></br>
+                <DropDown list={['Virgin Active', 'Planet Fitness', 'Crossfit']}></DropDown>
+
     
                 <IonGrid>
                     <IonRow>

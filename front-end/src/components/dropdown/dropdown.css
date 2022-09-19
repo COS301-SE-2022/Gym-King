@@ -4,10 +4,11 @@
 }
 
 .dropDown{
-    background-color: #620DEC;
-    width:75%;
-    opacity: 64%;
+    padding: 5%;
+    width:100%;
+    opacity: 100%;
     border-radius: 12px;
+    margin-top: 3%;
 }
 
 
@@ -46,5 +47,5 @@ ion-select {
 
 [aria-checked=true].sc-ion-alert-ios .alert-radio-label.sc-ion-alert-ios
 {
-    color:white;
+    color:#0F005A;
 }
