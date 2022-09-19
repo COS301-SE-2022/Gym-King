@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "589715903788",
+    "project_id": "gymkingfiles",
+    "storage_bucket": "gymkingfiles.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589715903788:android:c9569ec706ccac9e0cc889",
+        "android_client_info": {
+          "package_name": "com.tuks.GymKing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589715903788-rc2hulhjqceca6ntut7b2cm8bveuf7qh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIZ4aGvFiKG3i-pSlSWsmv7jY-N-333vg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589715903788-rc2hulhjqceca6ntut7b2cm8bveuf7qh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
