@@ -42,8 +42,8 @@ export const ownerRepository = GymKingDataSource.getRepository(gym_owner).extend
         .getMany()
         return employees
     },
-    async updateOwner(email: string, name: string, surname: string, number: string, username: string) {
-        return await this.manager.update(gym_owner, { email: email }, {name: name, surname: surname, number: number, username: username})
+    async updateOwner(email: string, fullname: string, number: string, username: string) {
+        return await this.manager.update(gym_owner, { email: email }, {fullname: fullname, number: number, username: username})
     },
     async updateOwnerPassword(email: string, password: string) {
         const bcrypt = require('bcryptjs')
@@ -52,12 +52,11 @@ export const ownerRepository = GymKingDataSource.getRepository(gym_owner).extend
     async updateOwnerProfilePicture(email: string, profilepicture: string) {
         return await this.manager.update(gym_owner, { email: email }, {profile_picture: profilepicture})
     },
-    saveOwner(email: string, name: string, surname: string, number: string, username: string, password: string) {
+    saveOwner(email: string, fullname: string, number: string, username: string, password: string) {
         const bcrypt = require('bcryptjs')
         const owner = new gym_owner();
         owner.email = email;
-        owner.name = name;
-        owner.surname = surname;
+        owner.fullname = fullname;
         owner.number = number;
         owner.username = username;
         owner.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
