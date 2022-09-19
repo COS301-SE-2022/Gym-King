@@ -3,7 +3,7 @@ export const onlyLetters =(str:string) =>{
 }
 
 export const onlyLettersAndSpaces = (str:string)=>{
-    return /^[a-zA-Z\s]*$/.test(str);
+    return /[^a-zA-Z ]/.test(str);
 }
 
 export const onlyAlphanumericAndUnderscore =(str:string) =>{
