@@ -17,7 +17,6 @@ const EmployeeProfilePage: React.FC = () =>{
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
-    const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
     const [gymName, setGymName] = useState("");
@@ -56,7 +55,6 @@ const EmployeeProfilePage: React.FC = () =>{
                 console.log(response)
                 setEmail(response.email);
                 setName(response.name);
-                setSurname( response.surname);
                 setPhone( response.number);
                 setUsername(response.username);
                 setGymName(response.g_id.gym_brandname);
@@ -83,10 +81,9 @@ const EmployeeProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: email,
-                    name: name, 
-                    surname: surname, 
-                    username: username, 
+                    fullname: name, 
                     number: phone, 
+                    username: username, 
                     password: localStorage.getItem("password"), 
                 })
             })
@@ -121,9 +118,7 @@ const EmployeeProfilePage: React.FC = () =>{
     const updateName=(e:any)=>{
         setName(e.detail.value)
     }
-    const updateSurname=(e:any)=>{
-        setSurname(e.detail.value)
-    }
+
     const updatePhone=(e:any)=>{
         setPhone(e.detail.value)
     }
@@ -212,7 +207,7 @@ const EmployeeProfilePage: React.FC = () =>{
                                                 <IonText className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">{name} {surname}</i>
+                                                <i className="center">{name}</i>
                                             </IonRow>
                                             
                                         </IonCol>
@@ -275,10 +270,6 @@ const EmployeeProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
-                                <br></br>
-                                <IonLabel className="smallHeading" position="floating">Surname</IonLabel>
-                                <IonInput className='textInput' name='surname' type='text' required value={surname}  onIonChange={updateSurname}></IonInput>
-
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Email</IonLabel>
                                 <IonInput className='textInput' name='email' type='email' required value={email} onIonChange={updateEmail}></IonInput>
