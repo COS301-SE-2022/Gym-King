@@ -34,7 +34,6 @@ const EditGym: React.FC = () => {
   //-showToast2  hook, set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
   //-gymIcon {string}, stores gym icon
-  let gymIcon: string = "logo";
 //================================================================================================
 //    FUNCTIONS
 //=================================================================================================
@@ -92,7 +91,6 @@ const EditGym: React.FC = () => {
           address:gymAddress,
           lat:coordinate[0],
           long:coordinate[1],
-          icon:gymIcon
         })
       }
     )
