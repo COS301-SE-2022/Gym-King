@@ -10,6 +10,7 @@ import { storageRef } from "../firebase.connection";
 import { friendRepository } from "../repositories/friend.repository";
 import { subscription } from "../entities/subscription.entity";
 import { subscriptionRepository } from "../repositories/subscription.repository";
+import { gymBrandRepository } from "../repositories/gym_brand.repository";
 
 const express = require('express');
 const cors = require('cors');
@@ -146,6 +147,21 @@ const users = express.Router()
         const result = await badgeRepository.findByBID(query);
         res.json( result );
       }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET - Return all the current gym brands that exist.
+   * @returns A list with all the brand names and logo.
+   */
+   .get('/brands/brand/', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const result = await gymBrandRepository.findAll();
+      res.json( result );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -313,6 +329,21 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET a gym brand's logo picture.
+   * @param {string} brandname gym brand name.
+   * @returns {image} 
+   */
+   .get('/brands/brand/logo/:brandname', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.brandname;
+    const brand = await gymBrandRepository.findByBrandname(query);
+    if (brand != null && brand.gym_brandname == query){
+      res.json(brand.gym_logo);
+    } else{
+      res.json({'message':'Invalid gym brand!'})
+    }
+  })
+  //=========================================================================================================//
+  /**
    * POST save a users claim for a badge to database.
    * @param {string} bid The badge ID of the badge.
    * @param {string} email The email of the user who claims they completed it.
@@ -329,40 +360,52 @@ const users = express.Router()
       let query = req.body;
       let file = req.file;
       const user = await userRepository.findByEmail(query.email);
-      if(bcrypt.compareSync(query.password, user.password)){
-        let newFileName = ``;
-        if (file.mimetype == 'image/jpeg'){
-          newFileName = `claims/${Date.now()}.jpg`;
-        }
-        else if (file.mimetype == 'image/png') {
-          newFileName = `claims/${Date.now()}.png`;
-        }
-        else {
-          res.json({'message':'Invalid file type.'})
-          return;
-        }
-        const blob = storageRef.file(newFileName);
-        const blobStream = blob.createWriteStream({
-          resumable: false,
-          metadata: {
-            firebaseStorageDownloadTokens: uuidv4(),
+      const claim = await badgeClaimRepository.findByBIDandEmail(query.bid,query.email);
+      const badge = await badgeRepository.findByBID(query.bid);
+      if(badge != null && badge.b_id == query.bid){
+        if (claim != null && claim.b_id != query.bid && claim.email != query.email){
+          if(bcrypt.compareSync(query.password, user.password)){
+            let newFileName = ``;
+            if (file.mimetype == 'image/jpeg'){
+              newFileName = `claims/${Date.now()}.jpg`;
+            }
+            else if (file.mimetype == 'image/png') {
+              newFileName = `claims/${Date.now()}.png`;
+            }
+            else if (file.mimetype == 'video/mp4') {
+              newFileName = `claims/${Date.now()}.mp4`;
+            }
+            else {
+              res.json({'message':'Invalid file type.'})
+              return;
+            }
+            const blob = storageRef.file(newFileName);
+            const blobStream = blob.createWriteStream({
+              resumable: false,
+              metadata: {
+                firebaseStorageDownloadTokens: uuidv4(),
+              }
+            });
+            blobStream.on('error', err => {
+              res.json({'success':false})
+            });
+            blobStream.on('finish', async () => {
+              await storageRef.file(newFileName).makePublic();
+              const claimURL = await storageRef.file(newFileName).publicUrl();
+              await badgeClaimRepository.saveClaim(query.bid, user.email, user.username, query.input1, query.input2, query.input3, claimURL)
+              res.json({'success':true});
+            });
+            blobStream.end(req.file.buffer);
           }
-        });
-        blobStream.on('error', err => {
-          res.json({'success':false})
-        });
-        blobStream.on('finish', async () => {
-          await storageRef.file(newFileName).makePublic();
-          const claimURL = await storageRef.file(newFileName).publicUrl();
-          await badgeClaimRepository.saveClaim(query.bid, user.email, user.username, query.input1, query.input2, query.input3, claimURL)
-          res.json({'success':true});
-        });
-        blobStream.end(req.file.buffer);
+          else {
+            res.json({'success':false,'message':'Invalid email or password!'});
+          } 
+        } else {
+          res.json({'success':false,'message':'Claim already exists!'});
+        }
+      } else {
+        res.json({'success':false,'message':'Invalid badge!'});
       }
-      else {
-        res.json({'message':'Invalid email or password!'});
-      }
-      
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -432,19 +475,24 @@ const users = express.Router()
   /**
    * POST save a gym user to the database.
    * @param {string} email The email of the user.
-   * @param {string} name The name of the user.
-   * @param {string} surname The surname of the user. 
+   * @param {string} fullname The full name of the user.
    * @param {string} number The phone number of the user. 
    * @param {string} username The username the user created.
    * @param {string} password The password the user created (NOT ecrypted).
+   * @param {string} membership The gym brand the user has a membership with!
    * @returns Returns params of completed insertion.
    */
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
     try {
       if (req.body.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
-        const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
-        res.json({'success':true})
+        const brand = await gymBrandRepository.findByBrandname(req.body.membership);
+        if (brand != null && brand.gym_brandname == req.body.membership){
+          const result = await userRepository.saveUser(req.body.email,req.body.fullname,req.body.number,req.body.username,req.body.password,req.body.membership);
+          res.json({'success':true})
+        } else {
+          res.json({'success':false, 'message':'Invalid gym brand!'})
+        }
       } else {
         res.json({'success':false, 'message':'Invalid email entered!'})
       }
@@ -531,7 +579,7 @@ const users = express.Router()
             to: user.email,
             subject: "GYMKING User OTP",
             text: 'Hello there, '
-            +user.name+' '+user.surname+
+            +user.fullname+'!'+
             '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
             'Your OTP is: '+newOTP+'\n'+
             'This OTP will only be valid for 5 minutes!\n'+
@@ -589,11 +637,11 @@ const users = express.Router()
   /**
    * PUT update a gym user.
    * @param {string} email The email of the user.
-   * @param {string} name The name of the user.
-   * @param {string} surname The surname of the user. 
+   * @param {string} fullname The full name of the user.
    * @param {string} number The phone number of the user. 
    * @param {string} username The username the user.
    * @param {string} password The password the user (NOT ecrypted).
+   * @param {string} membership The membership the user is connected with!
    * @returns Returns params of completed insertion.
    */
    .put('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
@@ -601,12 +649,17 @@ const users = express.Router()
       const query = req.body;
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
-      if (user != null && bcrypt.compareSync(query.password, user.password)) {
-        const result = await userRepository.updateUser(query.email,query.name,query.surname,query.number,query.username);
-        res.json({'success': true});
-      }
-      else {
-        res.json({'message':'Invalid email or password!'})
+      const brand = await gymBrandRepository.findByBrandname(query.membership);
+      if(brand != null && brand.gym_brandname == query.membership){
+        if (user != null && bcrypt.compareSync(query.password, user.password)) {
+          const result = await userRepository.updateUser(query.email,query.fullname,query.number,query.username,query.membership);
+          res.json({'success': true});
+        }
+        else {
+          res.json({'message':'Invalid email or password!'})
+        }
+      } else {
+        res.json({'message':'Invalid gym brand!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
