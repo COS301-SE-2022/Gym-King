@@ -1,37 +1,41 @@
-import {IonButton, IonCol, IonGrid, IonInput, IonRow, IonSelect, IonSelectOption, IonText} from '@ionic/react';
-import React from 'react'
+import {IonButton, IonCol, IonGrid, IonRow, IonText} from '@ionic/react';
+import React from 'react';
 import '../../theme/variables.css'
 import DropDown from '../dropdown/dropdown';
 //creating a type so props can be entered
 export type props = { handleChange:any, next:any, prev:any, };
 
-export class Gym extends React.Component<props>{
+export const Gym: React.FC<props>  = (props) =>{
 
-    continue = (e:any) => {
+
+    const next = (e:any) => {
         e.preventDefault();
-        sessionStorage.setItem('regGym', e.target.gym.value)
     
-        this.props.next();
+        props.next();
     };
-    prev = (e:any)=> {
+    const prev = (e:any)=> {
         e.preventDefault();
-        this.props.prev();
+        props.prev();
     };
 
-    render(){
+    const chosenValue = (value:any)=>{
+        console.log(value);
+        sessionStorage.setItem('regGym', value);
+    }
+
         return(
-            <form className='registerForm' onSubmit={this.continue}>
+            <form className='registerForm' onSubmit={next}>
                 <IonText className='center inputHeading'>Register</IonText>
                 <br></br>
 
                 <IonText className="smallHeading">Please select your gym*</IonText>
-                <DropDown list={['Virgin Active', 'Planet Fitness', 'Crossfit']}></DropDown>
+                <DropDown list={['Virgin Active', 'Planet Fitness', 'Crossfit']} chosenValue={chosenValue}></DropDown>
 
     
                 <IonGrid>
                     <IonRow>
                         <IonCol size='6'>
-                            <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={this.prev} >Previous</IonButton>
+                            <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >Previous</IonButton>
                         </IonCol>
                         <IonCol size='6'>
                             <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Register</IonButton>
@@ -42,6 +46,5 @@ export class Gym extends React.Component<props>{
         )
         
     }
-}
 
 export default Gym;
