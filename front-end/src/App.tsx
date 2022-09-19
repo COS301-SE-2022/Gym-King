@@ -55,6 +55,7 @@ import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfile
 import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
 import GymSearchBar from './components/GymSearchBar/GymSearchBar';
+import PushNotificationsContainer from './components/Push/Push';
 /*develop*/
 
 
@@ -69,13 +70,13 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         
         <Route exact path="/test">
-          <GymSearchBar></GymSearchBar>
+          <PushNotificationsContainer></PushNotificationsContainer>
         </Route>
         <Route exact path="/home">
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/Splash" />
+          <Redirect to="/test" />
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>

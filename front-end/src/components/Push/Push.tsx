@@ -34,7 +34,7 @@ export default function PushNotificationsContainer() {
         PushNotifications.addListener('registration',
             (token: Token) => {
                 showToast('Push registration success');
-                console.log(token);
+                console.log(token.value);
             }
         );
 

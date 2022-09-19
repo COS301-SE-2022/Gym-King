@@ -51,7 +51,7 @@
     "serve:dev": "env-cmd -f .env.development react-scripts start",
     "build": "yarn nx build:ios && yarn nx build:android",
     "build:ios": " ionic cap build ios env-cmd -f .env.production && echo y | npx --silent trapeze run trapeze.yml",
-    "build:android": " ionic cap build android env-cmd -f .env.production && echo y | npx --silent trapeze run trapeze.yml && cp google-services.json android/app",
+    "build:android": " ionic cap build android env-cmd -f .env.production && echo y | npx --silent trapeze run trapeze.yml && gradleBuild.sh",
     "test": "env-cmd -f .env.development react-scripts test --transformIgnorePatterns --watchAll=false",
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
