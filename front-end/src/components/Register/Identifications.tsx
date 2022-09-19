@@ -1,7 +1,7 @@
 import {IonButton, IonInput, IonText, IonLabel} from '@ionic/react';
 import React, { useState } from 'react'
 import '../../theme/variables.css'
-import { onlyLetters, onlyAlphanumericAndUnderscore } from '../../utils/validation'; 
+import { onlyAlphanumericAndUnderscore, onlyLettersAndSpaces } from '../../utils/validation'; 
 //creating a type so props can be entered
 export type props = { handleChange:any, next:any, history:any};
 
@@ -21,23 +21,16 @@ export const Identifications: React.FC<props> = (props) => {
 
     const  validate = async () => {
         let isValid = true;
-        let name = sessionStorage.getItem('regName')
-        let surname = sessionStorage.getItem('regSurname')
+        let name = sessionStorage.getItem('regFullname')
         let username = sessionStorage.getItem('regUsername')
 
-        if(name && onlyLetters(name)) {
+        if(name && onlyLettersAndSpaces(name)) {
             handleError('Please input a valid name', 'name');
             isValid = false;
         }
         else
             handleError('', 'name');
     
-        if(surname && onlyLetters(surname)) {
-            handleError('Please input a valid surname', 'surname');
-            isValid = false;
-        }
-        else
-            handleError('', 'surname');
 
         if(username && !onlyAlphanumericAndUnderscore(username)) {
             handleError('Please input a valid username', 'username');
@@ -53,7 +46,6 @@ export const Identifications: React.FC<props> = (props) => {
         e.preventDefault();        
 
         sessionStorage.setItem('regName', e.target.name.value.trim())
-        sessionStorage.setItem('regSurname', e.target.surname.value.trim())
         sessionStorage.setItem('regUsername', e.target.username.value.trim())
 
         let isValid = await validate()
@@ -71,8 +63,8 @@ export const Identifications: React.FC<props> = (props) => {
             <IonText className='center inputHeading'>Register</IonText>
             <br></br>
 
-            <IonText className="smallHeading">Name*</IonText>
-            <IonInput name='name' type='text' className='textInput form-group' required value={sessionStorage.getItem('regName')} ></IonInput>
+            <IonText className="smallHeading">Full Name*</IonText>
+            <IonInput name='name' type='text' className='textInput form-group' required value={sessionStorage.getItem('regFullname')} ></IonInput>
             {errors.name!=="" && (
                 <>
                 <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.name}</IonLabel><br></br>
@@ -80,14 +72,6 @@ export const Identifications: React.FC<props> = (props) => {
             )}
             <br></br>
 
-            <IonText className="smallHeading">Surname*</IonText>
-            <IonInput name='surname' type='text' className='textInput' required  value={sessionStorage.getItem('regSurname')} ></IonInput>
-            {errors.surname!=="" && (
-                <>
-                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.surname}</IonLabel><br></br>
-                </>
-            )}
-            <br></br>
 
             <IonText className="smallHeading">Username*</IonText>
             <IonInput name='username' type='text' className='textInput' required value={sessionStorage.getItem('regUsername')} ></IonInput>

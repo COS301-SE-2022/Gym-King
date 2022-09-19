@@ -58,7 +58,7 @@ export class RegisterForm extends Component<props> {
           },
           data: { 
               email: formData.email,
-              name: formData.name,
+              fullname: formData.name,
               surname: formData.surname,
               number: formData.phone,
               username: formData.username,
