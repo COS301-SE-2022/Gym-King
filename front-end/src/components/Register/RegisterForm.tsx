@@ -82,16 +82,16 @@ export class RegisterForm extends Component<props> {
                 //redirect to login
                 this.props.history.push("/Login")
             }else{
-              console.log( response.results);/*
+              console.log( response.results);
               //code:23505 = user already exists 
-              if(response..code ==="23505")
+              if(response.results.code ==="23505")
               {
                 //this.props.showError1Toast()
               }
               else
               {
                 //this.props.showError2Toast()
-              }*/
+              }
             }
         })
         .catch(err => { 
