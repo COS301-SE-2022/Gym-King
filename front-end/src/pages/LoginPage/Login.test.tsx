@@ -43,3 +43,11 @@ describe('Testing connection to API', () => {
     });
   
 })
+
+describe('checks the Title component', () => {
+  it('checks the value of the Title Component', () => {
+     const {getByText} =render(<Login />);
+    const titleValue = getByText('Login')
+    expect(titleValue).toBeInTheDocument('Login')
+  })
+})
