@@ -135,7 +135,7 @@ const utils = express.Router()
       result = await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_OWNER(" +
           "email VARCHAR(320)," +
-          "Fullame VARCHAR(150)," +
+          "Fullname VARCHAR(150)," +
           "Number VARCHAR(10)," +
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +

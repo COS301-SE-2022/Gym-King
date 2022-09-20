@@ -363,7 +363,7 @@ const users = express.Router()
       const claim = await badgeClaimRepository.findByBIDandEmail(query.bid,query.email);
       const badge = await badgeRepository.findByBID(query.bid);
       if(badge != null && badge.b_id == query.bid){
-        if (claim != null && claim.b_id != query.bid && claim.email != query.email){
+        if (claim == null || claim.b_id != query.bid && claim.email != query.email){
           if(bcrypt.compareSync(query.password, user.password)){
             let newFileName = ``;
             if (file.mimetype == 'image/jpeg'){
