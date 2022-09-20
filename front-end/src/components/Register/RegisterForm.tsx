@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Contact from './Contact';
-import Gym from './Gym';
-import Identifications from './Identifications';
-import Password from './Password';
+import Identifications from './Identifications'
+import Password from './Password'
+import Gym from './Gym'
+import Contact from './Contact'
 import axios from "axios";
 export type props = { history:any/*, showSuccessToast:any, showError1Toast:any, showError2Toast:any*/};
 

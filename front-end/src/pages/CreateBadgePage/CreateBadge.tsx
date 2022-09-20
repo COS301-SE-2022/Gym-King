@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter, IonGrid, IonCol, IonRow} from '@ionic/react';
 
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {  useState } from 'react';
@@ -26,6 +26,7 @@ import axios from "axios";
         const [badgename, setBadgename] = useState('');
         let formData:any;
         let history=useHistory()
+        let tags=""
 
 
 
@@ -50,6 +51,9 @@ import axios from "axios";
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
                 gymId: gymId,
+                req1: e.target.req1.value,
+                req2: e.target.req2.value,
+                req3: e.target.req3.value
             };
             setSubmitted(true);
             const isValid = await createBadgeSchema.isValid(formData);
@@ -72,6 +76,9 @@ import axios from "axios";
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
+            let req1 = formData.req1
+            let req2 = formData.req2
+            let req3 = formData.req3
 
              axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"POST",
@@ -147,6 +154,68 @@ import axios from "axios";
                         <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
+                        <IonText className='inputHeading leftMargin'>Requirements:</IonText> <br></br><br></br>
+
+                        {
+                            localStorage.getItem('act') && localStorage.getItem("act")==="STRENGTH"
+                            &&
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Weight:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req1" className="textInput"></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin' >Reps:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req2" className="textInput"></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Sets:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req3" className="textInput"></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
+                        }
+                        {
+                            localStorage.getItem('act') && localStorage.getItem("act")==="CARDIO"
+                            &&
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Distance:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req1" className="textInput"></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin' >Duration:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req2" className="textInput"></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Level of Difficulty:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req3" className="textInput"></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
+                        }
 
                         <BadgeSlider name = {badgename}></BadgeSlider>
 
