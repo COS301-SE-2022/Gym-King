@@ -1,5 +1,5 @@
 import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonButton, IonToast, IonLoading, useIonViewDidEnter, IonCol} from '@ionic/react'
-import React, {  useRef, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './UploadActivityPage.css';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
@@ -34,6 +34,7 @@ const config: VideoRecorderPreviewFrame = {
     y: 0,
     borderRadius: 0
 };
+let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
 const UploadActivityPage: React.FC = () =>{
     
     const { VideoRecorder } = Plugins;
@@ -48,29 +49,48 @@ const UploadActivityPage: React.FC = () =>{
         // The video url is the local file path location of the video output.
             return res.videoUrl;
       };
-        const [message,setMessage]=useState<string>("loading")
-        const [model,setModel]=useState<any>()       
-        const [acitvity,setActivity]=useState<string>("")
-        const [reps,setReps]=useState<number>(0)
-        const [award,setAward]=useState<boolean>(false)
-        const [badgeMessage,setBadgeMessage]=useState<string>("unsuccessful")
-        const [Alert,setAlert]=useState<boolean>(false)
-        // STATES AND VARIABLES 
-        const [isValid, setIsValid] = useState(false);
-        const [submitted, setSubmitted] = useState(false);
-        const [Icon,setIcon]=useState<string[]>([""])
-        let email = localStorage.getItem("email") 
-        localStorage.setItem( 'e1', "");
-        localStorage.setItem( 'e2', "");
-        localStorage.setItem( 'e3', "");
-        let formdata: any
-        const [showToast1, setShowToast1] = useState(false);
-        const [b_id, setB_id] = useState('');
-        const [badgename, setBadgename] = useState('');
-        const [badgedescription, setDescription] = useState('');
-        const [loading, setLoading] = useState<boolean>(false);
-        const [username, setUsername]=useState("");
-        let history=useHistory()
+      const [model,setModel]=useState<any>()  
+      const [message,setMessage]=useState<string>("loading")
+      const loadModel =async() => {
+                setMessage("Loading neural Network")
+                setLoading(true)
+                console.log("loading model")
+                const new_model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
+                setLoading(false)
+                setMessage("Loading")
+                console.log(new_model)
+                setModel(new_model)
+        };
+    
+    const [award,setAward]=useState<boolean>(false)
+    const SetAward=async(value:boolean)=>{
+        setAward(()=>{
+            return value
+        })
+    }
+    const [badgeMessage,setBadgeMessage]=useState<string>("unsuccessful")
+    const SetBadgeMessage=async(msg:string)=>{
+        setMessage(()=>{
+            return msg;
+        })
+    }
+    const [Alert,setAlert]=useState<boolean>(false)
+    // STATES AND VARIABLES 
+    const [isValid, setIsValid] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [Icon,setIcon]=useState<string[]>(["b","cycle"])
+    let email = localStorage.getItem("email") 
+    localStorage.setItem( 'e1', "");
+    localStorage.setItem( 'e2', "");
+    localStorage.setItem( 'e3', "");
+    let formdata: any
+    const [showToast1, setShowToast1] = useState(false);
+    const [b_id, setB_id] = useState('');
+    const [badgename, setBadgename] = useState('push up gold badge');
+    const [badgedescription, setDescription] = useState('5');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [username, setUsername]=useState("");
+    let history=useHistory()
         
         //METHODS 
         const selectImage=async()=>{
@@ -121,122 +141,11 @@ const UploadActivityPage: React.FC = () =>{
             reader.readAsDataURL(blob);
         });
 
-    const categroize=async(image:ImageData)=>{
-        let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
-        let tensorImg =   tf.browser.fromPixels(image).resizeNearestNeighbor([300, 300]).div(tf.scalar(255)).expandDims();
-        let prediction= await model.predict(tensorImg).data();
-        let index=0;
-        let max=prediction[0]
-        for(let i=1;i<prediction.length;i++)
-        {
-            if(prediction[i]>max)
-            {
-                max=prediction[i];
-                index=i;
-            }
-        }
-        console.log(categories[index])
-        return categories[index]
-
-    }
-    const determineActivityandReps=async(predictions:string[])=>{
-        console.log(predictions)
-         let num:number[]=[]
-         let activities_predicted:string[]=[]
-         for(let i=0;i<predictions.length;i++)
-         {
-            if(activities_predicted.includes(predictions[i].split("_")[0]))
-            {
-                let index = activities_predicted.indexOf(predictions[i].split("_")[0])
-                num[index]=num[index]+1
-            }
-            else{
-                activities_predicted.push(predictions[i].split("_")[0])
-                num.push(1)
-            }
-         }
-         let max=num[0];
-         let index=0;
-         for(let i=1;i<activities_predicted.length;i++)
-         {
-            if(num[i]>max)
-            {
-                index=i;
-                max=num[i]
-            }
-         }
-         console.log('there is a ',num[index]/predictions.length*100,'% chance the activity is ',activities_predicted[index])
-         setActivity(activities_predicted[index])
-         let rep_count=0;
-         let current_position=predictions[0];
-         for(let i=0 ;i<predictions.length;i++)
-         {
-            if(current_position!==predictions[i]&& predictions[i].includes(activities_predicted[index]))
-            {
-                rep_count++;
-            }
-         }
-         rep_count=Math.ceil(rep_count/2)
-         setReps(rep_count)
-         console.log("rep_count",rep_count)
-    }
-
-    const awardBadge=async()=>{
-        if(badgename.replaceAll(" ","").replaceAll("-","").toUpperCase().includes(acitvity.toUpperCase()))
-        {
-           let reps_needed=badgedescription.match(/\b\d+\b/g)?.map(Number)
-           if(reps_needed)
-           {
-            if(reps_needed[0]<=reps)
-            {
-                console.log("congrats")
-                setAward(true)
-            }
-            else{
-                setBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected :"+reps)
-                console.log("Isufficient reps. expected "+reps_needed +", but detected :"+reps)
-                setAward(false)
-            }
-           }
-        }
-        else
-        {
-            setBadgeMessage("Incorrect activity."+acitvity+" detected")
-            console.log("Incorrect activity."+acitvity+" detected")
-            setAward(false)
-        }
-       
-    }
-    const handleSubmit = async (e:any) =>{
-       // saveImage(values.current.file)
-        console.log("model:",model)
-       setMessage("Calculating")
-       setLoading(true)
-        console.log("extracting frames")
-        await VideoToFrames.getFrames('./assets/video.mp4', VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
-            console.log("running through neural network")
-            console.log(frame)
-            var data:string[]=[]
-            for(let j=0;j<frame.length;j++)
-            {
-                data.push(await categroize(frame[j]))
-            }
-            await determineActivityandReps(data)
-        });
-        await awardBadge() 
-        console.log("done")
-    
-     setLoading(false)
-      setAlert(true)
-    
-            /*var image = values.current.file;
-            console.log(image)
-            var reader=new FileReader();
-            reader.readAsArrayBuffer(image) 
-            console.log(reader.result)*/
-        /*    console.log(values.current.file)
-            let tensorImg =   tf.browser.fromPixels(await createImageBitmap(values.current.file)).resizeNearestNeighbor([300, 300]).div(tf.scalar(255)).expandDims();
-            console.log(tensorImg)
+    const categroize=async(images:ImageData[])=>{
+       let predictions=[]
+       for(let i=0;i<images.length;i++)
+       {
+            let tensorImg=tf.browser.fromPixels(images[i]).resizeNearestNeighbor([300, 300]).div(tf.scalar(255)).expandDims();
             let prediction= await model.predict(tensorImg).data();
             let index=0;
             let max=prediction[0]
@@ -248,30 +157,66 @@ const UploadActivityPage: React.FC = () =>{
                     index=i;
                 }
             }
-            console.log(prediction)
-            console.log(categories[index])
-        }
-        catch(err)
-        {
-            console.log(err,"couldnt load Neural Network")
-        } 
-        setLoading(false)  
-            /*const image = new Image(300, 300);
-            image.src = values.current.file.name;
-            let tensorImg =   tf.browser.fromPixels(image).resizeNearestNeighbor([300, 300]).toFloat().expandDims();
-            let arr2d=[]
-            for(let i =0;i<300;i++)
+        console.log(categories[index])
+        predictions.push(categories[index])
+       } 
+       console.log(predictions)
+       return predictions
+    }
+    const determineReps=async(predictions:string[])=>{
+        //count reps
+        /*
+            count if activity matches activity specified and cout if state changed
+        */
+         let rep_count=0;
+         let current_position=predictions[0];
+         let activity=badgename.replaceAll(" ","").replaceAll("-","").toUpperCase();
+         for(let i=0 ;i<predictions.length;i++)
+         {
+            if(current_position!==predictions[i]&& activity.includes(predictions[i].replace("_","")[0]))
             {
-                let arr1d=[];
-                for(let j=0;j<300;j++)
-                {
-                    arr1d.push([1, 1, 1])
-                }
-                arr2d.push(arr1d)
+                rep_count=rep_count+1;
+                current_position=predictions[i]
             }
-            console.log(tensorImg)
-            let prediction = await excercise_NN.predict([arr2d]);
-            
+         }
+         rep_count=Math.ceil(rep_count/2)
+         console.log("rep_count",rep_count)
+        
+        //determine if badge should be awarded
+           let reps_needed=badgedescription.match(/\b\d+\b/g)?.map(Number)
+           if(reps_needed)
+           {
+            if(reps_needed[0]<=rep_count)
+            {
+                console.log("congrats")
+                await SetAward(true)
+            }
+            else{
+                await setBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
+                console.log("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
+                await SetAward(false)
+            }
+           }
+       
+    }
+    const handleSubmit = async (e:any) =>{
+       // saveImage(values.current.file)
+        console.log("model:",model)
+        setMessage("Calculating")
+        setLoading(true)
+        console.log("extracting frames")
+        await VideoToFrames.getFrames('./assets/video.mp4', VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+            console.log("running through neural network")
+            console.log(frame)
+            let predictions=await categroize(frame)
+            await determineReps(predictions)
+        });
+        console.log("done")
+    
+        setLoading(false)
+        setAlert(true)
+       // setAlert(true)
+    
            /*e.preventDefault();
             formdata={
                 i1: e.target.i1.value,
@@ -302,26 +247,12 @@ const UploadActivityPage: React.FC = () =>{
         const updateInputs = (e:any) =>{
         
         }
-        const loadModel=async()=>{
-            setMessage("Loading neural Network")
-            setLoading(true)
-            try{ 
+           
         
-                console.log("loading model")
-                const model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
-                setModel(model)
-            }
-            catch(err)
-            {
-                console.log(err,"couldnt load Neural Network")
-            } 
-            setLoading(false)
-            setMessage("Loading")
-        }
         // GET BADGES GET REQUEST 
         useIonViewDidEnter(()=>{
             loadModel()
-            let badgeId= sessionStorage.getItem("badgeid");
+            /*let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
             .then(response =>response.data)
@@ -361,7 +292,7 @@ const UploadActivityPage: React.FC = () =>{
                 console.log(err)
                 setLoading(false)
             })
-        })
+        */})
         const values =useRef<InternalValues>({
             file: false,
         });
