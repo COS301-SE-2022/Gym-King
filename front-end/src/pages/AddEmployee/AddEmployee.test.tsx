@@ -11,7 +11,6 @@ test('correctly diplays labels ', async () => {
   const {baseElement} = render(<AddEmployee/>);
   expect (baseElement).toHaveTextContent("Email*");
   //expect (baseElement).toHaveTextContent("Full name*");
-  expect (baseElement).toHaveTextContent("Surname*");
   expect (baseElement).toHaveTextContent("Phone Number");
   expect (baseElement).toHaveTextContent("Username");
   expect (baseElement).toHaveTextContent("Password");
