@@ -1,6 +1,7 @@
 import {fireEvent, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { Login } from './Login';
+import {ToastContainer} from 'react-toastify';
 
 
 test('renders without crashing', () => {
@@ -13,6 +14,7 @@ test('correctly displays labels', async () => {
   expect (baseElement).toHaveTextContent("Email*");
   expect (baseElement).toHaveTextContent("Password*");
 });
+
 
 
 ////////// INTEGRATION TESTS //////////
@@ -52,3 +54,28 @@ describe('Testing connection to API', () => {
     // expect(titleValue).toBeInTheDocument('Login')
   //})
 //})
+
+//setupTests.js
+jest.mock('react-toastify', () => {
+  const actual = jest.requireActual('react-toastify');
+  Object.assign(actual, {toast: jest.fn()});
+  return actual;
+});
+
+//test.spec.js
+import {toast} from 'react-toastify';
+
+const toastCalls = []
+const spy = toast.mockImplmentation((...args) => {
+  toastCalls.push(args)
+ }
+)
+
+describe('...', () => {
+  it('should ...', () => {
+    //do something that calls the toast
+    ...
+    //then
+    expect(toastCalls).toEqual(...)
+  }
+})
