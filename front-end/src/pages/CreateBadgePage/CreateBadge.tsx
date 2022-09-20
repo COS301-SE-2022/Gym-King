@@ -86,6 +86,10 @@ import axios from "axios";
                     badgechallenge: bc,
                     badgeicon: bi,
                     activitytype: at,
+                    requirement1: req1,
+                    requirement2: req2,
+                    requirement3: req3,
+                    tags: tags
                 }
             })
             .then(response =>response.data)

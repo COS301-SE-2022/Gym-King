@@ -10,6 +10,7 @@ import { Map, Overlay } from "pigeon-maps";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 import axios from "axios";
+import DropDown from "../../components/dropdown/dropdown";
 
 /**
  * const addGym
@@ -23,6 +24,8 @@ const AddGym: React.FC = () => {
   const history=useHistory()
   //-gymName hook, hook that sets the name of a gym
   const [gymName, setGymName] = useState<string>(""); 
+  //-gymBrand hook, hook that sets the brand of a gym
+  const [gymBrand, setGymBrand] = useState<string>(""); 
   //- gymAddress hook, hook that sets the address of a gym         
   const [gymAddress, setGymAddress] = useState<string>("address");
   //-coordinate hook, hook that sets the coordinates of the gym 
@@ -45,7 +48,10 @@ const AddGym: React.FC = () => {
       if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
-        console.log(gymName)
+      }
+      if(sessionStorage.getItem("gymBrand")!=null)
+      {
+        setGymName(sessionStorage.getItem("gymBrand") as string)
       }
       if(sessionStorage.getItem("gymAddress")!=null)
       {
@@ -73,7 +79,8 @@ const AddGym: React.FC = () => {
         'Content-Type': 'application/json',
       },
       data: { 
-        gymBrandName: gymName,
+        gymName: gymName,
+        gymBrandName: gymBrand,
         gymAddress: gymAddress,
         gymCoordLong: coordinate[1],
         gymCoordLat: coordinate[0]
@@ -118,6 +125,12 @@ const AddGym: React.FC = () => {
   
   };
 
+  const chosenValue = (value:any)=>{
+    console.log(value);
+    sessionStorage.setItem('gymBrand', value);
+    setGymBrand(sessionStorage.getItem('gymBrand')!);
+  }
+
   const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
     return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
   }
@@ -138,6 +151,13 @@ const AddGym: React.FC = () => {
                     setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                   }}>{" "}
                 </IonInput> <br></br>
+
+                <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
+                <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
+                  <DropDown list={['Virgin Active', 'Planet Fitness', 'Crossfit']} chosenValue={chosenValue}></DropDown>
+                </div>
+                <br></br>
+
 
                 <IonText className="smallHeading leftMargin">Address:</IonText>
                 <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
