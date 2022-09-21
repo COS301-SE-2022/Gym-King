@@ -23,6 +23,8 @@ export const OTP: React.FC = () =>{
 
     const verifyOTP = async (e:any) =>{
        console.log(enteredOTP);
+       sessionStorage.setItem("enteredOTP", enteredOTP)
+       history.push('/ResetPassword')
     }
     
     const handleChange = async (e:any) =>{
@@ -44,7 +46,7 @@ export const OTP: React.FC = () =>{
                             <OtpInput
                                 value={enteredOTP}
                                 onChange={handleChange}
-                                numInputs={4}
+                                numInputs={6}
                                 separator={<span></span>}
                                 inputStyle={{  
                                     width: '35px',  
@@ -54,7 +56,8 @@ export const OTP: React.FC = () =>{
                                     borderRadius: 4, 
                                     color:'black',
                                     fontFamily:"'Comfortaa', cursive",
-                                    backgroundColor:'rgba(255,255,255,0.5)'
+                                    backgroundColor:'rgba(255,255,255,0.5)',
+                                    marginLeft: '13%'
                                 }} 
                                 containerStyle={{
                                     display: 'flex',
@@ -65,9 +68,9 @@ export const OTP: React.FC = () =>{
                             />
 
                             <br></br>
-                            <IonButton onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Submit</IonButton>
+                            <IonButton onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Next</IonButton>
                             <br></br>
-                            <button  onClick= {() =>{history.push("/")}} id = "center" color="secondary" className='puesdorHref centerBtn'>Resend OTP</button>
+                            <button  onClick= {() =>{history.goBack()}} id = "center" color="secondary" className='puesdorHref centerBtn'>Back</button>
                     </form>
                 </IonContent>
 

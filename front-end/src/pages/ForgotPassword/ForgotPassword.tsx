@@ -24,9 +24,12 @@ export const ForgotPassword: React.FC = () =>{
             email: e.target.email.value.trim(),
             usertype: userType
         };
+        sessionStorage.setItem("enteredEmail", formData.email)
+        sessionStorage.setItem("enteredUserType", formData.usertype)
         
         if(formData.usertype === "gym_user")
         {
+            
             sendUserOTP()
         }
         else if(formData.usertype === "gym_employee")

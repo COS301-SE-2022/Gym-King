@@ -55,6 +55,7 @@ import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfile
 import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 /*develop*/
 
 
@@ -166,6 +167,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/Splash'>
           <SplashPage></SplashPage>
+        </Route>
+        <Route exact path='/ResetPassword'>
+          <ResetPassword></ResetPassword>
         </Route>
 
       </IonRouterOutlet>
