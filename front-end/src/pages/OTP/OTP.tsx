@@ -1,5 +1,5 @@
 
-import { IonButton, IonContent, IonHeader, IonPage, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonLabel, IonPage, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import  './OTP.css';
 import OtpInput from 'react-otp-input';
@@ -13,24 +13,42 @@ export const OTP: React.FC = () =>{
     //const [correctOTP, setCorrectOTP]= useState("");
     const [enteredOTP, setEnteredOTP] = useState("");
 
-    const generateOTP = () =>{
-        //let otp = (Math.floor(1000 + Math.random() * 9000)).toString();
-        //setCorrectOTP(otp);
-        //SAVE IT SOMEWHERE
-    }
-    generateOTP();
+    const [errors, setErrors] = useState({
+        otp: ''
+    });
+
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
 
 
     const verifyOTP = async (e:any) =>{
-       console.log(enteredOTP);
-       sessionStorage.setItem("enteredOTP", enteredOTP)
-       history.push('/ResetPassword')
+        let isValid = validate()
+        if(isValid)
+        {
+            sessionStorage.setItem("enteredOTP", enteredOTP)
+            history.push('/ResetPassword')
+        }
+       
     }
     
     const handleChange = async (e:any) =>{
         setEnteredOTP(e);
     }
 
+    const  validate = () => {
+        let isValid = true
+        let otp =enteredOTP
+
+        if(otp && otp.length!==6) {
+            handleError('Please input a valid OTP', 'otp');
+            isValid = false;
+        }
+        else
+            handleError('', 'otp');
+
+        return isValid
+    }
     
     return (
         <>
@@ -66,6 +84,12 @@ export const OTP: React.FC = () =>{
                                     alignItems: "center"
                                 }}
                             />
+                            <br></br>
+                            {errors.otp!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.otp}</IonLabel><br></br>
+                                </>
+                            )}
 
                             <br></br>
                             <IonButton onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Next</IonButton>
