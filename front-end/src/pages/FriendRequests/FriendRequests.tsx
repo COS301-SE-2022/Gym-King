@@ -1,7 +1,6 @@
-import React, {useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel} from '@ionic/react';
+import React from 'react'
+import {IonContent, IonText, IonPage, IonHeader } from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import FriendsList from '../../components/FriendsList/FriendsList';
 import FriendRequestList from '../../components/FriendRequestsList/FriendRequestList';
 
 const FriendRequests: React.FC = () =>{
@@ -9,9 +8,7 @@ const FriendRequests: React.FC = () =>{
     // eslint-disable-next-line 
     let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
 
-    const goToFriendRequests=()=>{
-
-    }
+    
     //=================================================================================================
     //    Render
     //=================================================================================================
