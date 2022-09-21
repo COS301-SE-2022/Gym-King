@@ -10,6 +10,7 @@ import { Map, Overlay } from "pigeon-maps";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 import axios from "axios";
+import DropDown from "../../components/dropdown/dropdown";
 
 /**
  * const EditGym
@@ -34,6 +35,10 @@ const EditGym: React.FC = () => {
   //-showToast2  hook, set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
   //-gymIcon {string}, stores gym icon
+
+  const [gymBrand, setGymBrand] = useState<string>(""); 
+  const [gymBrands, setGymBrands]= useState(new Array<string>())
+
 //================================================================================================
 //    FUNCTIONS
 //=================================================================================================
@@ -42,13 +47,17 @@ const EditGym: React.FC = () => {
    * @brief checks if session storage has values and uses it to fill in gymName,gymAddress and coordinates else calls api for gym details
   */
   useIonViewWillEnter(()=>{
+
+    getBrands()
+
     if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
+        setGymBrand(sessionStorage.getItem("gymBrand") as string)
         setGymAddress(sessionStorage.getItem("gymAddress") as string)
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
-    else{
+    else if(sessionStorage.getItem("gymBrand") == null){
       axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
         {
           "method": "get",
@@ -72,6 +81,26 @@ const EditGym: React.FC = () => {
       });
     }
   })
+
+  const getBrands = async() =>{
+    let gyms: any[]=[]
+    let array: string[]=[]
+    await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
+      .then((response) => response.data)
+      .then((response) => {
+          console.log(response)
+           gyms = response
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+
+      gyms.forEach(async (el:any)=>{
+        array.push(el.gym_brandname)
+      })
+      console.log(array)
+      setGymBrands(array)
+  }
  /**
    * saveGym function
    * @brief calls api to update a gyms' details
@@ -106,6 +135,11 @@ const EditGym: React.FC = () => {
     
 
  };
+  const chosenValue = (value:any)=>{
+    console.log(value);
+    sessionStorage.setItem('gymBrand', value);
+    setGymBrand(sessionStorage.getItem('gymBrand')!);
+  }
 
  const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
   return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
@@ -127,6 +161,12 @@ const EditGym: React.FC = () => {
                   setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                 }}>{" "}
               </IonInput> <br></br>
+
+              <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
+                <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
+                    <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
+              </div>
+              <br></br>
 
               <IonText className="smallHeading leftMargin">Address:</IonText>
               <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">

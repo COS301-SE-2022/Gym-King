@@ -53,7 +53,6 @@ const AddGym: React.FC = () => {
   useIonViewDidEnter(()=>{
 
       getBrands()
-      console.log(gymBrands)
 
       if(sessionStorage.getItem("gymName")!=null)
       {
