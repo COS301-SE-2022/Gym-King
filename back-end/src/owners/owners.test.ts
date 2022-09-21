@@ -1,12 +1,14 @@
 jest.setTimeout(25000)
 import "reflect-metadata";
 import { GymKingDataSource } from "../datasource";
+import { gym_brand } from "../entities/gym_brand.entity";
+import { gymBrandRepository } from "../repositories/gym_brand.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
 import { server } from "../server";
 const request = require('supertest');
-let gid1;
-let gid2;
-let otp;
+let gid1:string;
+let gid2:string;
+let otp:any;
 beforeAll(async () => {
     await GymKingDataSource.initialize()
     .then(() => {
@@ -18,11 +20,11 @@ beforeAll(async () => {
 });
 describe('Testing POST API Calls', () => {
     describe('responds to POST insert owner', () => {
+        
         test('responds to incorrect POST insert owner', async () => {
             const response = await request(server).post('/owners/owner').send({
                 "email": "InvalidEmail",
-                "name": "Test",
-                "surname": "Test",
+                "fullname": "Test Test",
                 "number": "0123456789",
                 "username":"Test",
                 "password":"Test"
@@ -33,8 +35,7 @@ describe('Testing POST API Calls', () => {
         test('responds to correct POST insert owner', async () => {
             const response = await request(server).post('/owners/owner').send({
                 "email": "owner@example.com",
-                "name": "Test",
-                "surname": "Test",
+                "fullname": "Test Test",
                 "number": "0123456789",
                 "username":"Test",
                 "password":"Test"
@@ -43,40 +44,64 @@ describe('Testing POST API Calls', () => {
             expect(response.body).toStrictEqual({'success':true})
         })
     });
+    describe('responds to POST insert gym brand', () => {
+        test('responds to POST insert gym brand', async () => {
+            let response = await request(server).post('/brands/brand').send({
+                "brandname": "Test Brand 1"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+            response = await request(server).post('/brands/brand').send({
+                "brandname": "Test Brand 2"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+            response = await request(server).post('/brands/brand').send({
+                "brandname": "Test Brand"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+            response = await request(server).post('/brands/brand').send({
+                "brandname": "Changed Brand 1"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+        })
+    })
     test('responds to POST insert gym', async () => {
         let response = await request(server).post('/gyms/gym').send({
+            "gymName":"Test",
             "gymBrandName": "Test Brand 1",
             "gymAddress": "Test Address 1",
             "gymCoordLong": -25.8661,
-            "gymCoordLat": 28.1905,
-            "gymIcon":"Test Logo 1"
+            "gymCoordLat": 28.1905
         });
         expect(response.statusCode).toBe(200);
         gid1 = response.body.g_id;
         expect(response.body).toMatchObject({
             g_id: gid1,
+            gym_name: "Test",
             gym_address: "Test Address 1",
             gym_brandname: "Test Brand 1",
             gym_coord_lat: 28.1905,
-            gym_coord_long: -25.8661,
-            gym_icon: 'Test Logo 1'
+            gym_coord_long: -25.8661
         })
         response = await request(server).post('/gyms/gym').send({
+            "gymName":"Test",
             "gymBrandName": "Test Brand 2",
             "gymAddress": "Test Address 2",
             "gymCoordLong": -25.8661,
-            "gymCoordLat": 28.1905,
-            "gymIcon":"Test Logo 2"
+            "gymCoordLat": 28.1905
         });
         expect(response.statusCode).toBe(200);
         gid2 = response.body.g_id;
         expect(response.body).toMatchObject({
             g_id: gid2,
+            gym_name: "Test",
             gym_address: "Test Address 2",
             gym_brandname: "Test Brand 2",
             gym_coord_lat: 28.1905,
-            gym_coord_long: -25.8661,
-            gym_icon: 'Test Logo 2'
+            gym_coord_long: -25.8661
         })
     });
     describe('Testing Login calls', () => {
@@ -129,8 +154,7 @@ describe('Testing POST API Calls', () => {
         })
         response = await request(server).post('/employees/employee').send({
             "email": "emp1@example.com",
-            "name": "Test",
-            "surname": "Test",
+            "fullname": "Test Test",
             "number": "0123456789",
             "username":"Test",
             "password":"Test",
@@ -140,8 +164,7 @@ describe('Testing POST API Calls', () => {
         expect(response.body).toStrictEqual({'success':true})
         response = await request(server).post('/employees/employee').send({
             "email": "emp2@example.com",
-            "name": "Test",
-            "surname": "Test",
+            "fullname": "Test Test",
             "number": "0123456789",
             "username":"Test",
             "password":"Test",
@@ -184,8 +207,7 @@ describe('Testing POST API Calls', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({
                 "email": "owner@example.com",
-                "name": "Test",
-                "surname": "Test",
+                "fullname": "Test Test",
                 "number": "0123456789",
                 "username":"Test"
             })
@@ -215,8 +237,7 @@ describe('Testing GET API Calls', () => {
         if (response.body[0].g_id == gid1){
             expect(response.body[0]).toMatchObject({
                 email: "emp1@example.com",
-                name: "Test",
-                surname: "Test",
+                fullname: "Test Test",
                 number: "0123456789",
                 username:"Test",
                 g_id:gid1,
@@ -224,8 +245,7 @@ describe('Testing GET API Calls', () => {
             });
             expect(response.body[1]).toMatchObject({
                 email: "emp2@example.com",
-                name: "Test",
-                surname: "Test",
+                fullname: "Test Test",
                 number: "0123456789",
                 username:"Test",
                 g_id:gid2,
@@ -235,8 +255,7 @@ describe('Testing GET API Calls', () => {
         else {
             expect(response.body[0]).toMatchObject({
                 email: "emp2@example.com",
-                name: "Test",
-                surname: "Test",
+                fullname: "Test Test",
                 number: "0123456789",
                 username:"Test",
                 g_id:gid2,
@@ -244,8 +263,7 @@ describe('Testing GET API Calls', () => {
             });
             expect(response.body[1]).toMatchObject({
                 email: "emp1@example.com",
-                name: "Test",
-                surname: "Test",
+                fullname: "Test Test",
                 number: "0123456789",
                 username:"Test",
                 g_id:gid1,
@@ -262,16 +280,14 @@ describe('Testing GET API Calls', () => {
                 gym_address: "Test Address 1", 
                 gym_brandname: "Test Brand 1", 
                 gym_coord_lat: 28.1905, 
-                gym_coord_long: -25.8661, 
-                gym_icon: "Test Logo 1"
+                gym_coord_long: -25.8661
             });
             expect(response.body[1]).toMatchObject({ 
                 g_id: gid2,
                 gym_address: "Test Address 2", 
                 gym_brandname: "Test Brand 2", 
                 gym_coord_lat: 28.1905, 
-                gym_coord_long: -25.8661, 
-                gym_icon: "Test Logo 2"
+                gym_coord_long: -25.8661
             });
         }
         else{
@@ -280,16 +296,14 @@ describe('Testing GET API Calls', () => {
                 gym_address: "Test Address 1", 
                 gym_brandname: "Test Brand 1", 
                 gym_coord_lat: 28.1905, 
-                gym_coord_long: -25.8661, 
-                gym_icon: "Test Logo 1"
+                gym_coord_long: -25.8661
             });
             expect(response.body[0]).toMatchObject({ 
                 g_id: gid2,
                 gym_address: "Test Address 2", 
                 gym_brandname: "Test Brand 2", 
                 gym_coord_lat: 28.1905, 
-                gym_coord_long: -25.8661, 
-                gym_icon: "Test Logo 2"
+                gym_coord_long: -25.8661
             });
         }
     });
@@ -310,8 +324,7 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/owners/owner/info').send({
                 "email": "owner@example.com",
                 "password":"Test",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
@@ -324,8 +337,7 @@ describe('Testing PUT API Calls', () => {
             expect(response.statusCode).toBe(200);
              expect(response.body).toMatchObject({
                 email:'owner@example.com',
-                name: 'Changed',
-                surname: 'Changed',
+                fullname: 'Changed Test',
                 number: '9876543210',
                 username: 'Changed',
                 profile_picture: 'NONE'
@@ -335,8 +347,7 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/owners/owner/info').send({
                 "email": "owner@example.com",
                 "password":"wrong",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
@@ -347,8 +358,7 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/owners/owner/info').send({
                 "email": "wrong@example.com",
                 "password":"Test",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
@@ -358,13 +368,13 @@ describe('Testing PUT API Calls', () => {
     });
     describe('Testing PUT update gym info', () => {
         test('responds to PUT update gym info', async () => {
-            let response = await request(server).put('/owner/gym/info').send({
+            let response = await request(server).put('/gyms/gym/info').send({
                 gid: gid1,
-                brandname: "Changed Brand 1",
-                address: "Changed Address 1",
-                lat: 50,
-                long: 50,
-                icon: "Changed Icon 1"
+                gymName: "Changed Test",
+                gymBrandName: "Changed Brand 1",
+                gymAddress: "Changed Address 1",
+                gymCoordLat: 50,
+                gymCoordLong: 50
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({'success': true})
@@ -372,11 +382,11 @@ describe('Testing PUT API Calls', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({
                 g_id: gid1,
+                gym_name: "Changed Test",
                 gym_brandname: "Changed Brand 1",
                 gym_address: "Changed Address 1",
                 gym_coord_lat: 50,
-                gym_coord_long: 50,
-                gym_icon: "Changed Icon 1"
+                gym_coord_long: 50
             });
         });
     });

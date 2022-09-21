@@ -14,7 +14,6 @@ const EmployeeProfileViewPage: React.FC = () =>{
     //employee details 
     const [email, setEmail] = useState<any>()
     const [name, setName] = useState<any>("")
-    const [surname, setSurname]= useState<any>("")
     const [username, setUsername]= useState<any>("")
     const [phone, setPhone]= useState<any>("")
     const [gymName, setGymName] = useState<any>("");
@@ -31,7 +30,6 @@ const EmployeeProfileViewPage: React.FC = () =>{
         setLoading(true)
         setEmail(sessionStorage.getItem("employee_email"))
         setName(sessionStorage.getItem("employee_name"))
-        setSurname(sessionStorage.getItem("employee_surname"))
         setUsername(sessionStorage.getItem("employee_username"))
         setPhone(sessionStorage.getItem("employee_phone"))
         //setGymId(localStorage.getItem("employee_gid"))
@@ -111,7 +109,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                                 <IonText className=" un PageTitle center ">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">{name} {surname}</i>
+                                                <i className="center">{name}</i>
                                             </IonRow>
                                             
                                         </IonCol>

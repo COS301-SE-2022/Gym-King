@@ -6,16 +6,19 @@ import { employeeRepository } from "../repositories/gym_employee.repository";
 import { gymOwnedRepository } from "../repositories/gym_owned.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
-import { storageRef } from "../firebase.connection";
+import { firebase_admin } from "../firebase.connection";
+import { gymBrandRepository } from "../repositories/gym_brand.repository";
 
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const ownerpicture = multer();
+const brandlogo = multer();
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 
+const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
 //=============================================================================================//
 //Nodemailer email connection 
 //=============================================================================================//
@@ -157,19 +160,36 @@ const owners = express.Router()
   //=========================================================================================================//
   /**
    * POST - Insert that a gym into database.
+   * @param {string} gymName gym brand name.
    * @param {string} gymBrandName gym brand name.
    * @param {string} gymAddress gym address.
    * @param {number} gymCoordLong Longitude coord of gym.
    * @param {number} gymCoordLat Latitude coord of gym.
-   * @param {string} gymIcon gym icon code.
    * @returns message confirming the insertion.
    */
   .post("/gyms/gym", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
       let ID = createID(4);
-      let result = await gymRepository.saveGym(ID,query.gymBrandName,query.gymAddress,query.gymCoordLat,query.gymCoordLong,query.gymIcon);
+      let result = await gymRepository.saveGym(ID,query.gymName,query.gymBrandName,query.gymAddress,query.gymCoordLat,query.gymCoordLong);
       res.json(result);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - Insert that a gym brand into database.
+   * @param {string} brandname gym brand name.
+   * @returns message confirming the insertion.
+   */
+   .post("/brands/brand", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      let result = await gymBrandRepository.saveGymBrand(query.brandname);
+      res.json({"success":true});
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -180,8 +200,7 @@ const owners = express.Router()
   /**
    * POST - Insert that a gym owner into database.
    * @param {string} email owner email.
-   * @param {string} name owner name.
-   * @param {string} surname owner surname.
+   * @param {string} fullname owner full name.
    * @param {string} number owner number.
    * @param {string} username owner username.
    * @param {string} password owner password.
@@ -192,7 +211,7 @@ const owners = express.Router()
       let query = req.body;
       if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
-        let result = await ownerRepository.saveOwner(query.email,query.name,query.surname,query.number,query.username,query.password);
+        let result = await ownerRepository.saveOwner(query.email,query.fullname,query.number,query.username,query.password);
         res.json({'success':true});
       } else {
         res.json({'success':false, 'message':'Invalid email entered!'})
@@ -225,7 +244,7 @@ const owners = express.Router()
             to: owner.email,
             subject: "GYMKING Owner OTP",
             text: 'Hello there, '
-            +owner.name+' '+owner.surname+
+            +owner.fullname+'!'+
             '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
             'Your OTP is: '+newOTP+'\n'+
             'This OTP will only be valid for 5 minutes!\n'+
@@ -346,12 +365,84 @@ const owners = express.Router()
       res.json(results);
     }
   })
+  //=========================================================================================================//
+  /**
+   * PUT update a brand logo picture.
+   * @param {string} email The email of the owner.
+   * @param {string} password The password the owner (NOT ecrypted).
+   * @param {string} brandname The name of the brand.
+   * @param {file} logo the picture.
+   * @returns message informing successful update.
+   */
+   .put('/brands/brand/logo', brandlogo.single('logo'), cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      const file = req.file;
+      const bcrypt = require('bcryptjs')
+      const owner = await ownerRepository.findByEmail(query.email);
+      const brand = await gymBrandRepository.findByBrandname(query.brandname);
+      let oldFileName = '';
+      if (brand != null && brand.gym_brandname == query.brandname){
+        if (brand.gym_logo != null && brand.gym_logo.includes('/')){
+          oldFileName = brand.gym_logo.split('/');
+          if (oldFileName.length == 5){
+            oldFileName = oldFileName[4];
+            oldFileName = oldFileName.replace('%2F','/')
+          }
+          else{
+            oldFileName = 'empty';
+          }
+        }
+        else {
+          oldFileName = 'empty';
+        }
+        if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
+          await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+          let newFileName = ``;
+          if (file.mimetype == 'image/jpeg'){
+            newFileName = `brands/${Date.now()}.jpg`;
+          }
+          else if (file.mimetype == 'image/png') {
+            newFileName = `brands/${Date.now()}.png`;
+          }
+          else {
+            res.json({'message':'Invalid file type.'})
+            return;
+          }
+          const blob = storageRef.file(newFileName);
+          const blobStream = blob.createWriteStream({
+            resumable: false,
+            metadata: {
+              firebaseStorageDownloadTokens: uuidv4(),
+            }
+          });
+          blobStream.on('error', err => {
+            res.json({'success':false})
+          });
+          blobStream.on('finish', async () => {
+            await storageRef.file(newFileName).makePublic();
+            await gymBrandRepository.updateGymBrandLogo(brand.gym_brandname,storageRef.file(newFileName).publicUrl());
+            res.json({'success':true});
+          });
+          blobStream.end(req.file.buffer);
+        }
+        else {
+          res.json({'message':'Invalid email or password!'})
+        }
+      } else {
+        res.json({'message':'Brand does not exist!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
    //=========================================================================================================//
   /**
    * PUT update a gym owner.
    * @param {string} email The email of the owner.
-   * @param {string} name The name of the owner.
-   * @param {string} surname The surname of the owner. 
+   * @param {string} fullname The full name of the owner.
    * @param {string} number The phone number of the owner. 
    * @param {string} username The username the owner.
    * @param {string} password The password the owner (NOT ecrypted).
@@ -363,7 +454,7 @@ const owners = express.Router()
       const bcrypt = require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email);
       if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
-        const result = await ownerRepository.updateOwner(query.email,query.name,query.surname,query.number,query.username);
+        const result = await ownerRepository.updateOwner(query.email,query.fullname,query.number,query.username);
         res.json({'success':true});
       }
       else {
@@ -379,20 +470,20 @@ const owners = express.Router()
   /**
    * put - update a gym.
    * @param {string} gid gym id
-   * @param {string} brandname gym name
-   * @param {string} address gym address
-   * @param {string} lat gym lat coordinates
-   * @param {string} long gym long coordinates
-   * @param {string} icon gym icon
-   * @returns message confirming deletion.
+   * @param {string} gymName gym brand name.
+   * @param {string} gymBrandName gym brand name.
+   * @param {string} gymAddress gym address.
+   * @param {number} gymCoordLong Longitude coord of gym.
+   * @param {number} gymCoordLat Latitude coord of gym.
+   * @returns message confirming update.
    */
    .use(bodyParser.urlencoded({ extended: true }))
    .use(bodyParser.json())
    .use(bodyParser.raw())
-   .put("/owner/gym/info", cors(corsOptions), async (req: any, res: any) => {
+   .put("/gyms/gym/info", cors(corsOptions), async (req: any, res: any) => {
      try {
        let query = req.body;
-       let result = await gymRepository.updateGym(query.gid, query.brandname, query.address, query.lat, query.long, query.icon)
+       let result = await gymRepository.updateGym(query.gid, query.gymName, query.gymBrandName, query.gymAddress,query.gymCoordLat, query.gymCoordLong)
         res.json({'success':true});
      } catch (err) {
        const results = { success: false, results: err };
