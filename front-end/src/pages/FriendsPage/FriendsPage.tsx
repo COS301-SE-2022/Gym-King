@@ -5,8 +5,8 @@ import FriendsList from '../../components/FriendsList/FriendsList';
 
 const FriendsPage: React.FC = () =>{
 
+    // eslint-disable-next-line 
     const [numFriendRequests, setNumFriendRequests] = useState(1);
-    setNumFriendRequests(1);
     let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
 
     const goToFriendRequests=()=>{
