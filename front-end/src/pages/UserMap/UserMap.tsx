@@ -8,6 +8,7 @@ const UserMap: React.FC = () => {
   var Menulist:any[]=[{'caption':'Profile','icon':'person','route':'/UserProfile'},
                      {'caption':'My Badges','icon':'trophy','route':'/MyBadge'},
                      {'caption':'Friends','icon':'people','route':'/FriendsPage'},
+                     {'caption':'Leaderboard','icon':'ribbon','route':'/Leaderboard'},
                      {'caption':'Settings','icon':'cog','route':'/Settings'}] 
 
   return (

@@ -24,10 +24,12 @@ const Leaderboard: React.FC = () =>{
             default:      return <LeaderboardValues scores={overall}></LeaderboardValues>
         }
     }
+
     const segmentChanged = (e: any)=>{
         setType(e.detail.value);
-     }
-     useIonViewDidEnter(()=>
+    }
+
+    useIonViewDidEnter(()=>
     {
         var gymid=sessionStorage.getItem("gid");
         var index:number;
