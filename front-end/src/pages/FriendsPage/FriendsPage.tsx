@@ -1,14 +1,17 @@
-/** 
-* @file AppSettingsPage.tsx
-* @brief provides the ability to change app settings
-*/
-
-import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
+import React, {useState} from 'react'
+import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import './AppSettingsPage.css';
+import FriendsList from '../../components/FriendsList/FriendsList';
 
 const FriendsPage: React.FC = () =>{
 
+    const [numFriendRequests, setNumFriendRequests] = useState(1);
+    setNumFriendRequests(1);
+    let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
+
+    const goToFriendRequests=()=>{
+
+    }
     //=================================================================================================
     //    Render
     //=================================================================================================
@@ -19,7 +22,17 @@ const FriendsPage: React.FC = () =>{
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>App Settings</IonText>
+                    <IonText className='PageTitle center'>My Friends</IonText>
+                    {
+                        numFriendRequests!==0 
+                        &&
+                        <IonItem button detail class='btnApproval' onClick={goToFriendRequests} >
+                            <IonLabel>Friend Requests</IonLabel>
+                        </IonItem>
+                    }
+
+                    <IonText className="inputHeading">All Friends</IonText>
+                    <FriendsList friendsList={friendsList}></FriendsList>
                     
                 </IonContent>
             </IonPage>

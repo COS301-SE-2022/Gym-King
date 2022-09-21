@@ -56,6 +56,8 @@ import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
+import FriendsPage from './pages/FriendsPage/FriendsPage';
+import FriendProfile from './pages/FriendProfile/FriendProfile';
 /*develop*/
 
 
@@ -171,9 +173,11 @@ const App: React.FC = () => (
         <Route exact path='/ResetPassword'>
           <ResetPassword></ResetPassword>
           </Route>
-        <Route exact path='/Splash'>
-          <SplashPage></SplashPage>
-
+        <Route exact path='/FriendsPage'>
+          <FriendsPage></FriendsPage>
+        </Route>
+        <Route exact path='/FriendProfile'>
+          <FriendProfile></FriendProfile>
         </Route>
 
       </IonRouterOutlet>
