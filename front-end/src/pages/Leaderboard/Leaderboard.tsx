@@ -33,7 +33,7 @@ const Leaderboard: React.FC = () =>{
         var index:number;
         var Overall:any=[];
         var Cardio:any=[];
-        var Strenght:any=[];
+        var Strength:any=[];
 
         
 
@@ -107,8 +107,8 @@ const Leaderboard: React.FC = () =>{
                 }
                 else
                 {
-                    bflag2=inArray(results[i].username,Strenght)
-                    assign(results[i].username,getpoints(results[i].count,results[i].badgename),bflag2,index,Strenght)   
+                    bflag2=inArray(results[i].username,Strength)
+                    assign(results[i].username,getpoints(results[i].count,results[i].badgename),bflag2,index,Strength)   
                 }
                 assign(results[i].username,getpoints(results[i].count,results[i].badgename),bflag,index,Overall)
 
@@ -116,10 +116,10 @@ const Leaderboard: React.FC = () =>{
             }
             Overall.sort((a:any,b:any)=>{ return b.points-a.points})
             Cardio.sort((a:any,b:any)=>{ return b.points-a.points})
-            Strenght.sort((a:any,b:any)=>{ return b.points-a.points})
+            Strength.sort((a:any,b:any)=>{ return b.points-a.points})
             setOverall(Overall)
             setcardio(Cardio)
-            setstrength(Strenght)
+            setstrength(Strength)
         })
         .catch(err => {
             console.log(err)

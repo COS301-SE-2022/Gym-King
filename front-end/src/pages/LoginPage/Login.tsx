@@ -4,14 +4,48 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 import axios from "axios";
+import { validEmail } from '../../utils/validation';
 
 export const Login: React.FC = () =>{
     
     let formData:any;
     let history=useHistory()
     const [showToast, setShowToast] = useState(false);
-    const [userType, setUserType] = useState('user');
+    const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
+
+
+    const [errors, setErrors] = useState({
+        email: '',
+        usertype: '',
+    });
+
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+        let email =formData.email
+        let usertype = formData.usertype
+
+        if(email && !validEmail(email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+    
+
+        if(usertype ==='') {
+            handleError('Please select a user type', 'usertype');
+            isValid = false;
+        }
+        else
+            handleError('', 'usertype');
+
+        return isValid;
+    }
 
 
     const loginSubmit= ()=>{
@@ -20,7 +54,7 @@ export const Login: React.FC = () =>{
             {
                 email: formData.email,
                 password: formData.password,
-                usertype: formData.usertype
+                usertype: userType
             },
             {
                 headers: {
@@ -71,13 +105,19 @@ export const Login: React.FC = () =>{
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
+
         formData={
-            email: e.target.email.value,
+            email: e.target.email.value.trim(),
             password: e.target.userPassword.value,
             usertype: userType
         };
-        console.log(formData)
-        loginSubmit();
+
+        let isValid = validate()
+        if(isValid)
+        {
+            loginSubmit();
+        }
+        
         
     }
      const segmentChanged = (e: any)=>{
@@ -91,16 +131,21 @@ export const Login: React.FC = () =>{
                 <IonHeader>
                 </IonHeader>
                 <IonContent  fullscreen className='grad loginPage'>
-                    <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST" className='loginForm'>
+                    <form onSubmit={handleSubmit} method="POST" className='loginForm'>
                         <IonText className='center inputHeading'>Login</IonText>
                             <br></br><br></br>
                             <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
                             <IonInput className='textInput' name='email' type='text' required></IonInput>
-                            
+                            {errors.email!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                                </>
+                            )}
                             <br></br>
+
+
                             <IonLabel className="smallHeading" position="floating">Password*</IonLabel>
                             <IonInput className='textInput' name='userPassword' type='password' required ></IonInput>
-
                             <br></br>
 
                             <IonLabel className="smallHeading" position="floating">User type</IonLabel>
@@ -115,6 +160,11 @@ export const Login: React.FC = () =>{
                                     <IonLabel>Owner</IonLabel>
                                 </IonSegmentButton>
                             </IonSegment>
+                            {errors.usertype!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.usertype}</IonLabel><br></br>
+                                </>
+                            )}
 
                             <br></br>
                             <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
