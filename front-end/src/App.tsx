@@ -170,6 +170,10 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/ResetPassword'>
           <ResetPassword></ResetPassword>
+          </Route>
+        <Route exact path='/Splash'>
+          <SplashPage></SplashPage>
+
         </Route>
 
       </IonRouterOutlet>
