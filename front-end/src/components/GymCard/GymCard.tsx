@@ -50,7 +50,7 @@
          'Content-Type': 'application/json',
        },
        data: JSON.stringify({ 
-         gid:prop.id,
+         "gid":prop.id,
          "email":localStorage.getItem("email"),
          "password":password,
        })

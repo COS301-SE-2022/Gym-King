@@ -54,7 +54,7 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-medium-contrast: #000000;
 	--ion-color-medium-contrast-rgb: 0,0,0;
 	--ion-color-medium-shade: #808289;
-	--ion-color-medium-tint: #9d9fa6;
+	--ion-color-medium-tint: #9d9fa669;
   /** light **/
 	--ion-color-light: #f4f5f8;
 	--ion-color-light-rgb: 244,245,248;
@@ -63,6 +63,8 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-shade: #d7d8da;
 	--ion-color-light-tint: #f5f6f9;
   --ion-text-color: #ffffff;
+
+  --ion-color-darkorange: darkorange;
 
   
 }
@@ -116,6 +118,10 @@ http://ionicframework.com/docs/theming/ */
     margin-right:10%;
 }
 
+.inner-scroll.scroll-y.overscroll{
+  background-color: #873CFF;
+}
+
 .Content
 {
     padding:5em;
@@ -130,6 +136,11 @@ ion-button{
   margin-right:10%;
 }
 
+
+.errText{
+  --ion-color:var(--ion-color-danger);
+  font-size: 14px;
+}
 .PageTitle
 {
     font-size:2em;
@@ -154,7 +165,14 @@ ion-card{
   box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
 }
 
+.searchbar-input-container{
 
+  background-color: rgba(255,255,255,0.13);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 12px rgb(25 10 143 / 40%); 
+   border-radius: 2em;
+    color: black;
+}
 .textInput{
   background-color: rgba(255,255,255,0.07);
   border-radius: 7%;

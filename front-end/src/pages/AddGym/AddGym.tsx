@@ -2,7 +2,7 @@
 * @file AddGym.tsx
 * @brief provides interface for adding new gyms to map
 */
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { Map, Overlay } from "pigeon-maps";
 import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 import axios from "axios";
+import DropDown from "../../components/dropdown/dropdown";
 
 /**
  * const addGym
@@ -19,10 +20,15 @@ const AddGym: React.FC = () => {
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
+
+  const [gymBrands, setGymBrands]= useState(new Array<string>())
+
   //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
   //-gymName hook, hook that sets the name of a gym
   const [gymName, setGymName] = useState<string>(""); 
+  //-gymBrand hook, hook that sets the brand of a gym
+  const [gymBrand, setGymBrand] = useState<string>(""); 
   //- gymAddress hook, hook that sets the address of a gym         
   const [gymAddress, setGymAddress] = useState<string>("address");
   //-coordinate hook, hook that sets the coordinates of the gym 
@@ -33,8 +39,10 @@ const AddGym: React.FC = () => {
   const [showToast1, setShowToast1] = useState(false);
   //-showToast2  hook ,set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
-  //-gymIcon{string}, stores gym icon
-   let gymIcon: string = "logo";
+
+
+
+ 
 //=================================================================================================
 //    FUNCTIONS
 //=================================================================================================
@@ -42,11 +50,17 @@ const AddGym: React.FC = () => {
    * OnIonEnter
    * @brief checks if session storage has values and uses it to fill in gymName,gymAddress and coordinates else set the default
    */
-  useIonViewWillEnter(()=>{
+  useIonViewDidEnter(()=>{
+
+      getBrands()
+
       if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
-        console.log(gymName)
+      }
+      if(sessionStorage.getItem("gymBrand")!=null)
+      {
+        setGymName(sessionStorage.getItem("gymBrand") as string)
       }
       if(sessionStorage.getItem("gymAddress")!=null)
       {
@@ -59,7 +73,28 @@ const AddGym: React.FC = () => {
       {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
-  })
+      
+    })
+      
+  const getBrands = async() =>{
+    let gyms: any[]=[]
+    let array: string[]=[]
+    await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
+      .then((response) => response.data)
+      .then((response) => {
+          console.log(response)
+           gyms = response
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+
+      gyms.forEach(async (el:any)=>{
+        array.push(el.gym_brandname)
+      })
+      console.log(array)
+      setGymBrands(array)
+  }
   /**
    * AddGym function
    * @brief calls the add gym api, and adds a gym record the gyms table, then calls the api to assign gym to an owner.
@@ -74,12 +109,12 @@ const AddGym: React.FC = () => {
         'Content-Type': 'application/json',
       },
       data: { 
-        gymBrandName: gymName,
+        gymName: gymName,
+        gymBrandName: gymBrand,
         gymAddress: gymAddress,
         gymCoordLong: coordinate[1],
-        gymCoordLat: coordinate[0],
-        gymIcon: gymIcon
-      }
+        gymCoordLat: coordinate[0]
+        }
     }
   )
     .then((response) => response.data)
@@ -120,6 +155,12 @@ const AddGym: React.FC = () => {
   
   };
 
+  const chosenValue = (value:any)=>{
+    console.log(value);
+    sessionStorage.setItem('gymBrand', value);
+    setGymBrand(sessionStorage.getItem('gymBrand')!);
+  }
+
   const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
     return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
   }
@@ -140,6 +181,13 @@ const AddGym: React.FC = () => {
                     setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                   }}>{" "}
                 </IonInput> <br></br>
+
+                <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
+                <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
+                  <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
+                </div>
+                <br></br>
+
 
                 <IonText className="smallHeading leftMargin">Address:</IonText>
                 <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
