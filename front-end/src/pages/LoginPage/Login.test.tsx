@@ -47,35 +47,15 @@ describe('Testing connection to API', () => {
   
 })
 
-//describe('Checks the title component', () => {
-  //it('checks the value of the Title component', () => {
-     //const {getByLabelText} =render(<Login />);
-     //const titleValue = getByLabelText('Login')
-    // expect(titleValue).toBeInTheDocument('Login')
-  //})
-//})
+export const renderWithToastify = (component) => {
+  return (
+    render(
+      <div>
+        <ToastContainer/>
+        {component}
+      </div> 
+    )  
+  );
+};
 
-//setupTests.js
-jest.mock('react-toastify', () => {
-  const actual = jest.requireActual('react-toastify');
-  Object.assign(actual, {toast: jest.fn()});
-  return actual;
-});
-
-//test.spec.js
-import {toast} from 'react-toastify';
-
-const toastCalls = []
-const spy = toast.mockImplmentation((...args) => {
-  toastCalls.push(args)
- }
-)
-
-describe('...', () => {
-  it('should ...', () => {
-    //do something that calls the toast
-    ...
-    //then
-    expect(toastCalls).toEqual(...)
-  }
-})
+expect(await screen.findByText("alert text")).toBeInTheDocument();
