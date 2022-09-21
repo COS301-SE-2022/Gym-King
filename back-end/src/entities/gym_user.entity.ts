@@ -1,16 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { badge_claim } from "./badge_claim.entity";
 import { badge_owned } from "./badge_owned.entity";
+import { gym_brand } from "./gym_brand.entity";
 @Entity()
 export class gym_user {
     @PrimaryColumn({length: 320})
     email: string
 
-    @Column({length: 100})
-    name: string
-
-    @Column({length: 100})
-    surname: string
+    @Column({length: 150})
+    fullname: string
 
     @Column({length: 10})
     number: string
@@ -20,6 +18,11 @@ export class gym_user {
 
     @Column({length: 300})
     password: string
+
+    @Column({type: "varchar" ,length: 50})
+    @ManyToOne(() => gym_brand, (gym_brand) => gym_brand.gym_brandname)
+    @JoinColumn({name: "gym_membership"})
+    gym_membership: string
 
     @Column({length: 65535, default:"NONE",nullable: true})
     profile_picture: string

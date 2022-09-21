@@ -43,13 +43,11 @@ export const gymOwnedRepository = GymKingDataSource.getRepository(gym_owned).ext
         gymEntity.gym_address = result.gym_address;
         gymEntity.gym_coord_lat = result.gym_coord_lat;
         gymEntity.gym_coord_long = result.gym_coord_long;
-        gymEntity.gym_icon = result.gym_icon;
         result = await ownerRepository.findByEmail(email);
         console.log(result);
         const ownerEntity = new gym_owner();
         ownerEntity.email = result.email;
-        ownerEntity.name = result.name;
-        ownerEntity.surname = result.surname;
+        ownerEntity.fullname = result.fullname;
         ownerEntity.number = result.number;
         ownerEntity.username = result.username;
         ownerEntity.password = result.password;

@@ -8,7 +8,7 @@
     "start": "ts-node ./src/index.ts",
     "prod:api": "env-cmd -f .production.env heroku local web",
     "dev:api": "env-cmd -f .developing.env heroku local web",
-    "test:api": "env-cmd -f .testing.env npx jest --runInBand",
+    "test:api": "env-cmd -f .testing.env npx jest --runInBand --coverage",
     "compile": "chmod -R 777 Models/"
   },
   "keywords": [],
