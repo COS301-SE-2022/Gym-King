@@ -5,7 +5,7 @@ import { ToolBar } from '../../components/toolbar/Toolbar';
 
 
 const NotFriendProfile: React.FC = () =>{
-    
+        localStorage.setItem("friendRequest","true")
         const sendFriendRequest = ()=>{
 
         }
@@ -18,6 +18,31 @@ const NotFriendProfile: React.FC = () =>{
                 <IonContent>
                     <br></br>
                     <IonGrid>
+                        {
+                            localStorage.getItem("friendRequest")==="true"
+                            &&
+                            <IonRow >
+                                <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
+                                    <IonGrid>
+                                        <IonRow>
+                                            <IonCol size='5'>
+                                                <i className="center">user234 wants to follow you</i>
+                                            </IonCol>
+                                            <IonCol size="7">
+                                                <IonRow>
+                                                    <IonText color="light" className="PageTitle center un">USER123</IonText>
+                                                </IonRow>
+                                                <IonRow>
+                                                    <i className="center">Name Surname</i>
+                                                </IonRow>
+                                                
+                                            </IonCol>
+                                        </IonRow>
+                                        
+                                    </IonGrid>
+                                </IonCard>
+                            </IonRow>
+                        }
                         <IonRow >
                             <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
