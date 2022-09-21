@@ -116,7 +116,9 @@ const EditGym: React.FC = () => {
         },
         data: JSON.stringify({ 
           gid:sessionStorage.getItem("gid"),
-          brandname: gymName, 
+
+          gymName: gymName, 
+          gymBrandName: gymBrand,
           address:gymAddress,
           lat:coordinate[0],
           long:coordinate[1],
