@@ -28,8 +28,8 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
     findByGID(gid: string) {
         return this.findBy({ g_id: gid });
     },
-    async updateEmployee(email: string, name: string, surname: string, number: string, username: string) {
-        return await this.manager.update(gym_employee, { email: email }, {name: name, surname: surname, number: number, username: username})
+    async updateEmployee(email: string, fullname: string, number: string, username: string) {
+        return await this.manager.update(gym_employee, { email: email }, {fullname: fullname, number: number, username: username})
     },
     async updateEmployeePassword(email: string, password: string) {
         const bcrypt = require('bcryptjs')
@@ -38,7 +38,7 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
     async updateEmployeeProfilePicture(email: string, profilepicture: string) {
         return await this.manager.update(gym_employee, { email: email }, {profile_picture: profilepicture})
     },
-    async saveEmployee(email: string, name: string, surname: string, number: string, username: string, password: string, gid: string) {
+    async saveEmployee(email: string, fullname: string, number: string, username: string, password: string, gid: string) {
         const result = await gymRepository.findByGID(gid);
         const gymEntity = new gym();
         gymEntity.g_id = result.g_id;
@@ -46,12 +46,10 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
         gymEntity.gym_address = result.gym_address;
         gymEntity.gym_coord_lat = result.gym_coord_lat;
         gymEntity.gym_coord_long = result.gym_coord_long;
-        gymEntity.gym_icon = result.gym_icon;
         const bcrypt = require('bcryptjs')
         const employee = new gym_employee();
         employee.email = email;
-        employee.name = name;
-        employee.surname = surname;
+        employee.fullname = fullname;
         employee.number = number;
         employee.username = username;
         employee.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
