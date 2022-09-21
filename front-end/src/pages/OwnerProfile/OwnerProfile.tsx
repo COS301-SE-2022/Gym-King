@@ -19,7 +19,6 @@ const OwnerProfilePage: React.FC = () =>{
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
-    const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
     const [showSuccess, setShowSuccess] = useState(false);
@@ -28,11 +27,6 @@ const OwnerProfilePage: React.FC = () =>{
     const [numEmployees, setNumEmployees] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [profilePicture, setProfilePicture] = useState('');
-
-
-
-
-
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
 
@@ -54,8 +48,7 @@ const OwnerProfilePage: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setEmail(response.email);
-                setName(response.name);
-                setSurname( response.surname);
+                setName(response.fullname);
                 setPhone( response.number);
                 setUsername(response.username);
                 setPassword(localStorage.getItem("password")!);
@@ -108,8 +101,7 @@ const OwnerProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: email,
-                    name: name, 
-                    surname: surname, 
+                    fullname: name, 
                     username: username, 
                     number: phone, 
                     password: localStorage.getItem("password"), 
@@ -151,9 +143,7 @@ const OwnerProfilePage: React.FC = () =>{
     const updateName=(e:any)=>{
         setName(e.detail.value)
     }
-    const updateSurname=(e:any)=>{
-        setSurname(e.detail.value)
-    }
+
     const updatePhone=(e:any)=>{
         setPhone(e.detail.value)
     }
@@ -251,7 +241,7 @@ const OwnerProfilePage: React.FC = () =>{
                                                 <IonText className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">{name} {surname}</i>
+                                                <i className="center">{name}</i>
                                             </IonRow>
                                             
                                         </IonCol>
@@ -321,13 +311,9 @@ const OwnerProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
 
-                                <IonLabel className="smallHeading" position="floating">Name</IonLabel>
+                                <IonLabel className="smallHeading" position="floating">Full name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
                                 
-                                <br></br>
-                                <IonLabel className="smallHeading" position="floating">Surname</IonLabel>
-                                <IonInput className='textInput' name='surname' type='text' required value={surname}  onIonChange={updateSurname}></IonInput>
-
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Email</IonLabel>
                                 <IonInput className='textInput' name='email' type='email' required value={email} onIonChange={updateEmail}></IonInput>

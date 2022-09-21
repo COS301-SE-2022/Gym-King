@@ -5,7 +5,8 @@
 import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
-
+import { Device } from '@capacitor/device';
+import compList from './compatibleDevices'
 
 /**
  * @brief input inteface for IonToast 
@@ -105,22 +106,31 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
     
     //=========================================================================================================//
     /**
-     * @brief this function is used to determine what kind of ios device is being used and if it is compatible with ARkit
+     * @brief this function is used to determine what kind of android device is being used and if it is compatible with ARcore
      * @returns boolean
      */
-    const IsAndroid = () =>{
-        var ua = navigator.userAgent.toLowerCase();
-        return ua.indexOf("android") > -1;
+    const IsAndroid = async () =>{
+        return await isCompatible();
+    }
+
+    const isCompatible= async () =>{
+        const info = await Device.getInfo();
+        console.log(info.model);
+        if(compList.indexOf(info.model)>=0)
+            return true
+        else
+            return false
+
     }
     
     //=========================================================================================================//
     /**
-     * Function that determines phone device an calls AR intent
+     * Function that determines phone device and calls AR intent
      * @requires rank a valid badge rank Identifier
      * @requires emblem a valid badge emblem Identifier
      * saves users location to a var
      */    
-    const ViewAR = () =>{
+    const ViewAR = async () =>{
 
         // check if the component inputs are valid
         if(validInputs()){    
@@ -137,7 +147,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
                 anchor.click(); 
             }
             // check if Android device
-            else if (IsAndroid() ){
+            else if (await IsAndroid() ){
 
                 // build the href intent to open up arcore
                 var href = "https://arvr.google.com/scene-viewer/1.0?";

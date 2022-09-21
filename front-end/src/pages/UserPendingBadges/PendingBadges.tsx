@@ -41,7 +41,7 @@ const PendingBadgesPage: React.FC = () =>{
                     
                     {
                         
-                        claims !== [] && claims?.map(el =>{
+                        claims.length!==0 && claims?.map(el =>{
                             
                             return ( <PendingBadgeItem badgeName={el.b_id.badgename} key={el.email + el.b_id} badgeIcon={el.b_id.badgeicon}></PendingBadgeItem>)
                         }) 
