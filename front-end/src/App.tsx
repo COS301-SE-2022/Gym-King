@@ -54,8 +54,6 @@ import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
 import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
-import GymSearchBar from './components/GymSearchBar/GymSearchBar';
-import PushNotificationsContainer from './components/Push/Push';
 /*develop*/
 
 
