@@ -47,15 +47,15 @@ describe('Testing connection to API', () => {
   
 })
 
-export const renderWithToastify = (component) => {
-  return (
-    render(
-      <div>
-        <ToastContainer/>
-        {component}
-      </div> 
-    )  
-  );
-};
+//export const renderWithToastify = (component) => {
+  //return (
+    //render(
+      //<div>
+        //<ToastContainer/>
+        //{component}
+      //</div> 
+    //)  
+  //);
+//};
 
-expect(await screen.findByText("Welcome to Gym King.")).toBeInTheDocument();
+//expect(await screen.findByText("Welcome to Gym King.")).toBeInTheDocument();
