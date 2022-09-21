@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter, IonGrid, IonCol, IonRow} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter, IonGrid, IonCol, IonRow, IonLabel, IonChip} from '@ionic/react';
 
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {  useState } from 'react';
@@ -18,15 +18,31 @@ import axios from "axios";
 
         //STATES AND VARIABLES 
         //const [activityType, setActivityType] = useState('');
+
+        const color = "#ffca22"
+        const transparent = "#9d9fa669"
         const [gymId, setGymId] = useState('')
         const [submitted, setSubmitted] = useState(false);
         const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
         const [ownedGyms, setOwnedGyms] = useState([]);
         const [badgename, setBadgename] = useState('');
+        const [tags, setTags] = useState(new Array<string>());
+
         let formData:any;
         let history=useHistory()
-        let tags=""
+
+        //chips 
+        const [chipColor0, setChipColor0] = useState(transparent)
+        const [chipColor1, setChipColor1] = useState(transparent)
+        const [chipColor2, setChipColor2] = useState(transparent)
+        const [chipColor3, setChipColor3] = useState(transparent)
+        const [chipColor4, setChipColor4] = useState(transparent)
+        const [chipColor5, setChipColor5] = useState(transparent)
+        const [chipColor6, setChipColor6] = useState(transparent)
+        const [chipColor7, setChipColor7] = useState(transparent)
+        const [chipColor8, setChipColor8] = useState(transparent)
+        const [chipColor9, setChipColor9] = useState(transparent)
 
 
 
@@ -128,6 +144,141 @@ import axios from "axios";
             setBadgename(e.target.value)
             
         }
+
+        const selectTag = (value:string, pos:number)=>{
+
+
+            switch (pos)
+            {
+                case 0:
+                    if(chipColor0 === color)
+                    {
+                        setChipColor0(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor0(color)
+                        tags.push(value)
+                    }
+                    break
+                case 1:
+                    if(chipColor1 === color)
+                    {
+                        setChipColor1(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor1(color)
+                        tags.push(value)
+                    }
+                    break
+
+                case 2: 
+                    if(chipColor2 === color)
+                    {
+                        setChipColor2(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor2(color)
+                        tags.push(value)
+                    }
+                    break
+                case 3:
+                    if(chipColor3 === color)
+                    {
+                        setChipColor3(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor3(color)
+                        tags.push(value)
+                    }
+                    break
+                case 4:
+                    if(chipColor4 === color)
+                    {
+                        setChipColor4(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor4(color)
+                        tags.push(value)
+                    }
+                    break
+                case 5:
+                    if(chipColor5 === color)
+                    {
+                        setChipColor5(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor5(color)
+                        tags.push(value)
+                    }
+                    break
+                case 6:
+                    if(chipColor6 === color)
+                    {
+                        setChipColor6(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor6(color)
+                        tags.push(value)
+                    }
+                    break
+                case 7:
+                    if(chipColor7 === color)
+                    {
+                        setChipColor7(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor7(color)
+                        tags.push(value)
+                    }
+                    break
+                case 8:
+                    if(chipColor8 === color)
+                    {
+                        setChipColor8(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor8(color)
+                        tags.push(value)
+                    }
+                    break
+                case 9:
+                    if(chipColor9 === color)
+                    {
+                        setChipColor9(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor9(color)
+                        tags.push(value)
+                    }
+                    break
+
+
+                            
+            }
+
+            console.log(tags);
+
+        }
         return(
         
             <IonPage color='#220FE' >
@@ -217,6 +368,14 @@ import axios from "axios";
                             </IonGrid>
                         }
 
+                        <IonText className='smallHeading leftMargin'>Please select the words that relate to this badge:</IonText>
+                        <div>
+                            <IonChip onClick={()=>selectTag("Cardio", 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>Cardio</IonLabel></IonChip>
+                            <IonChip onClick={()=>selectTag("Running", 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>Running</IonLabel></IonChip>
+                            <IonChip onClick={()=>selectTag("Treadmil", 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>Treadmill</IonLabel></IonChip>
+                            <IonChip onClick={()=>selectTag("Cycling", 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>Cycling</IonLabel></IonChip>
+                            <IonChip onClick={()=>selectTag("Incline", 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>Incline</IonLabel></IonChip>
+                        </div>
                         <BadgeSlider name = {badgename}></BadgeSlider>
 
                         {
