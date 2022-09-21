@@ -6,15 +6,6 @@ test('renders without crashing', () => {
   expect(baseElement).toBeDefined();
 });
 
-test('correctly displays labels', async () => {
-  const {baseElement} = render(<RegisterPage/>);
-  expect (baseElement).toHaveTextContent("Email*");
-  expect (baseElement).toHaveTextContent("Name*");
-  expect (baseElement).toHaveTextContent("Surname*");
-  expect (baseElement).toHaveTextContent("Username*");
-  expect (baseElement).toHaveTextContent("Phone Number*");
-  expect (baseElement).toHaveTextContent("Password*");
-});  
   
 
 ////////// INTEGRATION TESTS //////////
