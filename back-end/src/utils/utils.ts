@@ -85,34 +85,44 @@ const utils = express.Router()
     try {
       const client = await pool.connect();
       let result = await client.query(
+        "CREATE TABLE IF NOT EXISTS GYM_BRAND(" +
+          "Gym_BrandName VARCHAR(50)," +
+          "gym_logo VARCHAR(65535)," +
+          "PRIMARY KEY(Gym_BrandName)" +
+          ")"
+      );
+      result = await client.query(
         "CREATE TABLE IF NOT EXISTS GYM(" +
           "G_ID VARCHAR(4)," +
+          "Gym_Name TEXT,"+
           "Gym_BrandName VARCHAR(50)," +
           "Gym_Address VARCHAR(100)," +
           "Gym_Coord_Lat FLOAT(10)," +
           "Gym_Coord_Long FLOAT(10)," +
-          "Gym_Icon VARCHAR(65535)," +
-          "PRIMARY KEY(G_ID)" +
+          "PRIMARY KEY(G_ID)," +
+          "FOREIGN KEY (Gym_BrandName)" +
+          "REFERENCES GYM_BRAND(Gym_BrandName)" +
           ")"
       );
       result = await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_USER(" +
           "email VARCHAR(320)," +
-          "Name VARCHAR(100)," +
-          "Surname VARCHAR(100)," +
+          "Fullname VARCHAR(150)," +
           "Number VARCHAR(10)," +
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
-          "PRIMARY KEY(email)" +
+          "Gym_Membership VARCHAR(50),"+
+          "PRIMARY KEY(email)," +
+          "FOREIGN KEY (Gym_Membership)" +
+          "REFERENCES GYM_BRAND(Gym_Brandname)" +
           ")"
       );
       result = await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_EMPLOYEE(" +
           "email VARCHAR(320)," +
           "G_ID VARCHAR(4)," +
-          "Name VARCHAR(100)," +
-          "Surname VARCHAR(100)," +
+          "Fullname VARCHAR(150)," +
           "Number VARCHAR(10)," +
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
@@ -125,8 +135,7 @@ const utils = express.Router()
       result = await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_OWNER(" +
           "email VARCHAR(320)," +
-          "Name VARCHAR(100)," +
-          "Surname VARCHAR(100)," +
+          "Fullname VARCHAR(150)," +
           "Number VARCHAR(10)," +
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
@@ -153,7 +162,11 @@ const utils = express.Router()
           "BadgeDescription VARCHAR(300)," +
           "BadgeChallenge VARCHAR(300)," +
           "BadgeIcon VARCHAR(65535)," +
+          "Requirement1 VARCHAR(100)," +
+          "Requirement2 VARCHAR(100)," +
+          "Requirement3 VARCHAR(100)," +
           "ActivityType VARCHAR(8)," +
+          "tags TEXT,"+ 
           "PRIMARY KEY(B_ID)," +
           "FOREIGN KEY (G_ID)" +
           "REFERENCES GYM(G_ID)" +
@@ -261,6 +274,7 @@ const utils = express.Router()
       // result = await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
       // result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
       // result = await client.query("DROP TABLE IF EXISTS GYM")
+      // result = await client.query("DROP TABLE IF EXISTS GYM_BRAND");
       // const results = { success: true, results: result };
       res.json({'message':'not implemented!'});
       // client.release();

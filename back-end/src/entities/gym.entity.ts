@@ -1,13 +1,19 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { badge } from "./badge.entity";
+import { gym_brand } from "./gym_brand.entity";
 import { gym_employee } from "./gym_employee.entity";
 @Entity()
 export class gym {
     @PrimaryColumn({length: 4})
     g_id: string
 
-    @Column({length: 50})
+    @Column({type: "varchar" ,length: 50,nullable: true})
+    @ManyToOne(() => gym_brand, (gym_brand) => gym_brand.gym_brandname)
+    @JoinColumn({name: "gym_brandname"})
     gym_brandname: string
+
+    @Column({type:"text"})
+    gym_name: string
 
     @Column({length: 100})
     gym_address: string
@@ -17,9 +23,6 @@ export class gym {
 
     @Column({type: "float4"})
     gym_coord_long: number
-
-    @Column({length: 65535})
-    gym_icon: string
 
     @OneToMany(() => gym_employee, (gym_employee) => gym_employee.g_id)
     gym_employees: gym_employee[]
