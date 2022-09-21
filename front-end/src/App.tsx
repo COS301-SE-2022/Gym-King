@@ -70,7 +70,6 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         
         <Route exact path="/test">
-          <PushNotificationsContainer></PushNotificationsContainer>
         </Route>
         <Route exact path="/home">
           <Home />
