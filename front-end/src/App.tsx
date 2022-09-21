@@ -59,6 +59,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword';
 import FriendsPage from './pages/FriendsPage/FriendsPage';
 import FriendProfile from './pages/FriendProfile/FriendProfile';
 import NotFriendProfile from './pages/NotFriendProfile/NotFriendProfile';
+import FriendRequests from './pages/FriendRequests/FriendRequests';
 /*develop*/
 
 
@@ -182,6 +183,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/NotFriendProfile'>
           <NotFriendProfile></NotFriendProfile>
+        </Route>
+        <Route exact path='/FriendRequests'>
+          <FriendRequests></FriendRequests>
         </Route>
 
       </IonRouterOutlet>
