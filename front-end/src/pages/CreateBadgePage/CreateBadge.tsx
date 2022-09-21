@@ -45,6 +45,9 @@ import axios from "axios";
         const [chipColor9, setChipColor9] = useState(transparent)
 
 
+        let cardioTags = ["cardio", "running", "cycling", "hiit", "endurance", "steps","elliptical","rowing","short","long"]
+        let strengthTags = ["strength","musclebuilding","push","pull","lift","core","upperbody","lowerbody","fullbody","crossfit"]
+
 
         //METHODS
         const setChosenActivityType = (e:any) =>{
@@ -310,6 +313,7 @@ import axios from "axios";
                         {
                             localStorage.getItem('act') && localStorage.getItem("act")==="STRENGTH"
                             &&
+                            
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
@@ -335,6 +339,8 @@ import axios from "axios";
                                         <IonInput type="number" name="req3" className="textInput"></IonInput>
                                     </IonCol>
                                 </IonRow>
+
+                                <br></br><br></br>
                             </IonGrid>
                         }
                         {
@@ -359,23 +365,68 @@ import axios from "axios";
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Level of Difficulty:</IonText>
+                                        <IonText className='smallHeading leftMargin'>Difficulty:</IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req3" className="textInput"></IonInput>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
-                        }
 
-                        <IonText className='smallHeading leftMargin'>Please select the words that relate to this badge:</IonText>
-                        <div>
-                            <IonChip onClick={()=>selectTag("Cardio", 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>Cardio</IonLabel></IonChip>
-                            <IonChip onClick={()=>selectTag("Running", 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>Running</IonLabel></IonChip>
-                            <IonChip onClick={()=>selectTag("Treadmil", 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>Treadmill</IonLabel></IonChip>
-                            <IonChip onClick={()=>selectTag("Cycling", 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>Cycling</IonLabel></IonChip>
-                            <IonChip onClick={()=>selectTag("Incline", 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>Incline</IonLabel></IonChip>
-                        </div>
+                        }
+                        <br></br>
+                        {
+                            localStorage.getItem('act') && localStorage.getItem("act")==="STRENGTH"
+                            &&
+                            <IonGrid className="centerComp">
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='inputHeading '>Please select the words that relate to this badge:</IonText>
+                                    </IonCol>
+
+                                </IonRow>
+                                <IonRow>
+                                    <IonChip onClick={()=>selectTag(strengthTags[0], 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>{strengthTags[0]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[1], 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>{strengthTags[1]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[2], 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>{strengthTags[2]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[3], 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>{strengthTags[3]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[4], 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>{strengthTags[4]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[5], 5)}  style={{"backgroundColor": chipColor5}} ><IonLabel>{strengthTags[5]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[6], 6)}  style={{"backgroundColor": chipColor6}} ><IonLabel>{strengthTags[6]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[7]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[8]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(strengthTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[9]}</IonLabel></IonChip>
+                                </IonRow>
+
+                            </IonGrid>
+                        }
+                        {
+                            localStorage.getItem('act') && localStorage.getItem("act")==="CARDIO"
+                            &&
+                            <IonGrid className="centerComp">
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='inputHeading '>Please select the words that relate to this badge:</IonText>
+                                    </IonCol>
+
+                                </IonRow>
+                                <IonRow>
+                                    <IonChip onClick={()=>selectTag(cardioTags[0], 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>{cardioTags[0]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[1], 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>{cardioTags[1]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[2], 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>{cardioTags[2]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[3], 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>{cardioTags[3]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[4], 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>{cardioTags[4]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[5], 5)}  style={{"backgroundColor": chipColor5}} ><IonLabel>{cardioTags[5]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[6], 6)}  style={{"backgroundColor": chipColor6}} ><IonLabel>{cardioTags[6]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{cardioTags[7]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{cardioTags[8]}</IonLabel></IonChip>
+                                    <IonChip onClick={()=>selectTag(cardioTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{cardioTags[9]}</IonLabel></IonChip>
+                                </IonRow>
+
+                            </IonGrid>
+                        }
+                        <br></br><br></br>
+                        
                         <BadgeSlider name = {badgename}></BadgeSlider>
 
                         {
