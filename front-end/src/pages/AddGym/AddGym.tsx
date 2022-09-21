@@ -2,7 +2,7 @@
 * @file AddGym.tsx
 * @brief provides interface for adding new gyms to map
 */
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -20,6 +20,9 @@ const AddGym: React.FC = () => {
 //=================================================================================================
 //    VARIABLES & HOOKS
 //=================================================================================================
+
+  const [gymBrands, setGymBrands]= useState(new Array<string>())
+
   //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
   //-gymName hook, hook that sets the name of a gym
@@ -36,7 +39,10 @@ const AddGym: React.FC = () => {
   const [showToast1, setShowToast1] = useState(false);
   //-showToast2  hook ,set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
-  //-gymIcon{string}, stores gym icon
+
+
+
+ 
 //=================================================================================================
 //    FUNCTIONS
 //=================================================================================================
@@ -44,7 +50,11 @@ const AddGym: React.FC = () => {
    * OnIonEnter
    * @brief checks if session storage has values and uses it to fill in gymName,gymAddress and coordinates else set the default
    */
-  useIonViewWillEnter(()=>{
+  useIonViewDidEnter(()=>{
+
+      getBrands()
+      console.log(gymBrands)
+
       if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
@@ -64,7 +74,28 @@ const AddGym: React.FC = () => {
       {
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
-  })
+      
+    })
+      
+  const getBrands = async() =>{
+    let gyms: any[]=[]
+    let array: string[]=[]
+    await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
+      .then((response) => response.data)
+      .then((response) => {
+          console.log(response)
+           gyms = response
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+
+      gyms.forEach(async (el:any)=>{
+        array.push(el.gym_brandname)
+      })
+      console.log(array)
+      setGymBrands(array)
+  }
   /**
    * AddGym function
    * @brief calls the add gym api, and adds a gym record the gyms table, then calls the api to assign gym to an owner.
@@ -154,7 +185,7 @@ const AddGym: React.FC = () => {
 
                 <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
                 <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
-                  <DropDown list={['Virgin Active', 'Planet Fitness', 'Crossfit']} chosenValue={chosenValue}></DropDown>
+                  <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
                 </div>
                 <br></br>
 
