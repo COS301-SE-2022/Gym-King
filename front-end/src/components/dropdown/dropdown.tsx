@@ -11,15 +11,16 @@ export class DropDown extends React.Component<DropDownProps, DropDownStates>{
 
 
     onChange = (e: any)=>{
-        this.props.chosenValue(e.target.value);
         e.preventDefault()
+
+        this.props.chosenValue(e.target.value);
     }
 
 
     render(){
         const {list} = this.props;
         return(
-                <IonSelect class="dropDown centerComp shadow" value={this.props.value}   onIonChange={this.onChange}>
+                <IonSelect class="textInput dropDown textInputs shadow"   onIonChange={this.onChange}>
                     {
                         list?.map(el =>{
                             return (<IonSelectOption value={el} key={el} >{el}</IonSelectOption>)

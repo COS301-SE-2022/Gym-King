@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewDidEnter, IonCol, IonGrid, IonRow} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
@@ -20,10 +20,14 @@ const EditBadge: React.FC = () =>{
         const [badgechallenge, setChallenge] = useState('');
         const [loading, setLoading] = useState<boolean>(false);
         const [badgeIcon, setBadgeIcon] = useState('');
+        const [req1, setReq1] = useState(0);
+        const [req2, setReq2] = useState(0);
+        const [req3, setReq3] = useState(0);
 
         //VARIABLES
         let formData:any;
         let badgeId= localStorage.getItem("badgeid");
+        let tags =""
 
         //METHODS 
         const setChosenActivityType = (e:any) =>{
@@ -42,6 +46,10 @@ const EditBadge: React.FC = () =>{
                     badgeDescription: e.target.badgeDescription.value,
                     badgeChallenge:e.target.badgeChallenge.value,
                     activityType: localStorage.getItem('act'),
+                    badgeIcon:badgeIcon,
+                    req1: e.target.req1.value,
+                    req2: e.target.req2.value,
+                    req3: e.target.req3.value
                 };
                 
                 
@@ -72,10 +80,11 @@ const EditBadge: React.FC = () =>{
                 setChallenge(response.badgechallenge)
                 setGymId(response.g_id)
                 setBadgeIcon(response.badgeicon)
-                console.log(badgeIcon)
-                console.log("get: "+response.badgeicon)
+                setReq1(response.requirement1)
+                setReq2(response.requirement2)
+                setReq3(response.requirement3)
+
                 sessionStorage.setItem('bi',response.badgeicon)
-                console.log(sessionStorage.getItem("bi"))
                 sessionStorage.setItem('waiting',"false")
                 setLoading(false)
             })
@@ -94,6 +103,9 @@ const EditBadge: React.FC = () =>{
             let bc = formData.badgeChallenge;
             let bd = formData.badgeDescription;
             let bi = localStorage.getItem('badgeIcon');
+            let req1 = formData.req1
+            let req2 = formData.req2
+            let req3 = formData.req3
             
             axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
@@ -108,7 +120,11 @@ const EditBadge: React.FC = () =>{
                     badgedescription: bd,
                     badgechallenge: bc,
                     badgeicon: bi,
-                    activitytype: at
+                    activitytype: at,
+                    requirement1: req1,
+                    requirement2: req2,
+                    requirement3: req3,
+                    tags: tags
                  })
             })
             .then(response =>response.data)
@@ -180,6 +196,66 @@ const EditBadge: React.FC = () =>{
                         <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
+                        {
+                            localStorage.getItem('act') && localStorage.getItem("act")==="STRENGTH"
+                            &&
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Weight:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req1" className="textInput" value={req1}></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin' >Reps:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req2" className="textInput" value={req2}></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Sets:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req3" className="textInput" value={req3}></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
+                        }
+                        {
+                            localStorage.getItem('act') && localStorage.getItem("act")==="CARDIO"
+                            &&
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Distance:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req1" className="textInput" value={req1}></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin' >Duration:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req2" className="textInput"  value={req2}></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText className='smallHeading leftMargin'>Level of Difficulty:</IonText>
+                                    </IonCol>
+                                    <IonCol>
+                                        <IonInput type="number" name="req3" className="textInput" value={req2}></IonInput>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
+                        }
                         <BadgeSlider bIcon={sessionStorage.getItem("bi")!} name = {badgename}></BadgeSlider>
                         
                         <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
