@@ -3,6 +3,7 @@ import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegme
 import React, { useState } from "react";
 import { useHistory } from 'react-router';
 import axios from "axios";
+import { validEmail } from '../../utils/validation';
 
 
 export const ForgotPassword: React.FC = () =>{
@@ -11,7 +12,37 @@ export const ForgotPassword: React.FC = () =>{
     let formData:any
     const [showToast, setShowToast] = useState(false);
     const [userType, setUserType] = useState('');
+    const [errors, setErrors] = useState({
+        email: '',
+        usertype: '',
+    });
 
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+        let email =formData.email
+        let usertype = formData.usertype
+
+        if(email && !validEmail(email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+    
+
+        if(usertype ==='') {
+            handleError('Please select a user type', 'usertype');
+            isValid = false;
+        }
+        else
+            handleError('', 'usertype');
+
+        return isValid;
+    }
     
     const segmentChanged = (e: any)=>{
         setUserType(e.detail.value);
@@ -27,19 +58,24 @@ export const ForgotPassword: React.FC = () =>{
         sessionStorage.setItem("enteredEmail", formData.email)
         sessionStorage.setItem("enteredUserType", formData.usertype)
         
-        if(formData.usertype === "gym_user")
+        let isValid = validate()
+        if(isValid)
         {
-            
-            sendUserOTP()
+            if(formData.usertype === "gym_user")
+            {
+                
+                sendUserOTP()
+            }
+            else if(formData.usertype === "gym_employee")
+            {
+                sendEmployeeOTP()
+            }
+            else if(formData.usertype === "gym_owner")
+            {
+                sendOwnerOTP()
+            }
         }
-        else if(formData.usertype === "gym_employee")
-        {
-            sendEmployeeOTP()
-        }
-        else if(formData.usertype === "gym_owner")
-        {
-            sendOwnerOTP()
-        }
+        
         
         
     }
@@ -142,7 +178,12 @@ export const ForgotPassword: React.FC = () =>{
                         <IonText className='center inputHeading'>Forgot Password</IonText> <br></br>
 
                         <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
-                        <IonInput className='textInput' name='email' type='email' required></IonInput>
+                        <IonInput className='textInput' name='email' type='text' required></IonInput>
+                        {errors.email!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                                </>
+                        )}
                         <br></br>
 
                         <IonLabel className="smallHeading" position="floating">User type*</IonLabel>
@@ -157,7 +198,12 @@ export const ForgotPassword: React.FC = () =>{
                                 <IonLabel>Owner</IonLabel>
                             </IonSegmentButton>
                         </IonSegment>
-                        
+                        {errors.usertype!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.usertype}</IonLabel><br></br>
+                                </>
+                        )}
+                        <br></br>
                         <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Send OTP</IonButton>
                      
                         <br></br>
