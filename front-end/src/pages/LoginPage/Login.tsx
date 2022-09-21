@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 import axios from "axios";
+import { validEmail } from '../../utils/validation';
 
 export const Login: React.FC = () =>{
     
@@ -11,7 +12,7 @@ export const Login: React.FC = () =>{
     let history=useHistory()
     const [showToast1, setShowToast1] = useState(false);
     const [showToast2, setShowToast2] = useState(false);
-    const [userType, setUserType] = useState('user');
+    const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
 
 
