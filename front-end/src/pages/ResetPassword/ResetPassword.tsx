@@ -83,7 +83,7 @@ export const ResetPassword: React.FC = () =>{
     const resetUserPassword = ()=>{
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/password`, 
         {
-            method: "POST",
+            method: "PUT",
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export const ResetPassword: React.FC = () =>{
     const resetEmployeePassword = ()=>{
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/employees/employee/password`, 
         {
-            method: "POST",
+            method: "PUT",
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -143,9 +143,11 @@ export const ResetPassword: React.FC = () =>{
     }
 
     const resetOwnerPassword = ()=>{
+
+        
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/owners/owner/password`, 
         {
-            method: "POST",
+            method: "PUT",
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -158,15 +160,8 @@ export const ResetPassword: React.FC = () =>{
         })
             .then(response =>response.data)
             .then(response =>{
-                if(response.success){
                     console.log(response)
                    history.push("/Login")
-
-                }else{
-                    
-                    console.log(response.success)
-                    console.log(response.results)
-                }
             })
             .catch(err => {
                 console.log(err)
