@@ -115,7 +115,7 @@ import axios from "axios";
                     requirement1: req1,
                     requirement2: req2,
                     requirement3: req3,
-                    tags: tags
+                    tags: tags.toString()
                 }
             })
             .then(response =>response.data)
