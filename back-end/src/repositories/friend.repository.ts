@@ -42,7 +42,6 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
     /**
      * gets all the friends(not pending) for a specified user
      * @param userEmail 
-     * @param toEmail 
      * @returns list of all accepted friends
      */
     async findFriends(userEmail: string){
