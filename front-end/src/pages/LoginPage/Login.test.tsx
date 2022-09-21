@@ -58,4 +58,4 @@ export const renderWithToastify = (component) => {
   );
 };
 
-expect(await screen.findByText("alert text")).toBeInTheDocument();
+expect(await screen.findByText("Welcome to Gym King.")).toBeInTheDocument();
