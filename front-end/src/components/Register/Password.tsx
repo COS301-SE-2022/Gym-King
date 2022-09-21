@@ -33,7 +33,7 @@ export const Password: React.FC<props> = (props) =>{
             isValid = false;
         }
         else
-            handleError('', 'surname');
+            handleError('', 'confirmPassword');
 
 
 
