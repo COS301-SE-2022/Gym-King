@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonFooter, IonList, IonCard, IonCardContent, IonItem, IonLabel, IonListHeader, IonText, IonButtons, IonMenuButton, IonToast } from '@ionic/react';
 import { PushNotificationSchema, PushNotifications, Token, ActionPerformed } from '@capacitor/push-notifications';
 
+import axios from "axios";
+
 export default function PushNotificationsContainer() {
     const nullEntry: any[] = []
     const [notifications, setnotifications] = useState(nullEntry);
-
+    const userEmail = localStorage.getItem("email")
     useEffect(()=>{
         PushNotifications.checkPermissions().then((res) => {
             if (res.receive !== 'granted') {
@@ -35,6 +37,33 @@ export default function PushNotificationsContainer() {
             (token: Token) => {
                 showToast('Push registration success');
                 console.log(token.value);
+                
+                // Post the push key to the API
+
+                axios.put(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/pushToken`, 
+                {
+                    email: userEmail,
+                    token: token.value,
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })            
+                .then(response =>response.data)
+                .then(response =>{
+                    if(response.success){
+                        console.log(response)
+                    }else{
+                        
+                        console.log(response.success)
+                        console.log(response.results)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             }
         );
 
