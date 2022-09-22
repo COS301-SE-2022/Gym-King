@@ -63,6 +63,8 @@ var emailer = nodemailer.createTransport({
     var d = R * c;
     return d;
   }
+
+
   //=========================================================================================================//
   /**
    * Converts numeric degrees to radians
@@ -157,6 +159,9 @@ const users = express.Router()
       res.json(results);
     }
   })
+
+
+
   //=========================================================================================================//
   /**
    * GET - Return all the current gym brands that exist.

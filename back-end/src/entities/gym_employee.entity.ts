@@ -5,7 +5,7 @@ export class gym_employee {
     @PrimaryColumn({length: 320})
     email: string
 
-    @Column({length: 150})
+    @Column({length: 150,nullable: true})
     fullname: string
     
     @Column({length: 10})
