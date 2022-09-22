@@ -44,7 +44,7 @@ export class RegisterForm extends Component<props> {
         }
         console.log(formData);
 
-        //this.createUser(formData);
+        this.createUser(formData);
         
     }
 

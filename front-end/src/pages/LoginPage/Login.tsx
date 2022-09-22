@@ -173,7 +173,7 @@ export const Login: React.FC = () =>{
                                 <IonText className="linkLabel">Don't have an account?</IonText><button  onClick= {() =>{history.push("/Register")}}  color="secondary" className='linkLabel puesdorHref'>Register</button>
                             </div>
                             <br></br>
-                            <button  onClick= {() =>{history.push("/OTP")}} color="secondary" className='puesdorHref centerBtn'>Forgot Password?</button>
+                            <button  onClick= {() =>{history.push("/ForgotPassword")}} color="secondary" className='puesdorHref centerBtn'>Forgot Password?</button>
                     </form>
                 </IonContent>
 
