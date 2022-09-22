@@ -205,6 +205,10 @@ const UserProfilePage: React.FC = () =>{
         
     }
 
+    const openFriends = ()=>{
+        history.push("/FriendsPage")
+    }
+
 
         return(
             <IonPage >
@@ -250,6 +254,18 @@ const UserProfilePage: React.FC = () =>{
                                             </IonRow>
                                             <IonRow>
                                                 <IonButton id="open-modal" expand="block">Edit Details</IonButton>
+                                            </IonRow>
+                                        </IonGrid>
+                                    </IonCardContent>
+                                </IonCard>
+                        </IonRow>
+                        <IonRow>
+                                <IonCard className="profileCard" onClick={openFriends}>
+                                    <IonCardContent>
+                                        <IonGrid>
+                                            <IonRow>
+                                                <IonCol size="10"><b className="inputHeading">My Friends</b></IonCol>
+                                                <IonCol><IonText className="inputHeading">3</IonText></IonCol>
                                             </IonRow>
                                         </IonGrid>
                                     </IonCardContent>
