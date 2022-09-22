@@ -54,7 +54,8 @@ import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
 import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
-import GymSearchBar from './components/GymSearchBar/GymSearchBar';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 /*develop*/
 
 
@@ -68,9 +69,6 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         
-        <Route exact path="/test">
-          <GymSearchBar></GymSearchBar>
-        </Route>
         <Route exact path="/home">
           <Home />
         </Route>
@@ -122,6 +120,9 @@ const App: React.FC = () => (
         <Route exact path='/OTP'>
           <OTP></OTP>
         </Route>
+        <Route exact path='/ForgotPassword'>
+          <ForgotPassword></ForgotPassword>
+        </Route>
         <Route exact path ='/MyBadge'>
           <MyBadge></MyBadge>
         </Route>
@@ -166,6 +167,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/Splash'>
           <SplashPage></SplashPage>
+        </Route>
+        <Route exact path='/ResetPassword'>
+          <ResetPassword></ResetPassword>
         </Route>
 
       </IonRouterOutlet>
