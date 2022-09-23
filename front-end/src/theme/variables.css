@@ -51,7 +51,7 @@ http://ionicframework.com/docs/theming/ */
   /** medium **/
 	--ion-color-medium: #92949c;
 	--ion-color-medium-rgb: 146,148,156;
-	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast: white;
 	--ion-color-medium-contrast-rgb: 0,0,0;
 	--ion-color-medium-shade: #808289;
 	--ion-color-medium-tint: #9d9fa669;
@@ -194,6 +194,10 @@ ion-card{
   margin-left:5%;
   margin-right: 5%;
   margin-bottom: 20px;
+}
+
+.btnRemoveFriend{
+  width:50%;
 }
 
 .width21{
