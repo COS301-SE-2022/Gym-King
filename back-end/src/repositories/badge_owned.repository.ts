@@ -18,7 +18,7 @@ export const badgeOwnedRepository = GymKingDataSource.getRepository(badge_owned)
     findByBIDandEmail(bid: string, email:string) {
         return this.findOneBy({b_id: bid, email: email });
     },
-    async updateByBIDandEmail(bid: string, email: string, username: string, input1: string, input2: string, input3: string){
+    async updateByBIDandEmail(bid: string, email: string, input1: string, input2: string, input3: string){
         if(bid != null && email != null){
             await this.manager.update(badge_owned, { b_id: bid, email: email }, { input1: input1, input2: input2, input3: input3})
             return await this.manager.increment(badge_owned, {b_id: bid, email: email}, "count", 1)
@@ -57,8 +57,7 @@ export const badgeOwnedRepository = GymKingDataSource.getRepository(badge_owned)
         const userEntity = new gym_user();
         const u = await userRepository.findByEmail(email);
         userEntity.email = u.email;
-        userEntity.name = u.name;
-        userEntity.surname = u.surname;
+        userEntity.fullname = u.fullname;
         userEntity.number = u.number;
         userEntity.username = u.username;
         userEntity.password = u.password;

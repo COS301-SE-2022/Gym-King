@@ -33,7 +33,7 @@ export const Password: React.FC<props> = (props) =>{
             isValid = false;
         }
         else
-            handleError('', 'surname');
+            handleError('', 'confirmPassword');
 
 
 
@@ -64,7 +64,7 @@ export const Password: React.FC<props> = (props) =>{
                 <br></br>
 
                 <IonText className="smallHeading">Password*</IonText>
-                <IonInput name='pwd' type='password' className='textInput' required  value={sessionStorage.getItem('regPassword')!}></IonInput>
+                <IonInput name='pwd' type='password' className='textInput' required ></IonInput>
                 {errors.password!=="" && (
                     <>
                     <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.password}</IonLabel><br></br>
@@ -73,7 +73,7 @@ export const Password: React.FC<props> = (props) =>{
                 <br></br>
 
                 <IonText className="smallHeading">Confirm Password*</IonText>
-                <IonInput name='confirmPwd' type='password' className='textInput' required  value={sessionStorage.getItem('confirmPassword')!}></IonInput>
+                <IonInput name='confirmPwd' type='password' className='textInput' required ></IonInput>
                 {errors.confirmPassword!=="" && (
                     <>
                     <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.confirmPassword}</IonLabel><br></br>

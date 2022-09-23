@@ -3,12 +3,13 @@ import "reflect-metadata";
 import { GymKingDataSource } from "../datasource";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
+import { gymBrandRepository } from "../repositories/gym_brand.repository";
 import { server } from "../server";
 const request = require('supertest');
-let gid;
-let bid1;
-let bid2;
-let otp;
+let gid:string;
+let bid1:string;
+let bid2:string;
+let otp:any;
 beforeAll(async () => {
     await GymKingDataSource.initialize()
     .then(() => {
@@ -17,29 +18,40 @@ beforeAll(async () => {
     .catch((err) => {
         console.log("Connection not made: "+err);
     })
-    let response = await request(server).post('/gyms/gym').send({
+    let response = await request(server).post('/brands/brand').send({
+        "brandname": "Test Brand 1"
+    });
+    response = await request(server).post('/brands/brand').send({
+        "brandname": "Test Brand 2"
+    });
+    response = await request(server).post('/brands/brand').send({
+        "brandname": "Test Brand"
+    });
+    response = await request(server).post('/brands/brand').send({
+        "brandname": "Changed Brand 1"
+    });
+    response = await request(server).post('/gyms/gym').send({
+        "gymName":"Test",
         "gymBrandName": "Test Brand",
         "gymAddress": "Test Address",
         "gymCoordLong": -25.8661,
-        "gymCoordLat": 28.1905,
-        "gymIcon":"Test Logo"
+        "gymCoordLat": 28.1905
     });
     gid = response.body.g_id;
     response = await request(server).post('/owners/owner').send({
         "email":"owner@example.com",
-        "name":"Test",
-        "surname":"Test",
+        "fullname":"Test Test",
         "number":"0123456789",
         "username":"Test",
         "password":"Test"
     });
     response = await request(server).post('/users/user').send({
         "email": "user@example.com",
-        "name": "Test",
-        "surname": "Test",
+        "fullname": "Test Test",
         "number": "0123456789",
         "username":"Test",
-        "password":"Test"
+        "password":"Test",
+        "membership":"Test Brand 1"
     });
 });
 describe('Testing POST API Calls', () => {
@@ -47,8 +59,7 @@ describe('Testing POST API Calls', () => {
         test('responds to correct POST insert employee', async () => {
             const response = await request(server).post('/employees/employee').send({
                 "email": "test@example.com",
-                "name": "Test",
-                "surname": "Test",
+                "fullname": "Test Test",
                 "number": "0123456789",
                 "username":"Test",
                 "password":"Test",
@@ -60,8 +71,7 @@ describe('Testing POST API Calls', () => {
         test('responds to incorrect POST insert employee', async () => {
             const response = await request(server).post('/employees/employee').send({
                 "email": "InvalidEmail",
-                "name": "Test",
-                "surname": "Test",
+                "fullname": "Test Test",
                 "number": "0123456789",
                 "username":"Test",
                 "password":"Test",
@@ -78,7 +88,8 @@ describe('Testing POST API Calls', () => {
             "badgedescription":"Description",
             "badgechallenge":"Challenge",
             "badgeicon":"b_cycle",
-            "activitytype":"CARDIO"
+            "activitytype":"CARDIO",
+            "tags":"test,test"
         });
         bid1 = response.body.b_id;
         response = await request(server).post('/badges/badge').send({
@@ -87,7 +98,8 @@ describe('Testing POST API Calls', () => {
             "badgedescription":"Description",
             "badgechallenge":"Challenge",
             "badgeicon":"b_bicep",
-            "activitytype":"STRENGTH"
+            "activitytype":"STRENGTH",
+            "tags":"test,test"
         });
         bid2 = response.body.b_id;
         await badgeClaimRepository.saveClaim(bid1,"user@example.com","Test","test1","test2","test3","ProofURL");
@@ -158,14 +170,13 @@ describe('Testing POST API Calls', () => {
                 email:'test@example.com',
                 g_id: {
                     g_id: gid,
+                    gym_name: "Test",
                     gym_address: "Test Address",
                     gym_brandname: "Test Brand",
                     gym_coord_lat: 28.1905,
-                    gym_coord_long: -25.8661,
-                    gym_icon: 'Test Logo'
+                    gym_coord_long: -25.8661
                 },
-                name: 'Test',
-                surname: 'Test',
+                fullname: 'Test Test',
                 number: '0123456789',
                 username: 'Test',
                 profile_picture: 'NONE'
@@ -242,7 +253,8 @@ describe('Testing GET API Calls', () => {
               badgechallenge: 'Challenge',
               badgeicon: 'b_cycle',
               activitytype: 'CARDIO',
-              g_id: gid
+              g_id: gid,
+              tags:"test,test"
             },
             email: 'user@example.com'
           });
@@ -263,7 +275,8 @@ describe('Testing GET API Calls', () => {
               badgechallenge: 'Challenge',
               badgeicon: 'b_bicep',
               activitytype: 'STRENGTH',
-              g_id: gid
+              g_id: gid,
+              tags:"test,test"
             },
             email: 'user@example.com'
           });
@@ -275,8 +288,7 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/employees/employee/info').send({
                 "email": "test@example.com",
                 "password":"Test",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
@@ -289,8 +301,7 @@ describe('Testing PUT API Calls', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({
                 email:'test@example.com',
-                name: 'Changed',
-                surname: 'Changed',
+                fullname: 'Changed Test',
                 number: '9876543210',
                 username: 'Changed',
                 profile_picture: 'NONE'
@@ -300,8 +311,7 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/employees/employee/info').send({
                 "email": "test@example.com",
                 "password":"wrong",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
@@ -312,8 +322,7 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/employees/employee/info').send({
                 "email": "wrong@example.com",
                 "password":"Test",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
@@ -330,7 +339,8 @@ describe('Testing PUT API Calls', () => {
                 "badgedescription":"Description",
                 "badgechallenge":"Challenge",
                 "badgeicon":"b_cycle",
-                "activitytype":"CARDIO"
+                "activitytype":"CARDIO",
+                "tags":"Changed,Changed"
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({'success':true})
@@ -341,7 +351,8 @@ describe('Testing PUT API Calls', () => {
                 "badgedescription":"Description",
                 "badgechallenge":"Challenge",
                 "badgeicon":"b_cycle",
-                "activitytype":"CARDIO"
+                "activitytype":"CARDIO",
+                "tags":"Changed,Changed"
             });
         });
     });
