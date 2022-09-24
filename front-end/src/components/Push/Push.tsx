@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonFooter, IonList, IonCard, IonCardContent, IonItem, IonLabel, IonListHeader, IonText, IonButtons, IonMenuButton, IonToast } from '@ionic/react';
-import { PushNotificationSchema, PushNotifications, Token, ActionPerformed } from '@capacitor/push-notifications';
+import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, IonList } from '@ionic/react';
+import { PushNotificationSchema, PushNotifications, Token, ActionPerformed, DeliveredNotifications } from '@capacitor/push-notifications';
 
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
+import ToolBar from '../toolbar/Toolbar';
 
-export default function PushNotificationsContainer() {
-    const nullEntry: any[] = []
+const PushNotificationsContainer: React.FC = () => {
+    let nullEntry: any[] = []
     const [notifications, setnotifications] = useState(nullEntry);
+
+
     const userEmail = localStorage.getItem("email")
     useEffect(()=>{
         PushNotifications.checkPermissions().then((res) => {
@@ -25,68 +29,66 @@ export default function PushNotificationsContainer() {
               register();
             }
           });
+          let notificationStorage = localStorage.getItem("notificationStorage")
+          if(notificationStorage !== null){
+            setnotifications(JSON.parse(notificationStorage))
+            localStorage.setItem("notificationStorage","[]")
+          }
     },[])
     
+    let history=useHistory();
+
     const register = () => {
+        const hasRegistered = sessionStorage.getItem("hasRegistered");
+        if(hasRegistered==null || hasRegistered!=="true"){
+            // Register with Apple / Google to receive push via APNS/FCM
+            PushNotifications.register();
 
-        // Register with Apple / Google to receive push via APNS/FCM
-        PushNotifications.register();
+            // On success, we should be able to receive notifications
+            PushNotifications.addListener('registration',
+                (token: Token) => {
+                    
+                    // Post the push key to the API
 
-        // On success, we should be able to receive notifications
-        PushNotifications.addListener('registration',
-            (token: Token) => {
-                showToast('Push registration success');
-                console.log(token.value);
-                
-                // Post the push key to the API
+                    axios.put(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/pushToken`, 
+                    {
+                        email: userEmail,
+                        token: token.value,
+                    },
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        }
+                    })            
+                    .then(response =>response.data)
+                    .then(response =>{
+                        if(response.success){
+                            console.log(response)
+                            showToast('Push registration success');
+                        }else{
+                            
+                            console.log(response.success)
+                            console.log(response.results)
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
+            );
 
-                axios.put(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/pushToken`, 
-                {
-                    email: userEmail,
-                    token: token.value,
-                },
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    }
-                })            
-                .then(response =>response.data)
-                .then(response =>{
-                    if(response.success){
-                        console.log(response)
-                    }else{
-                        
-                        console.log(response.success)
-                        console.log(response.results)
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            }
-        );
+            // Some issue with our setup and push will not work
+            PushNotifications.addListener('registrationError',
+                (error: any) => {
+                    showToast('Error on registration: ' + JSON.stringify(error));
+                }
+            );
 
-        // Some issue with our setup and push will not work
-        PushNotifications.addListener('registrationError',
-            (error: any) => {
-                alert('Error on registration: ' + JSON.stringify(error));
-            }
-        );
+            sessionStorage.setItem("hasRegistered","true")
+        }
+        
 
-        // Show us the notification payload if the app is open on our device
-        PushNotifications.addListener('pushNotificationReceived',
-            (notification: PushNotificationSchema) => {
-                setnotifications(notifications => [...notifications, { id: notification.id, title: notification.title, body: notification.body, type: 'foreground' }])
-            }
-        );
-
-        // Method called when tapping on a notification
-        PushNotifications.addListener('pushNotificationActionPerformed',
-            (notification: ActionPerformed) => {
-                setnotifications(notifications => [...notifications, { id: notification.notification.data.id, title: notification.notification.data.title, body: notification.notification.data.body, type: 'action' }])
-            }
-        );
     }
 
     const showToast = async (msg: string) => {
@@ -98,33 +100,27 @@ export default function PushNotificationsContainer() {
     const [toastMeassage , setToastMessage] = useState("")
 
     return (
-        <IonPage id='main'>
-            <IonContent className="ion-padding">
-                <IonListHeader mode="ios" lines="full">
-                    <IonLabel>Notifications</IonLabel>
-                </IonListHeader>
+        <IonPage color='#220FE' >           
+                <IonHeader>
+                    <ToolBar></ToolBar>
+                </IonHeader>
+            <IonContent >
+
+                <IonText className='PageTitle center'>My Notifications</IonText>
                 {notifications.length !== 0 &&
                     <IonList>
 
                         {notifications.map((notif: any) =>
-                            <IonItem key={notif.id}>
-                                <IonLabel>
-                                    <IonText>
-                                        <h3 className="notif-title">{notif.title}</h3>
-                                    </IonText>
-                                    <p>{notif.body}</p>
-                                    {notif.type==='foreground' && <p>This data was received in foreground</p>}
-                                    {notif.type==='action' && <p>This data was received on tap</p>}
+                            <IonItem detail key={notif.id}>
+                                <IonLabel>                          
+                                         <h3>{notif.title}</h3>
+                                         <p>{notif.body}</p>
                                 </IonLabel>
                             </IonItem>
                         )}
                     </IonList>}
             </IonContent>
-            <IonFooter>
-                <IonToolbar>
-                    <IonButton color="success" expand="full" onClick={register}>Register for Push</IonButton>
-                </IonToolbar>
-            </IonFooter>
+
 
             <IonToast
                 isOpen={isToastOpen}
@@ -136,3 +132,5 @@ export default function PushNotificationsContainer() {
         </IonPage >
     )
 }
+
+export default PushNotificationsContainer;
