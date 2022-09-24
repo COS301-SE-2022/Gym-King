@@ -1115,6 +1115,10 @@ const users = express.Router()
             notification : {
               title: query.pushTitle,
               body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
             }
           }
         }
@@ -1184,6 +1188,10 @@ const users = express.Router()
             notification : {
               title: query.pushTitle,
               body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
             }
           }
         }
@@ -1202,7 +1210,7 @@ const users = express.Router()
         for(const trgt of userFriends) {
           
           try{
-            let user = await userRepository.findByEmail(trgt);
+            let user = await userRepository.findByEmail(trgt.email);
             console.log(user.pushkey)
             if(user.pushkey!=null) {
               tokens.push(user.pushkey)
@@ -1249,6 +1257,10 @@ const users = express.Router()
         if(!query.isSilent){
           message_notification = {
             notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
               title: query.pushTitle,
               body: query.pushMessage
             }
