@@ -353,6 +353,21 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET user information.
+   * @param {string} username username of the user.
+   * @returns list of information of the user.
+   */
+   .get('/users/user/:username', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.username;
+    const user = await userRepository.findByUsername(query);
+    if (user != null && user.username == query){
+      res.json({fullname:user.fullname,username:user.username,email:user.email,profile_picture:user.profile_picture});
+    } else{
+      res.json({'message':'Invalid Username!'})
+    }
+  })
+  //=========================================================================================================//
+  /**
    * POST save a users claim for a badge to database.
    * @param {string} bid The badge ID of the badge.
    * @param {string} email The email of the user who claims they completed it.
@@ -870,12 +885,13 @@ const users = express.Router()
   .post('/users/user/getFriends', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      if(query.userEmail){
-
-          let result = await friendRepository.findFriends(query.userEmail);
-          res.json({'success' :true,'results': result});
+      if(query.userEmail && query.userEmail.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+        let result = await friendRepository.findFriends(query.userEmail);
+        res.json(result);
       }
-      else throw "missing email";
+      else{
+        res.json({'success':false,'message':'Invalid Email!'});
+      }
     } catch (err){
       const results = { success: false, results: err };
       console.error(err);
@@ -1089,7 +1105,7 @@ const users = express.Router()
     try {
 
       let query = req.body;
-      if(query.userEmail && query.pushMessage && query.pushTitle && query.isSilent!=null){
+      if(query.gid  && query.pushMessage && query.pushTitle && query.isSilent!=null){
         const tokens:string[] = [];
         const emails:string[] = [];
 
@@ -1117,7 +1133,7 @@ const users = express.Router()
         for(const trgt of gymSubscribers) {
           
           try{
-            let user = await userRepository.findByEmail(trgt);
+            let user = await userRepository.findByEmail(trgt.fromUser);
             console.log(user.pushkey)
             if(user.pushkey!=null) {
               tokens.push(user.pushkey)

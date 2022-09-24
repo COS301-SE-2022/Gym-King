@@ -339,6 +339,23 @@ describe('Testing GET API Calls', () => {
             { gym_brandname: 'Changed Brand 1', gym_logo: 'Default' }
         ]);
     })
+    describe('Testing get user by username', () => {
+        test('responds to GET user by username', async () => {
+            const response = await request(server).get('/users/user/Test');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({
+                email:"test@example.com",
+                fullname:"Test Test",
+                username:"Test",
+                profile_picture:"NONE" 
+            });
+        })
+        test('responds to GET wrong user by username', async () => {
+            const response = await request(server).get('/users/user/wrong');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({'message':'Invalid Username!'});
+        })
+    })
 });
 describe('Testing PUT API Calls', () => {
     describe('Testing PUT update user info', () => {
