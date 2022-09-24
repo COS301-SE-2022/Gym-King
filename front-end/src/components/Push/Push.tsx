@@ -3,26 +3,11 @@ import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, I
 import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
 import ToolBar from '../toolbar/Toolbar';
 
 const PushNotificationsContainer: React.FC = () => {
     let nullEntry: any[] = []
     const [notifications, setnotifications] = useState(nullEntry);
-
-
-    const userEmail = localStorage.getItem("email")
-    useEffect(()=>{
-        validteRegister()
-
-        let notificationStorage = localStorage.getItem("notificationStorage")
-        if(notificationStorage !== null){
-        setnotifications(JSON.parse(notificationStorage))
-        localStorage.setItem("notificationStorage","[]")
-        }
-
-    },[])
-    
 
     const validteRegister = () => {
         PushNotifications.checkPermissions().then((res) => {
@@ -42,6 +27,19 @@ const PushNotificationsContainer: React.FC = () => {
             }
           });
     }
+
+    const userEmail = localStorage.getItem("email")
+    useEffect(()=>{
+        validteRegister()
+
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage !== null){
+        setnotifications(JSON.parse(notificationStorage))
+        localStorage.setItem("notificationStorage","[]")
+        }
+
+    },[])
+    
     const register = () => {
         const hasRegistered = sessionStorage.getItem("hasRegistered");
         if(hasRegistered==null || hasRegistered!=="true"){
