@@ -28,16 +28,31 @@ const PushNotificationsContainer: React.FC = () => {
           });
     }
     const userEmail = localStorage.getItem("email")
-    
-    validteRegister()
-    useEffect(()=>{
 
-        let notificationStorage = localStorage.getItem("notificationStorage")
-        if(notificationStorage !== null){
+    let notificationStorage = localStorage.getItem("notificationStorage")
+    if(notificationStorage !== null){
         setnotifications(JSON.parse(notificationStorage))
         localStorage.setItem("notificationStorage","[]")
-        }
+    }
 
+    validteRegister()
+
+    const refresh = 20000 
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+            console.log("push notification page has refreshed")
+            let notificationStorage = localStorage.getItem("notificationStorage")
+            if(notificationStorage !== null){
+                setnotifications(JSON.parse(notificationStorage))
+                localStorage.setItem("notificationStorage","[]")
+            }
+        }, refresh);
+        
+        return () => 
+        {
+            clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+        }
     },[setnotifications])
     
     const register = () => {
