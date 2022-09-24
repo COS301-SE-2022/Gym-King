@@ -12,16 +12,16 @@ export class gym {
     @JoinColumn({name: "gym_brandname"})
     gym_brandname: string
 
-    @Column({type:"text"})
+    @Column({type:"text",nullable: true})
     gym_name: string
 
-    @Column({length: 100})
+    @Column({length: 100,nullable: true})
     gym_address: string
 
-    @Column({type: "float4"})
+    @Column({type: "float4",nullable: true})
     gym_coord_lat: number
 
-    @Column({type: "float4"})
+    @Column({type: "float4",nullable: true})
     gym_coord_long: number
 
     @OneToMany(() => gym_employee, (gym_employee) => gym_employee.g_id)
