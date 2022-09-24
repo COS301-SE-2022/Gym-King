@@ -61,6 +61,7 @@ import FriendProfile from './pages/FriendProfile/FriendProfile';
 import NotFriendProfile from './pages/NotFriendProfile/NotFriendProfile';
 import FriendRequests from './pages/FriendRequests/FriendRequests';
 import Explore from './pages/Explore/Explore';
+import PushNotificationsContainer from './components/Push/Push';
 /*develop*/
 
 
@@ -78,7 +79,7 @@ const App: React.FC = () => (
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/test" />
+          <Redirect to="/Splash" />
         </Route>
         <Route exact path='/UploadActivity'>
           <UploadActivityPage></UploadActivityPage>
@@ -190,6 +191,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/Explore'>
           <Explore></Explore>
+        </Route>
+        <Route exact path='/Notifications'>
+          <PushNotificationsContainer></PushNotificationsContainer>
         </Route>
 
       </IonRouterOutlet>
