@@ -27,10 +27,10 @@ const PushNotificationsContainer: React.FC = () => {
             }
           });
     }
-
     const userEmail = localStorage.getItem("email")
+    
+    validteRegister()
     useEffect(()=>{
-        validteRegister()
 
         let notificationStorage = localStorage.getItem("notificationStorage")
         if(notificationStorage !== null){
@@ -38,7 +38,7 @@ const PushNotificationsContainer: React.FC = () => {
         localStorage.setItem("notificationStorage","[]")
         }
 
-    },[validteRegister()])
+    },[setnotifications])
     
     const register = () => {
         const hasRegistered = sessionStorage.getItem("hasRegistered");
