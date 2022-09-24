@@ -38,7 +38,7 @@ const PushNotificationsContainer: React.FC = () => {
         localStorage.setItem("notificationStorage","[]")
         }
 
-    },[])
+    },[validteRegister()])
     
     const register = () => {
         const hasRegistered = sessionStorage.getItem("hasRegistered");
