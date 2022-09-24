@@ -20,16 +20,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": [
-              "node",
-              "jest",
-              "ts-jest",
-              "@testing-library/jest-dom",
-              "@testing-library/react"
+      "node",
+      "jest",
+      "ts-jest",
+      "@testing-library/jest-dom",
+      "@testing-library/react"
     ]
   },
   "include": [
     "src"
-  ],
-  "extends": "./tsconfig.json",
+  ]
 
 }

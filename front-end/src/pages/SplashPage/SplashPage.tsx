@@ -3,11 +3,45 @@ import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
+import { PushNotifications, PushNotificationSchema, DeliveredNotifications } from '@capacitor/push-notifications';
 
 
 
 export const SplashPage: React.FC = () =>
 {
+    PushNotifications.removeAllListeners();
+    PushNotifications.addListener('pushNotificationReceived',
+        (notification: PushNotificationSchema) => {
+
+            let n = { id: notification.id, title: notification.data.title, body: notification.data.body, type: 'foreground' }
+            
+            let notificationStorage = localStorage.getItem("notificationStorage")
+            if(notificationStorage === null){
+                localStorage.setItem("notificationStorage",JSON.stringify([n]))
+            }
+            else{
+                let notifications = JSON.parse(notificationStorage)
+                notifications = [...notifications,n]
+                localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+            }
+        
+        }
+    );
+    PushNotifications.getDeliveredNotifications().then((Delivered:DeliveredNotifications)=>{
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        
+        if(notificationStorage === null){
+            notificationStorage = "[]"
+        }       
+        let notifications = JSON.parse(notificationStorage!)
+        for(const n of Delivered.notifications ){
+                console.log(n)
+                notifications.push(n)
+        }        
+        localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+        PushNotifications.removeAllDeliveredNotifications()
+    })
+
     const getPermissons = () => {
 
         Geolocation.checkPermissions().then(
