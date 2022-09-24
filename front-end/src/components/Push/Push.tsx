@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, IonList } from '@ionic/react';
-import { PushNotificationSchema, PushNotifications, Token, ActionPerformed, DeliveredNotifications } from '@capacitor/push-notifications';
+import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -23,7 +23,6 @@ const PushNotificationsContainer: React.FC = () => {
 
     },[])
     
-    let history=useHistory();
 
     const validteRegister = () => {
         PushNotifications.checkPermissions().then((res) => {

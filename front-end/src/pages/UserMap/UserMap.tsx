@@ -1,8 +1,6 @@
-import { PushNotifications } from '@capacitor/push-notifications';
 import { IonContent, IonHeader, IonPage } from '@ionic/react';
 import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
 import MapView from '../../components/map/MapView';
-import PushNotificationsContainer from '../../components/Push/Push';
 import ToolBar from '../../components/toolbar/Toolbar';
 
 import './UserMap.css'
