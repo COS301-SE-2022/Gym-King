@@ -28,7 +28,6 @@ export const SplashPage: React.FC = () =>
         }
     );
     PushNotifications.getDeliveredNotifications().then((Delivered:DeliveredNotifications)=>{
-        console.log(Delivered.notifications)
         let notificationStorage = localStorage.getItem("notificationStorage")
         
         if(notificationStorage === null){

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, IonList } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, IonList, IonItemSliding, IonItemOption, IonItemOptions, IonFooter, IonButton, IonToolbar } from '@ionic/react';
 import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 import axios from "axios";
@@ -9,6 +9,28 @@ const PushNotificationsContainer: React.FC = () => {
     let nullEntry: any[] = []
     const [notifications, setnotifications] = useState(nullEntry);
 
+    const clearNotification = (key:string) =>{
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage !== null){
+            let JSONnotifStore = JSON.parse(notificationStorage)
+            let out = []
+            
+            for( const n of JSONnotifStore){
+                if(!(n.id===key)){
+                    out.push(n)
+                }
+            }
+
+            setnotifications(out)
+            localStorage.setItem("notificationStorage",JSON.stringify(out))
+        
+        }
+    }
+
+    const clearAllNotifications = () =>{
+        localStorage.setItem("notificationStorage","[]")
+        setnotifications(nullEntry)
+    }
     const validteRegister = () => {
         PushNotifications.checkPermissions().then((res) => {
             if (res.receive !== 'granted') {
@@ -29,15 +51,15 @@ const PushNotificationsContainer: React.FC = () => {
     }
     const userEmail = localStorage.getItem("email")
 
-    let notificationStorage = localStorage.getItem("notificationStorage")
-    if(notificationStorage !== null){
-        setnotifications(JSON.parse(notificationStorage))
-        localStorage.setItem("notificationStorage","[]")
-    }
-
     validteRegister()
 
-    const refresh = 20000 
+    useEffect(() => {
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage !== null){
+            setnotifications(JSON.parse(notificationStorage))
+        }
+    },[setnotifications])
+    const refresh = 2500 
     useEffect(() => {
 
         const interval = setInterval(() => {
@@ -45,7 +67,6 @@ const PushNotificationsContainer: React.FC = () => {
             let notificationStorage = localStorage.getItem("notificationStorage")
             if(notificationStorage !== null){
                 setnotifications(JSON.parse(notificationStorage))
-                localStorage.setItem("notificationStorage","[]")
             }
         }, refresh);
         
@@ -125,19 +146,34 @@ const PushNotificationsContainer: React.FC = () => {
                 <IonText className='PageTitle center'>My Notifications</IonText>
                 {notifications.length !== 0 &&
                     <IonList>
-
-                        {notifications.map((notif: any) =>
+  
+                    {notifications.map((notif: any) =>
+                        <IonItemSliding>
                             <IonItem detail key={notif.id}>
                                 <IonLabel>                          
                                         <h3>{notif.title}</h3>
                                         <p>{notif.body}</p>
                                 </IonLabel>
                             </IonItem>
-                        )}
-                    </IonList>}
+
+                            <IonItemOptions>
+                                <IonItemOption 
+                                    color="danger"
+                                    onClick={() =>clearNotification(notif.id)}>
+                                        Clear
+                                </IonItemOption>
+                            </IonItemOptions>
+                        </IonItemSliding> 
+                    )}
+                    </IonList>
+                }
             </IonContent>
 
-
+            <IonFooter>
+                <IonToolbar>
+                    <IonButton color="danger" expand="full" onClick={clearAllNotifications}>Clear All</IonButton>
+                </IonToolbar>
+            </IonFooter>
             <IonToast
                 isOpen={isToastOpen}
                 onDidDismiss={() => setIsToastOpen(false)}
