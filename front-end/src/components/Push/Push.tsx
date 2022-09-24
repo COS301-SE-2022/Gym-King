@@ -13,6 +13,19 @@ const PushNotificationsContainer: React.FC = () => {
 
     const userEmail = localStorage.getItem("email")
     useEffect(()=>{
+        validteRegister()
+
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage !== null){
+        setnotifications(JSON.parse(notificationStorage))
+        localStorage.setItem("notificationStorage","[]")
+        }
+
+    },[])
+    
+    let history=useHistory();
+
+    const validteRegister = () => {
         PushNotifications.checkPermissions().then((res) => {
             if (res.receive !== 'granted') {
               PushNotifications.requestPermissions().then((res) => {
@@ -29,15 +42,7 @@ const PushNotificationsContainer: React.FC = () => {
               register();
             }
           });
-          let notificationStorage = localStorage.getItem("notificationStorage")
-          if(notificationStorage !== null){
-            setnotifications(JSON.parse(notificationStorage))
-            localStorage.setItem("notificationStorage","[]")
-          }
-    },[])
-    
-    let history=useHistory();
-
+    }
     const register = () => {
         const hasRegistered = sessionStorage.getItem("hasRegistered");
         if(hasRegistered==null || hasRegistered!=="true"){
@@ -84,7 +89,6 @@ const PushNotificationsContainer: React.FC = () => {
                     showToast('Error on registration: ' + JSON.stringify(error));
                 }
             );
-
             sessionStorage.setItem("hasRegistered","true")
         }
         
@@ -113,8 +117,8 @@ const PushNotificationsContainer: React.FC = () => {
                         {notifications.map((notif: any) =>
                             <IonItem detail key={notif.id}>
                                 <IonLabel>                          
-                                         <h3>{notif.title}</h3>
-                                         <p>{notif.body}</p>
+                                        <h3>{notif.title}</h3>
+                                        <p>{notif.body}</p>
                                 </IonLabel>
                             </IonItem>
                         )}

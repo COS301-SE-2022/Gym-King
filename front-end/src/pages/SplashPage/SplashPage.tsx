@@ -3,8 +3,7 @@ import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
-import { PushNotifications, PushNotificationSchema, ActionPerformed, DeliveredNotifications } from '@capacitor/push-notifications';
-import { notifications } from 'ionicons/icons';
+import { PushNotifications, PushNotificationSchema, DeliveredNotifications } from '@capacitor/push-notifications';
 
 
 
