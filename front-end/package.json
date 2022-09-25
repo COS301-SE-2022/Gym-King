@@ -12,6 +12,7 @@
     "@capacitor/ios": "4.2.0",
     "@capacitor/keyboard": "1.2.2",
     "@capacitor/push-notifications": "^4.1.0",
+    "@capacitor/app-launcher": "^4.0.1",
     "@capacitor/status-bar": "1.0.8",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",

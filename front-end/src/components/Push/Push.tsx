@@ -149,7 +149,7 @@ const PushNotificationsContainer: React.FC = () => {
   
                     {notifications.map((notif: any) =>
                         <IonItemSliding>
-                            <IonItem detail key={notif.id}>
+                            <IonItem key={notif.id}>
                                 <IonLabel>                          
                                         <h3>{notif.title}</h3>
                                         <p>{notif.body}</p>
