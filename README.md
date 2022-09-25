@@ -14,6 +14,7 @@
 ![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 [![CodeQL](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml)
 [![Android Build](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml)
+[![Meta Test](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml)
 
 </div>
 </div>
