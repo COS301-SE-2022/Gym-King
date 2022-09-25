@@ -12,6 +12,11 @@
 ![](https://img.shields.io/github/issues-pr-closed/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/last-commit/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+[![CodeQL](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml)
+[![Android Build](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml)
+[![Meta Test](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml)
+[![CI Tests](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml)
+[![Dependency Review](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml)
 
 </div>
 </div>
@@ -28,10 +33,18 @@ Gym King is an application designed to give gym goers an extra motivatinal boost
 Gym King is a collaborative project between the University of Pretoria's COS 301 module team Codebusters and EPI-USE Labs. The Codebusters team members are Robyn Hancock, Jade Peche, Dylan Whiteford, Thivessh Jhugroo and Ryan Broemer. The EPI-USE members are Gianni Volpi, Egor Kharatyan and Marnes Prinsloo. 
 
 ## Basic Commands
-- yarn run start
-- yarn run build
-- yarn run test
-- yarn run lint
+```sh
+yarn run start
+```
+```sh
+yarn run build
+```
+```sh
+yarn run test
+```
+```sh
+yarn run lint
+```
 
 ## Documentation
 [SRS](https://github.com/COS301-SE-2022/Gym-King/files/9214442/Gym.King.-SRS.-.Demo.3.pdf) <br>

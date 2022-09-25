@@ -11,6 +11,12 @@ test('renders without crashing', () => {
   expect(linkElement).toBeInTheDocument();
 });
 
+test('correctly displays labels', async () => {
+  const {baseElement} = render(<AddGym/>);
+  expect (baseElement).toHaveTextContent("Name:");
+  expect (baseElement).toHaveTextContent("Address:");
+});
+
 
 ////////// INTEGRATION TESTS //////////
 
