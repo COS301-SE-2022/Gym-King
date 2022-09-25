@@ -15,6 +15,7 @@
 [![CodeQL](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml)
 [![Android Build](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml)
 [![Meta Test](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml)
+[![CI Tests](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml)
 
 </div>
 </div>
