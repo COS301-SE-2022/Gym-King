@@ -1,5 +1,6 @@
 import {fireEvent, render, screen} from '@testing-library/react';
 import ResetPassword from './ResetPassword';
+import axios from "axios";
 
 test('renders without crashing', () => {
   const {baseElement} = render(<ResetPassword />);
@@ -19,7 +20,7 @@ describe('Testing connection to API', () => {
 
   it('should reset a User Password', async () => {
      (async () => {
-        fetch(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
+        axios(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
            method: 'PUT',
            headers: {
               'Accept': 'application/json',
