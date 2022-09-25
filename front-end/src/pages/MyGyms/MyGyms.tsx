@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel} from '@ionic/react';
+import React from 'react'
+import {IonContent, IonText, IonPage, IonHeader} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import GymsList from '../../components/GymsList/GymsList';
 
