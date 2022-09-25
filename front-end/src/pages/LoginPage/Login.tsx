@@ -1,4 +1,3 @@
-
 import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
@@ -10,7 +9,8 @@ export const Login: React.FC = () =>{
     
     let formData:any;
     let history=useHistory()
-    const [showToast, setShowToast] = useState(false);
+    const [showToast1, setShowToast1] = useState(false);
+    const [showToast2, setShowToast2] = useState(false);
     const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -178,11 +178,18 @@ export const Login: React.FC = () =>{
                 </IonContent>
 
                 <IonToast
-                isOpen={showToast}
-                onDidDismiss={() => setShowToast(false)}
+                isOpen={showToast1}
+                onDidDismiss={() => setShowToast1(false)}
                 message="Invalid user details."
                 duration={1000}
                 color="danger"
+                />
+                <IonToast
+                isOpen={showToast2}
+                onDidDismiss={() => setShowToast2(false)}
+                message="Welcome to Gym King."
+                duration={500}
+                color="success"
                 />
                 <IonLoading 
                     isOpen={loading}
@@ -201,5 +208,3 @@ export const Login: React.FC = () =>{
 
 
 export default Login;
-
-
