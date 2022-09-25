@@ -62,6 +62,7 @@ import NotFriendProfile from './pages/NotFriendProfile/NotFriendProfile';
 import FriendRequests from './pages/FriendRequests/FriendRequests';
 import Explore from './pages/Explore/Explore';
 import PushNotificationsContainer from './components/Push/Push';
+import MyGyms from './pages/MyGyms/MyGyms';
 /*develop*/
 
 
@@ -194,6 +195,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/Notifications'>
           <PushNotificationsContainer></PushNotificationsContainer>
+        </Route>
+        <Route exact path='/MyGyms'>
+          <MyGyms></MyGyms>
         </Route>
 
       </IonRouterOutlet>
