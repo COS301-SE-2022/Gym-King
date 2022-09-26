@@ -20,6 +20,10 @@ const Explore: React.FC = () =>{
                     <IonSearchbar></IonSearchbar>
                     <br></br><br></br>
 
+                    <IonText className='inputHeading'>Find Gyms</IonText>
+                    <IonSearchbar></IonSearchbar>
+                    <br></br><br></br>
+
                     <IonText className='inputHeading'>Suggested Badges</IonText>
 
                     

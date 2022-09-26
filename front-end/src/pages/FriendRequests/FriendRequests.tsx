@@ -5,10 +5,7 @@ import FriendRequestList from '../../components/FriendRequestsList/FriendRequest
 
 const FriendRequests: React.FC = () =>{
 
-    // eslint-disable-next-line 
-    let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
 
-    
     //=================================================================================================
     //    Render
     //=================================================================================================
@@ -21,7 +18,7 @@ const FriendRequests: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Friend Requests</IonText>
 
-                    <FriendRequestList requests={friendsList}></FriendRequestList>
+                    <FriendRequestList ></FriendRequestList>
                     
                 </IonContent>
             </IonPage>

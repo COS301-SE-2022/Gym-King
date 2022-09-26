@@ -10,7 +10,11 @@ const FriendsList: React.FC<props> = (props) =>{
     let history=useHistory()
 
 
-    const viewFriendProfile= () =>{
+    const viewFriendProfile= (friend:any) =>{
+        sessionStorage.setItem("friendUsername",friend.username)
+        sessionStorage.setItem("friendEmail",friend.email)
+        sessionStorage.setItem("friendProfile",friend.profile_picture)
+        sessionStorage.setItem("friendFullname",friend.fullname)
         history.push("/FriendProfile")
     }
 
@@ -19,9 +23,9 @@ const FriendsList: React.FC<props> = (props) =>{
             <IonList>
                 {
                     props.friendsList.map((el:any)=>{
-                        return (<IonItem button detail  onClick={viewFriendProfile} data-testid="aB" key={el.email + Math.random()}>
+                        return (<IonItem button detail  onClick={()=>viewFriendProfile(el)} data-testid="aB" key={el.email + Math.random()}>
                                 <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
-                                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${el.profile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${el.profile_picture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                                 </IonAvatar>
                                 <IonLabel>{el.username}</IonLabel>
                             </IonItem>)
