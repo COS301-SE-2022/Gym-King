@@ -1,4 +1,4 @@
-import { IonItem, IonList, IonAvatar, IonImg, IonLabel, useIonViewWillEnter} from '@ionic/react';
+import { IonItem, IonAvatar, IonImg, IonLabel} from '@ionic/react';
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
