@@ -3,10 +3,12 @@ import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import FriendBadgeGrid from '../../components/FriendBadgeGrid/FriendBadgeGrid';
+import { useHistory } from 'react-router-dom';
 
 
 const FriendProfile: React.FC = () =>{
-    
+        
+        let history=useHistory()
 
         let friendUsername = sessionStorage.getItem("friendUsername")
         let friendEmail = sessionStorage.getItem("friendEmail")
@@ -41,7 +43,27 @@ const FriendProfile: React.FC = () =>{
         },[])
 
         const removeFriend = () =>{
-            
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/deleteRequest`,{
+                method: 'DELETE',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    fromEmail: localStorage.getItem("email"),
+                    toEmail:  friendEmail
+    
+                })
+            })
+            .then(response =>response.data)
+            .then(response =>{
+                console.log(response)
+                history.goBack()
+            })
+            .catch(err => {
+                console.log(err)
+                
+            })
         }
     
         return(
