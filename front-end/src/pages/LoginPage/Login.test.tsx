@@ -1,11 +1,20 @@
 import {fireEvent, render, screen} from '@testing-library/react';
+import '@testing-library/jest-dom'
 import { Login } from './Login';
+import {ToastContainer} from 'react-toastify';
 
 
 test('renders without crashing', () => {
   const {baseElement} = render(<Login />);
   expect(baseElement).toBeDefined();
 });
+
+test('correctly displays labels', async () => {
+  const {baseElement} = render(<Login />);
+  expect (baseElement).toHaveTextContent("Email*");
+  expect (baseElement).toHaveTextContent("Password*");
+});
+
 
 
 ////////// INTEGRATION TESTS //////////
@@ -37,3 +46,16 @@ describe('Testing connection to API', () => {
     });
   
 })
+
+//export const renderWithToastify = (component) => {
+  //return (
+    //render(
+      //<div>
+        //<ToastContainer/>
+        //{component}
+      //</div> 
+    //)  
+  //);
+//};
+
+//expect(await screen.findByText("Welcome to Gym King.")).toBeInTheDocument();

@@ -12,6 +12,11 @@
 ![](https://img.shields.io/github/issues-pr-closed/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/last-commit/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+[![CodeQL](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml)
+[![Android Build](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml)
+[![Meta Test](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml)
+[![CI Tests](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml)
+[![Dependency Review](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml)
 
 </div>
 </div>
