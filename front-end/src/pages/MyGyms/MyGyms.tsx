@@ -11,6 +11,8 @@ const MyGyms: React.FC = () =>{
     let gymObjects: any[]=[]
 
     useIonViewWillEnter(async()=>{
+
+        //remove session storage
         
         await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getGymSubscriptions`,{
             method: 'POST',

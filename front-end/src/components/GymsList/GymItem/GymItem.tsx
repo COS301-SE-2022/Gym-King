@@ -32,6 +32,7 @@ const GymsList: React.FC<props> = (props) =>{
 
         const viewGymProfile = (brandname:string, address:string) =>{
             sessionStorage.setItem("gid", props.gymId);
+            sessionStorage.setItem("gym_name", gymName);
             sessionStorage.setItem("gym_brandname", brandname);
             sessionStorage.setItem("gym_address", address);
             history.push("/GymPage")
