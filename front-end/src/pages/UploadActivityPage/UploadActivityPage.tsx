@@ -8,10 +8,6 @@ import axios from "axios";
 import * as tf from "@tensorflow/tfjs"
 import { Directory, Filesystem} from '@capacitor/filesystem';
 import { Capacitor, Plugins } from '@capacitor/core';
-//import{MediaFile,VideoCapturePlusOptions,VideoCapturePlus} from "@ionic-native/video-capture-plus"
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-//port {DirectoryEntry, File} from "@ionic-native/file"
-import * as mc from "@whiteguru/capacitor-plugin-media-capture"
 import NNAlert from '../../components/NN_outcome/NN_outcome';
 import { VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capacitor-video-recorder';
 import '@teamhive/capacitor-video-recorder';
@@ -34,19 +30,7 @@ export type UploadActivityStates = {act?:any}
 let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
 const UploadActivityPage: React.FC = () =>{
     
-    const handleTakeVideo=async()=>{
-      /*  const mediaCaptureOptions:mc.CaptureVideoOptions={
-            duration:60,
-            quality:'sd',
-        }
-        
-        await mc.MediaCapture.captureVideo(mediaCaptureOptions).then((mediafile:mc.MediaFileResult) =>{
-
-            console.log(mediafile)
-        }, error => console.log(error));
-
-*/
-        
+    const handleTakeVideo=async()=>{  
        const { VideoRecorder } = Plugins;
         await VideoRecorder.initialize({
             camera: VideoRecorderCamera.FRONT, // Can use BACK
@@ -56,36 +40,20 @@ const UploadActivityPage: React.FC = () =>{
         const res = await VideoRecorder.stopRecording();
         // The video url is the local file path location of the video output.
         return res.videoUrl;
-        
-       /* let options:VideoCapturePlusOptions={
-            limit:1,
-            duration:60,
-            highquality:true
-        }
-        await VideoCapturePlus.captureVideo(options).then((mediafile: MediaFile[]) =>{
-
-            console.log(mediafile)
-        }, error => console.log('Something went wrong'));
-
-        //convert to blob
-      /*  return File.readAsArrayBuffer(resolvedPath.nativeURL, media.name).then((buffer)=>{
-            let videoblob=new Blob([buffer],{type: media.type})
-            console.log(videoblob)
-        },(error:any)=>{console.log("video error",error)})*/
     }
-      const [model,setModel]=useState<any>()  
-      const [message,setMessage]=useState<string>("loading")
-      const loadModel =async() => {
-                setMessage("Loading neural Network")
-                setLoading(true)
-                console.log("loading model")
-                const new_model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
-                setLoading(false)
-                setMessage("Loading")
-                console.log(new_model)
-                setModel(new_model)
-        };
-    
+    const [model,setModel]=useState<any>()  
+    const [message,setMessage]=useState<string>("loading")
+    const loadModel =async() => {
+        setMessage("Loading neural Network")
+        setLoading(true)
+        console.log("loading model")
+        const new_model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
+        setLoading(false)
+        setMessage("Loading")
+        console.log(new_model)
+        setModel(new_model)
+    };
+
     const [award,setAward]=useState<boolean>(false)
     const SetAward=async(value:boolean)=>{
         setAward(()=>{
@@ -99,7 +67,6 @@ const UploadActivityPage: React.FC = () =>{
         })
     }
     const [Alert,setAlert]=useState<boolean>(false)
-    // STATES AND VARIABLES 
 
     const [Icon,setIcon]=useState<string[]>(["b","cycle"])
     let email = localStorage.getItem("email") 
@@ -166,7 +133,7 @@ const UploadActivityPage: React.FC = () =>{
                 await SetAward(true)
             }
             else{
-                await setBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
+                await SetBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
                 console.log("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
                 await SetAward(false)
             }
@@ -192,12 +159,7 @@ const UploadActivityPage: React.FC = () =>{
         setAlert(true)  
            
             
-        }
-        
-        const updateInputs = (e:any) =>{
-        
-        }
-           
+        }   
         
         // GET BADGES GET REQUEST 
         useIonViewDidEnter(async()=>{
@@ -279,56 +241,11 @@ const UploadActivityPage: React.FC = () =>{
             })
             .catch(err => {console.log(err)})
         } 
-        const selectImage=async()=>{
-            const image=await Camera.getPhoto({
-                quality:90,
-                allowEditing:true,
-                resultType:CameraResultType.Base64,
-                source:CameraSource.Camera
-            })
-            console.log(image)
-            if(image){
-                saveImage(image)
-            }
-            
-        }
-        const saveImage=async(media:Photo)=>{
-            const fileName=new Date().getTime()+'.jpeg'
-            const base64Data=await ToBase64(media) as string
-            const savedFile=await Filesystem.writeFile({
-                directory:Directory.Data,
-                path: `${IMAGE_DIR}/${fileName}`,
-                data:base64Data
-            })
-            console.log('saved:',savedFile)
-        }
-        const ToBase64=async(photo:Photo)=>
-        {
-            if (Capacitor.getPlatform()==="hybrid") {
-                const file = await Filesystem.readFile({
-                  path: String(photo.path)
-                });
-                return file.data;
-              }
-              else {
-                // Fetch the photo, read as a blob, then convert to base64 format
-                const response = await fetch(String(photo.webPath));
-                const blob = await response.blob();
-            
-                return await convertBlobToBase64(blob) as string;
-              }
-        }
-       const convertBlobToBase64 = (blob:Blob) => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onerror = reject;
-            reader.onload = () => {
-                resolve(reader.result);
-            };
-            reader.readAsDataURL(blob);
-        });
+
         const reset= () => {
            setAlert(false)
         }
+
         return(
         
             <IonPage color='#220FE' >
@@ -351,7 +268,6 @@ const UploadActivityPage: React.FC = () =>{
                     <IonText className='PageTitle center'>{badgename}</IonText>
                    
                     <IonButton onClick={ handleSubmit} className="btnSubmit centerComp" color="warning">TAKE VIDEO</IonButton>
-                    <IonButton onClick={selectImage} className="btnSubmit centerComp" color="warning">TAKE PICTURE</IonButton>
                     <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
                     <IonButton onClick={sendClaim} className="btnSubmit centerComp" color="warning">Submit</IonButton>  
                     <IonToast
