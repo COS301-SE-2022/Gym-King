@@ -16,9 +16,18 @@ const MyBadge: React.FC = () =>{
         let email=localStorage.getItem("email")
 
     
-    useIonViewDidEnter(()=>{
+    useIonViewDidEnter(async()=>{
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+` /users/owned/${email}`)
+        await axios(process.env["REACT_APP_GYM_KING_API"]+`/user/badges`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: email
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             let arr=[];

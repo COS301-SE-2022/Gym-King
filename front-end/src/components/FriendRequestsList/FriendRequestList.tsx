@@ -10,7 +10,7 @@ const FriendRequestList: React.FC<props> = () =>{
 
     //let history=useHistory()
     const [requests, setRequests] = useState([])
-    useIonViewWillEnter(()=>{
+    useIonViewWillEnter(async()=>{
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getReceivedRequests`,{
             method: 'POST',
             headers: {

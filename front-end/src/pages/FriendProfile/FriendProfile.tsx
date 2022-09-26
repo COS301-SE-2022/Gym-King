@@ -1,16 +1,49 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg} from '@ionic/react';
-import React from 'react'
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter} from '@ionic/react';
+import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
+import axios from "axios";
+import FriendBadgeGrid from '../../components/FriendBadgeGrid/FriendBadgeGrid';
 
 
 const FriendProfile: React.FC = () =>{
     
 
         let friendUsername = sessionStorage.getItem("friendUsername")
-        //let friendEmail = sessionStorage.getItem("friendEmail")
+        let friendEmail = sessionStorage.getItem("friendEmail")
         let friendProfile = sessionStorage.getItem("friendProfile")
         let friendFullname = sessionStorage.getItem("friendFullname")
+
+        const [friendBadges, setFriendBadges] = useState([])
+        const [checkboxList,setCheckboxList]=useState([
+            { val: 'Gold', isChecked: true },
+            { val: 'Silver', isChecked: true },
+            { val: 'Bronze', isChecked: true}
+          ])
+
+        useIonViewWillEnter(async ()=>{
+            
+            await axios(process.env["REACT_APP_GYM_KING_API"]+`/user/badges`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: friendEmail
+                })
+            })
+            .then(response =>response.data)
+            .then(response =>{
+                console.log(response)
+                setFriendBadges(response)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        
+    
+        },[])
     
         return(
             <IonPage >
@@ -42,9 +75,9 @@ const FriendProfile: React.FC = () =>{
                         </IonRow>
                         <IonRow>
                                 <IonCard className="profileCard" >
-                                    <IonCardHeader className="inputHeading">USER123's Badges</IonCardHeader>
+                                    <IonCardHeader className="inputHeading">{friendUsername}'s badges</IonCardHeader>
                                     <IonCardContent>
-                                        <MyBadgeGrid badges={[]} filters={[]} sort={''} ></MyBadgeGrid>
+                                        <FriendBadgeGrid badges={friendBadges} ></FriendBadgeGrid>
                                     </IonCardContent>
                                 </IonCard>
                         </IonRow>
