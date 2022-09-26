@@ -19,7 +19,6 @@ const GymsList: React.FC<props> = (props) =>{
              axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${props.gymId}`)
             .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 setGymBrandName(response.gym_brandname)
                 setGymName(response.gym_name)
                 setGymAddress(response.gym_address)
