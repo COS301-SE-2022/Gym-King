@@ -1,6 +1,6 @@
 import { IonItem, IonList, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, IonButton, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 import axios from "axios";
 
 
@@ -8,7 +8,7 @@ export type props = {requests?:any}
 
 const FriendRequestList: React.FC<props> = () =>{
 
-    let history=useHistory()
+    //let history=useHistory()
     const [requests, setRequests] = useState([])
     useIonViewWillEnter(()=>{
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getReceivedRequests`,{
@@ -34,12 +34,6 @@ const FriendRequestList: React.FC<props> = () =>{
 
     },[])
 
-    const viewProfile= () =>{
-        //if friend:
-        history.push("/FriendProfile")
-        //if not friend:
-        history.push("/NotFriendProfile")
-    }
     
     const confirmRequest = (otherEmail:any)=>{
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
@@ -94,7 +88,7 @@ const FriendRequestList: React.FC<props> = () =>{
             <IonList>
                 {
                     requests?.map((el:any)=>{
-                        return (<IonItem button detail data-testid="aB" key={el.email} >
+                        return (<IonItem   data-testid="aB" key={el.email} >
      
 
                                 <IonGrid>

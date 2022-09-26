@@ -4,10 +4,14 @@ import { ToolBar } from '../../components/toolbar/Toolbar';
 import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 
 
-
 const FriendProfile: React.FC = () =>{
     
 
+        let friendUsername = sessionStorage.getItem("friendUsername")
+        //let friendEmail = sessionStorage.getItem("friendEmail")
+        let friendProfile = sessionStorage.getItem("friendProfile")
+        let friendFullname = sessionStorage.getItem("friendFullname")
+    
         return(
             <IonPage >
                 <IonHeader>
@@ -21,14 +25,14 @@ const FriendProfile: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${""})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${friendProfile})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText color="light" className="PageTitle center un">USER123</IonText>
+                                                <IonText color="light" className="PageTitle center un">{friendUsername}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">Name Surname</i>
+                                                <i className="center">{friendFullname}</i>
                                             </IonRow>
                                             
                                         </IonCol>
