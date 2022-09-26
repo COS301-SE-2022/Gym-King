@@ -4,6 +4,7 @@ import {ToolBar} from '../../components/toolbar/Toolbar';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import './GymPage.css';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 const GymPage: React.FC = () =>{
@@ -15,7 +16,6 @@ const GymPage: React.FC = () =>{
 
 
     const [showModal, setShowModal] = useState(false);
-    console.log(gid);
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;
 
@@ -48,6 +48,31 @@ const GymPage: React.FC = () =>{
         history.push("/Leaderboard")
     }
 
+    const subscribe = () =>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/createSubscription`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                fromEmail: localStorage.getItem("email"),
+                gid:  gid
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
+
+
+    }
+
     return(
         <IonPage >
             <IonHeader>
@@ -59,6 +84,8 @@ const GymPage: React.FC = () =>{
                     <IonCardTitle className='center PageTitle'>{gname}</IonCardTitle>
                     <IonCardSubtitle color="light" className='center subheading'>{gaddress}</IonCardSubtitle>
                     
+                    <IonButton color="primary" onClick={subscribe} className="width80 centerComp">Subscribe</IonButton> <br></br> <br></br>
+
                     <IonButton color="warning" onClick={goToViewBadges} className="width80 centerComp">View Badges</IonButton>
                     <IonButton color='warning' onClick={goToLeaderboard} className="width80 centerComp" >View Leaderboard</IonButton>
                 </IonCard>
