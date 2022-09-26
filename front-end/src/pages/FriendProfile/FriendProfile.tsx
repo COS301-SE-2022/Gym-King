@@ -1,7 +1,6 @@
 import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
-import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
 import axios from "axios";
 import FriendBadgeGrid from '../../components/FriendBadgeGrid/FriendBadgeGrid';
 
@@ -15,11 +14,7 @@ const FriendProfile: React.FC = () =>{
         let friendFullname = sessionStorage.getItem("friendFullname")
 
         const [friendBadges, setFriendBadges] = useState([])
-        const [checkboxList,setCheckboxList]=useState([
-            { val: 'Gold', isChecked: true },
-            { val: 'Silver', isChecked: true },
-            { val: 'Bronze', isChecked: true}
-          ])
+
 
         useIonViewWillEnter(async ()=>{
             
