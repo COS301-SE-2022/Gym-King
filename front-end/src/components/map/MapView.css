@@ -41,11 +41,9 @@ main {
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
 }
 
-ion-content {
+.main {
     --overflow: hidden !important;
-    --background: linear-gradient(to bottom right, #321E93, #a974ff) no-repeat center/cover fixed;
-  }
-
+}
 ion-input{
     display: block;
     background-color: rgba(255,255,255,0.07)
