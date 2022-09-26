@@ -1,11 +1,7 @@
 import {fireEvent, render, screen} from '@testing-library/react';
-import SplashPage from './SplashPage';
-
-////TESTS TO BE PERFORMED////
-/*
-*/
+import RegisterForm from './RegisterForm';
 
 test('renders without crashing', () => {
-  const {baseElement} = render(<SplashPage />);
+  const {baseElement} = render(<RegisterForm/>);
   expect(baseElement).toBeDefined();
 });

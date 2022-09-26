@@ -339,7 +339,7 @@ const MapView: React.FC = () =>{
         const interval = setInterval(() => {
             if(first) {
                 getLocation(first);
-                setRefresh(20000);
+                setRefresh(60000);
                 setFirst(false);
                 getAllGyms();
             }

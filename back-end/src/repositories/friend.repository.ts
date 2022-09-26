@@ -42,28 +42,37 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
     /**
      * gets all the friends(not pending) for a specified user
      * @param userEmail 
-     * @param toEmail 
      * @returns list of all accepted friends
      */
     async findFriends(userEmail: string){
+
+
         let reqs = await this.findBy({ fromUser: userEmail});
 
-
         let ret=[];
-        reqs.forEach((req: { isPending: boolean; toUser: string; }) => {
+        for (let i = 0; i < reqs.length; i++) {
+            const req = reqs[i];
+            console.log(req)
             if(req.isPending==false){
-                ret.push(req.toUser)
+                let user = await userRepository.findByEmail(req.toUser);
+                ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
+        }
 
-        });
         reqs =await this.findBy({ toUser: userEmail})
 
-        reqs.forEach((req: { isPending: boolean; fromUser: string; }) => {
+        for (let i = 0; i < reqs.length; i++) {
+            const req = reqs[i];
+            console.log(req)
             if(req.isPending==false){
-                ret.push(req.fromUser)
+                let user = await userRepository.findByEmail(req.fromUser);
+                ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
+            
 
-        });
+        }
+
+        
         return ret;
     },
     /**
@@ -76,12 +85,15 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
         
 
         let ret=[];
-        reqs.forEach((req: { isPending: boolean; fromUser: string; }) => {
+       
+        for (let i = 0; i < reqs.length; i++) {
+            const req = reqs[i];
             if(req.isPending==true){
-                ret.push(req.fromUser)
+                let user = await userRepository.findByEmail(req.fromUser);
+                ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
 
-        });
+        }
         return ret;
     },
     /**
@@ -92,14 +104,16 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      async findSentRequests(userEmail: string){
         let reqs = await this.findBy({ fromUser: userEmail});
         
-
         let ret=[];
-        reqs.forEach((req: { isPending: boolean; toUser: string; }) => {
+        
+        for (let i = 0; i < reqs.length; i++) {
+            const req = reqs[i];
             if(req.isPending==true){
-                ret.push(req.toUser)
+                let user = await userRepository.findByEmail(req.toUser);
+                ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
 
-        });
+        }
         return ret;
     },
     // update queries ======================================================= //
