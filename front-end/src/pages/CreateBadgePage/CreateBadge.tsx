@@ -22,6 +22,8 @@ import axios from "axios";
         const color = "#ffca22"
         const transparent = "#9d9fa669"
         const [gymId, setGymId] = useState('')
+        
+        const [activeGymName, setActiveGymName] = useState('')
         const [submitted, setSubmitted] = useState(false);
         const [isValid, setIsValid] = useState(false);
         const [showToast, setShowToast] = useState(false);
@@ -56,7 +58,8 @@ import axios from "axios";
         }
         const setChosenGymLocation = (e:any) =>{
             console.log(e);
-            setGymId(e)
+            setActiveGymName(e.gym_name)
+            setGymId(e.g_id)
         }
 
         
@@ -120,6 +123,27 @@ import axios from "axios";
             })
             .then(response =>response.data)
             .then(response =>{
+                let message:string = bn+" was created at " + activeGymName
+                
+                console.log(message)
+                console.log(gymId)
+                // api call to notify subscribers
+                axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendSubscriberNotification`,{
+                    "method":"POST",
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    data:{ 
+                        g_id: gymId,
+                        pushTitle:  "New Badge Available!",
+                        pushMessage: message,
+                        isSilent: true
+                    }
+                })
+                .then(response =>response.data)
+                .catch(err => {console.log(err)}) 
                 //show toast
                 setShowToast(true);
 
@@ -135,6 +159,7 @@ import axios from "axios";
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
             .then(response =>response.data)
             .then(response =>{
+                console.log(response)
                 setOwnedGyms(response);
 
             })

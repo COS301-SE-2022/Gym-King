@@ -21,7 +21,7 @@ const UserMap: React.FC = () => {
         <ToolBar menu={true}></ToolBar>
       </IonHeader>
       <BurgerMenu listItems={Menulist}/>
-      <IonContent id="main">
+      <IonContent >
         <MapView></MapView>
       </IonContent>
     </IonPage>
