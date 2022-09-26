@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-import ActivityList from '../ActivityList/ActivityList';
 import AcceptRejectCard from './AcceptRejectCard'
 
 
