@@ -105,6 +105,7 @@
                    icon: create,
                    handler: () => {
                      sessionStorage.setItem("gid",prop.id  )
+                     sessionStorage.setItem("gymName",prop.name )
                      history.push("/EditGym")
                    }
                  },{
