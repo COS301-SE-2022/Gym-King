@@ -13,6 +13,7 @@ const GymsList: React.FC<props> = (props) =>{
         const [gymName, setGymName] = useState("")
         const [gymAddress, setGymAddress] = useState("")
         const [gymProfile, setGymProfile] = useState("")
+
         useEffect(()=>{
             //get gym info 
              axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${props.gymId}`)
@@ -23,6 +24,17 @@ const GymsList: React.FC<props> = (props) =>{
                 setGymName(response.gym_name)
                 setGymAddress(response.gym_address)
                 setGymProfile("")
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+            //get gym brand profile
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand/${gymBrandName}`)
+            .then(response =>response.data)
+            .then(response =>{
+                console.log(response)
+                setGymProfile(response.gym_logo)
             })
             .catch(err => {
                 console.log(err)
