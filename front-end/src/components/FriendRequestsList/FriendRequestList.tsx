@@ -6,7 +6,7 @@ import axios from "axios";
 
 export type props = {requests?:any}
 
-const FriendRequestList: React.FC<props> = (props) =>{
+const FriendRequestList: React.FC<props> = () =>{
 
     let history=useHistory()
     const [requests, setRequests] = useState([])
