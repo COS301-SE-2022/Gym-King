@@ -1,14 +1,25 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton} from '@ionic/react';
-import React from 'react'
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter} from '@ionic/react';
+import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 
 
 
 const NotFriendProfile: React.FC = () =>{
-        localStorage.setItem("friendRequest","true")
+        //localStorage.setItem("friendRequest","true")
         const sendFriendRequest = ()=>{
-
         }
+        
+        const [username, setUsername]= useState("")
+        const [email, setEmail]= useState("")
+        const [fullname, setFullname]= useState("")
+        const [profilePicture, setProfilePicture]= useState("")
+
+        useIonViewDidEnter(()=>{
+            setUsername(sessionStorage.getItem("foundUsername")!)
+            setEmail((sessionStorage.getItem("foundEmail")!))
+            setFullname(sessionStorage.getItem("foundFullname")!)
+            setProfilePicture(sessionStorage.getItem("foundProfilePicture")!)
+        })
 
         return(
             <IonPage >
@@ -19,23 +30,14 @@ const NotFriendProfile: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         {
-                            localStorage.getItem("friendRequest")==="true"
+                            sessionStorage.getItem("isFriendRequest")==="true"
                             &&
                             <IonRow >
                                 <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                     <IonGrid>
                                         <IonRow>
-                                            <IonCol size='5'>
+                                            <IonCol >
                                                 <i className="center">user234 wants to follow you</i>
-                                            </IonCol>
-                                            <IonCol size="7">
-                                                <IonRow>
-                                                    <IonText color="light" className="PageTitle center un">USER123</IonText>
-                                                </IonRow>
-                                                <IonRow>
-                                                    <i className="center">Name Surname</i>
-                                                </IonRow>
-                                                
                                             </IonCol>
                                         </IonRow>
                                         
@@ -48,14 +50,14 @@ const NotFriendProfile: React.FC = () =>{
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
-                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${""})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText color="light" className="PageTitle center un">USER123</IonText>
+                                                <IonText color="light" className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">Name Surname</i>
+                                                <i className="center">{fullname}</i>
                                             </IonRow>
                                             
                                         </IonCol>

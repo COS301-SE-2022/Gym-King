@@ -1,5 +1,5 @@
 import React, { useRef, useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewDidEnter} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -8,6 +8,7 @@ const Explore: React.FC = () =>{
     let history=useHistory()
 
     const searchUser = useRef<HTMLIonSearchbarElement>(null)
+    
     
     //search user
     const [foundUser, setFoundUser]= useState(false)
@@ -18,7 +19,13 @@ const Explore: React.FC = () =>{
 
     const viewUserProfile = () =>{
         //assuming they are not friends
-        history.push("/NonFriendProfile")
+        sessionStorage.setItem("isFriendRequest", "false")
+        sessionStorage.setItem("foundUsername", username)
+        sessionStorage.setItem("foundEmail", email)
+        sessionStorage.setItem("foundFullname", fullname)
+        sessionStorage.setItem("foundProfilePicture", profilePicture)
+        history.push("/NotFriendProfile")
+
     }
 
 
