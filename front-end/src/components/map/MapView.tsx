@@ -490,7 +490,7 @@ const MapView: React.FC = () =>{
 
                 <IonCard style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
-                        <IonCardTitle className='center Subheading'>{gymData.gym_brandname + ", "+ gymData.gym_name}</IonCardTitle>
+                        <IonCardTitle className='center Subheading'>{ gymData.gym_name}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox" >
                         <IonButtons>
