@@ -19,6 +19,12 @@ const FriendsPage: React.FC = () =>{
     const [friends, setFriends] = useState([]);
 
     useIonViewWillEnter(()=>{
+        //remove session storage
+        sessionStorage.removeItem("friendUsername")
+        sessionStorage.removeItem("friendEmail")
+        sessionStorage.removeItem("friendProfile")
+        sessionStorage.removeItem("friendFullname")
+        
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
             method: 'POST',
             headers: {
