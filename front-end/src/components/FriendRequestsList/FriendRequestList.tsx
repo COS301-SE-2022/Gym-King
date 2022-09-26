@@ -41,12 +41,52 @@ const FriendRequestList: React.FC<props> = () =>{
         history.push("/NotFriendProfile")
     }
     
-    const confirmRequest = ()=>{
+    const confirmRequest = (otherEmail:any)=>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                fromEmail: localStorage.getItem("email"),
+                toEmail:  otherEmail
 
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
        
     }
-    const deleteRequest = ()=>{
-        
+    const deleteRequest = (otherEmail:string)=>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/deleteRequest`,{
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                fromEmail: localStorage.getItem("email"),
+                toEmail:  otherEmail
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
     }
 
         return(
@@ -54,7 +94,7 @@ const FriendRequestList: React.FC<props> = () =>{
             <IonList>
                 {
                     requests?.map((el:any)=>{
-                        return (<IonItem button detail  onClick={viewProfile} data-testid="aB" key={el.email + Math.random()}>
+                        return (<IonItem button detail data-testid="aB" key={el.email} >
      
 
                                 <IonGrid>
@@ -69,10 +109,10 @@ const FriendRequestList: React.FC<props> = () =>{
                                         </IonCol>
                                         <IonRow>
                                             <IonCol style={{"paddingLeft":"0"}}>
-                                                <IonButton color="warning" style={{"width":"90%", "float":"left"}} onClick={confirmRequest}>Confirm</IonButton>
+                                                <IonButton color="warning" style={{"width":"90%", "float":"left"}} onClick={()=>confirmRequest(el.email)}>Confirm</IonButton>
                                             </IonCol>
                                             <IonCol>
-                                                <IonButton color="medium" style={{"width":"90%" , "float":"left"}} onClick={deleteRequest}>Delete</IonButton>
+                                                <IonButton color="medium" style={{"width":"90%" , "float":"left"}} onClick={()=>deleteRequest(el.email)}>Delete</IonButton>
                                             </IonCol>
                                         </IonRow>
                                         
