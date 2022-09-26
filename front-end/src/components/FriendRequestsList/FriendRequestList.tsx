@@ -11,6 +11,10 @@ const FriendRequestList: React.FC<props> = () =>{
     //let history=useHistory()
     const [requests, setRequests] = useState([])
     useIonViewWillEnter(async()=>{
+        getFriendRequests()
+    },[])
+
+    const getFriendRequests = () =>{
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getReceivedRequests`,{
             method: 'POST',
             headers: {
@@ -31,8 +35,7 @@ const FriendRequestList: React.FC<props> = () =>{
             console.log(err)
             
         })
-
-    },[])
+    }
 
     
     const confirmRequest = (otherEmail:any)=>{
@@ -51,7 +54,7 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
-            
+            getFriendRequests()
         })
         .catch(err => {
             console.log(err)
@@ -75,7 +78,7 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
-            
+            getFriendRequests()
         })
         .catch(err => {
             console.log(err)
