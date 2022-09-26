@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
@@ -39,6 +39,10 @@ const FriendProfile: React.FC = () =>{
         
     
         },[])
+
+        const removeFriend = () =>{
+            
+        }
     
         return(
             <IonPage >
@@ -75,6 +79,9 @@ const FriendProfile: React.FC = () =>{
                                         <FriendBadgeGrid badges={friendBadges} ></FriendBadgeGrid>
                                     </IonCardContent>
                                 </IonCard>
+                        </IonRow>
+                        <IonRow>
+                            <IonButton style={{"width":"100%"}} onClick={removeFriend}>Remove Friend</IonButton>
                         </IonRow>
                         
                     </IonGrid>
