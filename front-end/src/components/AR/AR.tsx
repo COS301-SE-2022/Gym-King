@@ -112,7 +112,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
         let app:string = 'com.google.ar.core'
         
         const { value } = await AppLauncher.canOpenUrl({ url: app });
-        if(value==true) {
+        if(value===true) {
             console.log(app + ' is available')
             return true
         }
