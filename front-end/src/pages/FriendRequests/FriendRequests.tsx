@@ -1,14 +1,37 @@
-import React from 'react'
-import {IonContent, IonText, IonPage, IonHeader } from '@ionic/react';
+import React , {useState} from 'react'
+import {IonContent, IonText, IonPage, IonHeader, useIonViewWillEnter } from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendRequestList from '../../components/FriendRequestsList/FriendRequestList';
+import axios from "axios";
 
 const FriendRequests: React.FC = () =>{
 
     // eslint-disable-next-line 
-    let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
+    const [friends, setFriends] = useState([]);
 
-    
+    useIonViewWillEnter(()=>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                userEmail: localStorage.getItem("email"),
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            setFriends(response)
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
+
+    },[])
     //=================================================================================================
     //    Render
     //=================================================================================================
@@ -21,7 +44,7 @@ const FriendRequests: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Friend Requests</IonText>
 
-                    <FriendRequestList requests={friendsList}></FriendRequestList>
+                    <FriendRequestList requests={friends}></FriendRequestList>
                     
                 </IonContent>
             </IonPage>
