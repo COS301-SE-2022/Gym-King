@@ -1,5 +1,5 @@
 import React, { useRef, useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -45,7 +45,6 @@ const Explore: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            console.log(response)
             if(response.message)
             {
                 setFoundUser(false)
@@ -80,13 +79,20 @@ const Explore: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Explore</IonText>
 
-                    <IonText className='inputHeading'>Find Friends</IonText>
+                    <IonText className='inputHeading'>Find Users</IonText>
                     <IonSearchbar ref={searchUser}
                         onKeyUp ={()=>{
                             let searchVal = searchUser.current?.value;
-                            let results = findUser(searchVal)
-                        }
-                        }
+                            findUser(searchVal)
+                        }}
+                        
+                        onIonClear={()=>{
+                            setFoundUser(false)
+                            setEmail("")
+                            setFullname("")
+                            setUsername("")
+                            setProfilePicture("")
+                        }}
                     ></IonSearchbar>
                     <br></br>
                     {

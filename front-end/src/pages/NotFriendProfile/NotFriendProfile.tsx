@@ -1,13 +1,13 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter, useIonViewDidLeave} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
-
+import axios from "axios";
+import { useHistory } from 'react-router-dom';
 
 const NotFriendProfile: React.FC = () =>{
         //localStorage.setItem("friendRequest","true")
-        const sendFriendRequest = ()=>{
-        }
+        let history=useHistory()
+
         
         const [username, setUsername]= useState("")
         const [email, setEmail]= useState("")
@@ -19,6 +19,37 @@ const NotFriendProfile: React.FC = () =>{
             setEmail((sessionStorage.getItem("foundEmail")!))
             setFullname(sessionStorage.getItem("foundFullname")!)
             setProfilePicture(sessionStorage.getItem("foundProfilePicture")!)
+        })
+
+        const sendFriendRequest = ()=>{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    fromEmail: localStorage.getItem("email"),
+                    toEmail:  email
+    
+                })
+            })
+            .then(response =>response.data)
+            .then(response =>{
+                console.log(response)
+                history.goBack()
+            })
+            .catch(err => {
+                console.log(err)
+                
+            })
+        }
+
+        useIonViewDidLeave(()=>{
+            sessionStorage.removeItem("foundUsername")
+            sessionStorage.removeItem("foundEmail")
+            sessionStorage.removeItem("foundFullname")
+            sessionStorage.removeItem("foundProfilePicture")
         })
 
         return(
