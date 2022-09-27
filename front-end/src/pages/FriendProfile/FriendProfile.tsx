@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton, IonToast} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
@@ -16,6 +16,7 @@ const FriendProfile: React.FC = () =>{
         let friendFullname = sessionStorage.getItem("friendFullname")
 
         const [friendBadges, setFriendBadges] = useState([])
+        const [showRemoveFriend, setShowRemoveFriend] = useState(false);
 
 
         useIonViewWillEnter(async ()=>{
@@ -58,6 +59,7 @@ const FriendProfile: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
+                setShowRemoveFriend(true)
                 history.goBack()
             })
             .catch(err => {
@@ -109,8 +111,18 @@ const FriendProfile: React.FC = () =>{
                     </IonGrid>
 
                     <br></br>
+
+                    <IonToast
+                        mode="ios"
+                        isOpen={showRemoveFriend}
+                        onDidDismiss={() => setShowRemoveFriend(false)}
+                        message="Friend removed"
+                        duration={1000}
+                        color="success"
+                    />
                 
                 </IonContent>
+
             </IonPage>
         )
         
