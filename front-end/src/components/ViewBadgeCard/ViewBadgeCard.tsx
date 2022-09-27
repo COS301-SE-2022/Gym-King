@@ -14,8 +14,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
             <IonCard 
                 mode="ios"
                 data-testid="viewbadgegrid"
-                color="primary" 
-                class="ViewBadgeCard"  
+                className="ViewBadgeCard glass"  
                 style={{ padding : 0}} 
                 onClick={ () =>{setPopoverOpen(true)} }>
                 <IonGrid class="ViewBadgeGrid" >

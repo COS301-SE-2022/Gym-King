@@ -30,8 +30,7 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
             <IonCard 
                 mode="ios"
                 data-testid="viewbadgegrid"
-                color="primary" 
-                class="ViewBadgeCard"  
+                className="ViewBadgeCard"  
                 style={{ padding : 0}} 
                 onClick={next}
                 >
