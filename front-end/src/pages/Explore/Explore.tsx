@@ -3,6 +3,7 @@ import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardC
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
+import { similarityBetweenUsers } from '../../suggestions/SuggestionEngine';
 
 const Explore: React.FC = () =>{
     let history=useHistory()
@@ -112,13 +113,12 @@ const Explore: React.FC = () =>{
         })
     }
 
-    //SUGGESTED BADGES 
+    //let B1 =["Obs", "BNi", "23n", "wwr", "alP"]
+    //let B2 =["Obs", "BNi", "23n", "wwr", "alP"]
+    //let N1 = ["Nms", "Uj3", "LaA"]
+    //let N2 = ["Nms", "Uj3", "LaA"]
 
-
-
-
-
-
+    //similarityBetweenUsers(B1, B2, N1, N2)
     //=================================================================================================
     //    Render
     //=================================================================================================
