@@ -7,7 +7,7 @@ import AcceptRejectPage from './AcceptReject';
 */
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<AcceptRejectPage />);
+    const { baseElement } = await render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
 });
 
