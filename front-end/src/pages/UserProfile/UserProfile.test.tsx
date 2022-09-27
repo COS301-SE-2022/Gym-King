@@ -1,16 +1,10 @@
 import { render} from '@testing-library/react';
 import UserProfilePage from './UserProfile';
 
-////TESTS TO BE PERFORMED////
-/*
-*/
-
 test('renders without crashing', async() => {
   const {baseElement} =await render(<UserProfilePage />);
   expect(baseElement).toBeDefined();
 });
-
-////////// INTEGRATION TESTS //////////
 
 describe('Testing connection to api', () => {
 
