@@ -23,7 +23,7 @@ const EditGym: React.FC = () => {
   //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
   //-gymAddress hook, hook that sets the address of a gym
-  const [gymName, setGymName] = useState<string>("name");
+  const [gymName, setGymName] = useState<string>(sessionStorage.getItem("gymName")!);
   //-gymAddress hook, hook that sets the address of a gym
   const [gymAddress, setGymAddress] = useState<string>("address");
   //-coordinate hook, hook that sets the coordinates of the gym
@@ -106,7 +106,7 @@ const EditGym: React.FC = () => {
    * @brief calls api to update a gyms' details
   */
   const saveGym = () => {
-    axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/info`,
 
       {
         method: "PUT",
@@ -116,7 +116,6 @@ const EditGym: React.FC = () => {
         },
         data: JSON.stringify({ 
           gid:sessionStorage.getItem("gid"),
-
           gymName: gymName, 
           gymBrandName: gymBrand,
           address:gymAddress,

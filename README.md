@@ -17,6 +17,9 @@
 [![Meta Test](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml)
 [![CI Tests](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml)
 [![Dependency Review](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2022_Gym-King&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2022_Gym-King)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2022_Gym-King&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2022_Gym-King)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2022_Gym-King&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2022_Gym-King)
 
 </div>
 </div>

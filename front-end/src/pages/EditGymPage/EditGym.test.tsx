@@ -1,12 +1,11 @@
-import {render,screen} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import EditGym from './EditGym';
 /*UNIT TESTING*/
 //test if pages rendered
-test('renders without crashing', () => {
-  const { baseElement } = render(<EditGym/>);
+test('renders without crashing', async() => {
+  const { baseElement } = await render(<EditGym/>);
   expect(baseElement).toBeDefined();
-  const linkElement = screen.getByText(/Edit Gym/i);
-  expect(linkElement).toBeInTheDocument();
+
 });
 
 
@@ -14,11 +13,10 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should load gym data', async () => {
+  it('should load gym data',  () => {
       
-      ( ()=>{
-          let badgeId="XRQ"
-          fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
+      let test = ( async()=>{
+          await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
             {
               method: "Get",
               headers: {
@@ -33,11 +31,12 @@ describe('Testing connection to api', () => {
             expect(err).toBeDefined()
           });
       } )
+      test()
   });
 
-  it('should update a gym', async () => {
-      (()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+  it('should update a gym',  () => {
+      let test = (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
         {
           method: "PUT",
           headers: {
@@ -61,6 +60,8 @@ describe('Testing connection to api', () => {
           expect(err).toBeDefined()
         });
       } )
+
+      test()
   });
 
 })
