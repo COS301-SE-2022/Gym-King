@@ -22,8 +22,8 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                            
                             <IonItem  mode="ios" button routerLink={el.route} routerDirection="forward" key={Math.random()}>
                                 
-                                <IonIcon icon={el.icon} ></IonIcon>
-                                <IonLabel>{el.caption}</IonLabel>
+                                <IonIcon mode='ios' icon={el.icon} ></IonIcon>
+                                <IonLabel style={{"paddingLeft":"3%"}}>{el.caption}</IonLabel>
                             </IonItem>
                             )}
                             <div id="logout-button">
@@ -34,8 +34,8 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                                                         history.push("/Login");
                                                     }}>
                                 
-                                <IonIcon mode="ios" name={exit} ></IonIcon>
-                                <IonLabel>Logout</IonLabel>
+                                <IonIcon mode="ios" icon={exit} ></IonIcon>
+                                <IonLabel style={{"paddingLeft":"3%"}}>Logout</IonLabel>
                             </IonItem>
                             </div>
                         </IonMenuToggle>
