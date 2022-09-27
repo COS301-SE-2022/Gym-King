@@ -6,7 +6,7 @@ import GymOwnerViewBadgeGrid from './GymOwnerViewBadgeGrid';
 
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<GymOwnerViewBadgeGrid gymID=""/>);
+    const { baseElement } = await render(<GymOwnerViewBadgeGrid gymID=""/>);
     expect(baseElement).toBeDefined();
   });
 
