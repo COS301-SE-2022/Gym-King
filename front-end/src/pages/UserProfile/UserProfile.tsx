@@ -329,9 +329,7 @@ const UserProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Phone</IonLabel>
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
 
-                                <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
-                                <IonButton mode="ios" className='width21' type="button" >Change Password</IonButton>
+                               
                             </form>
                         </IonContent>
                         
@@ -341,7 +339,7 @@ const UserProfilePage: React.FC = () =>{
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
-                        duration={1000}
+                        duration={2000}
                         color="success"
                     />
                     <IonToast   
@@ -349,7 +347,7 @@ const UserProfilePage: React.FC = () =>{
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
-                        duration={1000}
+                        duration={2000}
                         color="danger"
                     />
                     <IonLoading 

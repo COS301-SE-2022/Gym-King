@@ -64,8 +64,10 @@ export const Login: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                console.log(response)
                 if(response.success){
-                    console.log(response)
+                //console.log(response)
+                
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
                    localStorage.setItem("password", formData.password)
@@ -78,13 +80,14 @@ export const Login: React.FC = () =>{
                 }else{
                     
                     setShowToast1(true);
-                    console.log(response.success)
-                    console.log(response.results)
+                    //console.log(response.success)
+                    //console.log(response.results)
                     setLoading(false)
+                    
                 }
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
     } 
     const navigate=()=>{
