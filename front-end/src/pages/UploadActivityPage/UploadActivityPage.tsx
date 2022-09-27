@@ -61,7 +61,9 @@ const UploadActivityPage: React.FC = () =>{
             
         }
         catch(e:any){
-            console.log(e.message)
+            console.log(e)
+            
+            console.log(e.stack)
             console.log("Error")
             setLoading(false)
             setMessage("Loading")
