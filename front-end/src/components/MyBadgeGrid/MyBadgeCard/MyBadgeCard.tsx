@@ -1,12 +1,29 @@
-import { IonCard, IonCardTitle, IonContent, IonGrid, IonPopover, IonRow} from '@ionic/react';
+import { IonCard, IonCardTitle, IonGrid, IonPopover, IonRow} from '@ionic/react';
 import { useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import AR from '../../AR/AR';
 import BadgeImage from '../../BadgeImage/BadgeImage';
+
 import './MyBadgeCard.css'
 
 export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string,badgeRank:string})=>{
     const popover = useRef<HTMLIonPopoverElement>(null);
     const [popoverOpen, setPopoverOpen]  = useState(false);
+    let history=useHistory();
+
+    const next =()=>{
+        if(prop.qty===0)
+        {
+            sessionStorage.setItem("badgeid",prop.id);
+            setPopoverOpen(false);
+            history.push("/UploadActivity")
+        }
+        else
+        {
+            setPopoverOpen(true)
+        }
+    }
+
     return(
         <div>
             <IonCard 
@@ -15,7 +32,7 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
-                onClick={()=>{setPopoverOpen(true)}}
+                onClick={next}
                 >
                 <IonGrid class="ViewBadgeGrid" >
                     <IonRow class="ViewBadgeImage">
@@ -37,9 +54,9 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                 </IonGrid>
             </IonCard>
             <IonPopover mode="ios"  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-              <IonContent >
+              
                 <AR  rank={prop.badgeRank} emblem={prop.badgeEmblem}></AR>
-            </IonContent>
+                        
           </IonPopover>
             </div>
         )

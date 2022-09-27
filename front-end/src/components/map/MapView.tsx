@@ -21,6 +21,11 @@ interface LocationError {
 const MapView: React.FC = () =>{
     let history=useHistory()
 
+    // state that controls the selectedGymMenu display
+    const [showModal, setShowModal] = useState(false);
+
+    
+
     //=========================================================================================================//
     //                                                       MAP                                               //
     //=========================================================================================================//
@@ -57,8 +62,7 @@ const MapView: React.FC = () =>{
     
     const [gymsInSearchTab, setGymsInSearchTab] = useState<any[]>([]);
     
-    // state that controls the selectedGymMenu display
-    const [showModal, setShowModal] = useState(false);
+    
 
 
 
