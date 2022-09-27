@@ -85,16 +85,16 @@ export class AcceptRejectCard extends React.Component<props>{
     render(){
         
         return(
-            <IonCard data-testid="ARC" className="glass arCard">
+            <IonCard mode="ios" data-testid="ARC" className="glass arCard">
                  <div style={{"backgroundColor": "#321E93", "overflow":"hidden"}}>
-                    <IonAvatar style={{"marginTop":"5%", "marginLeft":"1em", "float":"left"}}>
+                    <IonAvatar  style={{"marginTop":"5%", "marginLeft":"1em", "float":"left"}}>
                         <IonImg  style={{"overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${this.props.profile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                     </IonAvatar>
                     <div style={{"marginTop":"6%"}}>
-                    <IonText className='username'>{this.props.username}</IonText>
+                    <IonText mode="ios" className='username'>{this.props.username}</IonText>
                     </div>
                 </div>
-                <IonCardContent>
+                <IonCardContent mode="ios">
                     <IonText className='Subheading'>
                         Badge:
                     </IonText><br></br>
@@ -109,7 +109,7 @@ export class AcceptRejectCard extends React.Component<props>{
                     <br></br><br></br>
                     <IonText className='Subheading'>Proof:</IonText>
                     <IonCard className='justify'>
-                        <IonCardContent >
+                        <IonCardContent mode="ios">
                             <IonImg src={this.props.proof}></IonImg> 
                         </IonCardContent>
                     </IonCard>

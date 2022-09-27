@@ -70,6 +70,7 @@ export const AcceptRejectPage: React.FC = () =>{
                     <AcceptRejectCard proof={proof} userID={email} username={username} badgeId={badgeId} badgename={badgename} badgechallenge={badgechallenge}i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history} profile={profile!}></AcceptRejectCard>
 <br></br><br></br>
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         spinner={"circles"}

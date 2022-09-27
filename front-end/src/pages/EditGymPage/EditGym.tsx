@@ -170,10 +170,10 @@ const EditGym: React.FC = () => {
               <br></br>
 
               <IonText className="smallHeading leftMargin">Address:</IonText>
-              <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
+              <IonButton mode="ios" expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
+                <IonIcon mode="ios" className="AddGymLocation" icon="location-outline"></IonIcon>
                 <span>{gymAddress}</span>
-                <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
+                <IonIcon mode="ios" class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
               </IonButton>
               <div className="width80 centerComp">
                 <Map
@@ -198,6 +198,7 @@ const EditGym: React.FC = () => {
                 </Map>
               </div>
             <IonButton
+              mode="ios"
               class="AddGymAdd"
               color="warning"
               onClick={() => saveGym()}
@@ -205,6 +206,7 @@ const EditGym: React.FC = () => {
         </form>
 
         <IonToast
+          mode="ios"
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}
         message="Gym has been saved successfully."
@@ -212,6 +214,7 @@ const EditGym: React.FC = () => {
         color="success"
       />
       <IonToast
+        mode="ios"
         isOpen={showToast2}
         onDidDismiss={() => setShowToast2(false)}
         message="Error adding gym."

@@ -145,7 +145,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton onClick={handleDelete}>Delete Employee</IonButton>
+                            <IonButton mode="ios" onClick={handleDelete}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>
@@ -153,6 +153,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
 
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -160,6 +161,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -167,6 +169,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="danger"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showDeleteEmployee}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Employee deleted!"
@@ -174,6 +177,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

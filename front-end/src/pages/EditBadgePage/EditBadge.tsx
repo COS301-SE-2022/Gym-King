@@ -258,12 +258,13 @@ const EditBadge: React.FC = () =>{
                         }
                         <BadgeSlider bIcon={sessionStorage.getItem("bi")!} name = {badgename}></BadgeSlider>
                         
-                        <IonButton className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
+                        <IonButton mode="ios" className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
                         
                     </form>
-                    <IonButton className=" btnFitWidth width80 centerComp" color='danger' type='button' onClick={deleteBadge}>DELETE BADGE</IonButton>
+                    <IonButton mode="ios" className=" btnFitWidth width80 centerComp" color='danger' type='button' onClick={deleteBadge}>DELETE BADGE</IonButton>
                     <br></br><br></br>
                     <IonToast
+                        mode="ios"
                         isOpen={showToast}
                         onDidDismiss={() => setShowToast(false)}
                         message="Badge Updated"
@@ -271,6 +272,7 @@ const EditBadge: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showToastDelete}
                         onDidDismiss={() => setShowToast(false)}
                         message="Badge Deleted"
@@ -278,6 +280,7 @@ const EditBadge: React.FC = () =>{
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

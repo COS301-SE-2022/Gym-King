@@ -81,10 +81,10 @@ export const AddEmployee: React.FC = () =>{
     return(
         <IonPage color='#220FE' >
                 <IonHeader>
-                    <ToolBar></ToolBar>
+                    <ToolBar ></ToolBar>
                 </IonHeader>
                 <br></br>
-                <IonContent fullscreen className='Content'>
+                <IonContent fullscreen className='Content' >
                     <form onSubmit={handleSubmit} >
                         <IonText className='PageTitle center'>Add Employee</IonText>
                         <br></br>
@@ -107,12 +107,13 @@ export const AddEmployee: React.FC = () =>{
                         <IonText className="smallHeading leftMargin">Gym*</IonText>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
-                        <IonButton color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
+                        <IonButton mode="ios" color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
 
                     </form>
                     <br></br>
                     <br></br>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccessToast}
                         onDidDismiss={() => setShowSuccessToast(false)}
                         message = "Employee added successfully!"
@@ -120,6 +121,7 @@ export const AddEmployee: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showError1Toast}
                         onDidDismiss={() => setShowError1Toast(false)}
                         message = "Employee Already Exists."
@@ -127,6 +129,7 @@ export const AddEmployee: React.FC = () =>{
                         color="danger"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showError2Toast}
                         onDidDismiss={()=>setShowError2Toast(false)}
                         message="Internal Error. Please try again later."

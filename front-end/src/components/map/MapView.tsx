@@ -404,6 +404,7 @@ const MapView: React.FC = () =>{
             <IonContent  overflow-scroll="false" >
                 
             <GymSearchBar 
+            
                 gyms={gymsInSearchTab} 
                 nearByCallBack = {() =>{
                         setShowModal(false);
@@ -424,6 +425,7 @@ const MapView: React.FC = () =>{
             /> 
                 
             <IonLoading 
+                mode="ios"
                 isOpen={loading}
                 message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
@@ -431,6 +433,7 @@ const MapView: React.FC = () =>{
                 cssClass="spinner"
             />
             <IonToast
+                mode="ios"
                 isOpen={error.showError}
                 message={String(error.message)}
                 
@@ -460,7 +463,7 @@ const MapView: React.FC = () =>{
                     setShowModal(false)
                 }}        
             >
-                <IonButton shape="round" id="float" onClick={() => { 
+                <IonButton mode="ios" shape="round" id="float" onClick={() => { 
                     
                     getLocation(true)
                     setGymsInMapView()
@@ -486,15 +489,16 @@ const MapView: React.FC = () =>{
 
             </Map>
 
-            <IonModal  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+            <IonModal mode="ios"  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
 
-                <IonCard style={{"margin":"0px", "height":"100%"}}  >
+                <IonCard mode="ios" style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
                         <IonCardTitle className='center Subheading'>{ gymData.gym_name}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox" >
-                        <IonButtons>
+                        <IonButtons >
                             <IonButton  
+                                mode="ios"
                                 shape='round' 
                                 color="dark"
                                 className='btnView'
@@ -511,7 +515,7 @@ const MapView: React.FC = () =>{
                             >
                                 View
                             </IonButton>
-                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btnClose' color="light">Close</IonButton>
+                            <IonButton mode="ios" onClick={()=>setShowModal(false)} shape='round' className='btnClose' color="light">Close</IonButton>
                         </IonButtons>
                     
                     </IonCardContent>

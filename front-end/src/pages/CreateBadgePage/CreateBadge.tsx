@@ -295,7 +295,7 @@ import axios from "axios";
                         <IonInput name='badgeName' onKeyUp={changeName} type='text' className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
 
                         <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton  list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
+                        <SegmentButton   list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton><br></br><br></br>
 
 
                         <IonText className='inputHeading leftMargin'>Gym Location:</IonText> <br></br><br></br>
@@ -385,16 +385,16 @@ import axios from "axios";
 
                                 </IonRow>
                                 <IonRow>
-                                    <IonChip onClick={()=>selectTag(strengthTags[0], 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>{strengthTags[0]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[1], 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>{strengthTags[1]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[2], 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>{strengthTags[2]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[3], 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>{strengthTags[3]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[4], 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>{strengthTags[4]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[5], 5)}  style={{"backgroundColor": chipColor5}} ><IonLabel>{strengthTags[5]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[6], 6)}  style={{"backgroundColor": chipColor6}} ><IonLabel>{strengthTags[6]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[7]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[8]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(strengthTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[9]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[0], 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>{strengthTags[0]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[1], 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>{strengthTags[1]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[2], 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>{strengthTags[2]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[3], 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>{strengthTags[3]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[4], 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>{strengthTags[4]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[5], 5)}  style={{"backgroundColor": chipColor5}} ><IonLabel>{strengthTags[5]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[6], 6)}  style={{"backgroundColor": chipColor6}} ><IonLabel>{strengthTags[6]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[7]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[8]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[9]}</IonLabel></IonChip>
                                 </IonRow>
 
                             </IonGrid>
@@ -410,16 +410,16 @@ import axios from "axios";
 
                                 </IonRow>
                                 <IonRow>
-                                    <IonChip onClick={()=>selectTag(cardioTags[0], 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>{cardioTags[0]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[1], 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>{cardioTags[1]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[2], 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>{cardioTags[2]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[3], 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>{cardioTags[3]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[4], 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>{cardioTags[4]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[5], 5)}  style={{"backgroundColor": chipColor5}} ><IonLabel>{cardioTags[5]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[6], 6)}  style={{"backgroundColor": chipColor6}} ><IonLabel>{cardioTags[6]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{cardioTags[7]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{cardioTags[8]}</IonLabel></IonChip>
-                                    <IonChip onClick={()=>selectTag(cardioTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{cardioTags[9]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[0], 0)}  style={{"backgroundColor": chipColor0}} ><IonLabel>{cardioTags[0]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[1], 1)}  style={{"backgroundColor": chipColor1}} ><IonLabel>{cardioTags[1]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[2], 2)}  style={{"backgroundColor": chipColor2}} ><IonLabel>{cardioTags[2]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[3], 3)}  style={{"backgroundColor": chipColor3}} ><IonLabel>{cardioTags[3]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[4], 4)}  style={{"backgroundColor": chipColor4}} ><IonLabel>{cardioTags[4]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[5], 5)}  style={{"backgroundColor": chipColor5}} ><IonLabel>{cardioTags[5]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[6], 6)}  style={{"backgroundColor": chipColor6}} ><IonLabel>{cardioTags[6]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{cardioTags[7]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{cardioTags[8]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(cardioTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{cardioTags[9]}</IonLabel></IonChip>
                                 </IonRow>
 
                             </IonGrid>
@@ -432,10 +432,11 @@ import axios from "axios";
                             !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
                         }
 
-                        <IonButton class="btnSubmit centerComp" type='submit' color="tertiary">CREATE</IonButton>
+                        <IonButton mode="ios" class="btnSubmit centerComp" type='submit' color="tertiary">CREATE</IonButton>
                     </form>
                     <br></br><br></br>
                     <IonToast
+                        mode="ios"
                         isOpen={showToast}
                         onDidDismiss={() => setShowToast(false)}
                         message="Badge Created"

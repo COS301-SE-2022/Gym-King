@@ -126,6 +126,7 @@ const Explore: React.FC = () =>{
 
                     <IonText className='inputHeading'>Find Users</IonText>
                     <IonSearchbar ref={searchUser}
+                        mode="ios"
                         onKeyUp ={()=>{
                             let searchVal = searchUser.current?.value;
                             findUser(searchVal)
@@ -142,7 +143,7 @@ const Explore: React.FC = () =>{
                     <br></br>
                     {
                         foundUser && 
-                        <IonCard button style={{"height":"10%"}} onClick={viewUserProfile}>
+                        <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewUserProfile}>
                             <IonCardContent style={{"padding":"0%"}}>
                                 <IonGrid>
                                     <IonRow>
@@ -165,6 +166,7 @@ const Explore: React.FC = () =>{
 
                     <IonText className='inputHeading'>Find Gyms</IonText>
                     <IonSearchbar ref={searchGym}
+                        mode="ios"
                         onKeyUp ={()=>{
                             let searchVal = searchGym.current?.value;
                             findGym(searchVal)
@@ -180,7 +182,7 @@ const Explore: React.FC = () =>{
                     <br></br>
                     {
                         foundGym && 
-                        <IonCard button style={{"height":"10%"}} onClick={viewGymProfile}>
+                        <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewGymProfile}>
                             <IonCardContent style={{"padding":"0%"}}>
                                 <IonGrid>
                                     <IonRow>

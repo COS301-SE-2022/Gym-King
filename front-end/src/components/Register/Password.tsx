@@ -84,10 +84,10 @@ export const Password: React.FC<props> = (props) =>{
                 <IonGrid>
                     <IonRow>
                         <IonCol size='6'>
-                            <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev}  >Previous</IonButton>
+                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev}  >Previous</IonButton>
                         </IonCol>
                         <IonCol size='6'>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Next</IonButton>
+                            <IonButton  mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Next</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

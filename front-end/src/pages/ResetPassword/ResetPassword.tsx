@@ -195,13 +195,14 @@ export const ResetPassword: React.FC = () =>{
                         )}
                         <br></br>
 
-                        <IonButton  color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Reset Password</IonButton>
+                        <IonButton mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Reset Password</IonButton>
                         <br></br>
                         <button  onClick= {() =>{history.goBack()}} id = "center" color="secondary" className='puesdorHref centerBtn'>Back</button>
                     </form>
                 </IonContent>
 
                 <IonToast
+                mode="ios"
                 isOpen={showToast}
                 onDidDismiss={() => setShowToast(false)}
                 message="Invalid user details."

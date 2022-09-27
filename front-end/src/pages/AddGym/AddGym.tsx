@@ -190,10 +190,10 @@ const AddGym: React.FC = () => {
 
 
                 <IonText className="smallHeading leftMargin">Address:</IonText>
-                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                  <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
+                <IonButton mode="ios" expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
+                  <IonIcon  mode="ios" className="AddGymLocation" icon="location-outline"></IonIcon>
                   <span>{gymAddress}</span>
-                  <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
+                  <IonIcon mode="ios" class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
                 </IonButton>
                 <div className="width80 centerComp">
                   <Map
@@ -217,7 +217,9 @@ const AddGym: React.FC = () => {
                     </Overlay>
                   </Map>
                 </div>
+
               <IonButton
+                mode="ios"
                 class="AddGymAdd"
                 color="warning"
                 onClick={() => addGym()}

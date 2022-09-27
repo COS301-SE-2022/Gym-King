@@ -13,6 +13,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
     return(
         <>
             <IonCard 
+                mode="ios"
                 color="primary" 
                 class="ViewBadgeCard"  
                 style={{ padding : 0}} 
@@ -31,9 +32,9 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 </IonGrid>
             </IonCard>
             
-            <IonPopover  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+            <IonPopover mode="ios" ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
               <IonContent>
-                <IonButton className="centerComp" style={{"width":"80%"}} onClick={()=>{localStorage.setItem("badgeid",props.BadgeID);setPopoverOpen(false);history.push("/EditBadge")}}>Edit Badge</IonButton>
+                <IonButton mode="ios" className="centerComp" style={{"width":"80%"}} onClick={()=>{localStorage.setItem("badgeid",props.BadgeID);setPopoverOpen(false);history.push("/EditBadge")}}>Edit Badge</IonButton>
                 <AR  rank={props.Badgerank} emblem={props.BadgeEmblem}></AR>
                 </IonContent>
           </IonPopover>

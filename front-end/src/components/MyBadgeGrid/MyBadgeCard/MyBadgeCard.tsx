@@ -10,6 +10,7 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
     return(
         <div>
             <IonCard 
+                mode="ios"
                 data-testid="viewbadgegrid"
                 color="primary" 
                 class="ViewBadgeCard"  
@@ -31,8 +32,8 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                             
                 </IonGrid>
             </IonCard>
-            <IonPopover  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-              <IonContent>
+            <IonPopover mode="ios"  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+              <IonContent >
                 <AR  rank={prop.badgeRank} emblem={prop.badgeEmblem}></AR>
             </IonContent>
           </IonPopover>

@@ -86,10 +86,10 @@ const FriendRequestList: React.FC<props> = () =>{
 
         return(
             
-            <IonList>
+            <IonList mode="ios">
                 {
                     requests?.map((el:any)=>{
-                        return (<IonItem   data-testid="aB" key={el.email} >
+                        return (<IonItem  mode="ios" data-testid="aB" key={el.email} >
      
 
                                 <IonGrid>
@@ -107,7 +107,7 @@ const FriendRequestList: React.FC<props> = () =>{
                                                 <IonButton color="warning" style={{"width":"90%", "float":"left"}} onClick={()=>confirmRequest(el.email)}>Confirm</IonButton>
                                             </IonCol>
                                             <IonCol>
-                                                <IonButton color="medium" style={{"width":"90%" , "float":"left"}} onClick={()=>deleteRequest(el.email)}>Delete</IonButton>
+                                                <IonButton mode="ios" color="medium" style={{"width":"90%" , "float":"left"}} onClick={()=>deleteRequest(el.email)}>Delete</IonButton>
                                             </IonCol>
                                         </IonRow>
                                         

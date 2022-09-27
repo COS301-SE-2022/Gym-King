@@ -64,7 +64,7 @@ const NotFriendProfile: React.FC = () =>{
                             sessionStorage.getItem("isFriendRequest")==="true"
                             &&
                             <IonRow >
-                                <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
+                                <IonCard mode="ios" className="profileCard" style={{"paddingBottom":"2em"}}>
                                     <IonGrid>
                                         <IonRow>
                                             <IonCol >
@@ -95,7 +95,7 @@ const NotFriendProfile: React.FC = () =>{
                                     </IonRow>
                                     <br></br><br></br>
                                     <IonRow>
-                                        <IonButton onClick={sendFriendRequest}>Send Friend Request</IonButton>
+                                        <IonButton mode="ios" onClick={sendFriendRequest}>Send Friend Request</IonButton>
                                     </IonRow>
                                 </IonGrid>
                             </IonCard>

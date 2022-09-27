@@ -127,11 +127,11 @@ export const Login: React.FC = () =>{
     
     return (
         
-            <IonPage>
+            <IonPage >
                 <IonHeader>
                 </IonHeader>
-                <IonContent  fullscreen className='grad loginPage'>
-                    <form onSubmit={handleSubmit} method="POST" className='loginForm'>
+                <IonContent  fullscreen className='grad loginPage' >
+                    <form onSubmit={handleSubmit} method="POST" className='loginForm' >
                         <IonText className='center inputHeading'>Login</IonText>
                             <br></br><br></br>
                             <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
@@ -149,7 +149,7 @@ export const Login: React.FC = () =>{
                             <br></br>
 
                             <IonLabel className="smallHeading" position="floating">User type</IonLabel>
-                            <IonSegment onIonChange={segmentChanged}  >
+                            <IonSegment mode="ios" onIonChange={segmentChanged} >
                                 <IonSegmentButton value="gym_user">
                                     <IonLabel>User</IonLabel>
                                 </IonSegmentButton>
@@ -167,7 +167,7 @@ export const Login: React.FC = () =>{
                             )}
 
                             <br></br>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
+                            <IonButton mode='ios' color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
                             <br></br>
                             <div className='center'>
                                 <IonText className="linkLabel">Don't have an account?</IonText><button  onClick= {() =>{history.push("/Register")}}  color="secondary" className='linkLabel puesdorHref'>Register</button>
@@ -178,6 +178,7 @@ export const Login: React.FC = () =>{
                 </IonContent>
 
                 <IonToast
+                mode="ios"
                 isOpen={showToast1}
                 onDidDismiss={() => setShowToast1(false)}
                 message="Invalid user details."
@@ -185,6 +186,7 @@ export const Login: React.FC = () =>{
                 color="danger"
                 />
                 <IonToast
+                mode="ios"
                 isOpen={showToast2}
                 onDidDismiss={() => setShowToast2(false)}
                 message="Welcome to Gym King."
@@ -192,6 +194,7 @@ export const Login: React.FC = () =>{
                 color="success"
                 />
                 <IonLoading 
+                    
                     isOpen={loading}
                     message={"Loading"}
                     duration={2000}

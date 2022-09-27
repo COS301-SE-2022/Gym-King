@@ -84,12 +84,13 @@ const ManageGyms: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Gyms</IonText>
-                    <IonButton className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>
+                    <IonButton mode="ios" className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>
                     {gymList.map((el:any)=>
                         <GymCard key={el.g_name} id={el.g_id} name={el.gym_name} brand={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
                     )}
                     
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

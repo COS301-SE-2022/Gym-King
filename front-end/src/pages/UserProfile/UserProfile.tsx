@@ -253,7 +253,7 @@ const UserProfilePage: React.FC = () =>{
                                                 <IonCol><IonText>{phone}</IonText></IonCol>
                                             </IonRow>
                                             <IonRow>
-                                                <IonButton id="open-modal" expand="block">Edit Details</IonButton>
+                                                <IonButton mode="ios" id="open-modal" expand="block">Edit Details</IonButton>
                                             </IonRow>
                                         </IonGrid>
                                     </IonCardContent>
@@ -298,16 +298,16 @@ const UserProfilePage: React.FC = () =>{
 
 
 
-                    <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
+                    <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
+                                <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton mode="ios" color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -331,19 +331,21 @@ const UserProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
-                                <IonButton className='width21' type="button" >Change Password</IonButton>
+                                <IonButton mode="ios" className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         
                     </IonModal>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
                         duration={1000}
                         color="success"
                     />
-                    <IonToast
+                    <IonToast   
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -351,6 +353,7 @@ const UserProfilePage: React.FC = () =>{
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

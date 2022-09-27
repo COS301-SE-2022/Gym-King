@@ -52,6 +52,7 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
         </IonRow>
 
         <IonLoading 
+            mode="ios"
             isOpen={loading}
             message={"Loading"}
             duration={2000}

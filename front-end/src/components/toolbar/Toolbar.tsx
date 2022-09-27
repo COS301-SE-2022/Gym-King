@@ -12,13 +12,13 @@ export class ToolBar extends React.Component<ToolBarProps>{
         
         return(
                 <IonToolbar mode='ios' class="toolbar" color="#0F005A" data-testid="tb">
-                    <IonButtons slot="end">
+                    <IonButtons slot="end" >
                         <IonAvatar>
                         <IonImg  style={{"overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${localStorage.getItem("pp")})`}} alt="" className="toolbarImage centerComp contain"  ></IonImg>                        
                         </IonAvatar>
                     </IonButtons>
                     <IonTitle>{username}</IonTitle>
-                    <IonButtons slot='start'>
+                    <IonButtons slot='start' >
                         {this.props.menu && this.props.menu===true ?(<IonMenuButton />)
                         :(<IonBackButton text="Back"/>)}
                              

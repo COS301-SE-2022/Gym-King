@@ -58,6 +58,7 @@ const ViewBadgePage: React.FC = () =>{
                     
                     
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         spinner={"circles"}

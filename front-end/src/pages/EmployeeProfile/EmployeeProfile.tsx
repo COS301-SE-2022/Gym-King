@@ -195,7 +195,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
+                            <IonCard mode="ios" className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
@@ -248,16 +248,16 @@ const EmployeeProfilePage: React.FC = () =>{
 
                     <br></br>
 
-                    <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
+                    <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
+                                <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton mode="ios" color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -280,12 +280,13 @@ const EmployeeProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton className='width21' type="button" >Change Password</IonButton>
+                                <IonButton mode="ios" className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         
                     </IonModal>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -293,6 +294,7 @@ const EmployeeProfilePage: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -300,6 +302,7 @@ const EmployeeProfilePage: React.FC = () =>{
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

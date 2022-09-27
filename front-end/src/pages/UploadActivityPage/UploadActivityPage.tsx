@@ -182,11 +182,12 @@ const UploadActivityPage: React.FC = () =>{
                         </IonGrid>
                         <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
                         <br></br>
-                        <IonButton className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
+                        <IonButton mode="ios" className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
                     <br></br>
                     <br></br>
                     <IonToast
+                        mode="ios"
                         isOpen={showToast1}
                         onDidDismiss={() => setShowToast1(false)}
                         message="Your claim has been uploaded."
@@ -194,6 +195,7 @@ const UploadActivityPage: React.FC = () =>{
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         spinner={"circles"}

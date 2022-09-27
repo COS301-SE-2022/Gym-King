@@ -53,11 +53,11 @@ const GymsList: React.FC<props> = (props) =>{
 
         return(
 
-            <IonItem button detail  onClick={()=>viewGymProfile(gymBrandName, gymAddress)} key={props.gymId}>
+            <IonItem mode="ios" button detail  onClick={()=>viewGymProfile(gymBrandName, gymAddress)} key={props.gymId}>
                     <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
                         <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${gymProfile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                     </IonAvatar>
-                    <IonLabel>{gymName}</IonLabel>
+                    <IonLabel mode="ios">{gymName}</IonLabel>
             </IonItem>)
                     
                 

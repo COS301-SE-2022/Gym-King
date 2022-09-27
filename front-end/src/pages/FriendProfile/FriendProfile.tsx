@@ -103,7 +103,7 @@ const FriendProfile: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton style={{"width":"100%"}} onClick={removeFriend}>Remove Friend</IonButton>
+                            <IonButton mode="ios" style={{"width":"100%"}} onClick={removeFriend}>Remove Friend</IonButton>
                         </IonRow>
                         
                     </IonGrid>

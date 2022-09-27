@@ -85,13 +85,13 @@ const GymPage: React.FC = () =>{
                     <IonCardTitle className='center PageTitle'>{gbrandname +", "+ gname}</IonCardTitle>
                     <IonCardSubtitle color="light" className='center subheading'>{gaddress}</IonCardSubtitle>
                     
-                    <IonButton color="primary" onClick={subscribe} className="width80 centerComp">Subscribe</IonButton> <br></br> <br></br>
+                    <IonButton mode="ios" color="primary" onClick={subscribe} className="width80 centerComp">Subscribe</IonButton> <br></br> <br></br>
 
-                    <IonButton color="warning" onClick={goToViewBadges} className="width80 centerComp">View Badges</IonButton>
-                    <IonButton color='warning' onClick={goToLeaderboard} className="width80 centerComp" >View Leaderboard</IonButton>
+                    <IonButton mode="ios"  color="warning" onClick={goToViewBadges} className="width80 centerComp">View Badges</IonButton>
+                    <IonButton mode="ios" color='warning' onClick={goToLeaderboard} className="width80 centerComp" >View Leaderboard</IonButton>
                 </IonCard>
                 
-                <IonModal id="main" showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+                <IonModal mode="ios" id="main" showBackdrop = {true} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
         
                     <IonHeader  id = "leaderBoardCloseButton" >
                         <IonButton color={"warning"} onClick={()=>{setShowModal(false)}}>close</IonButton>

@@ -7,8 +7,8 @@ export type FileChooserProps = {numFiles: number};
 export class FileChooser extends React.Component<FileChooserProps>{
     render(){
         return(
-               <IonCard className='fileCard shadow centerComp'>
-                   <IonCardHeader>
+               <IonCard mode="ios" className='fileCard shadow centerComp'>
+                   <IonCardHeader mode="ios" >
                         <input type="file"/>     
                    </IonCardHeader>
                </IonCard>

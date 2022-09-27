@@ -60,7 +60,7 @@ const FriendsPage: React.FC = () =>{
                     {
                         numFriendRequests!==0 
                         &&
-                        <IonItem button detail class='btnApproval' onClick={goToFriendRequests} >
+                        <IonItem mode="ios" button detail class='btnApproval' onClick={goToFriendRequests} >
                             <IonLabel>Friend Requests</IonLabel>
                         </IonItem>
                     }

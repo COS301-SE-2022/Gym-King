@@ -35,7 +35,7 @@ export const GymSearchBar=(props:{
           >
 
             <IonSearchbar
-            
+                mode="ios"
                 ref={searchInput}
                 onClick = {()=>{
                   
@@ -69,6 +69,7 @@ export const GymSearchBar=(props:{
             </IonSearchbar>
           </div>
           <IonModal
+             mode="ios"
             ref={modal}
             trigger="open-modal"
             isOpen={isShowing}
@@ -95,9 +96,9 @@ export const GymSearchBar=(props:{
           }
 
           >
-            <IonContent color='secondary'>
+            <IonContent color='secondary' >
               <br></br><IonHeader className="inputHeading ion-padding">{searchTabHeading}</IonHeader> <br></br>
-              <IonList >
+              <IonList mode="ios">
 
               {  
               props.gyms.map((item: {
@@ -113,6 +114,7 @@ export const GymSearchBar=(props:{
                       return (
                         
                           <IonItem
+                            mode="ios"
                             className="ion-align-items-center border-light"
                             onClick={()=>{
                               modal.current?.setCurrentBreakpoint(0.25);
@@ -124,7 +126,7 @@ export const GymSearchBar=(props:{
                             <IonImg src={item.gym_icon} />
                           </IonAvatar>
 
-                          <IonLabel>
+                          <IonLabel mode="ios">
                             <h2>{item.gym_brandname}</h2>
                             <p>{item.gym_address}</p>
                           </IonLabel>

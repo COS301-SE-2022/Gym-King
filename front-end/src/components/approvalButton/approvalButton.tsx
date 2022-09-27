@@ -37,11 +37,11 @@ export class ApprovalButton extends React.Component<props>{
     render(){
         //console.log(this.userId);
         return(
-            <IonItem button detail class='btnApproval' onClick={this.onClick} data-testid="aB">
-                <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
+            <IonItem button detail class='btnApproval' onClick={this.onClick} data-testid="aB" mode="ios">
+                <IonAvatar  style={{"marginRight":"1em", "marginBottom":"3%"}}>
                     <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${this.props.profile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                 </IonAvatar>
-                <IonLabel>{this.props.username}</IonLabel>
+                <IonLabel mode="ios">{this.props.username}</IonLabel>
             </IonItem>
         )
         
