@@ -51,7 +51,7 @@
     "serve:dev": "env-cmd -f .env.development react-scripts start",
     "build:ios": " ionic cap build ios env-cmd -f .env.production",
     "build:android": " ionic cap build android env-cmd -f .env.production",
-    "test": "env-cmd -f .env.development react-scripts  test --transformIgnorePatterns --watchAll=false --detectLeaks",
+    "test": "env-cmd -f .env.development react-scripts  test --transformIgnorePatterns --watchAll=false ",
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",
