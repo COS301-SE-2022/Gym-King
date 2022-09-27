@@ -45,8 +45,8 @@ import axios from "axios";
         const [chipColor9, setChipColor9] = useState(transparent)
 
 
-        let cardioTags = ["cardio", "running", "cycling", "hiit", "endurance", "steps","elliptical","rowing","short","long"]
-        let strengthTags = ["strength","musclebuilding","push","pull","lift","core","upperbody","lowerbody","fullbody","crossfit"]
+        let cardioTags = ["gold","silver","bronze", "cardio", "running", "cycling", "hiit", "endurance", "steps","elliptical","rowing","short","long"]
+        let strengthTags = ["gold","silver","bronze","strength","musclebuilding","push","pull","lift","core","upperbody","lowerbody","fullbody","crossfit"]
 
 
         //METHODS

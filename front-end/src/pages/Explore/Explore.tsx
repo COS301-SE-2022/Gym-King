@@ -1,5 +1,5 @@
 import React, { useRef, useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewDidEnter, IonSlides, IonSlide} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -23,6 +23,33 @@ const Explore: React.FC = () =>{
     const [gymName, setGymName] =useState("")
     const [gymBrandName, setGymBrandName] =useState("")
     const [gymAddress, setGymAddress] =useState("")
+
+    //suggested badges
+    const [badgeSuggestions, setBadgeSuggestions] =useState(new Array)
+
+    useIonViewDidEnter(()=>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/suggestion`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                password:  localStorage.getItem("password"),
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            setBadgeSuggestions(response)
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
+    })
 
     const viewUserProfile = () =>{
         //assuming they are not friends
@@ -204,7 +231,22 @@ const Explore: React.FC = () =>{
                     <br></br>
 
                     <IonText className='inputHeading'>Suggested Badges</IonText>
-
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol>
+                                <IonSlides>
+                                    {
+                                        badgeSuggestions?.map((el)=>{
+                                            <IonSlide>
+                                                {el.badgename}
+                                            </IonSlide>
+                                        })
+                                    }
+                                    
+                                </IonSlides>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
                     
                 </IonContent>
             </IonPage>
