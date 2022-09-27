@@ -44,7 +44,7 @@ describe('Testing connection to api', () => {
             })        
         }) 
     });
-/*
+
     it('should load claim data',  () => {
         
         (async()=>
@@ -60,5 +60,5 @@ describe('Testing connection to api', () => {
                 expect (err).toBeDefined();
             })
         })
-    });*/
+    });
   })
