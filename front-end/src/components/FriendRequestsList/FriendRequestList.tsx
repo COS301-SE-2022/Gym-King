@@ -100,13 +100,13 @@ const FriendRequestList: React.FC<props> = () =>{
                                             </IonAvatar>
                                         </IonCol>
                                         <IonCol size="4">
-                                            <IonLabel>{el.username}</IonLabel>
+                                            <IonLabel style={{"marginTop":"15%"}}>{el.username}</IonLabel>
                                         </IonCol>
                                         <IonRow>
-                                            <IonCol style={{"paddingLeft":"0"}}>
+                                            <IonCol style={{"paddingLeft":"0", "marginTop":"2%"}}>
                                                 <IonButton color="warning" style={{"width":"90%", "float":"left"}} onClick={()=>confirmRequest(el.email)}>Confirm</IonButton>
                                             </IonCol>
-                                            <IonCol>
+                                            <IonCol style={{ "marginTop":"2%"}}>
                                                 <IonButton mode="ios" color="medium" style={{"width":"90%" , "float":"left"}} onClick={()=>deleteRequest(el.email)}>Delete</IonButton>
                                             </IonCol>
                                         </IonRow>

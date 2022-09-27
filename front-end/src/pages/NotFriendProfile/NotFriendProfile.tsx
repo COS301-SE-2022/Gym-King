@@ -2,11 +2,9 @@ import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCa
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
 
 const NotFriendProfile: React.FC = () =>{
         //localStorage.setItem("friendRequest","true")
-        let history=useHistory()
 
         
         const [username, setUsername]= useState("")
