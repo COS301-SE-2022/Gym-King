@@ -15,7 +15,7 @@ test('renders without crashing', async() => {
 describe('Testing prop text values', () => {
 
     test('correctly displays select options', async () => {
-      const {baseElement} = await render(<DropDown list={['Strength', 'Cardio']} />);
+      const {baseElement} = render(<DropDown list={['Strength', 'Cardio']} />);
       expect (baseElement).toHaveTextContent("Strength");
       expect (baseElement).toHaveTextContent("Cardio");
       

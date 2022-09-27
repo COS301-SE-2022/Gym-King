@@ -17,7 +17,7 @@ describe('Testing connection to api', () => {
 
   test('should get a gyms badges', async () => {
       
-      ( ()=>{
+      ( async()=>{
         fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/a4f`,{
                 "method":"GET"
             })

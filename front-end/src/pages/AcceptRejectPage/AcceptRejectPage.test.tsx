@@ -31,7 +31,7 @@ describe('Testing connection to api', () => {
     let email ="u20519517@tuks.co.za"
 
     it('should load claim data', async () => {
-        (()=>{
+        (async()=>{
             fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
                 "method":"GET"
             })
@@ -47,7 +47,7 @@ describe('Testing connection to api', () => {
 
     it('should load claim data', async () => {
         
-        (()=>
+        (async()=>
         {
             fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"

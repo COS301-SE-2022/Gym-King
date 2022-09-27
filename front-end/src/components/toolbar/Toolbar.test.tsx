@@ -11,7 +11,7 @@ test('renders without crashing',async () => {
     expect(baseElement).toBeDefined();
   });
 
-describe('Testing prop values', async() => {
+describe('Testing prop values', () => {
 
   test('correctly displays prop value ', async () => {
     const {baseElement} = render(<Toolbar username='user1' />);
