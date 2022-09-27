@@ -96,11 +96,13 @@ const Explore: React.FC = () =>{
         else
         {
             //is they are not friends 
+            
             sessionStorage.setItem("isFriendRequest", "false")
             sessionStorage.setItem("foundUsername", username)
             sessionStorage.setItem("foundEmail", email)
             sessionStorage.setItem("foundFullname", fullname)
             sessionStorage.setItem("foundProfilePicture", profilePicture)
+            console.log(sessionStorage.getItem("foundEmail"))
             history.push("/NotFriendProfile") 
         }
         
