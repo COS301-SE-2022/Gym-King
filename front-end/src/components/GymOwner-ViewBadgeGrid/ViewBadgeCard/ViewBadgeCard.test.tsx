@@ -5,7 +5,7 @@ import ViewBadgeCard from './ViewBadgeCard';
 */
 
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<ViewBadgeCard BadgeTitle="" BadgeDesc="" BadgeID="" Badgerank="" BadgeEmblem="" />);
+test('renders without crashing', async() => {
+    const { baseElement } =await render(<ViewBadgeCard BadgeTitle="" BadgeDesc="" BadgeID="" Badgerank="" BadgeEmblem="" />);
     expect(baseElement).toBeDefined();
   });

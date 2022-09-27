@@ -4,18 +4,19 @@ import {ToolBar} from '../../components/toolbar/Toolbar';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import './GymPage.css';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 const GymPage: React.FC = () =>{
 
     let gid = sessionStorage.getItem("gid");
-    let gname = sessionStorage.getItem("gym_brandname");
+    let gname = sessionStorage.getItem("gym_name")
+    let gbrandname = sessionStorage.getItem("gym_brandname");
     let gaddress = sessionStorage.getItem("gym_address");
     let history=useHistory()
 
 
     const [showModal, setShowModal] = useState(false);
-    console.log(gid);
     const enterAnimation = (baseEl: any) => {
         const root = baseEl.shadowRoot;
 
@@ -48,6 +49,31 @@ const GymPage: React.FC = () =>{
         history.push("/Leaderboard")
     }
 
+    const subscribe = () =>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/createSubscription`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                fromEmail: localStorage.getItem("email"),
+                gid:  gid
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
+
+
+    }
+
     return(
         <IonPage >
             <IonHeader>
@@ -56,9 +82,11 @@ const GymPage: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className ='Content' id="main">
                 <IonCard className="glass gym centerComp">
-                    <IonCardTitle className='center PageTitle'>{gname}</IonCardTitle>
+                    <IonCardTitle className='center PageTitle'>{gbrandname +", "+ gname}</IonCardTitle>
                     <IonCardSubtitle color="light" className='center subheading'>{gaddress}</IonCardSubtitle>
                     
+                    <IonButton color="primary" onClick={subscribe} className="width80 centerComp">Subscribe</IonButton> <br></br> <br></br>
+
                     <IonButton color="warning" onClick={goToViewBadges} className="width80 centerComp">View Badges</IonButton>
                     <IonButton color='warning' onClick={goToLeaderboard} className="width80 centerComp" >View Leaderboard</IonButton>
                 </IonCard>

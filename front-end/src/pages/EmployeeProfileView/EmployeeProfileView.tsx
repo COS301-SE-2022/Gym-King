@@ -34,12 +34,13 @@ const EmployeeProfileViewPage: React.FC = () =>{
         setPhone(sessionStorage.getItem("employee_phone"))
         //setGymId(localStorage.getItem("employee_gid"))
         setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
+        console.log(sessionStorage.getItem("employee_gid"))
 
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`)
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
-            setGymName(response.gym_brandname)
+            setGymName(response.gym_name)
             setGymLocation(response.gym_address)
             
                         

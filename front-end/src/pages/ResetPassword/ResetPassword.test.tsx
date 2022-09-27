@@ -1,13 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
 import ResetPassword from './ResetPassword';
+import axios from "axios";
+import React from 'react';
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<ResetPassword />);
+test('renders without crashing', async() => {
+  const {baseElement} =await render(<ResetPassword />);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} =  render(<ResetPassword />);
+  const {baseElement} = await render(<ResetPassword />);
   expect(baseElement).toHaveTextContent("New Password");
   expect(baseElement).toHaveTextContent("Confirm New Password");
 });
@@ -17,9 +19,9 @@ test('correctly displays labels', async () => {
 
 describe('Testing connection to API', () => {
 
-  it('should reset a User Password', async () => {
+  it('should reset a User Password',  () => {
      (async () => {
-        fetch(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
+        await axios(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
            method: 'PUT',
            headers: {
               'Accept': 'application/json',

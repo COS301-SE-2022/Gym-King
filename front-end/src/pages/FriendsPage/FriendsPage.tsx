@@ -1,19 +1,51 @@
 import React, {useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 const FriendsPage: React.FC = () =>{
 
     let history=useHistory()
     // eslint-disable-next-line 
     const [numFriendRequests, setNumFriendRequests] = useState(1);
-    let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
 
     const goToFriendRequests=()=>{
         history.push("/FriendRequests")
     }
+
+    const [friends, setFriends] = useState([]);
+
+    useIonViewWillEnter(()=>{
+        //remove session storage
+        sessionStorage.removeItem("friendUsername")
+        sessionStorage.removeItem("friendEmail")
+        sessionStorage.removeItem("friendProfile")
+        sessionStorage.removeItem("friendFullname")
+        
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                userEmail: localStorage.getItem("email"),
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            setFriends(response)
+        })
+        .catch(err => {
+            console.log(err)
+            
+        })
+
+    },[])
     //=================================================================================================
     //    Render
     //=================================================================================================
@@ -34,7 +66,7 @@ const FriendsPage: React.FC = () =>{
                     }
 
                     <IonText className="inputHeading">All Friends</IonText>
-                    <FriendsList friendsList={friendsList}></FriendsList>
+                    <FriendsList friendsList={friends}></FriendsList>
                     
                 </IonContent>
             </IonPage>
