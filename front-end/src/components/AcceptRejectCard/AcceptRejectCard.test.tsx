@@ -19,8 +19,7 @@ test('renders without crashing',async () => {
 
 describe('Testing prop text values', () => {
   let username = "user1"
-  let activitytype = "STRENGTH";
-  let badgename = "Badge"
+
 
   test('correctly displays username', async () => {
       const {baseElement} =  render(<AcceptRejectCard profile="" userID="" username={username} badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof="" />);
@@ -58,8 +57,8 @@ describe('Testing connection to api', () => {
 
   it('should update claim data', async () => {
       
-     ( ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+     (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
@@ -83,8 +82,8 @@ describe('Testing connection to api', () => {
   });
 
   it('should reject a gym', async () => {
-    (()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+    (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',

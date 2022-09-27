@@ -32,7 +32,7 @@ describe('Testing connection to api', () => {
 
     it('should load claim data', async () => {
         (async()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -49,7 +49,7 @@ describe('Testing connection to api', () => {
         
         (async()=>
         {
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
             })
             .then(response =>response.json())

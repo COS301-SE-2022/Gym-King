@@ -13,7 +13,7 @@ test('renders without crashing', async() => {
     it('should load badge data', async () => {
       (async()=>{
         let badgeId='XRQ'
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
         })
         .then(response =>response.json())
@@ -34,7 +34,7 @@ test('renders without crashing', async() => {
           let i1=""
           let i2= ""
           let i3= ""
-          fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
+          await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${b_id}&email=${email}&username=${username}&input1=${i1}&input2=${i2}&input3=${i3}&proof=${'PROOF'}`,{
               "method":"POST"
           })
           .then(response =>response.json())

@@ -21,7 +21,7 @@ describe('Testing connection to API', () => {
 
   it('should reset a User Password', async () => {
      (async () => {
-        axios(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
+        await axios(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
            method: 'PUT',
            headers: {
               'Accept': 'application/json',

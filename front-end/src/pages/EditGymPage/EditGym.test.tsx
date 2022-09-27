@@ -16,9 +16,8 @@ describe('Testing connection to api', () => {
 
   it('should load gym data', async () => {
       
-      ( ()=>{
-          let badgeId="XRQ"
-          fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
+      ( async()=>{
+          await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
             {
               method: "Get",
               headers: {
@@ -36,8 +35,8 @@ describe('Testing connection to api', () => {
   });
 
   it('should update a gym', async () => {
-      (()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+      (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
         {
           method: "PUT",
           headers: {

@@ -13,9 +13,9 @@ test('renders without crashing', async () => {
 describe('Testing connection to api', () => {
 
   test('should create a user', async () => {
-      (()=>{
+      (async()=>{
         
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',

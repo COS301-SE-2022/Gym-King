@@ -43,9 +43,9 @@ describe('Testing connection to api', () => {
     });
 
     it('should create a badge', async () => {
-        (()=>{
+        (async()=>{
 
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
             "method":"POST",
             headers: {
                 'Accept': 'application/json',

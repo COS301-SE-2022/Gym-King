@@ -22,10 +22,10 @@ describe('Testing prop text values', () => {
 
 describe('Testing connection to api', () => {
 
-  test('should delete a badge',  () => {
+  test('should delete a badge',  async() => {
       
-      ( ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
+      ( async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
         {
             method: "DELETE",
             headers: {

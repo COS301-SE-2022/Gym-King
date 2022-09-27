@@ -16,7 +16,7 @@ describe('Testing connection to api', () => {
 
     it('should load pending badges', async () => {
         (async ()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"useremail"}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"useremail"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())

@@ -17,7 +17,7 @@ describe('Testing connection to api', () => {
 
   it('should load owner info', async () => {
       (async ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -39,7 +39,7 @@ describe('Testing connection to api', () => {
   });
   it('should load owner owned gyms', async () => {
     (async ()=>{
-      fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"email"}`,{
+      await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"email"}`,{
         method: 'GET'
       })
       .then(response =>response.json())
@@ -53,7 +53,7 @@ describe('Testing connection to api', () => {
   });
   it('should load owner owned gyms', async () => {
     (async ()=>{
-      fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/empl_email`,{
+      await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/empl_email`,{
           method: 'GET'
       })
       .then(response =>response.json())
@@ -68,7 +68,7 @@ describe('Testing connection to api', () => {
 
   it('should update owner info', async () => {
     (async ()=>{
-      fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
+      await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
           method: 'PUT',
           headers: {
             'Accept': 'application/json',

@@ -16,9 +16,9 @@ describe('Testing connection to api', () => {
 
     test('should load badge info',  async() => {
         
-        ( ()=>{
+        ( async()=>{
             console.log("hello")
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${"gymid"}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${"gymid"}`,{
                 "method":"GET"
             })
             .then(response =>response.json())

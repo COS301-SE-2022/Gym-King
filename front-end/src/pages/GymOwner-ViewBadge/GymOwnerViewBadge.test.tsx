@@ -13,7 +13,7 @@ test('renders without crashing', async() => {
 describe('Testing connection to api', () => {
     test("API fetch badges",async()=>{
         var email="u20519517@tuks.co.za"
-                fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${email}`,{
+                await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${email}`,{
                     "method":"GET"
                 })
                 .then(response =>response.json())

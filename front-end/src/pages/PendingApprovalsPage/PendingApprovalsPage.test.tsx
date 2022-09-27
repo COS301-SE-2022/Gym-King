@@ -12,9 +12,9 @@ test('renders without crashing', async() => {
 describe('Testing connection to api', () => {
 
     it('should load pending claims data', async () => {
-        (()=>{
+        (async ()=>{
             let gymId="lttD"
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?gid=${gymId}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?gid=${gymId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
