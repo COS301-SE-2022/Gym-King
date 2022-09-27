@@ -72,10 +72,11 @@ const UploadActivityPage: React.FC = () =>{
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
             .then(response =>response.data)
             .then(response =>{
-                //console.log("rsponse",response)
-                setB_id(response.b_id)
+                console.log("rsponse",response)
+                setB_id(response.bid)
                 localStorage.setItem("activitytype", response.activitytype)
                 setDescription(response.badgechallenge)
+                localStorage.setItem("badgename", response.badgename)
                 setBadgename(response.badgename)
                 setLoading(false)
                 setIcon(response.badgeicon.split("_"))
@@ -167,7 +168,7 @@ const UploadActivityPage: React.FC = () =>{
                             </IonCol>
                         </IonRow>
                     </IonGrid>
-                    <IonText className='PageTitle center'>{badgename}</IonText>
+                    <IonText className='PageTitle center'>{localStorage.getItem("badgename")!}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                     <form onSubmit={handleSubmit}>
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>

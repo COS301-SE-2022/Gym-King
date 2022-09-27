@@ -14,6 +14,7 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
     const next =()=>{
         if(prop.qty===0)
         {
+            console.log(prop.id)
             sessionStorage.setItem("badgeid",prop.id);
             setPopoverOpen(false);
             history.push("/UploadActivity")
