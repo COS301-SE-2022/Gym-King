@@ -88,7 +88,7 @@ const MyBadge: React.FC = () =>{
             <IonContent fullscreen class="MyBadgeContent" className='Content'>
                     <IonText className='PageTitle center'>My Badges</IonText>
 
-                    <IonButton mode="ios" color='warning' className='width80' onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
+                    <IonButton mode="ios" color='warning' className='width80 btn' onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
 
                     <IonToolbar class="FilterBar" mode="ios">
                         <IonButtons slot='start' color="light">

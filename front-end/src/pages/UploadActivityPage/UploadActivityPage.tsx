@@ -180,11 +180,14 @@ const UploadActivityPage: React.FC = () =>{
                                 <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
-                        <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
+                        <IonGrid className='centerLeft grid'>
+                            <IonRow className='left topMargin'>
+                                <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
+                            </IonRow>
+                        </IonGrid>
                         <br></br>
-                        <IonButton mode="ios" className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
+                        <IonButton mode="ios" className="btnSubmit centerComp btn" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
-                    <br></br>
                     <br></br>
                     <IonToast
                         mode="ios"
