@@ -25,9 +25,13 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
                                     {prop.name}
                         </IonCardTitle>
-                        <IonCardTitle style={{width:100}}  class='ViewBadgeTitle' className='center ion-text-center'>
-                            QTY:{prop.qty}
-                        </IonCardTitle>
+                        {
+                            prop.qty>0 &&
+                            <IonCardTitle style={{width:100}}  class='ViewBadgeTitle' className='center ion-text-center'>
+                                QTY:{prop.qty}
+                            </IonCardTitle>
+                        }
+                        
                     </IonRow>
                             
                 </IonGrid>

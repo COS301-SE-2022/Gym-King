@@ -1,11 +1,13 @@
 import React, { useRef, useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewDidEnter, IonSlides, IonSlide} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewWillEnter} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
+import BadgeSuggestions from '../../components/BadgeSuggestions/BadgeSuggestions';
 
 const Explore: React.FC = () =>{
     let history=useHistory()
+
 
     const searchUser = useRef<HTMLIonSearchbarElement>(null)
     const searchGym = useRef<HTMLIonSearchbarElement>(null)
@@ -25,10 +27,11 @@ const Explore: React.FC = () =>{
     const [gymAddress, setGymAddress] =useState("")
 
     //suggested badges
-    const [badgeSuggestions, setBadgeSuggestions] =useState(new Array)
+    const [badgeSuggestions, setBadgeSuggestions] =useState([])
+    
 
-    useIonViewDidEnter(()=>{
-        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/suggestion`,{
+    useIonViewWillEnter(async()=>{
+        await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/suggestion`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -44,12 +47,12 @@ const Explore: React.FC = () =>{
         .then(response =>{
             console.log(response)
             setBadgeSuggestions(response)
-        })
-        .catch(err => {
-            console.log(err)
             
         })
-    })
+        .catch(err => {
+            console.log(err)  
+        })
+    },[badgeSuggestions])
 
     const viewUserProfile = () =>{
         //assuming they are not friends
@@ -231,22 +234,8 @@ const Explore: React.FC = () =>{
                     <br></br>
 
                     <IonText className='inputHeading'>Suggested Badges</IonText>
-                    <IonGrid>
-                        <IonRow>
-                            <IonCol>
-                                <IonSlides>
-                                    {
-                                        badgeSuggestions?.map((el)=>{
-                                            <IonSlide>
-                                                {el.badgename}
-                                            </IonSlide>
-                                        })
-                                    }
-                                    
-                                </IonSlides>
-                            </IonCol>
-                        </IonRow>
-                    </IonGrid>
+                    <br></br>
+                    <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
                     
                 </IonContent>
             </IonPage>
