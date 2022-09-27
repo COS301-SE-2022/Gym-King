@@ -3,7 +3,7 @@ import ManageGyms from './ManageGyms';
 /*UNIT TESTING*/
 //test if pages rendered
 test('renders without crashing', async() => {
-  const { baseElement } = render(<ManageGyms/>);
+  const { baseElement } =await render(<ManageGyms/>);
   expect(baseElement).toBeDefined();
   const linkElement = screen.getByText(/My Gyms/i);
   expect(linkElement).toBeInTheDocument();
@@ -12,7 +12,7 @@ test('renders without crashing', async() => {
 describe('Integration Tests', () => {
 
   test('sending in a list of activity types displays correctly as a segment button', async () => {
-      render(<ManageGyms />);
+      await render(<ManageGyms />);
       expect(screen.getByTestId('GymCard').innerHTML).toBeDefined()
   });
 })

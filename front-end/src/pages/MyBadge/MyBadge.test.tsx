@@ -7,7 +7,7 @@ import MyBadge from './MyBadge';
 */
 
 test('renders without crashing', async() => {
-  const { baseElement } = render(<MyBadge/>);
+  const { baseElement } =await render(<MyBadge/>);
   expect(baseElement).toBeDefined();
 });
 

@@ -6,7 +6,7 @@ import Leaderboard from '../Leaderboard/Leaderboard';
 
 //RENDER TESTS
 test('renders without crashing', async() => {
-    const { baseElement } = render(<Leaderboard/>);
+    const { baseElement } =await render(<Leaderboard/>);
     expect(baseElement).toBeDefined();
 });
 

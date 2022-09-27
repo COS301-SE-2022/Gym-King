@@ -3,6 +3,6 @@ import GymOwnerPage from './GymOwnerPage';
 
 
 test('renders without crashing', async() => {
-  const {baseElement} = render(<GymOwnerPage />);
+  const {baseElement} =await render(<GymOwnerPage />);
   expect(baseElement).toBeDefined();
 });

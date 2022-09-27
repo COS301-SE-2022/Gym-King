@@ -6,7 +6,7 @@ import EmployeeProfileView from './EmployeeProfileView';
 */
 
 test('renders without crashing', async() => {
-  const {baseElement } = render(<EmployeeProfileView/>);
+  const {baseElement } =await render(<EmployeeProfileView/>);
   expect(baseElement).toBeDefined();
 });
 

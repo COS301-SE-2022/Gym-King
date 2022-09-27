@@ -6,6 +6,6 @@ import AppSettingsPage from './AppSettingsPage';
 */
 
 test('render without crashing', async() => {
-  const{baseElement} = render(<AppSettingsPage/>);
+  const{baseElement} =await render(<AppSettingsPage/>);
   expect(baseElement).toBeDefined();
 });

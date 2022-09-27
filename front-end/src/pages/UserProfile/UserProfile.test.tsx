@@ -6,7 +6,7 @@ import UserProfilePage from './UserProfile';
 */
 
 test('renders without crashing', async() => {
-  const {baseElement} = render(<UserProfilePage />);
+  const {baseElement} =await render(<UserProfilePage />);
   expect(baseElement).toBeDefined();
 });
 

@@ -3,7 +3,7 @@ import ARPage from './ARPage';
 
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<ARPage />);
+    const { baseElement } =await render(<ARPage />);
     expect(baseElement).toBeDefined();
 });
 

@@ -4,12 +4,12 @@ import axios from "axios";
 import React from 'react';
 
 test('renders without crashing', async() => {
-  const {baseElement} = render(<ResetPassword />);
+  const {baseElement} =await render(<ResetPassword />);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} =  render(<ResetPassword />);
+  const {baseElement} = await render(<ResetPassword />);
   expect(baseElement).toHaveTextContent("New Password");
   expect(baseElement).toHaveTextContent("Confirm New Password");
 });

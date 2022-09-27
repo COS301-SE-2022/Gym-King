@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import UploadActivityPage from './UploadActivityPage'
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<UploadActivityPage />);
+    const { baseElement } =await render(<UploadActivityPage />);
     expect(baseElement).toBeDefined();
   });
 

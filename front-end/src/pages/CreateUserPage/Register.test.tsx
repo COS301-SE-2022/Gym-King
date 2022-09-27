@@ -2,7 +2,7 @@ import {render} from '@testing-library/react';
 import RegisterPage from './Register';
 
 test('renders without crashing', async () => {
-  const {baseElement} = render(<RegisterPage/>);
+  const {baseElement} =await render(<RegisterPage/>);
   expect(baseElement).toBeDefined();
 });
 

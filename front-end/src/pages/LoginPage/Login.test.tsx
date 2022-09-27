@@ -4,12 +4,12 @@ import { Login } from './Login';
 
 
 test('renders without crashing', async () => {
-  const {baseElement} = render(<Login />);
+  const {baseElement} =await render(<Login />);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} = render(<Login />);
+  const {baseElement} =await render(<Login />);
   expect (baseElement).toHaveTextContent("Email*");
   expect (baseElement).toHaveTextContent("Password*");
 });

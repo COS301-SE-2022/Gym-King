@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import PendingApprovalsPage from './PendingApprovalsPage'
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<PendingApprovalsPage />);
+    const { baseElement } =await render(<PendingApprovalsPage />);
     expect(baseElement).toBeDefined();
 });
 

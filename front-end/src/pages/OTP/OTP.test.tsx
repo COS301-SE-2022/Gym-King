@@ -6,6 +6,6 @@ import OTP from './OTP';
 */
 
 test('renders without crashing',async () => {
-  const { baseElement } = render(<OTP/>);
+  const { baseElement } =await render(<OTP/>);
   expect(baseElement).toBeDefined();
 });

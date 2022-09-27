@@ -6,12 +6,12 @@ import CreateBadge from './CreateBadge';
 */
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<CreateBadge />);
+    const { baseElement } = await render(<CreateBadge />);
     expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-    const {baseElement} = render(<CreateBadge />);
+    const {baseElement} =await render(<CreateBadge />);
     expect (baseElement).toHaveTextContent("Badge Name:");
     expect (baseElement).toHaveTextContent("Activity Type:");
     expect (baseElement).toHaveTextContent("Gym Location:");

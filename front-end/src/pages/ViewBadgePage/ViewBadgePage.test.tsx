@@ -6,7 +6,7 @@ import ViewBadgePage from './ViewBadgePage';
 */
 
 test('renders without crashing', async() => {
-  const {baseElement} = render(<ViewBadgePage/>);
+  const {baseElement} =await render(<ViewBadgePage/>);
   expect(baseElement).toBeDefined();
 });
 

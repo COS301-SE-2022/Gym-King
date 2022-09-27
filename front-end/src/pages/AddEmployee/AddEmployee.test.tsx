@@ -3,12 +3,12 @@ import AddEmployee from './AddEmployee';
 
 
 test('renders without crashing', async ()=> {
-  const{baseElement} = render(<AddEmployee/>);
+  const{baseElement} =await render(<AddEmployee/>);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly diplays labels ', async () => {
-  const {baseElement} = render(<AddEmployee/>);
+  const {baseElement} =await render(<AddEmployee/>);
   expect (baseElement).toHaveTextContent("Email*");
   //expect (baseElement).toHaveTextContent("Full name*");
   expect (baseElement).toHaveTextContent("Phone Number");

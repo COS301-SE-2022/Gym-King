@@ -6,7 +6,7 @@ import PendingBadgesPage from './PendingBadges';
 */
 
 test('renders without crashing', async() => {
-  const {baseElement} = render(<PendingBadgesPage />);
+  const {baseElement} =await render(<PendingBadgesPage />);
   expect(baseElement).toBeDefined();
 });
 

@@ -3,7 +3,7 @@ import GymOwnerViewBadge from './GymOwnerViewBadge'
 
 //render test withou crahing
 test('renders without crashing', async() => {
-    const { baseElement } = render(<GymOwnerViewBadge />);
+    const { baseElement } =await render(<GymOwnerViewBadge />);
     expect(baseElement).toBeDefined();
 });
 
