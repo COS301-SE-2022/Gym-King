@@ -10,7 +10,6 @@ const FriendsPage: React.FC = () =>{
     let history=useHistory()
     // eslint-disable-next-line 
     const [numFriendRequests, setNumFriendRequests] = useState(1);
-    //let friendsList= [{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"},{"username":"mscott", "profile":"", "email":"mscott@gmail.com"}]
 
     const goToFriendRequests=()=>{
         history.push("/FriendRequests")

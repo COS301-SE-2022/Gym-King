@@ -1,6 +1,5 @@
 import { IonItem, IonList, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, IonButton, useIonViewWillEnter} from '@ionic/react';
 import React, {useState} from 'react'
-//import { useHistory } from 'react-router-dom';
 import axios from "axios";
 
 
@@ -8,7 +7,6 @@ export type props = {requests?:any}
 
 const FriendRequestList: React.FC<props> = () =>{
 
-    //let history=useHistory()
     const [requests, setRequests] = useState([])
     useIonViewWillEnter(async()=>{
         getFriendRequests()
