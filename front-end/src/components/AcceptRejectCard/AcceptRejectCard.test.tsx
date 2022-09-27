@@ -3,7 +3,7 @@ import AcceptRejectCard from './AcceptRejectCard'
 
 
 test('renders without crashing',async () => {
-    const { baseElement } = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
+    const { baseElement } = await render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
     expect(baseElement).toBeDefined();
   });
 

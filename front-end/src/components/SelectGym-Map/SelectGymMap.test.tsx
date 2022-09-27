@@ -7,6 +7,6 @@ import {SelectGymMap} from './SelectGymMap'
 */
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<SelectGymMap />);
+    const { baseElement } =await render(<SelectGymMap />);
     expect(baseElement).toBeDefined();
   });

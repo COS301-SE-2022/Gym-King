@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { BadgeSlider } from './BadgeSlider'
 
 test('renders without crashing',async () => {
-    const { baseElement } = render(<BadgeSlider name="" bIcon="" />);
+    const { baseElement } =await render(<BadgeSlider name="" bIcon="" />);
     expect(baseElement).toBeDefined();
   });
 

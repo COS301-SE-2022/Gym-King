@@ -11,13 +11,13 @@ test('renders without crashing', async() => {
 describe('Testing prop text values', () => {
 
   test('correctly displays cardio activitytype inputs',  async() => {
-    const {baseElement} =   render(<ActivityInputs activityCategory='CARDIO' inputs={undefined} />);
+    const {baseElement} =  await render(<ActivityInputs activityCategory='CARDIO' inputs={undefined} />);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
   }); 
   test('correctly displays strength activitytype inputs', async () => {
-    const {baseElement} =   render(<ActivityInputs activityCategory='strength' inputs={undefined} />);
+    const {baseElement} =  await render(<ActivityInputs activityCategory='strength' inputs={undefined} />);
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");
     expect (baseElement).toHaveTextContent("Reps");

@@ -3,6 +3,6 @@ import React from 'react';
 import RegisterForm from './RegisterForm';
 
 test('renders without crashing', async () => {
-  const {baseElement} = render(<RegisterForm history={undefined}/>);
+  const {baseElement} =await render(<RegisterForm history={undefined}/>);
   expect(baseElement).toBeDefined();
 });

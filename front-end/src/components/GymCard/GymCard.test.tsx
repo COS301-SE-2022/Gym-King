@@ -3,7 +3,7 @@ import GymCard from './GymCard';
 /*UNIT TESTING*/
 //test if pages rendered
 test('renders without crashing', async() => {
-  const { baseElement } = render(<GymCard brand="" id="" name="" address='' deleteClicked=""/>);
+  const { baseElement } =await render(<GymCard brand="" id="" name="" address='' deleteClicked=""/>);
   expect(baseElement).toBeDefined();
 });
 
@@ -11,7 +11,7 @@ describe('Testing prop text values', () => {
 
     
     test('correctly displays gym card info', async () => {
-        const { baseElement } = render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
+        const { baseElement } = await render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
         expect (baseElement).toHaveTextContent("a gym");
         expect (baseElement).toHaveTextContent("123 street");
     }); 
