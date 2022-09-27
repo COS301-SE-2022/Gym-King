@@ -10,7 +10,7 @@ test('renders without crashing', async() => {
     const { baseElement } = await render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
 });
-/*
+
 describe('Testing integration of components', () => {
     
     test('sending in a list of claims displays it in the ActivityList component', async () => {
@@ -21,7 +21,7 @@ describe('Testing integration of components', () => {
     
     });
 })
-
+/*
 
 
 ////////// INTEGRATION TESTS //////////
