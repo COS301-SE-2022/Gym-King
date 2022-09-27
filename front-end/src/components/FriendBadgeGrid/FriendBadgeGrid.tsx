@@ -1,4 +1,5 @@
 import { IonCol, IonGrid, IonRow} from '@ionic/react';
+import React from 'react';
 import MyBadgeCard from '../MyBadgeGrid/MyBadgeCard/MyBadgeCard';
 
 

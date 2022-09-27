@@ -143,7 +143,6 @@ import axios from "axios";
 
         const changeName = (e:any) =>{
             
-            console.log(e.target.value)
             setBadgename(e.target.value)
             
         }

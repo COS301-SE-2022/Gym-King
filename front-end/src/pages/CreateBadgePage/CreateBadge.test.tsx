@@ -1,17 +1,17 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {  render } from '@testing-library/react';
 import CreateBadge from './CreateBadge';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<CreateBadge />);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<CreateBadge />);
     expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-    const {baseElement} = render(<CreateBadge />);
+    const {baseElement} =await render(<CreateBadge />);
     expect (baseElement).toHaveTextContent("Badge Name:");
     expect (baseElement).toHaveTextContent("Activity Type:");
     expect (baseElement).toHaveTextContent("Gym Location:");
@@ -25,7 +25,7 @@ test('correctly displays labels', async () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load owned gym data', async () => {
+    it('should load owned gym data',  () => {
         (async ()=>{
             let gymOwner = "u20519517@tuks.co.za"
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${gymOwner}`,{
@@ -42,10 +42,10 @@ describe('Testing connection to api', () => {
         })
     });
 
-    it('should create a badge', async () => {
-        (()=>{
+    it('should create a badge',  () => {
+        (async()=>{
 
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
             "method":"POST",
             headers: {
                 'Accept': 'application/json',

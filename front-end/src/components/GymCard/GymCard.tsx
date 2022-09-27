@@ -13,7 +13,7 @@
   * @param prop takes in id{any},name{string}, address{string}, deleteClicked{any}
   * @returns GymCard component
   */
- export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any})=>{
+ export const GymCard=(prop:{id:any,name:string, brand:string,address:string,deleteClicked:any})=>{
  //=================================================================================================
  //    VARIABLES & HOOKS
  //=================================================================================================
@@ -105,6 +105,7 @@
                    icon: create,
                    handler: () => {
                      sessionStorage.setItem("gid",prop.id  )
+                     sessionStorage.setItem("gymName",prop.name )
                      history.push("/EditGym")
                    }
                  },{

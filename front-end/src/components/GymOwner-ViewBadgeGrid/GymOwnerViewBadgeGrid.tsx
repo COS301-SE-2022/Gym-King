@@ -1,4 +1,4 @@
-import { IonCol, IonGrid, IonLoading, IonRow, useIonViewDidEnter} from '@ionic/react';
+import { IonCol, IonGrid, IonLoading, IonRow, useIonViewWillEnter} from '@ionic/react';
 import { useState, } from 'react';
 import ViewBadgeCard from './ViewBadgeCard/ViewBadgeCard';
 import axios from 'axios';
@@ -10,10 +10,10 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
 
     
         //GET REQUEST:
-        useIonViewDidEnter(()=>
+        useIonViewWillEnter(()=>
         {
             setLoading(true)
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${props.gymID}`)
+             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/${props.gymID}`)
             .then(response =>response.data)
             .then(response =>{  
                 console.log(response)
@@ -29,13 +29,17 @@ export const GymOwnerViewBadgeGrid=(props: {gymID:string})=>{
                     })
                 }
                 setBadges(arr)
+                
                 setLoading(false)
             })
             .catch(err => {
                 console.log(err)
                 setLoading(false)
             })
-        },[props.gymID])
+
+            console.log(badges)
+        },[props.gymID, badges])
+        
 
     return(
         <IonGrid  className="ion-align-items-center">

@@ -47,6 +47,7 @@ const MapView: React.FC = () =>{
 
     const [gymData, setGymData]=useState({
         g_id: "",
+        gym_name:"",
         gym_brandname: "",
         gym_address: "",
         gym_coord_lat: 0,
@@ -470,7 +471,7 @@ const MapView: React.FC = () =>{
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string;}) => {
+                {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string; gym_name:string}) => {
                     return (
                         <Overlay 
                             key={item.key}
@@ -489,7 +490,7 @@ const MapView: React.FC = () =>{
 
                 <IonCard style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
-                        <IonCardTitle className='center Subheading'>{gymData.gym_brandname}</IonCardTitle>
+                        <IonCardTitle className='center Subheading'>{ gymData.gym_name}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox" >
                         <IonButtons>
@@ -499,6 +500,7 @@ const MapView: React.FC = () =>{
                                 className='btnView'
                                 onClick={()=>{
 
+                                    sessionStorage.setItem('gym_name',gymData.gym_name);
                                     sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
                                     sessionStorage.setItem('gym_address',gymData.gym_address);
                                     sessionStorage.setItem('gid',gymData.g_id);

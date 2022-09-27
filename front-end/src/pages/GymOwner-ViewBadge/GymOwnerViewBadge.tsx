@@ -26,7 +26,7 @@ const GymOwnerViewBadge: React.FC = () =>{
                     
                     arr.push(
                         {
-                            'GymName':response[i].gym_brandname,
+                            'GymName':response[i].gym_name,
                             'GymID':response[i].g_id,
                         }
                     )
