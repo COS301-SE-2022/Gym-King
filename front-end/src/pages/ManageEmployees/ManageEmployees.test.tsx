@@ -6,7 +6,7 @@ import ManageEmployees from './ManageEmployees';
 */
 
 test('renders without crashing', async()=> {
-  const {baseElement} = render(<ManageEmployees />);
+  const {baseElement} = await render(<ManageEmployees />);
   expect(baseElement).toBeDefined();
 });
 
