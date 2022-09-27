@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import SegmentButton from './segmentButton';
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<SegmentButton list={[]} />);
     expect(baseElement).toBeDefined();
   });

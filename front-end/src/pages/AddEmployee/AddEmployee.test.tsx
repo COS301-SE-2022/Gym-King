@@ -2,7 +2,7 @@ import { render} from '@testing-library/react';
 import AddEmployee from './AddEmployee';
 
 
-test('renders without crashing', ()=> {
+test('renders without crashing', async ()=> {
   const{baseElement} = render(<AddEmployee/>);
   expect(baseElement).toBeDefined();
 });
@@ -22,7 +22,6 @@ test('correctly diplays labels ', async () => {
 //////// INTEGRATION TESTS ///////////
 
 describe('Testing connection to api', () => {
-  let badgeId= "XRQ"
   let email ="u20519517@tuks.co.za"
 
   it('should load claim data', async () => {

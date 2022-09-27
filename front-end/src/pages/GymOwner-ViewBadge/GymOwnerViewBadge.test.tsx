@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import GymOwnerViewBadge from './GymOwnerViewBadge'
 
 //render test withou crahing
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<GymOwnerViewBadge />);
     expect(baseElement).toBeDefined();
 });
@@ -11,8 +11,7 @@ test('renders without crashing', () => {
 
 ////////// INTEGRATION TESTS //////////
 describe('Testing connection to api', () => {
-    test("API fetch badges",()=>{
-        let badges:any=[]    
+    test("API fetch badges",async()=>{
         var email="u20519517@tuks.co.za"
                 fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${email}`,{
                     "method":"GET"

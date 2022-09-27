@@ -5,7 +5,7 @@ import GymOwnerViewBadgeGrid from './GymOwnerViewBadgeGrid';
 */
 
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<GymOwnerViewBadgeGrid gymID=""/>);
     expect(baseElement).toBeDefined();
   });
@@ -15,7 +15,7 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-  test('should get a gyms badges',  () => {
+  test('should get a gyms badges', async () => {
       
       ( ()=>{
         fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/a4f`,{

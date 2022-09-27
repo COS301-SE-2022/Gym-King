@@ -1,8 +1,9 @@
 import { render} from '@testing-library/react';
 import ResetPassword from './ResetPassword';
 import axios from "axios";
+import React from 'react';
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const {baseElement} = render(<ResetPassword />);
   expect(baseElement).toBeDefined();
 });

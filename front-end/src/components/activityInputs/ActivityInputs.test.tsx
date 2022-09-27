@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import ActivityInputs from './ActivityInputs'
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<ActivityInputs activityCategory='cardio' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
     expect(baseElement).toBeDefined();
   });
@@ -10,13 +10,13 @@ test('renders without crashing', () => {
 
 describe('Testing prop text values', () => {
 
-  test('correctly displays cardio activitytype inputs',  () => {
+  test('correctly displays cardio activitytype inputs',  async() => {
     const {baseElement} =   render(<ActivityInputs activityCategory='CARDIO' inputs={undefined} />);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
   }); 
-  test('correctly displays strength activitytype inputs',  () => {
+  test('correctly displays strength activitytype inputs', async () => {
     const {baseElement} =   render(<ActivityInputs activityCategory='strength' inputs={undefined} />);
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");

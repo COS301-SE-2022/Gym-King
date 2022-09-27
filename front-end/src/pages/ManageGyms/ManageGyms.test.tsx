@@ -2,7 +2,7 @@ import {render,screen} from '@testing-library/react';
 import ManageGyms from './ManageGyms';
 /*UNIT TESTING*/
 //test if pages rendered
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const { baseElement } = render(<ManageGyms/>);
   expect(baseElement).toBeDefined();
   const linkElement = screen.getByText(/My Gyms/i);

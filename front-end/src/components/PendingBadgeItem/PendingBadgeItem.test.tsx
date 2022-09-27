@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import PendingBadgeItem from './PendingBadgeItem';
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<PendingBadgeItem badgeName='' badgeIcon=''/>);
     expect(baseElement).toBeDefined();
   });

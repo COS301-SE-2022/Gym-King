@@ -5,7 +5,7 @@ import OwnerProfilePage from './OwnerProfile';
 /*
 */
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const {baseElement} = render(<OwnerProfilePage />);
   expect(baseElement).toBeDefined();
 });

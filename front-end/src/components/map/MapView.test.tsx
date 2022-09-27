@@ -6,8 +6,9 @@ import MapView from './MapView'
 
 */
 
-test('renders without crashing', () => {
+test('renders without crashing',async () => {
     const { baseElement } = render(<MapView />);
     expect(baseElement).toBeDefined();
   });
 
+  

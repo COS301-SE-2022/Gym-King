@@ -5,7 +5,7 @@ import EmployeeHomePage from './EmployeeHome';
 /*
 */
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<EmployeeHomePage />);
     expect(baseElement).toBeDefined();
 });

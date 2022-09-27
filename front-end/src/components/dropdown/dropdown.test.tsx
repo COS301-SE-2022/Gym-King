@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { DropDown } from './dropdown'
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<DropDown list={['Strength', "Cardio"]} />);
     expect(baseElement).toBeDefined();
 });

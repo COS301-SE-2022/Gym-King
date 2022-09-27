@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import RadioGroup from './radioGroup';
 
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<RadioGroup list={[]} val='' />);
     expect(baseElement).toBeDefined();
   });

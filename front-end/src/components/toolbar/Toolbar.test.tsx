@@ -6,12 +6,12 @@ import Toolbar from './Toolbar'
 - test profile image is displayed correctly ?
 */
 
-test('renders without crashing', () => {
+test('renders without crashing',async () => {
     const { baseElement } = render(<Toolbar username='user'/>);
     expect(baseElement).toBeDefined();
   });
 
-describe('Testing prop values', () => {
+describe('Testing prop values', async() => {
 
   test('correctly displays prop value ', async () => {
     const {baseElement} = render(<Toolbar username='user1' />);

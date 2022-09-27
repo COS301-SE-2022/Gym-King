@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import UploadActivityPage from './UploadActivityPage'
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<UploadActivityPage />);
     expect(baseElement).toBeDefined();
   });
@@ -11,7 +11,7 @@ test('renders without crashing', () => {
   describe('Testing connection to API', () => {
 
     it('should load badge data', async () => {
-      (()=>{
+      (async()=>{
         let badgeId='XRQ'
         fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
@@ -27,7 +27,7 @@ test('renders without crashing', () => {
     });
 
     it('should load send claim data', async () => {
-        (()=>{
+        (async()=>{
           let b_id="XRQ"
           let email=""
           let username = ""

@@ -4,7 +4,7 @@ import AddGym from './AddGym';
 
 
 //test if pages rendered
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const { baseElement } = render(<AddGym />);
   expect(baseElement).toBeDefined();
   const linkElement = screen.getByLabelText(/Add Gym/i);

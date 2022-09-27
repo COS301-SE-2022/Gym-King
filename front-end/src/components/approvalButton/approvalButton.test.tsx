@@ -1,9 +1,8 @@
-import { IonButton } from '@ionic/react';
 import { render } from '@testing-library/react';
 import ApprovalButton from './approvalButton'
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<ApprovalButton userID={0} username="" badgeId=""  profile=""/>);
+test('renders without crashing', async() => {
+    const { baseElement } =await render(<ApprovalButton userID={0} username="" badgeId=""  profile=""/>);
     expect(baseElement).toBeDefined();
   });
 
@@ -14,10 +13,10 @@ test('renders without crashing', () => {
   - test that image displays correcty ?
 */
 
-describe('Testing prop text values', () => {
+describe('Testing prop text values',  () => {
 
-  test('correctly displays cardio activitytype inputs',  () => {
-    const {baseElement} = render(<ApprovalButton userID={2} username='user1@example.com' badgeId='3' profile=""/>);
+  test('correctly displays cardio activitytype inputs',  async() => {
+    const {baseElement} = await render(<ApprovalButton userID={2} username='user1@example.com' badgeId='3' profile=""/>);
     expect (baseElement).toHaveTextContent("user1@example.com");
   }); 
 });

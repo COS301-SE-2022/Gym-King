@@ -5,7 +5,7 @@ import EmployeeProfilePage from './EmployeeProfile';
 /*
 */
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const {baseElement } = render(<EmployeeProfilePage/>);
   expect(baseElement).toBeDefined();
 });
@@ -42,7 +42,7 @@ describe('Testing connection to api', () => {
   });
 
   it('should update employee data', async () => {
-      (()=>{
+      (async()=>{
           fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'PUT',
                 headers: {

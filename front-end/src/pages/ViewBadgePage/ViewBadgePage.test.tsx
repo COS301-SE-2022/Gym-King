@@ -5,7 +5,7 @@ import ViewBadgePage from './ViewBadgePage';
 /*
 */
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const {baseElement} = render(<ViewBadgePage/>);
   expect(baseElement).toBeDefined();
 });
@@ -14,7 +14,7 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-    test('should load badge info',  () => {
+    test('should load badge info',  async() => {
         
         ( ()=>{
             console.log("hello")

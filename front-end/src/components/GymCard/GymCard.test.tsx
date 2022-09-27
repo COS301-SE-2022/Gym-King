@@ -2,7 +2,7 @@ import {render,screen} from '@testing-library/react';
 import GymCard from './GymCard';
 /*UNIT TESTING*/
 //test if pages rendered
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
   const { baseElement } = render(<GymCard brand="" id="" name="" address='' deleteClicked=""/>);
   expect(baseElement).toBeDefined();
 });
@@ -11,9 +11,9 @@ describe('Testing prop text values', () => {
 
     
     test('correctly displays gym card info', async () => {
-        await render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
-        expect(screen.getByText(/a gym/i)).toBeInTheDocument();
-        expect(screen.getByText(/123 street/i)).toBeInTheDocument();
+        const { baseElement } = render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
+        expect (baseElement).toHaveTextContent("a gym");
+        expect (baseElement).toHaveTextContent("123 street");
     }); 
   });
 

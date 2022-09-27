@@ -5,14 +5,14 @@ import Leaderboard from '../Leaderboard/Leaderboard';
 
 
 //RENDER TESTS
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<Leaderboard/>);
     expect(baseElement).toBeDefined();
 });
 
 ///////// INTEGRATION TESTS //////////
 describe('Testing connection to api', () => {
-    test("API fetch scores",()=>{
+    test("API fetch scores",async()=>{
         var scores:any=[]
         var gymid="lttD"
 

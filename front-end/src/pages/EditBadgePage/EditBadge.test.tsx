@@ -5,7 +5,7 @@ import EditBadge from './EditBadge';
 /*
 */
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<EditBadge />);
     expect(baseElement).toBeDefined();
 });

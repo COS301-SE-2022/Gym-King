@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import ARPage from './ARPage';
 
 
-test('renders without crashing', () => {
+test('renders without crashing', async() => {
     const { baseElement } = render(<ARPage />);
     expect(baseElement).toBeDefined();
 });
