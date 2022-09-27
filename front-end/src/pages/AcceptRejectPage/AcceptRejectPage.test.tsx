@@ -31,7 +31,7 @@ describe('Testing connection to api', () => {
     let email ="u20519517@tuks.co.za"
 
     it('should load claim data',  () => {
-        (async()=>{
+        let test = (async()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
                 "method":"GET"
             })
@@ -43,11 +43,12 @@ describe('Testing connection to api', () => {
                 expect (err).toBeDefined();
             })        
         }) 
+        test()
     });
 
     it('should load claim data',  () => {
         
-        (async()=>
+        let test=(async()=>
         {
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
@@ -60,5 +61,7 @@ describe('Testing connection to api', () => {
                 expect (err).toBeDefined();
             })
         })
+
+        test()
     });
   })

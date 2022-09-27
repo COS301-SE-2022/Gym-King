@@ -57,7 +57,7 @@ describe('Testing connection to api', () => {
 
   it('should update claim data',  () => {
       
-     (async()=>{
+     let test = (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
@@ -79,10 +79,12 @@ describe('Testing connection to api', () => {
 
         }) 
       } )
+
+      test()
   });
 
   it('should reject a gym',  () => {
-    (async()=>{
+    let test= (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
@@ -104,6 +106,8 @@ describe('Testing connection to api', () => {
           expect(err).toBeDefined()
         })
       } )
+
+      test()
   });
 
 })
