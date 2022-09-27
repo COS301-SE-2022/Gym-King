@@ -104,7 +104,6 @@ const Explore: React.FC = () =>{
             history.push("/NotFriendProfile") 
         }
         
-
         
     }
 
@@ -263,7 +262,7 @@ const Explore: React.FC = () =>{
                         <br></br>
                         {
                             foundGym && 
-                            <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewGymProfile}>
+                            <IonCard mode="ios" button style={{"height":"10%", "width":"100%"}} onClick={viewGymProfile}>
                                 <IonCardContent style={{"padding":"0%"}}>
                                     <IonGrid>
                                         <IonRow>
