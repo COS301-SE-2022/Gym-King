@@ -104,6 +104,7 @@ const MapView: React.FC = () =>{
                 
                 // set the gyms array for the search tab
                 setGymsInSearchTab(outGyms);
+                console.log(gymsInSearchTab)
         }
         // display nearby gyms
         else

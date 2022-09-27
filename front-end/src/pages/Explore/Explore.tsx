@@ -54,14 +54,52 @@ const Explore: React.FC = () =>{
         })
     },[badgeSuggestions])
 
-    const viewUserProfile = () =>{
-        //assuming they are not friends
+    const areFriends = async(a:string, b:string)=>{
+        let areFriends=false;
+        await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/checkIfFriends`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                user1email: a,
+                password:  localStorage.getItem("password"),
+                user2email : b
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            areFriends=true
+        })
+        .catch(err => {
+            console.log(err)  
+        })
+        return areFriends
+    }
+
+    const viewUserProfile = async() =>{
+
+        let friends =await areFriends(localStorage.getItem("email")!, email)
+        if(friends)
+        {
+            sessionStorage.setItem("friendUsername",username)
+            sessionStorage.setItem("friendEmail",email)
+            sessionStorage.setItem("friendProfile",profilePicture)
+            sessionStorage.setItem("friendFullname",fullname)
+            history.push("/FriendProfile")
+        }
+        
+/*
+        //is they are not friends 
         sessionStorage.setItem("isFriendRequest", "false")
         sessionStorage.setItem("foundUsername", username)
         sessionStorage.setItem("foundEmail", email)
         sessionStorage.setItem("foundFullname", fullname)
         sessionStorage.setItem("foundProfilePicture", profilePicture)
-        history.push("/NotFriendProfile")
+        history.push("/NotFriendProfile") */
     }
 
 
@@ -177,7 +215,7 @@ const Explore: React.FC = () =>{
                         <IonRow>
                         {
                             foundUser && 
-                            <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewUserProfile}>
+                            <IonCard mode="ios" button style={{"height":"10%", "width":"100%"}} onClick={viewUserProfile}>
                                 <IonCardContent style={{"padding":"0%"}}>
                                     <IonGrid>
                                         <IonRow>

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg, IonHeader,
+import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg, IonHeader, IonText, IonRow,
 } from '@ionic/react';
 
 export const GymSearchBar=(props:{
@@ -105,34 +105,38 @@ export const GymSearchBar=(props:{
                 key:string; 
                 gid:string; 
                 gym_icon:string; 
-                gym_brandname:string;
+                gym_name:string;
                 gym_address:string; 
                 gym_coord_lat:number; 
                 gym_coord_long:number
               }) => {
 
                       return (
-                        
-                          <IonItem
-                            mode="ios"
-                            className="ion-align-items-center border-light"
-                            onClick={()=>{
-                              modal.current?.setCurrentBreakpoint(0.25);
-                              props.setGymFocus(item.gym_coord_lat, item.gym_coord_long)
-                              setIsShowing(false);
-                            }}
-                            key={item.key}>
-                          <IonAvatar slot="start">
-                            <IonImg src={item.gym_icon} />
-                          </IonAvatar>
+                      
+                          <IonItem mode="ios" button detail  
+                          onClick={()=>{
+                            modal.current?.setCurrentBreakpoint(0.25);
+                            props.setGymFocus(item.gym_coord_lat, item.gym_coord_long)
+                            setIsShowing(false);
+                          }}
+                          key={item.gid}
+                          >
+                                <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
+                                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${item.gym_icon})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                </IonAvatar>
+                                <IonLabel mode="ios">
+                                  <IonRow>
+                                    <IonText className={"mediumHeading"}>{item.gym_name}</IonText>
+                                  </IonRow>
+                                  <IonRow>
+                                    <i className='linkLabel'>{item.gym_address}</i>
+                                  </IonRow>
+                                  
+                                </IonLabel>
+                                
+                          </IonItem>)
 
-                          <IonLabel mode="ios">
-                            <h2>{item.gym_brandname}</h2>
-                            <p>{item.gym_address}</p>
-                          </IonLabel>
-                          </IonItem>
-
-                      )                 
+                                 
                   }) 
                 }
                
