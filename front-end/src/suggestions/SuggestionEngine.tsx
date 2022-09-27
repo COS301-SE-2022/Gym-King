@@ -1,10 +1,6 @@
 export const hello=""
 
 
-let B1 =["Obs", "BNi", "23n", "wwr", "alP"]
-let B2 =["Obs", "bgg", "erf", "mjy", "vwt"]
-let N1 = ["Nms", "Uj3", "LaA"]
-let N2 = ["ase", "btt", "awe"]
 
 const common = (a1:string[], a2:string[])=>{
     let common = 0;
@@ -28,6 +24,4 @@ export const similarityBetweenUsers = (B1:any, B2:any, N1:any, N2:any) =>{
     similarity= similarity / union.length
     console.log(similarity)
 }
-
-
 

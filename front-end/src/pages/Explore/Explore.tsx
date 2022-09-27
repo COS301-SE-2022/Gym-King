@@ -3,7 +3,6 @@ import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardC
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
-import { similarityBetweenUsers } from '../../suggestions/SuggestionEngine';
 
 const Explore: React.FC = () =>{
     let history=useHistory()
