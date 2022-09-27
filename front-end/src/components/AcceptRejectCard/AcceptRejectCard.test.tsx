@@ -55,7 +55,7 @@ describe('Testing prop text values', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should update claim data', async () => {
+  it('should update claim data',  () => {
       
      (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
@@ -81,7 +81,7 @@ describe('Testing connection to api', () => {
       } )
   });
 
-  it('should reject a gym', async () => {
+  it('should reject a gym',  () => {
     (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",

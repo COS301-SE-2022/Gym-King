@@ -15,7 +15,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to API', () => {
 
-    it('should load employee data', async () => {
+    it('should load employee data',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${"gym_id"}`, {
             "method":"GET"
@@ -32,7 +32,7 @@ describe('Testing connection to API', () => {
             })
         })
     });
-    it('should delete employee', async () => {
+    it('should delete employee',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
                 method: 'DELETE',

@@ -24,7 +24,7 @@ test('correctly diplays labels ', async () => {
 describe('Testing connection to api', () => {
   let email ="u20519517@tuks.co.za"
 
-  it('should load claim data', async () => {
+  it('should load claim data',  () => {
       (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`,{
           "method":"GET"
@@ -40,7 +40,7 @@ describe('Testing connection to api', () => {
         })
   });
 
-  it('should load claim data', async () => {
+  it('should load claim data',  () => {
       (async()=>
       {
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{

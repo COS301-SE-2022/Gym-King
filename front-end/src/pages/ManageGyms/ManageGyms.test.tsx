@@ -22,7 +22,7 @@ describe('Integration Tests', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should load owned gyms', async () => {
+  it('should load owned gyms',  () => {
       
       (async ()=>{
           await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
@@ -38,7 +38,7 @@ describe('Testing connection to api', () => {
       } )
   });
 
-  it('should delete a gym', async () => {
+  it('should delete a gym',  () => {
       (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
                 "method":"GET"

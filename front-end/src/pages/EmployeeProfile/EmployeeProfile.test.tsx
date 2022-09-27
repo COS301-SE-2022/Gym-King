@@ -15,7 +15,7 @@ test('renders without crashing', async() => {
 ////////// INTEGRATION TESTS //////////
 describe('Testing connection to api', () => {
 
-  it('should load employee data', async () => {
+  it('should load employee data',  () => {
       (async ()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
@@ -41,7 +41,7 @@ describe('Testing connection to api', () => {
       })
   });
 
-  it('should update employee data', async () => {
+  it('should update employee data',  () => {
       (async()=>{
           await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'PUT',

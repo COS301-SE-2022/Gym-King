@@ -19,7 +19,7 @@ test('correctly displays labels', async () => {
 
 describe('Testing connection to API', () => {
 
-  it('should reset a User Password', async () => {
+  it('should reset a User Password',  () => {
      (async () => {
         await axios(process.env["REACT_APP_GYM_KING_API"]+'/users/user/password', {
            method: 'PUT',

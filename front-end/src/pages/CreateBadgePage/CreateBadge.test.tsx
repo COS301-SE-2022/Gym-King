@@ -25,7 +25,7 @@ test('correctly displays labels', async () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load owned gym data', async () => {
+    it('should load owned gym data',  () => {
         (async ()=>{
             let gymOwner = "u20519517@tuks.co.za"
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${gymOwner}`,{
@@ -42,7 +42,7 @@ describe('Testing connection to api', () => {
         })
     });
 
-    it('should create a badge', async () => {
+    it('should create a badge',  () => {
         (async()=>{
 
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{

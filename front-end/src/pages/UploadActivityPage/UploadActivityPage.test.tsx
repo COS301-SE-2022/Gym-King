@@ -10,7 +10,7 @@ test('renders without crashing', async() => {
 
   describe('Testing connection to API', () => {
 
-    it('should load badge data', async () => {
+    it('should load badge data',  () => {
       (async()=>{
         let badgeId='XRQ'
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
@@ -26,7 +26,7 @@ test('renders without crashing', async() => {
       } )
     });
 
-    it('should load send claim data', async () => {
+    it('should load send claim data',  () => {
         (async()=>{
           let b_id="XRQ"
           let email=""

@@ -13,7 +13,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-  it('should load gym data', async () => {
+  it('should load gym data',  () => {
       
       ( async()=>{
           await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
@@ -33,7 +33,7 @@ describe('Testing connection to api', () => {
       } )
   });
 
-  it('should update a gym', async () => {
+  it('should update a gym',  () => {
       (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
         {

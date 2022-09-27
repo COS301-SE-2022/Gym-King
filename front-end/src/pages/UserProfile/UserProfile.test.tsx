@@ -14,7 +14,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-    it('should get badges', async () => {
+    it('should get badges',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${"email"}`,{
                 method: 'GET'
@@ -28,7 +28,7 @@ describe('Testing connection to api', () => {
             })
         })
     });
-    it('should get claims', async () => {
+    it('should get claims',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"email"}`,{
                 method: 'GET'
@@ -42,7 +42,7 @@ describe('Testing connection to api', () => {
             })
         })
     });
-    it('should get user info', async () => {
+    it('should get user info',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
@@ -65,7 +65,7 @@ describe('Testing connection to api', () => {
             })
         })
     });
-    it('should update user info', async () => {
+    it('should update user info',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',

@@ -16,7 +16,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-  it('should load user badges', async () => {
+  it('should load user badges',  () => {
       (async ()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${"user_email"}`,{
             "method":"GET"

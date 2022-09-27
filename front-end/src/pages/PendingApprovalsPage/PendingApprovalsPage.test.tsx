@@ -11,7 +11,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-    it('should load pending claims data', async () => {
+    it('should load pending claims data',  () => {
         (async ()=>{
             let gymId="lttD"
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?gid=${gymId}`,{

@@ -20,7 +20,7 @@ test('correctly displays labels', async () => {
 
 describe('Testing connection to API', () => {
 
-    it('should login a user', async () => {
+    it('should login a user',  () => {
         (async ()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+'/users/login',{
                 method: 'POST',

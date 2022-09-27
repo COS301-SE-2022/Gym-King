@@ -14,7 +14,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-    test('should load badge info',  async() => {
+    test('should load badge info',  () => {
         
         ( async()=>{
             console.log("hello")

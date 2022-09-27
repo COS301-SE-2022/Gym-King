@@ -30,7 +30,7 @@ describe('Testing connection to api', () => {
     let badgeId= "XRQ"
     let email ="u20519517@tuks.co.za"
 
-    it('should load claim data', async () => {
+    it('should load claim data',  () => {
         (async()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
                 "method":"GET"
@@ -45,7 +45,7 @@ describe('Testing connection to api', () => {
         }) 
     });
 
-    it('should load claim data', async () => {
+    it('should load claim data',  () => {
         
         (async()=>
         {

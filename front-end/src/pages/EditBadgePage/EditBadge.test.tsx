@@ -26,7 +26,7 @@ describe('Integration Tests', () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load badge data', async () => {
+    it('should load badge data',  () => {
         
         ( async()=>{
             let badgeId="XRQ"
@@ -44,7 +44,7 @@ describe('Testing connection to api', () => {
         } )
     });
 
-    it('should update a badge', async () => {
+    it('should update a badge',  () => {
         (async()=>{
             let badgeId="XRQ"
             let gymid= 'lttD'
@@ -82,7 +82,7 @@ describe('Testing connection to api', () => {
         } )
     });
 
-    it('should delete a badge', async () => {
+    it('should delete a badge',  () => {
         (async()=>{
             await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",

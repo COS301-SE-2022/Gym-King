@@ -15,7 +15,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-  it('should load owner info', async () => {
+  it('should load owner info',  () => {
       (async ()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
             method: 'POST',
@@ -37,7 +37,7 @@ describe('Testing connection to api', () => {
         })
       })
   });
-  it('should load owner owned gyms', async () => {
+  it('should load owner owned gyms',  () => {
     (async ()=>{
       await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"email"}`,{
         method: 'GET'
@@ -51,7 +51,7 @@ describe('Testing connection to api', () => {
       }) 
     });
   });
-  it('should load owner owned gyms', async () => {
+  it('should load owner owned gyms',  () => {
     (async ()=>{
       await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/empl_email`,{
           method: 'GET'
@@ -66,7 +66,7 @@ describe('Testing connection to api', () => {
     })  
   });
 
-  it('should update owner info', async () => {
+  it('should update owner info',  () => {
     (async ()=>{
       await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
           method: 'PUT',

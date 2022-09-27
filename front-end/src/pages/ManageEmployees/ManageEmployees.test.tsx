@@ -15,7 +15,7 @@ test('renders without crashing', async()=> {
 
 describe('Testing API calls', () => {
 
-  it('should load owners employees', async () => {
+  it('should load owners employees',  () => {
       (async ()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${"owner_email"}`, {
           "method":"GET"
@@ -29,7 +29,7 @@ describe('Testing API calls', () => {
         })
       })
   });
-  it('should get owners gyms', async () => {
+  it('should get owners gyms',  () => {
       (async ()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"owner_email"}`,{
           "method":"GET"
