@@ -9,9 +9,7 @@ const GymsList: React.FC<props> = (props) =>{
 
     let history=useHistory()
 
-    const crypto = window.crypto 
-    var array = new Uint32Array(1);
-    crypto.getRandomValues(array)
+
 
         const [gymBrandName, setGymBrandName] = useState("")
         const [gymName, setGymName] = useState("")

@@ -1,4 +1,4 @@
-import {render,screen} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import EditGym from './EditGym';
 /*UNIT TESTING*/
 //test if pages rendered
