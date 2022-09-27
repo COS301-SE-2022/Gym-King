@@ -7,14 +7,14 @@ import Toolbar from './Toolbar'
 */
 
 test('renders without crashing',async () => {
-    const { baseElement } = render(<Toolbar username='user'/>);
+    const { baseElement } =await  render(<Toolbar username='user' menu={false}/>);
     expect(baseElement).toBeDefined();
   });
 
 describe('Testing prop values', () => {
 
   test('correctly displays prop value ', async () => {
-    const {baseElement} = render(<Toolbar username='user1' />);
+    const {baseElement} = await render(<Toolbar username='user1' menu={false}/>);
     expect (baseElement).toHaveTextContent("user1");    
   }); 
 
