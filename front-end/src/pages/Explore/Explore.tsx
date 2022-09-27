@@ -154,89 +154,101 @@ const Explore: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Explore</IonText>
 
-                    <IonText className='inputHeading'>Find Users</IonText>
-                    <IonSearchbar ref={searchUser}
-                        mode="ios"
-                        onKeyUp ={()=>{
-                            let searchVal = searchUser.current?.value;
-                            findUser(searchVal)
-                        }}
-                        
-                        onIonClear={()=>{
-                            setFoundUser(false)
-                            setEmail("")
-                            setFullname("")
-                            setUsername("")
-                            setProfilePicture("")
-                        }}
-                    ></IonSearchbar>
-                    <br></br>
-                    {
-                        foundUser && 
-                        <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewUserProfile}>
-                            <IonCardContent style={{"padding":"0%"}}>
-                                <IonGrid>
-                                    <IonRow>
-                                        <IonCol size="2">
-                                            <IonAvatar style={{ "marginBottom":"3%"}}>
-                                                <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
-                                            </IonAvatar>
-                                        </IonCol>
-                                        <IonCol style={{"marginTop":"2%"}}>
-                                            <IonLabel>{username}</IonLabel>
-                                        </IonCol>
-                                    </IonRow>
-                                </IonGrid>
+                    <IonGrid >
+                        <IonRow>
+                            <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Find Users</IonText>
+                            <IonSearchbar ref={searchUser}
+                                mode="ios"
+                                onKeyUp ={()=>{
+                                    let searchVal = searchUser.current?.value;
+                                    findUser(searchVal)
+                                }}
                                 
+                                onIonClear={()=>{
+                                    setFoundUser(false)
+                                    setEmail("")
+                                    setFullname("")
+                                    setUsername("")
+                                    setProfilePicture("")
+                                }}
+                            ></IonSearchbar>
+                        </IonRow>
+                        <br></br>
+                        <IonRow>
+                        {
+                            foundUser && 
+                            <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewUserProfile}>
+                                <IonCardContent style={{"padding":"0%"}}>
+                                    <IonGrid>
+                                        <IonRow>
+                                            <IonCol size="2">
+                                                <IonAvatar style={{ "marginBottom":"3%"}}>
+                                                    <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                                </IonAvatar>
+                                            </IonCol>
+                                            <IonCol style={{"marginTop":"2%"}}>
+                                                <IonLabel>{username}</IonLabel>
+                                            </IonCol>
+                                        </IonRow>
+                                    </IonGrid>
+                                    
+                                    
+                                </IonCardContent>
+                            </IonCard>
+                        }
+                        </IonRow>
+                        <br></br>
+                        <IonRow>
+                        <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Find Gyms</IonText>
+                            <IonSearchbar ref={searchGym}
+                                mode="ios"
+                                onKeyUp ={()=>{
+                                    let searchVal = searchGym.current?.value;
+                                    findGym(searchVal)
+                                }}
                                 
-                            </IonCardContent>
-                        </IonCard>
-                    }
-                    <br></br>
-
-                    <IonText className='inputHeading'>Find Gyms</IonText>
-                    <IonSearchbar ref={searchGym}
-                        mode="ios"
-                        onKeyUp ={()=>{
-                            let searchVal = searchGym.current?.value;
-                            findGym(searchVal)
-                        }}
-                        
-                        onIonClear={()=>{
-                            setFoundGym(false)
-                            setGid("")
-                            setGymName("")
-                            setGymBrandName("")
-                            setGymAddress("")
-                        }}></IonSearchbar>
-                    <br></br>
-                    {
-                        foundGym && 
-                        <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewGymProfile}>
-                            <IonCardContent style={{"padding":"0%"}}>
-                                <IonGrid>
-                                    <IonRow>
-                                        <IonCol size="2">
-                                            <IonAvatar style={{ "marginBottom":"3%"}}>
-                                                <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${""})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
-                                            </IonAvatar>
-                                        </IonCol>
-                                        <IonCol style={{"marginTop":"2%"}}>
-                                            <IonLabel>{gymName}</IonLabel>
-                                        </IonCol>
-                                    </IonRow>
-                                </IonGrid>
-                                
-                                
-                            </IonCardContent>
-                        </IonCard>
-                    }
-                    <br></br>
-
-                    <IonText className='inputHeading'>Suggested Badges</IonText>
-                    <br></br>
+                                onIonClear={()=>{
+                                    setFoundGym(false)
+                                    setGid("")
+                                    setGymName("")
+                                    setGymBrandName("")
+                                    setGymAddress("")
+                                }}></IonSearchbar>
+                        </IonRow>
+                        <IonRow>
+                        <br></br>
+                        {
+                            foundGym && 
+                            <IonCard mode="ios" button style={{"height":"10%"}} onClick={viewGymProfile}>
+                                <IonCardContent style={{"padding":"0%"}}>
+                                    <IonGrid>
+                                        <IonRow>
+                                            <IonCol size="2">
+                                                <IonAvatar style={{ "marginBottom":"3%"}}>
+                                                    <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${""})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                                </IonAvatar>
+                                            </IonCol>
+                                            <IonCol style={{"marginTop":"2%"}}>
+                                                <IonLabel>{gymName}</IonLabel>
+                                            </IonCol>
+                                        </IonRow>
+                                    </IonGrid>
+                                    
+                                    
+                                </IonCardContent>
+                            </IonCard>
+                        }
+                        <br></br>
+                        </IonRow>
+                        <IonRow>
+                        <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Suggested Badges</IonText>
+                        <br></br>
+                        </IonRow>
+    
+                    </IonGrid>
                     <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
-                    
+
+
                 </IonContent>
             </IonPage>
         )
