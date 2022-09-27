@@ -2,7 +2,7 @@
  * @file ManageGyms.tsx
  * @brief provides interface for an owner to manage all of his/her gyms
  */
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter, IonToast} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -20,6 +20,8 @@ const ManageGyms: React.FC = () =>{
     const [gymList,setGymList]=useState<any>([{'id':"1",'name':"",'address':""}])
     //-loading hook {boolean} determines when loading icon is shown
     const [loading, setLoading] = useState<boolean>(false);
+    const [showToast1, setShowToast1] = useState(false);
+
     let email = localStorage.getItem("email");
 
     useIonViewDidEnter(()=>
@@ -67,6 +69,7 @@ const ManageGyms: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setLoading(false)
+                setShowToast1(true)
                 setGymList(response)
             })
             .catch(err => {
@@ -99,7 +102,17 @@ const ManageGyms: React.FC = () =>{
                         cssClass={"spinner"}
                         
                     />
+                    <IonToast
+                        mode="ios"
+                        isOpen={showToast1}
+                        onDidDismiss={() => setShowToast1(false)}
+                        message="Gym deleted."
+                        duration={1000}
+                        color="success"
+                    />
                     <br></br><br></br><br></br>
+
+                    
             </IonContent>
             
         </IonPage>
