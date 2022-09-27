@@ -9,6 +9,10 @@ const GymsList: React.FC<props> = (props) =>{
 
     let history=useHistory()
 
+    const crypto = window.crypto 
+    var array = new Uint32Array(1);
+    crypto.getRandomValues(array)
+
         const [gymBrandName, setGymBrandName] = useState("")
         const [gymName, setGymName] = useState("")
         const [gymAddress, setGymAddress] = useState("")
@@ -32,7 +36,6 @@ const GymsList: React.FC<props> = (props) =>{
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand/${gymBrandName}`)
             .then(response =>response.data)
             .then(response =>{
-                console.log(response)
                 setGymProfile(response.gym_logo)
             })
             .catch(err => {
@@ -49,9 +52,10 @@ const GymsList: React.FC<props> = (props) =>{
             history.push("/GymPage")
         }
 
+
         return(
 
-            <IonItem button detail  onClick={()=>viewGymProfile(gymBrandName, gymAddress)} key={props.gymId+ Math.random()}>
+            <IonItem button detail  onClick={()=>viewGymProfile(gymBrandName, gymAddress)} key={props.gymId}>
                     <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
                         <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${gymProfile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                     </IonAvatar>
