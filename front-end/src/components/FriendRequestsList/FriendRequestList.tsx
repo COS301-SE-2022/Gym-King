@@ -1,4 +1,4 @@
-import { IonItem, IonList, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, IonButton, useIonViewWillEnter} from '@ionic/react';
+import { IonItem, IonList, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, IonButton, useIonViewWillEnter, IonToast} from '@ionic/react';
 import React, {useState} from 'react'
 import axios from "axios";
 
@@ -8,6 +8,9 @@ export type props = {requests?:any}
 const FriendRequestList: React.FC<props> = () =>{
 
     const [requests, setRequests] = useState([])
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
+
     useIonViewWillEnter(async()=>{
         getFriendRequests()
     },[])
@@ -53,6 +56,7 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>{
             console.log(response)
             getFriendRequests()
+            setShowConfirm(true)
         })
         .catch(err => {
             console.log(err)
@@ -77,6 +81,7 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>{
             console.log(response)
             getFriendRequests()
+            setShowDelete(true)
         })
         .catch(err => {
             console.log(err)
@@ -85,7 +90,7 @@ const FriendRequestList: React.FC<props> = () =>{
     }
 
         return(
-            
+            <>
             <IonList mode="ios">
                 {
                     requests?.map((el:any)=>{
@@ -117,7 +122,23 @@ const FriendRequestList: React.FC<props> = () =>{
                     })
                 }
             </IonList>  
-               
+            <IonToast
+                mode="ios"
+                isOpen={showConfirm}
+                onDidDismiss={() => setShowConfirm(false)}
+                message="Friend Request Accepted!"
+                duration={1000}
+                color="success"
+            />
+            <IonToast
+                mode="ios"
+                isOpen={showDelete}
+                onDidDismiss={() => setShowDelete(false)}
+                message="Friend Request Rejected!"
+                duration={1000}
+                color="success"
+            />
+            </>
         )
         
 
