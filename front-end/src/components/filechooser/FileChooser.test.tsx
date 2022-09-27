@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import FileChooser from './FileChooser'
 
 test('renders without crashing', async() => {
-    const { baseElement } = render(<FileChooser numFiles={0} />);
+    const { baseElement } = await render(<FileChooser numFiles={1} />);
     expect(baseElement).toBeDefined();
   });
 
