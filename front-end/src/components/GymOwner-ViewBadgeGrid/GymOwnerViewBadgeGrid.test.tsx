@@ -15,7 +15,7 @@ test('renders without crashing', async() => {
 
 describe('Testing connection to api', () => {
 
-  test('should get a gyms badges', async () => {
+  test('should get a gyms badges', () => {
       
       ( async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/a4f`,{
