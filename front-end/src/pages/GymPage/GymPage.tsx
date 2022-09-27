@@ -10,7 +10,8 @@ import axios from "axios";
 const GymPage: React.FC = () =>{
 
     let gid = sessionStorage.getItem("gid");
-    let gname = sessionStorage.getItem("gym_brandname");
+    let gname = sessionStorage.getItem("gym_name")
+    let gbrandname = sessionStorage.getItem("gym_brandname");
     let gaddress = sessionStorage.getItem("gym_address");
     let history=useHistory()
 
@@ -81,7 +82,7 @@ const GymPage: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className ='Content' id="main">
                 <IonCard className="glass gym centerComp">
-                    <IonCardTitle className='center PageTitle'>{gname}</IonCardTitle>
+                    <IonCardTitle className='center PageTitle'>{gbrandname +", "+ gname}</IonCardTitle>
                     <IonCardSubtitle color="light" className='center subheading'>{gaddress}</IonCardSubtitle>
                     
                     <IonButton color="primary" onClick={subscribe} className="width80 centerComp">Subscribe</IonButton> <br></br> <br></br>
