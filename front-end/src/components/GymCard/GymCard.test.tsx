@@ -24,7 +24,7 @@ describe('Testing connection to api', () => {
 
   test('should delete a badge',  async() => {
       
-      ( async()=>{
+      let test =( async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
         {
             method: "DELETE",
@@ -47,6 +47,8 @@ describe('Testing connection to api', () => {
             expect(err).toBeDefined()
           });
       })
+
+      test()
   });
 })
 

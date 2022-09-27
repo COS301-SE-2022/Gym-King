@@ -15,7 +15,7 @@ describe('Testing connection to api', () => {
 
   it('should load gym data',  () => {
       
-      ( async()=>{
+      let test = ( async()=>{
           await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/123`,
             {
               method: "Get",
@@ -31,10 +31,11 @@ describe('Testing connection to api', () => {
             expect(err).toBeDefined()
           });
       } )
+      test()
   });
 
   it('should update a gym',  () => {
-      (async()=>{
+      let test = (async()=>{
         await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
         {
           method: "PUT",
@@ -59,6 +60,8 @@ describe('Testing connection to api', () => {
           expect(err).toBeDefined()
         });
       } )
+
+      test()
   });
 
 })
