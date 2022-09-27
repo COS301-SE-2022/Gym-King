@@ -9,8 +9,11 @@ import * as tf from "@tensorflow/tfjs"
 import { Directory, Filesystem} from '@capacitor/filesystem';
 import { Capacitor, Plugins } from '@capacitor/core';
 import NNAlert from '../../components/NN_outcome/NN_outcome';
-import { VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capacitor-video-recorder';
+import {  VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capacitor-video-recorder';
 import '@teamhive/capacitor-video-recorder';
+import './index'
+import { LayersModel } from '@tensorflow/tfjs';
+import fetch from 'node-fetch';
 const config: VideoRecorderPreviewFrame = {
     id: 'video-record',
     stackPosition: 'front', // 'front' overlays your app', 'back' places behind your app.
@@ -44,14 +47,27 @@ const UploadActivityPage: React.FC = () =>{
     const [model,setModel]=useState<any>()  
     const [message,setMessage]=useState<string>("loading")
     const loadModel =async() => {
-        setMessage("Loading neural Network")
-        setLoading(true)
-        console.log("loading model")
-        const new_model= await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
-        setLoading(false)
-        setMessage("Loading")
-        console.log(new_model)
-        setModel(new_model)
+        var new_model:LayersModel
+        try{
+            setMessage("Loading neural Network")
+            setLoading(true)
+            console.log("loading model")
+            new_model = await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
+            console.log("success")
+            setLoading(false)
+            setMessage("Loading")
+            console.log(new_model)
+            setModel(new_model)
+            
+        }
+        catch(e:any){
+            console.log(e.message)
+            console.log("Error")
+            setLoading(false)
+            setMessage("Loading")
+            history.goBack()
+            
+        }
     };
 
     const [award,setAward]=useState<boolean>(false)

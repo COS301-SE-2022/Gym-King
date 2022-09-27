@@ -13,6 +13,13 @@ platforms:
       - file: AndroidManifest.xml
         target: manifest
         inject: <uses-feature android:name="android.hardware.location.gps" />
+     
+      - file: AndroidManifest.xml
+        target: manifest/application
+        attrs: 
+          android:usesCleartextTraffic: "true"
+      
+    
     gradle:  
       - file: app/build.gradle
         target: 
