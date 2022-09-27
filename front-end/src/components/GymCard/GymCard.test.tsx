@@ -1,5 +1,4 @@
 import {render,screen} from '@testing-library/react';
-import { response } from 'express';
 import GymCard from './GymCard';
 /*UNIT TESTING*/
 //test if pages rendered
@@ -12,7 +11,7 @@ describe('Testing prop text values', () => {
 
     
     test('correctly displays gym card info', async () => {
-        render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
+        await render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
         expect(screen.getByText(/a gym/i)).toBeInTheDocument();
         expect(screen.getByText(/123 street/i)).toBeInTheDocument();
     }); 

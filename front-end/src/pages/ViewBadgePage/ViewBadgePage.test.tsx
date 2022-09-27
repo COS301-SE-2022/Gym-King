@@ -1,4 +1,4 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
 import ViewBadgePage from './ViewBadgePage';
 
 ////TESTS TO BE PERFORMED////

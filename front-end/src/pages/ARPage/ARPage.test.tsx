@@ -1,7 +1,5 @@
-import { render, wait } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ARPage from './ARPage';
-//import AcceptRejectPage from './AcceptReject'
-const request = require('supertest');
 
 
 test('renders without crashing', () => {

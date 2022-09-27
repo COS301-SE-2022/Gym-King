@@ -1,9 +1,5 @@
-import { render, wait } from '@testing-library/react';
-import { useEffect } from 'react';
-import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
+import { render } from '@testing-library/react';
 import AcceptRejectPage from './AcceptReject';
-//import AcceptRejectPage from './AcceptReject'
-const request = require('supertest');
 
 
 ////TESTS TO BE PERFORMED////

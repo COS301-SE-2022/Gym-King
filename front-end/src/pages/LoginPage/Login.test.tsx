@@ -1,7 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { Login } from './Login';
-import {ToastContainer} from 'react-toastify';
 
 
 test('renders without crashing', () => {

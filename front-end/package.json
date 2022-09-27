@@ -52,7 +52,7 @@
     "build": "yarn nx build:ios && yarn nx build:android",
     "build:ios": " ionic cap build ios env-cmd -f .env.production && echo y | npx --silent trapeze run trapeze.yml",
     "build:android": " ionic cap build android env-cmd -f .env.production && echo y | npx --silent trapeze run trapeze.yml && cpx \"google-services.json\" android/app ",
-    "test": "env-cmd -f .env.development react-scripts test --transformIgnorePatterns --watchAll=false",
+    "test": "env-cmd -f .env.development react-scripts test --logHeapUsage --transformIgnorePatterns --watchAll=false --clearCache=false --detectLeaks",
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint": "eslint src/**/*.ts",

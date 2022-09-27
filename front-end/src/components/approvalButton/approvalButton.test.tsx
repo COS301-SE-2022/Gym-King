@@ -16,7 +16,7 @@ test('renders without crashing', () => {
 
 describe('Testing prop text values', () => {
 
-  test('correctly displays cardio activitytype inputs', async () => {
+  test('correctly displays cardio activitytype inputs',  () => {
     const {baseElement} = render(<ApprovalButton userID={2} username='user1@example.com' badgeId='3' profile=""/>);
     expect (baseElement).toHaveTextContent("user1@example.com");
   }); 
