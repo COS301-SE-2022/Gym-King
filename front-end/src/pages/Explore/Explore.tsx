@@ -222,8 +222,8 @@ const Explore: React.FC = () =>{
                         <IonRow>
                         {
                             foundUser && 
-                            <IonCard mode="ios" button style={{"height":"10%", "width":"100%"}} onClick={viewUserProfile}>
-                                <IonCardContent style={{"padding":"0%"}}>
+                            <IonCard mode="ios" button style={{ "width":"100%", "height":"4em"}} onClick={viewUserProfile}>
+                                <IonCardContent style={{"padding":"0%", }}>
                                     <IonGrid>
                                         <IonRow>
                                             <IonCol size="2">
@@ -264,7 +264,7 @@ const Explore: React.FC = () =>{
                         <br></br>
                         {
                             foundGym && 
-                            <IonCard mode="ios" button style={{"height":"10%", "width":"100%"}} onClick={viewGymProfile}>
+                            <IonCard mode="ios" button style={{"height":"4em", "width":"100%"}} onClick={viewGymProfile}>
                                 <IonCardContent style={{"padding":"0%"}}>
                                     <IonGrid>
                                         <IonRow>
