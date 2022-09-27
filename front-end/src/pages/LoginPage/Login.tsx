@@ -66,7 +66,7 @@ export const Login: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 if(response.success){
-                //console.log(response)
+                console.log(response)
                 
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
@@ -91,6 +91,7 @@ export const Login: React.FC = () =>{
             })
     } 
     const navigate=()=>{
+        setLoading(true)
         let usertype=localStorage.getItem("usertype")
         if(usertype==="gym_user")
         {
@@ -103,6 +104,7 @@ export const Login: React.FC = () =>{
         else{
             history.push("/EmployeeHome")
         }
+        setLoading(false)
     }
     
 

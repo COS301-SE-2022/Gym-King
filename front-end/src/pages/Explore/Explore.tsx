@@ -150,7 +150,7 @@ const Explore: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
+                
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Explore</IonText>
 
