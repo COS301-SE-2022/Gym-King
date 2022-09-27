@@ -72,7 +72,7 @@ const Explore: React.FC = () =>{
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
-            areFriends=true
+            areFriends=response
         })
         .catch(err => {
             console.log(err)  
@@ -83,6 +83,8 @@ const Explore: React.FC = () =>{
     const viewUserProfile = async() =>{
 
         let friends =await areFriends(localStorage.getItem("email")!, email)
+        console.log(friends)
+        
         if(friends)
         {
             sessionStorage.setItem("friendUsername",username)
@@ -91,15 +93,19 @@ const Explore: React.FC = () =>{
             sessionStorage.setItem("friendFullname",fullname)
             history.push("/FriendProfile")
         }
+        else
+        {
+            //is they are not friends 
+            sessionStorage.setItem("isFriendRequest", "false")
+            sessionStorage.setItem("foundUsername", username)
+            sessionStorage.setItem("foundEmail", email)
+            sessionStorage.setItem("foundFullname", fullname)
+            sessionStorage.setItem("foundProfilePicture", profilePicture)
+            history.push("/NotFriendProfile") 
+        }
         
-/*
-        //is they are not friends 
-        sessionStorage.setItem("isFriendRequest", "false")
-        sessionStorage.setItem("foundUsername", username)
-        sessionStorage.setItem("foundEmail", email)
-        sessionStorage.setItem("foundFullname", fullname)
-        sessionStorage.setItem("foundProfilePicture", profilePicture)
-        history.push("/NotFriendProfile") */
+
+        
     }
 
 
