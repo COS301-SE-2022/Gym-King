@@ -40,6 +40,38 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
     },
 
     /**
+     * Check if two user's are friends.
+     * @param {string} user1email - the first user email.
+     * @param {string} user2email - the second user email.
+     * @returns {boolean} true or false.
+     */
+     async checkIfFriends(user1email: string, user2email: string){
+        let result1 = await this.findOneBy({ fromUser: user1email, toUser: user2email, isPending: false});
+        let result2 = await this.findOneBy({ fromUser: user2email, toUser: user1email, isPending: false });
+        if (result1 != null || result2 != null){
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     * Check if two user's are pending friends.
+     * @param {string} user1email - the first user email.
+     * @param {string} user2email - the second user email.
+     * @returns {boolean} true or false.
+     */
+ async checkIfPendingFriends(user1email: string, user2email: string){
+    let result1 = await this.findOneBy({ fromUser: user1email, toUser: user2email, isPending: true});
+    let result2 = await this.findOneBy({ fromUser: user2email, toUser: user1email, isPending: true });
+    if (result1 != null || result2 != null){
+        return true;
+    } else {
+        return false;
+    }
+},
+
+    /**
      * gets all the friends(not pending) for a specified user
      * @param userEmail 
      * @returns list of all accepted friends
