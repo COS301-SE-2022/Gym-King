@@ -14,8 +14,6 @@ const ManageEmployees: React.FC = () =>{
     const [gymList, setGymList] = useState(new Array())
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
-    let email = localStorage.getItem('email')
-    
 
     
     useIonViewDidEnter(()=>
@@ -29,14 +27,23 @@ const ManageEmployees: React.FC = () =>{
         sessionStorage.removeItem("employee_profilepicture");
 
         var owner=localStorage.getItem('email')
-        var owner_pass = localStorage.getItem("password")
         setLoading(true)
 
         console.log(owner)
         sessionStorage.setItem("owner_email", owner!)
-        sessionStorage.setItem("owner_pass", owner_pass!)
 
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${owner}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -47,7 +54,18 @@ const ManageEmployees: React.FC = () =>{
          })
 
          //get the owner's gyms
-         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+         axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
@@ -83,7 +101,7 @@ const ManageEmployees: React.FC = () =>{
                     gymList.map((el:any)=>
                         <IonAccordion key={el.g_id} value={el.g_id} mode="ios">
                             <IonItem slot="header" mode="ios">
-                                <IonLabel>{el.gym_brandname}</IonLabel>
+                                <IonLabel>{el.gym_name}</IonLabel>
                              </IonItem>
                              <IonList slot="content" mode="ios">
                                 <EmployeeList list={(getEmployeesByGym(el.g_id))} history={history}></EmployeeList>

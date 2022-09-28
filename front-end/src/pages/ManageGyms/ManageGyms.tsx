@@ -22,8 +22,6 @@ const ManageGyms: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
     const [showToast1, setShowToast1] = useState(false);
 
-    let email = localStorage.getItem("email");
-
     useIonViewDidEnter(()=>
     {
         if(sessionStorage.getItem("gid")!=null)
@@ -46,7 +44,18 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -64,12 +73,22 @@ const ManageGyms: React.FC = () =>{
      */
         const deleteClicked= () => {
             setLoading(true)
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key")
+    
+                })
+            })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setLoading(false)
-                setShowToast1(true)
                 setGymList(response)
             })
             .catch(err => {
@@ -88,8 +107,9 @@ const ManageGyms: React.FC = () =>{
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Gyms</IonText>
                     <IonButton mode="ios" className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>
+                    
                     {gymList.map((el:any)=>
-                        <GymCard key={el.g_name} id={el.g_id} name={el.gym_name} brand={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
+                        <GymCard key={el.g_id} id={el.g_id} name={el.gym_name} brand={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
                     )}
                     
                     <IonLoading 

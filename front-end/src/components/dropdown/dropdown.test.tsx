@@ -1,3 +1,4 @@
+jest.setTimeout(250000)
 import { render } from '@testing-library/react';
 import { DropDown } from './dropdown'
 

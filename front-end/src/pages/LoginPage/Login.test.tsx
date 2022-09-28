@@ -1,3 +1,4 @@
+jest.setTimeout(25000)
 import { render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { Login } from './Login';

@@ -32,7 +32,7 @@ const NotFriendProfile: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     user1email : localStorage.getItem("email"),
-                    password: localStorage.getItem("password"),
+                    apikey: sessionStorage.getItem("key"),
                     user2email: email
                 })
             })

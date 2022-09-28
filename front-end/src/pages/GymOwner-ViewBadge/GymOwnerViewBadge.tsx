@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import React, {useState } from 'react';
 import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -12,10 +12,20 @@ const GymOwnerViewBadge: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
         //GET REQUEST:
-        useIonViewWillEnter(()=>{
-            var email=localStorage.getItem("email")
+        useIonViewDidEnter(()=>{
             setLoading(true);
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key")
+    
+                })
+            })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)

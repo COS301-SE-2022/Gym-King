@@ -11,7 +11,7 @@ import {claimSchema} from '../../validation/UploadClaimValidation'
 import './index'
 import { LayersModel } from '@tensorflow/tfjs';
 import ActivityInputs from '../../components/activityInputs/ActivityInputs';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 interface InternalValues {
     file: any;
 }
@@ -258,7 +258,7 @@ const sendClaim=()=>{
     let formData = new FormData();
         formData.append("bid", b_id)
         formData.append("email", email!)
-        formData.append("password", localStorage.getItem("password")!)
+        formData.append( "apikey", sessionStorage.getItem("key")!)
         formData.append("input1", i1)
         formData.append("input2", i2)
         formData.append("input3", i3)
@@ -313,7 +313,7 @@ useIonViewDidEnter(async()=>{
         },
         data: JSON.stringify({ 
             email: localStorage.getItem("email"),
-            password: localStorage.getItem("password")
+            apikey: sessionStorage.getItem("key")
         })
     })
     .then(response =>response.data)
@@ -426,16 +426,16 @@ export default UploadActivityPage;
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={localStorage.getItem("activitytype")!} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
-                            !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
+                            !isValid && submitted && <IonText className="errText" style={{"color":"darkorange","paddingLeft":"14%"}}>Please enter the required fields</IonText>
                         }
                         <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
+                            <IonRow className='left '>
                                 <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
                         <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
+                            <IonRow className='left '>
+                                <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} required/>
                             </IonRow>
                         </IonGrid>
                         <br></br>

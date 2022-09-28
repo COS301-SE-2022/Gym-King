@@ -41,7 +41,7 @@ const Explore: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
-                password:  localStorage.getItem("password"),
+                apikey:  sessionStorage.getItem("key"),
 
             })
         })
@@ -68,7 +68,7 @@ const Explore: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 user1email: a,
-                password:  localStorage.getItem("password"),
+                apikey:  sessionStorage.getItem("key"),
                 user2email : b
 
             })
@@ -134,7 +134,7 @@ const Explore: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
-                password:  localStorage.getItem("password"),
+                apikey:  sessionStorage.getItem("key"),
                 username: user
             })
         })
@@ -293,11 +293,12 @@ const Explore: React.FC = () =>{
                         <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Suggested Badges</IonText>
                         <br></br>
                         </IonRow>
-    
+                        <BadgeSuggestions  badges={badgeSuggestions}></BadgeSuggestions>
+
                     </IonGrid>
-                    <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
 
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}
