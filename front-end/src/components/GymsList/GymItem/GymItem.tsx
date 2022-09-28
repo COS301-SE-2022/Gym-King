@@ -9,8 +9,6 @@ const GymsList: React.FC<props> = (props) =>{
 
     let history=useHistory()
 
-
-
         const [gymBrandName, setGymBrandName] = useState("")
         const [gymName, setGymName] = useState("")
         const [gymAddress, setGymAddress] = useState("")
@@ -41,7 +39,9 @@ const GymsList: React.FC<props> = (props) =>{
             .catch(err => {
                 console.log(err)
             })
-        })
+            
+            setLoading(false)
+        },[props,gymBrandName])
         
 
         const viewGymProfile = (brandname:string, address:string) =>{
