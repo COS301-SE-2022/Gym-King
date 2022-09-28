@@ -84,7 +84,7 @@ var emailer = nodemailer.createTransport({
   let apikey = "";
   let characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < 64; i++) {
+  for (let i = 0; i < 64; i++) {
     apikey += characters.charAt(Math.floor(Math.random() * 62));
   }
   return apikey;
