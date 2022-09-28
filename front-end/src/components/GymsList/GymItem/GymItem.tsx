@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 
-export type props = {gymId?:any}
+export type props = {gymId?:any,gymBrandName?:any}
 
 const GymsList: React.FC<props> = (props) =>{
 
@@ -44,7 +44,9 @@ const GymsList: React.FC<props> = (props) =>{
                 setLoading(false)
                 console.log(err)
             })
-        })
+            
+            setLoading(false)
+        },[props,gymBrandName])
         
 
         const viewGymProfile = (brandname:string, address:string) =>{
