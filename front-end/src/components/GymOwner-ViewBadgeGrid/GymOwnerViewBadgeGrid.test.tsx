@@ -1,3 +1,4 @@
+jest.setTimeout(25000)
 import { render } from '@testing-library/react';
 import GymOwnerViewBadgeGrid from './GymOwnerViewBadgeGrid';
 ////TESTS TO BE PERFORMED////

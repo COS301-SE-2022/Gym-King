@@ -39,7 +39,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)

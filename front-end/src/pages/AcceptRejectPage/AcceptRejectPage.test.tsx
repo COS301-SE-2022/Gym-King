@@ -1,3 +1,5 @@
+jest.setTimeout(25000)
+
 import { render } from '@testing-library/react';
 import AcceptRejectPage from './AcceptReject';
 
@@ -32,7 +34,7 @@ describe('Testing connection to api', () => {
 
     it('should load claim data',  () => {
         let test = (async()=>{
-            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&email=${email}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&username=${localStorage.getItem("username")!}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
