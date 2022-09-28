@@ -31,6 +31,20 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
         return this.findBy({toGym: gid });
     },
 
+    /**
+     * Checks if user is subscribed to a gym.
+     * @param {string} email the from User's email
+     * @param {string} gid gym's ID
+     * @returns {boolean}
+     */
+     async checkIfSubscribed(email: string, gid: string) {
+        let result = await this.findOneBy({fromUser: email, toGym: gid});
+        if (result != null){
+            return true;
+        } else {
+            return false;
+        }
+    },
 
     /**
      * creates a new subsription relation between a user and a gym
