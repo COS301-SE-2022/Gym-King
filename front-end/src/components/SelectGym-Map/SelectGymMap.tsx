@@ -101,7 +101,7 @@ export function SelectGymMap() {
         console.log(e)
     }
     console.log("using geocoding api");
-    Geocoder.init("AIzaSyD9pQDwcGJFK6NRGNj5-YwdJBx2PtERCTg");
+    Geocoder.init("");
     Geocoder.from(gymCoord[0],gymCoord[1])
     .then((json) => {
         if(json.status==="OK")
