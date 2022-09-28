@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
@@ -18,7 +18,7 @@ const FriendsPage: React.FC = () =>{
 
     const [friends, setFriends] = useState([]);
 
-    useIonViewWillEnter(()=>{
+    useEffect(()=>{
         setLoading(true)
         //remove session storage
         sessionStorage.removeItem("friendUsername")
@@ -38,10 +38,10 @@ const FriendsPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            if(response.success){
+            console.log(response)
                 console.log(response)
                 setFriends(response)
-            }
+        
             setLoading(false)
         })
         .catch(err => {
@@ -49,6 +49,7 @@ const FriendsPage: React.FC = () =>{
             console.log(err)
             
         })
+        console.log(friends)
 
     },[])
     //=================================================================================================

@@ -554,9 +554,9 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[7]}</IonLabel></IonChip>
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[8]}</IonLabel></IonChip>
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[9]}</IonLabel></IonChip>
-                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[10], 10)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[10]}</IonLabel></IonChip>
-                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[11], 11)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[11]}</IonLabel></IonChip>
-                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[12], 12)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[12]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[10], 10)}  style={{"backgroundColor": chipColor10}} ><IonLabel>{strengthTags[10]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[11], 11)}  style={{"backgroundColor": chipColor11}} ><IonLabel>{strengthTags[11]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[12], 12)}  style={{"backgroundColor": chipColor12}} ><IonLabel>{strengthTags[12]}</IonLabel></IonChip>
 
                                 </IonRow>
                                 

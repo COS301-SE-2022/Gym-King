@@ -44,7 +44,7 @@ export const AddEmployee: React.FC = () =>{
         else
             handleError('', 'email');
 
-        if(formData.name && !onlyLettersAndSpaces(formData.name)) {
+        if(formData.name && onlyLettersAndSpaces(formData.name)) {
             handleError('Please input a valid name', 'name');
             isValid = false;
         }
@@ -72,7 +72,7 @@ export const AddEmployee: React.FC = () =>{
         else
             handleError('', 'password');
 
-        if(formData.gid !=="") {
+        if(formData.gid ==="") {
             handleError('Please select a gym.', 'gid');
             isValid = false;
         }
