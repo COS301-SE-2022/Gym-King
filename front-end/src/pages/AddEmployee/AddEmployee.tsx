@@ -30,82 +30,83 @@ export const AddEmployee: React.FC = () =>{
     });
 
     const handleError = (error:string, input:string) => {
+        console.log(errors)
         setErrors(prevState => ({...prevState, [input]: error}));
     };
 
-    const  validate = () => {
-        let isValid = true
+    // const  validate = () => {
+    //     let isValid = true
+    //     console.log
 
+    //     if(formData.email && !validEmail(formData.email)) {
+    //         handleError('Please input a valid email', 'email');
+    //         isValid = false;
+    //     }
+    //     else
+    //         handleError('', 'email');
 
-        if(formData.email && !validEmail(formData.email)) {
-            handleError('Please input a valid email', 'email');
-            isValid = false;
-        }
-        else
-            handleError('', 'email');
+    //     if(formData.name && !onlyLettersAndSpaces(formData.name)) {
+    //         handleError('Please input a valid name', 'name');
+    //         isValid = false;
+    //     }
+    //     else
+    //         handleError('', 'name');
 
-        if(formData.name && !onlyLettersAndSpaces(formData.name)) {
-            handleError('Please input a valid name', 'name');
-            isValid = false;
-        }
-        else
-            handleError('', 'name');
+    //     if(formData.number && !validPhone(formData.number)) {
+    //         handleError('Please input a valid phone', 'phone');
+    //         isValid = false;
+    //     }
+    //     else
+    //         handleError('', 'phone');
 
-        if(formData.number && !validPhone(formData.number)) {
-            handleError('Please input a valid phone', 'phone');
-            isValid = false;
-        }
-        else
-            handleError('', 'phone');
+    //     if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
+    //         handleError('Please input a valid username', 'username');
+    //         isValid = false;
+    //     }
+    //     else
+    //         handleError('', 'username');
 
-        if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
-            handleError('Please input a valid username', 'username');
-            isValid = false;
-        }
-        else
-            handleError('', 'username');
+    //     if(formData.password && !validPassword(formData.password)) {
+    //         handleError('Must be at least 8 characters with at least  1 uppercase, lowercase, number and symbol.', 'password');
+    //         isValid = false;
+    //     }
+    //     else
+    //         handleError('', 'password');
 
-        if(formData.password && !validPassword(formData.password)) {
-            handleError('Must be at least 8 characters with at least  1 uppercase, lowercase, number and symbol.', 'password');
-            isValid = false;
-        }
-        else
-            handleError('', 'password');
+    //     if(formData.gid !=="") {
+    //         handleError('Please select a gym.', 'gid');
+    //         isValid = false;
+    //     }
+    //     else
+    //         handleError('', 'gid');
 
-        if(formData.gid !=="") {
-            handleError('Please select a gym.', 'gid');
-            isValid = false;
-        }
-        else
-            handleError('', 'gid');
+    //     return isValid;
+    // }
 
-        return isValid;
-    }
+    // useIonViewDidEnter(()=>{
+    //     setLoading(true)
+    //     axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+    //         method: 'POST',
+    //         headers: {
+    //           'Accept': 'application/json',
+    //           'Content-Type': 'application/json',
+    //         },
+    //         data: JSON.stringify({ 
+    //             email: localStorage.getItem("email"),
+    //             apikey: sessionStorage.getItem("key")
 
-    useIonViewDidEnter(()=>{
-        setLoading(true)
-        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            data: JSON.stringify({ 
-                email: localStorage.getItem("email"),
-                apikey: sessionStorage.getItem("key")
-
-            })
-        })
-        .then(response =>response.data)
-        .then(response =>{
-            setOwnedGyms(response);
-            setLoading(false)
-        })
-        .catch(err => {
-            setLoading(false)
-            console.log(err)
-        }) 
-    })
+    //         })
+    //     })
+    //     .then(response =>response.data)
+    //     .then(response =>{
+    //         setOwnedGyms(response);
+    //         setLoading(false)
+    //     })
+    //     .catch(err => {
+    //         setLoading(false)
+    //         console.log(err)
+    //     }) 
+    // })
 
     const setChosenGymLocation = (e:any) =>{
         console.log(e);
