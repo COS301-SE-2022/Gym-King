@@ -3,7 +3,7 @@
 * @brief card that allows employee to accept or reject a claim
 */
 
-import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonRow, IonText, IonToast} from '@ionic/react';
+import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonLoading, IonRow, IonText, IonToast} from '@ionic/react';
 import React, {useState} from 'react'
 import './AcceptRejectCard.css'
 import ActivityList from '../ActivityList/ActivityList';
@@ -20,6 +20,8 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
     
     const [showAccepted, setShowAccepted] = useState(false);
     const [showRejected, setShowRejected] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
     //=================================================================================================
     //    FUNCTIONS
     //=================================================================================================
@@ -31,6 +33,7 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
      * @result ? - claim is accepted or call to api fails 
     */
     const acceptClaim= ()=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
@@ -46,6 +49,7 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
         .then(response =>{
 
             localStorage.setItem("claimAccepted", "true")
+            setLoading(false)
             props.history.goBack()
 
         })
@@ -58,23 +62,24 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
      * @result ? - a claim is rejected or the api call fails 
     */
     const rejectClaim = () =>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+        setLoading(true)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 bid: props.badgeId,
                 email: props.userID
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
             console.log(response.results);
 
             localStorage.setItem("claimRejected", "true")
-            
+            setLoading(false)
             props.history.goBack()
 
         })
@@ -143,6 +148,14 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
             message="Claim Rejected."
             duration={500}
             color="success"
+            />
+            <IonLoading  
+                isOpen={loading}
+                message={"Loading"}
+                duration={2000}
+                spinner={"circles"}
+                onDidDismiss={() => setLoading(false)}
+                cssClass={"spinner"}
             />
             </>
             
