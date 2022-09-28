@@ -41,12 +41,9 @@ const ManageEmployees: React.FC = () =>{
         .then(response =>{
             console.log(response)
             setEmployeeList(response)
-
-            setLoading(false)
         })
         .catch(err => {
             console.log(err)
-            setLoading(false)
          })
 
          //get the owner's gyms
@@ -55,6 +52,7 @@ const ManageEmployees: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setGymList(response)
+                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
