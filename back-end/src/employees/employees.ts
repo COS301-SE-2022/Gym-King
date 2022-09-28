@@ -5,6 +5,7 @@ import { badgeRepository } from "../repositories/badge.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
 import { firebase_admin } from "../firebase.connection";
 import { ownerRepository } from "../repositories/gym_owner.repository";
+import { ownerOTPRepository } from "../repositories/owner_otp.repository";
 
 const express = require("express");
 const cors = require("cors");
@@ -149,6 +150,7 @@ const employees = express.Router()
    * POST - Insert an employee.
    * @param {string} ownerEmail owner email.
    * @param {string} apikey owner api key.
+   * @param {string} email employee email.
    * @param {string} fullname The full name of employee.
    * @param {string} number phone number.
    * @param {string} username username.
@@ -181,7 +183,7 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * POST - Insert a badge into the database.
-   * @param {string} email employee email.
+   * @param {string} email employee or owner email.
    * @param {string} apikey employee api key.
    * @param {string} gid gym ID for badge.
    * @param {string} badgename badge name.
@@ -199,7 +201,8 @@ const employees = express.Router()
     try {
       let query = req.body;
       let employee = await employeeRepository.findByEmail(query.email)
-      if (employee != null && employee.apikey == query.apikey) {
+      let owner = await ownerRepository.findByEmail(query.email)
+      if (employee != null && employee.apikey == query.apikey || owner != null && owner.apikey == query.apikey) {
         let ID = createID(3);
         let result = await badgeRepository.saveBadge(ID,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
         res.json(result);
@@ -469,7 +472,7 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * PUT - Update a badge.
-   * @param {string} email employee email.
+   * @param {string} email employee or owner email.
    * @param {string} apikey employee api key.
    * @param {string} bid badge ID used to find badge.
    * @param {string} gid gym ID of the badge.
@@ -488,7 +491,8 @@ const employees = express.Router()
     try {
       let query = req.body;
       let employee = await employeeRepository.findByEmail(query.email);
-      if (employee != null && employee.apikey == query.apikey) {
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (employee != null && employee.apikey == query.apikey || owner != null && owner.apikey == query.apikey) {
         let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
         res.json({'success':true});
       } else {
@@ -512,7 +516,8 @@ const employees = express.Router()
     try {
       let query = req.body;
       let employee = await employeeRepository.findByEmail(query.email);
-      if (employee != null && employee.apikey == query.apikey) {
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (employee != null && employee.apikey == query.apikey || owner != null && owner.apikey == query.apikey) {
         let result = await badgeClaimRepository.deleteAllClaimsByBID(query.bid);
         result = await badgeOwnedRepository.deleteAllOwnedByBID(query.bid);
         result = await badgeRepository.deleteBadge(query.bid);
