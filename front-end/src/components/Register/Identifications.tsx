@@ -80,7 +80,7 @@ export const Identifications: React.FC<props> = (props) => {
                 </>
             )}
             <br></br>
-            <IonButton type="submit" color="warning" className=" btnLogin ion-margin-top" >Next</IonButton>
+            <IonButton mode="ios" type="submit" color="warning" className=" btnLogin ion-margin-top" >Next</IonButton>
             <br></br> <br></br>
             <div className='center'>
                 <IonText className="linkLabel">Already have an account?</IonText><button  onClick= {() =>{props.history.go(-1)}}  color="secondary" className='linkLabel puesdorHref'>Login</button>

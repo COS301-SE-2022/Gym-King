@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
+import React from 'react';
 import Gym from './Gym';
 
-test('renders without crashing', () => {
-  const{baseElement} = render(<Gym handleChange={undefined} next={undefined} prev={undefined}/>);
+test('renders without crashing', async() => {
+  const{baseElement} = await render(<Gym handleChange={null} next={null} prev={null}/>);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} = render(<Gym handleChange={undefined} next={undefined} prev={undefined} />);
+  const {baseElement} =await render(<Gym handleChange={null} next={null} prev={null} />);
   expect (baseElement).toHaveTextContent("Please select your gym*");
 });

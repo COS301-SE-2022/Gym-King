@@ -39,6 +39,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`)
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setGymName(response.gym_name)
             setGymLocation(response.gym_address)
@@ -61,7 +62,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
     }
 
     const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
-        
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
 
             method: 'DELETE',
@@ -145,7 +146,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton onClick={handleDelete}>Delete Employee</IonButton>
+                            <IonButton mode="ios" onClick={handleDelete}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>
@@ -153,6 +154,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
 
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -160,6 +162,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -167,6 +170,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="danger"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showDeleteEmployee}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Employee deleted!"
@@ -174,6 +178,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

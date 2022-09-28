@@ -137,15 +137,15 @@ const Leaderboard: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>Leaderboard</IonText>
-                <IonSegment onIonChange={segmentChanged} value={type}>
-                    <IonSegmentButton value="overall" >
+                <IonSegment mode="ios" onIonChange={segmentChanged} value={type}>
+                    <IonSegmentButton mode="ios" value="overall" >
                         <IonLabel>Overall</IonLabel>
                         
                     </IonSegmentButton>
-                    <IonSegmentButton value="cardio">
+                    <IonSegmentButton mode="ios" value="cardio">
                         <IonLabel>Cardio</IonLabel>
                     </IonSegmentButton>
-                    <IonSegmentButton value="strength">
+                    <IonSegmentButton mode="ios" value="strength">
                         <IonLabel>Strength</IonLabel>
                     </IonSegmentButton>
                 </IonSegment>
@@ -157,6 +157,7 @@ const Leaderboard: React.FC = () =>{
                 </div>
                 
                 <IonLoading 
+                    mode="ios"
                     isOpen={loading}
                     message={"Loading"}
                     spinner={"circles"}

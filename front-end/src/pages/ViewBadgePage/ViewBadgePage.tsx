@@ -5,8 +5,10 @@ import {ViewBadgeCard}from '../../components/ViewBadgeCard/ViewBadgeCard'
 import './ViewBadgePage.css';
 import axios from "axios";
 
-
+//
 const ViewBadgePage: React.FC = () =>{
+
+    ///STATES
     const [badges, setBadges] = useState(new Array<any>());
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -58,6 +60,7 @@ const ViewBadgePage: React.FC = () =>{
                     
                     
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         spinner={"circles"}

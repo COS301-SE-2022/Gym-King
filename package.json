@@ -98,6 +98,7 @@
     "typeorm": "0.3.7",
     "use-file-picker": "^1.4.2",
     "uuid": "^8.3.2",
+    "weak-napi": "^2.0.2",
     "webpack": "^5.73.0",
     "yarn": "^1.22.18",
     "yup": "^0.32.11"

@@ -1,4 +1,4 @@
-import {IonButton, IonCol, IonGrid, IonRow, IonText} from '@ionic/react';
+import {IonButton, IonCol, IonGrid, IonLoading, IonRow, IonText} from '@ionic/react';
 import React, {useEffect, useState} from 'react';
 import '../../theme/variables.css'
 import DropDown from '../dropdown/dropdown';
@@ -10,12 +10,14 @@ export type props = { handleChange:any, next:any, prev:any, };
 export const Gym: React.FC<props>  = (props) =>{
     
     const [gymBrands, setGymBrands]= useState(new Array<string>())
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(()=>{
         getBrands()
     })
 
     const getBrands = async() =>{
+        setLoading(true)
         let gyms: any[]=[]
         let array: string[]=[]
         await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
@@ -31,6 +33,7 @@ export const Gym: React.FC<props>  = (props) =>{
             array.push(el.gym_brandname)
           })
           setGymBrands(array)
+          setLoading(false)
       }
     const next = (e:any) => {
         e.preventDefault();
@@ -48,6 +51,7 @@ export const Gym: React.FC<props>  = (props) =>{
     }
 
         return(
+            <>
             <form className='registerForm' onSubmit={next}>
                 <IonText className='center inputHeading'>Register</IonText>
                 <br></br>
@@ -67,6 +71,15 @@ export const Gym: React.FC<props>  = (props) =>{
                     </IonRow>
                 </IonGrid>
             </form>
+            <IonLoading 
+                isOpen={loading}
+                message={"Loading"}
+                duration={2000}
+                spinner={"circles"}
+                onDidDismiss={() => setLoading(false)}
+                cssClass={"spinner"}
+            />
+            </>
         )
         
     }

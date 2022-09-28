@@ -1,12 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
 import EmployeeProfilePage from './EmployeeProfile';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-  const {baseElement } = render(<EmployeeProfilePage/>);
+test('renders without crashing', async() => {
+  const {baseElement } =await render(<EmployeeProfilePage/>);
   expect(baseElement).toBeDefined();
 });
 
@@ -15,9 +15,9 @@ test('renders without crashing', () => {
 ////////// INTEGRATION TESTS //////////
 describe('Testing connection to api', () => {
 
-  it('should load employee data', async () => {
+  it('should load employee data',  () => {
       (async ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -41,9 +41,9 @@ describe('Testing connection to api', () => {
       })
   });
 
-  it('should update employee data', async () => {
-      (()=>{
-          fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
+  it('should update employee data',  () => {
+      (async()=>{
+          await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',

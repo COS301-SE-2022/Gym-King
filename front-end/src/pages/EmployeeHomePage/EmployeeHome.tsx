@@ -15,7 +15,7 @@ const EmployeeHomePage: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className ='Content' id="main">
                 <IonText className='PageTitle center'>Employee Page</IonText>
-                <IonButton className="width80 centerComp" routerLink='/PendingApprovals' routerDirection="forward" color="warning">Pending Approvals</IonButton>
+                <IonButton mode="ios" className="width80 centerComp" routerLink='/PendingApprovals' routerDirection="forward" color="warning">Pending Approvals</IonButton>
             </IonContent>
         </IonPage>
     )

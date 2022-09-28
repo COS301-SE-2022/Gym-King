@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {IonContent, IonText, IonPage, IonHeader, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import GymsList from '../../components/GymsList/GymsList';
 import axios from "axios";
@@ -9,11 +9,12 @@ const MyGyms: React.FC = () =>{
     let array: any[]=[]
     let gymIDs: any[]=[]
     let gymObjects: any[]=[]
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     useIonViewWillEnter(async()=>{
 
-        //remove session storage
-        
+        setLoading(true)
         await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getGymSubscriptions`,{
             method: 'POST',
             headers: {
@@ -27,12 +28,13 @@ const MyGyms: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setGyms(response.results)
         })
         .catch(err => {
+            setLoading(false)
             console.log(err)
-            
         })
 
 
@@ -53,6 +55,15 @@ const MyGyms: React.FC = () =>{
                     <IonText className='PageTitle center'>My Gyms</IonText>
                     <GymsList gymsList={gyms} ></GymsList>
                     
+
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 </IonContent>
             </IonPage>
         )

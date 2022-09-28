@@ -59,7 +59,7 @@ export const Contact: React.FC<props> = (props) => {
         props.prev();
     };
         return(
-            <form className='registerForm'  onSubmit={next}>
+            <form className='registerForm'  onSubmit={next} >
                 <IonText className='center inputHeading'>Register</IonText>
                 <br></br>
 

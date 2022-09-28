@@ -1,12 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {render} from '@testing-library/react';
 import EditBadge from './EditBadge';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<EditBadge />);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<EditBadge />);
     expect(baseElement).toBeDefined();
 });
 
@@ -26,11 +26,11 @@ describe('Integration Tests', () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load badge data', async () => {
+    it('should load badge data',  () => {
         
-        ( ()=>{
+        ( async()=>{
             let badgeId="XRQ"
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -44,8 +44,8 @@ describe('Testing connection to api', () => {
         } )
     });
 
-    it('should update a badge', async () => {
-        (()=>{
+    it('should update a badge',  () => {
+        (async()=>{
             let badgeId="XRQ"
             let gymid= 'lttD'
             let badgeicon = "BADGE ICON"
@@ -54,7 +54,7 @@ describe('Testing connection to api', () => {
             let bc = "";
             let bd = "formData.badgeDescription";
             
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"PUT",
                 headers: {
                   'Accept': 'application/json',
@@ -82,9 +82,9 @@ describe('Testing connection to api', () => {
         } )
     });
 
-    it('should delete a badge', async () => {
-        (()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
+    it('should delete a badge',  () => {
+        (async()=>{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
                   'Accept': 'application/json',

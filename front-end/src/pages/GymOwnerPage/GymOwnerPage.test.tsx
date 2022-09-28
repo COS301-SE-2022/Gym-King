@@ -1,8 +1,8 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
 import GymOwnerPage from './GymOwnerPage';
 
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<GymOwnerPage />);
+test('renders without crashing', async() => {
+  const {baseElement} =await render(<GymOwnerPage />);
   expect(baseElement).toBeDefined();
 });

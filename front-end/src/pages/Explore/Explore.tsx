@@ -1,15 +1,18 @@
 import React, { useRef, useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
+import BadgeSuggestions from '../../components/BadgeSuggestions/BadgeSuggestions';
 
 const Explore: React.FC = () =>{
     let history=useHistory()
 
+
     const searchUser = useRef<HTMLIonSearchbarElement>(null)
     const searchGym = useRef<HTMLIonSearchbarElement>(null)
-    
+    const [loading, setLoading] = useState<boolean>(false);
+
     //search user
     const [foundUser, setFoundUser]= useState(false)
     const [username, setUsername]= useState("")
@@ -24,14 +27,90 @@ const Explore: React.FC = () =>{
     const [gymBrandName, setGymBrandName] =useState("")
     const [gymAddress, setGymAddress] =useState("")
 
-    const viewUserProfile = () =>{
-        //assuming they are not friends
-        sessionStorage.setItem("isFriendRequest", "false")
-        sessionStorage.setItem("foundUsername", username)
-        sessionStorage.setItem("foundEmail", email)
-        sessionStorage.setItem("foundFullname", fullname)
-        sessionStorage.setItem("foundProfilePicture", profilePicture)
-        history.push("/NotFriendProfile")
+    //suggested badges
+    const [badgeSuggestions, setBadgeSuggestions] =useState([])
+    
+
+    useIonViewWillEnter(async()=>{
+        setLoading(true)
+        await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/suggestion`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                password:  localStorage.getItem("password"),
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            setLoading(false)
+            console.log(response)
+            setBadgeSuggestions(response)
+            
+        })
+        .catch(err => {
+            setLoading(false)
+            console.log(err)  
+        })
+    },[badgeSuggestions])
+
+    const areFriends = async(a:string, b:string)=>{
+        let areFriends=false;
+        await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/checkIfFriends`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                user1email: a,
+                password:  localStorage.getItem("password"),
+                user2email : b
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            console.log(response)
+            areFriends=response
+        })
+        .catch(err => {
+            console.log(err)  
+        })
+        return areFriends
+    }
+
+    const viewUserProfile = async() =>{
+
+        let friends =await areFriends(localStorage.getItem("email")!, email)
+        console.log(friends)
+        
+        if(friends)
+        {
+            sessionStorage.setItem("friendUsername",username)
+            sessionStorage.setItem("friendEmail",email)
+            sessionStorage.setItem("friendProfile",profilePicture)
+            sessionStorage.setItem("friendFullname",fullname)
+            history.push("/FriendProfile")
+        }
+        else
+        {
+            //is they are not friends 
+            
+            sessionStorage.setItem("isFriendRequest", "false")
+            sessionStorage.setItem("foundUsername", username)
+            sessionStorage.setItem("foundEmail", email)
+            sessionStorage.setItem("foundFullname", fullname)
+            sessionStorage.setItem("foundProfilePicture", profilePicture)
+            console.log(sessionStorage.getItem("foundEmail"))
+            history.push("/NotFriendProfile") 
+        }
+        
+        
     }
 
 
@@ -112,12 +191,6 @@ const Explore: React.FC = () =>{
         })
     }
 
-    //let B1 =["Obs", "BNi", "23n", "wwr", "alP"]
-    //let B2 =["Obs", "BNi", "23n", "wwr", "alP"]
-    //let N1 = ["Nms", "Uj3", "LaA"]
-    //let N2 = ["Nms", "Uj3", "LaA"]
-
-    //similarityBetweenUsers(B1, B2, N1, N2)
     //=================================================================================================
     //    Render
     //=================================================================================================
@@ -126,90 +199,112 @@ const Explore: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
+                
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Explore</IonText>
 
-                    <IonText className='inputHeading'>Find Users</IonText>
-                    <IonSearchbar ref={searchUser}
-                        onKeyUp ={()=>{
-                            let searchVal = searchUser.current?.value;
-                            findUser(searchVal)
-                        }}
-                        
-                        onIonClear={()=>{
-                            setFoundUser(false)
-                            setEmail("")
-                            setFullname("")
-                            setUsername("")
-                            setProfilePicture("")
-                        }}
-                    ></IonSearchbar>
-                    <br></br>
-                    {
-                        foundUser && 
-                        <IonCard button style={{"height":"10%"}} onClick={viewUserProfile}>
-                            <IonCardContent style={{"padding":"0%"}}>
-                                <IonGrid>
-                                    <IonRow>
-                                        <IonCol size="2">
-                                            <IonAvatar style={{ "marginBottom":"3%"}}>
-                                                <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
-                                            </IonAvatar>
-                                        </IonCol>
-                                        <IonCol style={{"marginTop":"2%"}}>
-                                            <IonLabel>{username}</IonLabel>
-                                        </IonCol>
-                                    </IonRow>
-                                </IonGrid>
+                    <IonGrid >
+                        <IonRow>
+                            <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Find Users</IonText>
+                            <IonSearchbar ref={searchUser}
+                                mode="ios"
+                                onKeyUp ={()=>{
+                                    let searchVal = searchUser.current?.value;
+                                    findUser(searchVal)
+                                }}
                                 
+                                onIonClear={()=>{
+                                    setFoundUser(false)
+                                    setEmail("")
+                                    setFullname("")
+                                    setUsername("")
+                                    setProfilePicture("")
+                                }}
+                            ></IonSearchbar>
+                        </IonRow>
+                        <br></br>
+                        <IonRow>
+                        {
+                            foundUser && 
+                            <IonCard mode="ios" button style={{ "width":"100%", "height":"4em"}} onClick={viewUserProfile}>
+                                <IonCardContent style={{"padding":"0%", }}>
+                                    <IonGrid>
+                                        <IonRow>
+                                            <IonCol size="2">
+                                                <IonAvatar style={{ "marginBottom":"3%"}}>
+                                                    <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                                </IonAvatar>
+                                            </IonCol>
+                                            <IonCol style={{"marginTop":"2%"}}>
+                                                <IonLabel>{username}</IonLabel>
+                                            </IonCol>
+                                        </IonRow>
+                                    </IonGrid>
+                                    
+                                    
+                                </IonCardContent>
+                            </IonCard>
+                        }
+                        </IonRow>
+                        <br></br>
+                        <IonRow>
+                        <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Find Gyms</IonText>
+                            <IonSearchbar ref={searchGym}
+                                mode="ios"
+                                onKeyUp ={()=>{
+                                    let searchVal = searchGym.current?.value;
+                                    findGym(searchVal)
+                                }}
                                 
-                            </IonCardContent>
-                        </IonCard>
-                    }
-                    <br></br>
+                                onIonClear={()=>{
+                                    setFoundGym(false)
+                                    setGid("")
+                                    setGymName("")
+                                    setGymBrandName("")
+                                    setGymAddress("")
+                                }}></IonSearchbar>
+                        </IonRow>
+                        <IonRow>
+                        <br></br>
+                        {
+                            foundGym && 
+                            <IonCard mode="ios" button style={{"height":"4em", "width":"100%"}} onClick={viewGymProfile}>
+                                <IonCardContent style={{"padding":"0%"}}>
+                                    <IonGrid>
+                                        <IonRow>
+                                            <IonCol size="2">
+                                                <IonAvatar style={{ "marginBottom":"3%"}}>
+                                                    <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${""})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                                </IonAvatar>
+                                            </IonCol>
+                                            <IonCol style={{"marginTop":"2%"}}>
+                                                <IonLabel>{gymName}</IonLabel>
+                                            </IonCol>
+                                        </IonRow>
+                                    </IonGrid>
+                                    
+                                    
+                                </IonCardContent>
+                            </IonCard>
+                        }
+                        <br></br>
+                        </IonRow>
+                        <IonRow>
+                        <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Suggested Badges</IonText>
+                        <br></br>
+                        </IonRow>
+    
+                    </IonGrid>
+                    <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
 
-                    <IonText className='inputHeading'>Find Gyms</IonText>
-                    <IonSearchbar ref={searchGym}
-                        onKeyUp ={()=>{
-                            let searchVal = searchGym.current?.value;
-                            findGym(searchVal)
-                        }}
-                        
-                        onIonClear={()=>{
-                            setFoundGym(false)
-                            setGid("")
-                            setGymName("")
-                            setGymBrandName("")
-                            setGymAddress("")
-                        }}></IonSearchbar>
-                    <br></br>
-                    {
-                        foundGym && 
-                        <IonCard button style={{"height":"10%"}} onClick={viewGymProfile}>
-                            <IonCardContent style={{"padding":"0%"}}>
-                                <IonGrid>
-                                    <IonRow>
-                                        <IonCol size="2">
-                                            <IonAvatar style={{ "marginBottom":"3%"}}>
-                                                <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${""})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
-                                            </IonAvatar>
-                                        </IonCol>
-                                        <IonCol style={{"marginTop":"2%"}}>
-                                            <IonLabel>{gymName}</IonLabel>
-                                        </IonCol>
-                                    </IonRow>
-                                </IonGrid>
-                                
-                                
-                            </IonCardContent>
-                        </IonCard>
-                    }
-                    <br></br>
-
-                    <IonText className='inputHeading'>Suggested Badges</IonText>
-
-                    
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 </IonContent>
             </IonPage>
         )

@@ -1,16 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+import { render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import { Login } from './Login';
-import {ToastContainer} from 'react-toastify';
 
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<Login />);
+test('renders without crashing', async () => {
+  const {baseElement} =await render(<Login />);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} = render(<Login />);
+  const {baseElement} =await render(<Login />);
   expect (baseElement).toHaveTextContent("Email*");
   expect (baseElement).toHaveTextContent("Password*");
 });
@@ -21,9 +20,9 @@ test('correctly displays labels', async () => {
 
 describe('Testing connection to API', () => {
 
-    it('should login a user', async () => {
+    it('should login a user',  () => {
         (async ()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+'/users/login',{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+'/users/login',{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',

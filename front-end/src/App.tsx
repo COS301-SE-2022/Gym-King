@@ -71,9 +71,9 @@ setupIonicReact();
 
 const App: React.FC = () => (
 
-  <IonApp>
+  <IonApp >
 
-    <IonReactRouter>
+    <IonReactRouter >
       <IonRouterOutlet>
         
         <Route exact path="/home">
