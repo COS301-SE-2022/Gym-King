@@ -45,7 +45,18 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${username}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
