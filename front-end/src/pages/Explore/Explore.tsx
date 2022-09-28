@@ -298,6 +298,7 @@ const Explore: React.FC = () =>{
                     <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
 
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}
