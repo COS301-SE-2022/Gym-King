@@ -29,14 +29,14 @@ export const Contact: React.FC<props> = (props) => {
           isValid = false;
         }
         else
-            handleError('', 'name');
+            handleError('', 'email');
     
         if(phone && !validPhone(phone)) {
             handleError('Please input a valid phone number', 'phone');
             isValid = false;
         }
         else
-            handleError('', 'surname');
+            handleError('', 'phone');
 
         return isValid;
     }

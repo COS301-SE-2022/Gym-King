@@ -4,6 +4,7 @@ import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
+import { onlyAlphanumericAndUnderscore, onlyLettersAndSpaces, validEmail, validPhone } from '../../utils/validation';
 
 interface InternalValues {
     file: any;
@@ -29,6 +30,52 @@ const UserProfilePage: React.FC = () =>{
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
+
+    //FORM VALIDATION 
+    const [errors, setErrors] = useState({
+        username: '',
+        fullname: '',
+        email: '',
+        phone: '',
+    });
+
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+
+        if(email && !validEmail(email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+    
+        if(name && onlyLettersAndSpaces(name)) {
+            handleError('Please input a valid name', 'fullname');
+            isValid = false;
+        }
+        else
+            handleError('', 'fullname');
+        
+        if(username && !onlyAlphanumericAndUnderscore(username)) {
+            handleError('Please input a valid username', 'username');
+            isValid = false;
+        }
+        else
+            handleError('', 'username');  
+
+        if(phone && !validPhone(phone)) {
+            handleError('Please input a valid phone number', 'phone');
+            isValid = false;
+        }
+        else
+            handleError('', 'phone');  
+
+        return isValid;
+    }
    
     
     const getNumberOfBadges = () =>{
@@ -44,7 +91,7 @@ const UserProfilePage: React.FC = () =>{
             })
     }
     const getNumberOfClaims = () =>{
-        setLoading(false)
+        setLoading(true)
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
@@ -123,12 +170,19 @@ const UserProfilePage: React.FC = () =>{
     }
 
     const updateDetails = (e:any) =>{
-        //update 
-        updateUserDetails()
-        //dismiss
-        dismiss()
 
-        setShowSuccess(true);
+        let isValid = validate()
+        console.log(isValid)
+        if(isValid)
+        {
+            //update 
+            updateUserDetails()
+            //dismiss
+            dismiss()
+
+            setShowSuccess(true);
+        }
+        
     }
     
     const updateEmail=(e:any)=>{
@@ -323,19 +377,35 @@ const UserProfilePage: React.FC = () =>{
 
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
-
+                                {errors.username!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.username}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Full name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
-                                
+                                {errors.fullname!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.fullname}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Email</IonLabel>
                                 <IonInput className='textInput' name='email' type='email' required value={email} onIonChange={updateEmail}></IonInput>
-                                
+                                {errors.email!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Phone</IonLabel>
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
-
+                                {errors.phone!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.phone}</IonLabel><br></br>
+                                    </>
+                                )}
                                
                             </form>
                         </IonContent>
