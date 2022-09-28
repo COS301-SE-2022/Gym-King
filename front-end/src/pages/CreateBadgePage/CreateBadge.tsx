@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter, IonGrid, IonCol, IonRow, IonLabel, IonChip} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, useIonViewDidEnter, IonGrid, IonCol, IonRow, IonLabel, IonChip, IonLoading} from '@ionic/react';
 
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {  useState } from 'react';
@@ -28,6 +28,8 @@ import axios from "axios";
         const [ownedGyms, setOwnedGyms] = useState([]);
         const [badgename, setBadgename] = useState('');
         const [tags, setTags] = useState(new Array<string>());
+        const [loading, setLoading] = useState<boolean>(false);
+
 
         let formData:any;
         let history=useHistory()
@@ -63,6 +65,7 @@ import axios from "axios";
         //SUBMIT THE FORM
         const handleSubmit = async (e:any) =>{
             e.preventDefault();
+
             console.log(localStorage.getItem('badgeIcon'))
             //form validation 
             formData={
@@ -90,6 +93,8 @@ import axios from "axios";
 
         // CREATE BADGE POST REQUEST 
         const createBadge=()=>{
+            setLoading(true)
+
             let at = localStorage.getItem('act')
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
@@ -120,25 +125,35 @@ import axios from "axios";
             })
             .then(response =>response.data)
             .then(response =>{
+
+                setLoading(false)
                 //show toast
                 setShowToast(true);
 
                 //redirect to view badges (gym owner) 
                 history.goBack();
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            }) 
         }
 
         // OWNED GYMS GET REQUEST 
         useIonViewDidEnter(()=>{
+            setLoading(true)
             let gymOwner = localStorage.getItem("email")
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 setOwnedGyms(response);
 
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            }) 
         })
 
         const changeName = (e:any) =>{
@@ -442,6 +457,14 @@ import axios from "axios";
                         message="Badge Created"
                         duration={500}
                         color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
                     />
                 </IonContent>
             </IonPage>
