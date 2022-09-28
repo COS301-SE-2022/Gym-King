@@ -25,6 +25,8 @@ const UserProfilePage: React.FC = () =>{
     const [showFail, setShowFail] = useState(false);
     const [numClaims, setNumClaims] = useState("");
     const [numBadges, setNumBadges] = useState("");
+    const [numFriends, setNumFriends] = useState("");
+
     const [profilePicture, setProfilePicture] = useState(localStorage.getItem("profile_picture"));
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
@@ -111,6 +113,31 @@ const UserProfilePage: React.FC = () =>{
             })
     }
 
+    const getNumberofFriends = ()=>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                userEmail: localStorage.getItem("email"),
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            setLoading(false)
+            console.log(response)
+            setNumFriends(response.length)
+        })
+        .catch(err => {
+            setLoading(false)
+            console.log(err)
+            
+        })
+    }
+
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
@@ -143,6 +170,7 @@ const UserProfilePage: React.FC = () =>{
         
         getNumberOfBadges()
         getNumberOfClaims()
+        getNumberofFriends()
          // eslint-disable-next-line react-hooks/exhaustive-deps
 
     },[profilePicture])
@@ -334,7 +362,7 @@ const UserProfilePage: React.FC = () =>{
                                         <IonGrid>
                                             <IonRow>
                                                 <IonCol size="10"><b className="inputHeading">My Friends</b></IonCol>
-                                                <IonCol><IonText className="inputHeading">3</IonText></IonCol>
+                                                <IonCol><IonText className="inputHeading">{numFriends}</IonText></IonCol>
                                             </IonRow>
                                         </IonGrid>
                                     </IonCardContent>
