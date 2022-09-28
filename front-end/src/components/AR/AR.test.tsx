@@ -1,4 +1,4 @@
-jest.setTimeout(25000)
+jest.setTimeout(250-00)
 import { render } from '@testing-library/react';
 import AR from './AR';
 
