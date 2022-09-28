@@ -25,7 +25,7 @@ const EditGym: React.FC = () => {
   //-gymAddress hook, hook that sets the address of a gym
   const [gymName, setGymName] = useState<string>(sessionStorage.getItem("gymName")!);
   //-gymAddress hook, hook that sets the address of a gym
-  const [gymAddress, setGymAddress] = useState<string>("address");
+  const [gymAddress, setGymAddress] = useState<string>(sessionStorage.getItem("gymAddress")!);
   //-coordinate hook, hook that sets the coordinates of the gym
   const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
   //-zoom  variable{number}, stores default zoom value for the map
@@ -36,7 +36,7 @@ const EditGym: React.FC = () => {
   const [showToast2, setShowToast2] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [gymBrand, setGymBrand] = useState<string>(""); 
+  const [gymBrand, setGymBrand] = useState<string>(sessionStorage.getItem("gymBrand")!); 
   const [gymBrands, setGymBrands]= useState(new Array<string>())
 
 //================================================================================================
@@ -174,7 +174,7 @@ const EditGym: React.FC = () => {
 
               <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
                 <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
-                    <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
+                    <DropDown list={gymBrands} chosenValue={chosenValue} value={gymBrand}></DropDown>
               </div>
               <br></br>
 

@@ -109,6 +109,8 @@
                    handler: () => {
                      sessionStorage.setItem("gid",prop.id  )
                      sessionStorage.setItem("gymName",prop.name )
+                     sessionStorage.setItem("gymAddress",prop.address)
+                     sessionStorage.setItem("gymBrand",prop.brand)
                      history.push("/EditGym")
                    }
                  },{
