@@ -75,7 +75,7 @@ export const userRepository = GymKingDataSource.getRepository(gym_user).extend({
         return await this.manager.update(gym_user, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
     },
     async updateUserAPIKey(email: string, apikey: string) {
-        return await this.manager.update(gym_user, { email: email }, {apikey: apikey})
+        return this.manager.update(gym_user, { email: email }, {apikey: apikey})
     },
     async updateUserProfilePicture(email: string, profilepicture: string) {
         return await this.manager.update(gym_user, { email: email }, {profile_picture: profilepicture})
