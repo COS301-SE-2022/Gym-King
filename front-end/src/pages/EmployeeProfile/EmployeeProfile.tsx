@@ -15,7 +15,6 @@ const EmployeeProfilePage: React.FC = () =>{
     const page = useRef(null);
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
@@ -47,7 +46,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -61,7 +60,6 @@ const EmployeeProfilePage: React.FC = () =>{
                 setGymAddress(response.g_id.gym_address);
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("profilepicture", profilePicture)
-                setPassword(localStorage.getItem("password")!)
                 setLoading(false);
             })
             .catch(err => {
@@ -85,7 +83,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     fullname: name, 
                     number: phone, 
                     username: username, 
-                    password: localStorage.getItem("password"), 
+                    apikey: sessionStorage.getItem("apikey"), 
                 })
             })
             .then(response =>response.data)
@@ -139,7 +137,7 @@ const EmployeeProfilePage: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
-                password: localStorage.getItem("password")
+                apikey: sessionStorage.getItem("key")
             })
         })
         .then(response =>response.data)
@@ -171,7 +169,7 @@ const EmployeeProfilePage: React.FC = () =>{
         
                 let formData = new FormData();
                 formData.append("email", email)
-                formData.append("password", password)
+                formData.append("apikey", sessionStorage.getItem("key")!)
                 formData.append('profilepicture', values.current.file, values.current.file.name);
         
                 setLoading(true)

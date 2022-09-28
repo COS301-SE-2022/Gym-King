@@ -32,6 +32,7 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                                                         localStorage.removeItem("email")
                                                         localStorage.removeItem("password")
                                                         localStorage.removeItem("usertype")
+                                                        sessionStorage.removeItem("key")
                                                         history.push("/Login");
                                                     }}>
                                 

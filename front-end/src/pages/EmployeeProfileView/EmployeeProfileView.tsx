@@ -72,7 +72,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 owneremail: owner,
-                ownerpassword: owner_pass,
+                apikey: sessionStorage.getItem("key"),
                 employeeemail: employee_email
             })
         })

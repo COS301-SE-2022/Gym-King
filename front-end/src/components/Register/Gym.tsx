@@ -17,7 +17,6 @@ export const Gym: React.FC<props>  = (props) =>{
     },[])
 
     const getBrands = async() =>{
-        setLoading(true)
         let gyms: any[]=[]
         let array: string[]=[]
         await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
@@ -33,7 +32,6 @@ export const Gym: React.FC<props>  = (props) =>{
             array.push(el.gym_brandname)
           })
           setGymBrands(array)
-          setLoading(false)
       }
     const next = (e:any) => {
         e.preventDefault();
@@ -72,6 +70,7 @@ export const Gym: React.FC<props>  = (props) =>{
                 </IonGrid>
             </form>
             <IonLoading 
+                mode="ios"
                 isOpen={loading}
                 message={"Loading"}
                 duration={2000}

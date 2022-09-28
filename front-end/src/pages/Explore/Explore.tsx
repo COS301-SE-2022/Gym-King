@@ -41,7 +41,7 @@ const Explore: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
-                password:  localStorage.getItem("password"),
+                apikey:  sessionStorage.getItem("key"),
 
             })
         })
@@ -69,7 +69,7 @@ const Explore: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 user1email: a,
-                password:  localStorage.getItem("password"),
+                apikey:  sessionStorage.getItem("key"),
                 user2email : b
 
             })
@@ -135,7 +135,7 @@ const Explore: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
-                password:  localStorage.getItem("password"),
+                apikey:  sessionStorage.getItem("key"),
                 username: user
             })
         })
@@ -302,6 +302,7 @@ const Explore: React.FC = () =>{
                     <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
 
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

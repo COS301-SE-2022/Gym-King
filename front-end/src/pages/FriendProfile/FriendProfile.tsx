@@ -22,15 +22,11 @@ const FriendProfile: React.FC = () =>{
 
         useIonViewWillEnter(async ()=>{
             setLoading(true)
-            await axios(process.env["REACT_APP_GYM_KING_API"]+`/user/badges`,{
-                method: 'POST',
+            await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${friendUsername}`,{
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
-                },
-                data: JSON.stringify({ 
-                    email: friendEmail
-                })
+                }
             })
             .then(response =>response.data)
             .then(response =>{

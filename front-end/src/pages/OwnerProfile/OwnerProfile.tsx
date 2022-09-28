@@ -17,7 +17,6 @@ const OwnerProfilePage: React.FC = () =>{
 
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
@@ -41,7 +40,7 @@ const OwnerProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -51,7 +50,6 @@ const OwnerProfilePage: React.FC = () =>{
                 setName(response.fullname);
                 setPhone( response.number);
                 setUsername(response.username);
-                setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("pp", response.profile_picture)
                 
@@ -62,7 +60,18 @@ const OwnerProfilePage: React.FC = () =>{
         
         //get number of gyms owned
         
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${localStorage.getItem("email")}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })        
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -77,7 +86,18 @@ const OwnerProfilePage: React.FC = () =>{
         }) 
 
         //get number of employees
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${localStorage.getItem("email")}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -108,7 +128,7 @@ const OwnerProfilePage: React.FC = () =>{
                     fullname: name, 
                     username: username, 
                     number: phone, 
-                    password: localStorage.getItem("password"), 
+                    apikey: sessionStorage.getItem("key"), 
                 })
             })
             .then(response =>response.data)
@@ -173,7 +193,7 @@ const OwnerProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -205,7 +225,7 @@ const OwnerProfilePage: React.FC = () =>{
     
             let formData = new FormData();
             formData.append("email", email)
-            formData.append("password", password)
+            formData.append("apikey", sessionStorage.getItem("key")!)
             formData.append('profilepicture', values.current.file, values.current.file.name);
     
             setLoading(true)

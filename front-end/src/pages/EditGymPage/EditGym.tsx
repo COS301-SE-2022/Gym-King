@@ -122,6 +122,8 @@ const EditGym: React.FC = () => {
           'Content-Type': 'application/json',
         },
         data: JSON.stringify({ 
+          email: localStorage.getItem("email"),
+          apikey: sessionStorage.getItem("key"),
           gid:sessionStorage.getItem("gid"),
           gymName: gymName, 
           gymBrandName: gymBrand,
