@@ -199,7 +199,6 @@ export const Login: React.FC = () =>{
                 color="success"
                 />
                 <IonLoading 
-                    
                     isOpen={loading}
                     message={"Loading"}
                     duration={2000}

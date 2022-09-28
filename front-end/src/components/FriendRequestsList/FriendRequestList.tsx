@@ -10,12 +10,15 @@ const FriendRequestList: React.FC<props> = () =>{
     const [requests, setRequests] = useState([])
     const [showConfirm, setShowConfirm] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     useIonViewWillEnter(async()=>{
         getFriendRequests()
     },[])
 
     const getFriendRequests = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getReceivedRequests`,{
             method: 'POST',
             headers: {
@@ -31,10 +34,11 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>{
             console.log(response)
             setRequests(response.results)
+            setLoading(false)
         })
         .catch(err => {
             console.log(err)
-            
+            setLoading(false)
         })
     }
 
@@ -137,6 +141,14 @@ const FriendRequestList: React.FC<props> = () =>{
                 message="Friend Request Rejected!"
                 duration={1000}
                 color="success"
+            />
+            <IonLoading 
+                isOpen={loading}
+                message={"Loading"}
+                duration={2000}
+                spinner={"circles"}
+                onDidDismiss={() => setLoading(false)}
+                cssClass={"spinner"}
             />
             </>
         )

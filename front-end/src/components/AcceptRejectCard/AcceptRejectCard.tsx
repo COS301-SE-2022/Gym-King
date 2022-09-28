@@ -83,7 +83,10 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
             props.history.goBack()
 
         })
-        .catch(err => {console.log(err)})
+        .catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
     }
 
     //=================================================================================================
