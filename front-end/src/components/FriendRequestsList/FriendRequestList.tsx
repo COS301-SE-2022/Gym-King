@@ -32,9 +32,11 @@ const FriendRequestList: React.FC<props> = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            console.log(response)
-            setRequests(response.results)
-            setLoading(false)
+            if(response.success){
+                console.log(response)
+                setRequests(response.results)
+                setLoading(false)
+            }
         })
         .catch(err => {
             console.log(err)

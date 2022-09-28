@@ -120,7 +120,7 @@ const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       console.log("enter was pressed")
       console.log("using geocoding api");
-      Geocoder.init("AIzaSyD9pQDwcGJFK6NRGNj5-YwdJBx2PtERCTg");
+      Geocoder.init("AIzaSyA5ITQYj-KgOmXlk4fgP-Ar5b9b3me3Fm8");
       Geocoder.from(gymAddress)
         .then((json) => {
           if(json.status==="OK")
