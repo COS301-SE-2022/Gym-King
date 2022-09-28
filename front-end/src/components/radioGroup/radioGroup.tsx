@@ -23,7 +23,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, RadioGroupState
                {
                     list?.map((el:any) =>{
                     return (<IonItem className="" key={el.g_id} mode="ios">
-                                <IonLabel >{el.gym_brandname}</IonLabel>
+                                <IonLabel >{el.gym_name}</IonLabel>
                                 <IonRadio slot="start" value={el.g_id} mode="ios" />
                             </IonItem>)
                     

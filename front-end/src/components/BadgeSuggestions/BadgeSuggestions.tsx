@@ -28,8 +28,8 @@ const BadgeSuggestions: React.FC<props> = (props) =>{
                     
                     props.badges?.map((el:any)=>{
                         return(
-                        <IonSlide  key={el.bid} style={{"padding":"10%"}}>
-                            <MyBadgeCard key={el.bid} id={el.b_id} name={el.badgename} qty={0} badgeEmblem={el.badgeicon.split("_")[1]} badgeRank={el.badgeicon.split("_")[0]}></MyBadgeCard>
+                        <IonSlide  key={el.b_id} style={{"padding":"10%"}}>
+                            <MyBadgeCard key={el.b_id} id={el.b_id} name={el.badgename} qty={0} badgeEmblem={el.badgeicon.split("_")[1]} badgeRank={el.badgeicon.split("_")[0]}></MyBadgeCard>
                         </IonSlide>)
                     })
                 }

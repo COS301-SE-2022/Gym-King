@@ -293,9 +293,9 @@ const Explore: React.FC = () =>{
                         <IonText style={{"paddingLeft":"5%"}} className='inputHeading'>Suggested Badges</IonText>
                         <br></br>
                         </IonRow>
-    
+                        <BadgeSuggestions  badges={badgeSuggestions}></BadgeSuggestions>
+
                     </IonGrid>
-                    <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
 
                     <IonLoading 
                         mode="ios"

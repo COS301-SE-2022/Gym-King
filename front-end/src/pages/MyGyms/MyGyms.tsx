@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {IonContent, IonText, IonPage, IonHeader, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import GymsList from '../../components/GymsList/GymsList';
 import axios from "axios";
@@ -12,7 +12,7 @@ const MyGyms: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
 
-    useIonViewWillEnter(async()=>{
+    useIonViewDidEnter(async()=>{
 
         setLoading(true)
         await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getGymSubscriptions`,{

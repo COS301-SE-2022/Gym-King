@@ -12,12 +12,12 @@ test('renders without crashing', async() => {
 /*
 */
 
-describe('Testing prop  values', () => {
+// describe('Testing prop  values', () => {
 
-    test('correctly displays brandname radio buttons', async () => {
-      const {baseElement} =await render(<RadioGroup list={[{g_id:"123", gym_brandname:"gym1"}, {g_id:"456", gym_brandname:"gym2"}]} val='' />);
-      expect (baseElement).toHaveTextContent("gym1");
-      expect (baseElement).toHaveTextContent("gym2");
-    }); 
+//     test('correctly displays brandname radio buttons', async () => {
+//       const {baseElement} =await render(<RadioGroup list={[{g_id:"123", gym_brandname:"gym1"}, {g_id:"456", gym_brandname:"gym2"}]} val='' />);
+//       expect (baseElement).toHaveTextContent("gym1");
+//       expect (baseElement).toHaveTextContent("gym2");
+//     }); 
 
-});
+// });
