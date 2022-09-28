@@ -25,11 +25,13 @@ const MyBadge: React.FC = () =>{
               'Content-Type': 'application/json',
             },
             data: JSON.stringify({ 
-                email: email
+                email: email,
+                apikey:sessionStorage.getItem("key")
             })
         })
         .then(response =>response.data)
         .then(response =>{
+            console.log(response)
             let arr=[];
             for(let i=0; i<response.length;i++)
             {
