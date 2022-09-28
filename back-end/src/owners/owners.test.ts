@@ -56,7 +56,7 @@ describe('Testing POST API Calls', () => {
             let result = await ownerRepository.findByEmail('owner@example.com');
             apikey = result.apikey
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({"profile_picture":"NONE",'success':true,'apikey':apikey})
+            expect(response.body).toStrictEqual({"username":"Test","profile_picture":"NONE",'success':true,'apikey':apikey})
         });
         test('responds to incorrect password POST login owner', async () => {
             const response = await request(server).post('/users/login').send({
@@ -459,7 +459,7 @@ describe('Testing PUT API Calls', () => {
             let result = await ownerRepository.findByEmail('owner@example.com');
             apikey = result.apikey
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({"profile_picture":"NONE",'success':true,'apikey':apikey})
+            expect(response.body).toStrictEqual({"username":"Changed","profile_picture":"NONE",'success':true,'apikey':apikey})
         });
     });
 });
