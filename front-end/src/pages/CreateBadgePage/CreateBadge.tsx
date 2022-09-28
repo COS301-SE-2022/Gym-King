@@ -156,6 +156,9 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
             let req1 = formData.req1
             let req2 = formData.req2
             let req3 = formData.req3
+            console.log(formData)
+            console.log(localStorage.getItem("email"))
+            console.log(sessionStorage.getItem("key"))
 
              axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"POST",
@@ -164,6 +167,8 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                     'Content-Type': 'application/json',
                 },
                 data:{ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key"),
                     gid: gymId,
                     badgename: bn,
                     badgedescription: bd,
@@ -178,7 +183,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
             })
             .then(response =>response.data)
             .then(response =>{
-
+                console.log(response)
                 setLoading(false)
                 //show toast
                 setShowToast(true);
@@ -195,13 +200,23 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
         // OWNED GYMS GET REQUEST 
         useIonViewDidEnter(()=>{
             setLoading(true)
-            let gymOwner = localStorage.getItem("email")
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key")
+
+                })
+            })
             .then(response =>response.data)
             .then(response =>{
                 setLoading(false)
                 setOwnedGyms(response);
-
+                console.log(ownedGyms)
             })
             .catch(err => {
                 setLoading(false)

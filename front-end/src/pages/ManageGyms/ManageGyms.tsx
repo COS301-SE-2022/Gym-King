@@ -22,8 +22,6 @@ const ManageGyms: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
     const [showToast1, setShowToast1] = useState(false);
 
-    let email = localStorage.getItem("email");
-
     useIonViewDidEnter(()=>
     {
         if(sessionStorage.getItem("gid")!=null)
@@ -46,7 +44,18 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -64,12 +73,22 @@ const ManageGyms: React.FC = () =>{
      */
         const deleteClicked= () => {
             setLoading(true)
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key")
+    
+                })
+            })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setLoading(false)
-                setShowToast1(true)
                 setGymList(response)
             })
             .catch(err => {

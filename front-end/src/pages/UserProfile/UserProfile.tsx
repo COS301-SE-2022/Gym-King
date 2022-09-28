@@ -18,7 +18,6 @@ const UserProfilePage: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
@@ -80,7 +79,7 @@ const UserProfilePage: React.FC = () =>{
     
     const getNumberOfBadges = () =>{
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("username")}`)
             .then(response =>response.data)
             .then(response =>{
                 setLoading(false)
@@ -91,8 +90,18 @@ const UserProfilePage: React.FC = () =>{
             })
     }
     const getNumberOfClaims = () =>{
-        setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
+        setLoading(false)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/claims`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+            })
+        })
             .then(response =>response.data)
             .then(response =>{
                 setNumClaims(response.length)
@@ -113,7 +122,7 @@ const UserProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -122,7 +131,6 @@ const UserProfilePage: React.FC = () =>{
                 setName(response.fullname);
                 setPhone( response.number);
                 setUsername(response.username);
-                setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
                 sessionStorage.setItem("pp", response.profile_picture)
 
@@ -152,7 +160,7 @@ const UserProfilePage: React.FC = () =>{
                     fullname: name, 
                     username: username, 
                     number: phone, 
-                    password: localStorage.getItem("password"), 
+                    apikey: sessionStorage.getItem("key"), 
                 })
             })
             .then(response =>response.data)
@@ -217,7 +225,7 @@ const UserProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    akikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -247,7 +255,7 @@ const UserProfilePage: React.FC = () =>{
 
         let formData = new FormData();
         formData.append("email", email)
-        formData.append("password", password)
+        formData.append("apikey", sessionStorage.getItem("key")!)
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)

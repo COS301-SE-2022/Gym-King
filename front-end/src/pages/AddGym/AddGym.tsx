@@ -159,6 +159,8 @@ const AddGym: React.FC = () => {
         'Content-Type': 'application/json',
       },
       data: { 
+        email: localStorage.getItem("email"),
+        apikey: sessionStorage.getItem("key"),
         gymName: gymName,
         gymBrandName: gymBrand,
         gymAddress: gymAddress,
@@ -184,6 +186,7 @@ const AddGym: React.FC = () => {
         },
         data:{ 
           email: localStorage.getItem('email'),
+          apikey:sessionStorage.getItem("key"),
           gid: sessionStorage.getItem("new_gid")
         }
       }

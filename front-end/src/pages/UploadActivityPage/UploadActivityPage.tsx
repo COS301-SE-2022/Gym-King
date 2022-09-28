@@ -93,7 +93,7 @@ const UploadActivityPage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -129,7 +129,7 @@ const UploadActivityPage: React.FC = () =>{
             let formData = new FormData();
                 formData.append("bid", b_id)
                 formData.append("email", email!)
-                formData.append("password", localStorage.getItem("password")!)
+                formData.append("apikey", sessionStorage.getItem("key")!)
                 formData.append("input1", i1)
                 formData.append("input2", i2)
                 formData.append("input3", i3)

@@ -1,3 +1,4 @@
+jest.setTimeout(25000)
 import {render} from '@testing-library/react';
 import React from 'react';
 import Identifications from './Identifications';
