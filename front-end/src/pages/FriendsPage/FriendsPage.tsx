@@ -77,7 +77,7 @@ const FriendsPage: React.FC = () =>{
 
                     <IonLoading 
                         isOpen={loading}
-                        message={"Loading"}
+                        mode="ios"
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

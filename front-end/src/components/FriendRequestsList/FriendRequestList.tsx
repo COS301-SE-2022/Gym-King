@@ -170,8 +170,8 @@ const FriendRequestList: React.FC<props> = () =>{
                 color="success"
             />
             <IonLoading 
+            mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 duration={2000}
                 spinner={"circles"}
                 onDidDismiss={() => setLoading(false)}

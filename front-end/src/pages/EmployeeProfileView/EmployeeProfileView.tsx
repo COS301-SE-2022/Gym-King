@@ -180,7 +180,6 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

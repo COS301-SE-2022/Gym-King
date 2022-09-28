@@ -306,11 +306,12 @@ const Explore: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
+                        showBackdrop={true}
+                        
                     />
                 </IonContent>
             </IonPage>
