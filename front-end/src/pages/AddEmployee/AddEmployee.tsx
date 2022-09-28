@@ -20,7 +20,7 @@ export const AddEmployee: React.FC = () =>{
 
     useIonViewDidEnter(()=>{
         setLoading(true)
-        let gymOwner = localStorage.getItem("email")
+        let gymOwner = localStorage.getItem("username")
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
         .then(response =>response.data)
         .then(response =>{
