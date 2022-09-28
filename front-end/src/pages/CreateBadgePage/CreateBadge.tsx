@@ -395,7 +395,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Creating Badge</IonText>
                     <form onSubmit={handleSubmit} >
-                        <IonText className='inputHeading leftMargin'>Badge Name:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Badge Name:</IonText> <br></br><br></br>
                         <IonInput name='badgeName' onKeyUp={changeName} type='text' className='textInput centerComp smallerTextBox ' required ></IonInput>
                         {errors.name!=="" && (
                             <>
@@ -404,7 +404,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                         )}
                         <br></br><br></br>
 
-                        <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Activity Type:</IonText> <br></br><br></br>
                         <SegmentButton   list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType}></SegmentButton>
                         {errors.activitytype!=="" && (
                             <>
@@ -414,16 +414,16 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                         <br></br><br></br>
 
 
-                        <IonText className='inputHeading leftMargin'>Gym Location:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Gym Location:</IonText> <br></br><br></br>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
-                        <IonText className='inputHeading leftMargin'>Badge Challenge:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea  name="badgeChallenge" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..." required></IonTextarea><br></br><br></br>
 
-                        <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription" className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..." required></IonTextarea><br></br><br></br>
 
-                        <IonText className='inputHeading leftMargin'>Requirements:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Requirements:</IonText> <br></br><br></br>
 
                         {
                             localStorage.getItem('act') && localStorage.getItem("act")==="STRENGTH"
@@ -432,7 +432,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Weight:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Weight:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req1" className="textInput" required></IonInput>
@@ -440,7 +440,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin' >Reps:</IonText>
+                                        <IonText className='smallHeading leftMargin' ><i>Reps:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req2" className="textInput" required></IonInput>
@@ -448,7 +448,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Sets:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Sets:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req3" className="textInput" required></IonInput>
@@ -464,7 +464,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Distance:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Distance:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req1" className="textInput" required></IonInput>
@@ -472,7 +472,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin' >Duration:</IonText>
+                                        <IonText className='smallHeading leftMargin' ><i>Duration:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req2" className="textInput" required></IonInput>
@@ -480,7 +480,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Difficulty:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Difficulty: </i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req3" className="textInput" required></IonInput>
@@ -496,7 +496,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                             <IonGrid className="centerComp">
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='inputHeading '>Please select the words that relate to this badge:</IonText>
+                                        <IonText className='smallHeading '>Please select the words that relate to this badge:</IonText>
                                     </IonCol>
 
                                 </IonRow>
@@ -525,7 +525,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                             <IonGrid className="centerComp">
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='inputHeading '>Please select the words that relate to this badge:</IonText>
+                                        <IonText className='smallHeading leftMargin10 '>Please select the words that relate to this badge:</IonText>
                                     </IonCol>
 
                                 </IonRow>
