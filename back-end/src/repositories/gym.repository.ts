@@ -12,6 +12,9 @@ export const gymRepository = GymKingDataSource.getRepository(gym).extend({
     findByGID(gid: string) {
         return this.findOneBy({ g_id: gid });
     },
+    findByGymName(gymName: string) {
+        return this.findOneBy({ gym_name: gymName });
+    },
     async saveGym(gid: string, gymname: string, brandname: string, address: string, lat: number, long: number) {
         const newGym = new gym();
         newGym.g_id = gid;
