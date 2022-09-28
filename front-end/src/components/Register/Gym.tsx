@@ -14,7 +14,7 @@ export const Gym: React.FC<props>  = (props) =>{
 
     useEffect(()=>{
         getBrands()
-    })
+    },[])
 
     const getBrands = async() =>{
         let gyms: any[]=[]

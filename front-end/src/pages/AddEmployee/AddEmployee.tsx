@@ -30,12 +30,13 @@ export const AddEmployee: React.FC = () =>{
     });
 
     const handleError = (error:string, input:string) => {
+        console.log(errors)
         setErrors(prevState => ({...prevState, [input]: error}));
     };
 
     const  validate = () => {
         let isValid = true
-
+        console.log
 
         if(formData.email && !validEmail(formData.email)) {
             handleError('Please input a valid email', 'email');
@@ -44,19 +45,19 @@ export const AddEmployee: React.FC = () =>{
         else
             handleError('', 'email');
 
-        if(formData.name && onlyLettersAndSpaces(formData.name)) {
+        if(formData.name && !onlyLettersAndSpaces(formData.name)) {
             handleError('Please input a valid name', 'name');
             isValid = false;
         }
         else
             handleError('', 'name');
 
-        if(formData.number && !validPhone(formData.number)) {
-            handleError('Please input a valid phone', 'phone');
+        if(formData.name && onlyLettersAndSpaces(formData.name)) {
+            handleError('Please input a valid name', 'name');
             isValid = false;
         }
         else
-            handleError('', 'phone');
+            handleError('', 'name');
 
         if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
             handleError('Please input a valid username', 'username');
@@ -72,7 +73,7 @@ export const AddEmployee: React.FC = () =>{
         else
             handleError('', 'password');
 
-        if(formData.gid ==="") {
+        if(formData.gid !=="") {
             handleError('Please select a gym.', 'gid');
             isValid = false;
         }

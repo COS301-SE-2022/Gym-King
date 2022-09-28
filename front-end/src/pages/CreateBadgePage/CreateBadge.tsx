@@ -22,6 +22,8 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
         const color = "#ffca22"
         const transparent = "#9d9fa669"
         const [gymId, setGymId] = useState('')
+        
+        const [activeGymName, setActiveGymName] = useState('')
         const [showToast, setShowToast] = useState(false);
         const [ownedGyms, setOwnedGyms] = useState([]);
         const [badgename, setBadgename] = useState('');
@@ -113,7 +115,8 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
 
         const setChosenGymLocation= (e:any) =>{
             console.log(e);
-            setGymId(e)
+            setActiveGymName(e.gym_name)
+            setGymId(e.g_id)
         }
 
         
@@ -184,6 +187,29 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
             })
             .then(response =>response.data)
             .then(response =>{
+                let message:string = bn+" was created at " + activeGymName
+                
+                console.log(message)
+                console.log(gymId)
+                
+                // api call to notify subscribers
+                axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendSubscriberNotification`,{
+                    "method":"POST",
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    data:{ 
+                        g_id: gymId,
+                        pushTitle:  "New Badge Available!",
+                        pushMessage: message,
+                        isSilent: true
+                    }
+                })
+                .then(response =>response.data)
+                .catch(err => {console.log(err)}) 
+
                 console.log(response)
                 setLoading(false)
                 //show toast

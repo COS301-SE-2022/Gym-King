@@ -32,9 +32,11 @@ const FriendRequestList: React.FC<props> = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            console.log(response)
-            setRequests(response.results)
-            setLoading(false)
+            if(response.success){
+                console.log(response)
+                setRequests(response.results)
+                setLoading(false)
+            }
         })
         .catch(err => {
             console.log(err)
@@ -52,8 +54,8 @@ const FriendRequestList: React.FC<props> = () =>{
               'Content-Type': 'application/json',
             },
             data: JSON.stringify({ 
-                fromEmail: localStorage.getItem("email"),
-                toEmail:  otherEmail
+                fromEmail: otherEmail,
+                toEmail: localStorage.getItem("email")
 
             })
         })
@@ -61,6 +63,26 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>{
             console.log(response)
             getFriendRequests()
+
+            let message:string = localStorage.getItem("email") +" has accepted your friend reqeust"
+            // api call to notify accepted friend request
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendGenericNotification`,{
+                "method":"POST",
+
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{ 
+                    pushTarget: [otherEmail],
+                    pushTitle:  "Friend Request Accepted",
+                    pushMessage: message,
+                    isSilent: false
+                }
+            })
+            .then(response =>response.data)
+            .catch(err => {console.log(err)}) 
+
             setShowConfirm(true)
             setLoading(false)
         })

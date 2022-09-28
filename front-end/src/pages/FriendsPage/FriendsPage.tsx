@@ -39,9 +39,11 @@ const FriendsPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            if(response.success){
+                console.log(response)
+                setFriends(response)
+            }
             setLoading(false)
-            console.log(response)
-            setFriends(response)
         })
         .catch(err => {
             setLoading(false)

@@ -406,7 +406,7 @@ const MapView: React.FC = () =>{
     return (
         
         <>  
-            <IonContent  overflow-scroll="false" >
+            <IonContent  className='mainMap' >
                 
             <GymSearchBar 
             

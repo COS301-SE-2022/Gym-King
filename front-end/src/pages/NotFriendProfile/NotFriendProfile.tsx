@@ -11,7 +11,7 @@ const NotFriendProfile: React.FC = () =>{
         const [email, setEmail]= useState(sessionStorage.getItem("foundEmail"))
         const [fullname, setFullname]= useState("")
         const [profilePicture, setProfilePicture]= useState("")
-        const [requstPending, setRequestPending] = useState(false)
+        const [requstPending, setRequestPending] = useState("non")
         const [loading, setLoading] = useState<boolean>(false);
 
         useIonViewDidEnter(async()=>{
@@ -49,7 +49,51 @@ const NotFriendProfile: React.FC = () =>{
             })
 
         })
-
+        const confirmRequest = ()=>{
+            setLoading(true)
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    fromEmail: email,
+                    toEmail: localStorage.getItem("email")
+    
+                })
+            })
+            .then(response =>response.data)
+            .then(response =>{
+                console.log(response)
+    
+                let message:string = localStorage.getItem("email") +" has accepted your friend reqeust"
+                // api call to notify accepted friend request
+                axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendGenericNotification`,{
+                    "method":"POST",
+    
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    data:{ 
+                        pushTarget: [email],
+                        pushTitle:  "Friend Request Accepted",
+                        pushMessage: message,
+                        isSilent: false
+                    }
+                })
+                .then(response =>response.data)
+                .catch(err => {console.log(err)}) 
+    
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+           
+        }
 
         const sendFriendRequest = ()=>{
             setLoading(true)
@@ -69,7 +113,7 @@ const NotFriendProfile: React.FC = () =>{
             .then(response =>{
                 setLoading(false)
                 console.log(response)
-                setRequestPending(true)
+                setRequestPending("outgoing")
             })
             .catch(err => {
                 setLoading(false)
@@ -129,14 +173,19 @@ const NotFriendProfile: React.FC = () =>{
                                     <br></br><br></br>
                                     <IonRow>
                                         {
-                                            !requstPending
+                                            (requstPending==="non")
                                             &&
                                             <IonButton mode="ios" onClick={sendFriendRequest}>Send Friend Request</IonButton>
                                         }
                                         {
-                                            requstPending
+                                            (requstPending==="outgoing")
                                             &&
                                             <IonButton mode="ios" disabled={true}>Request Sent</IonButton>
+                                        }
+                                        {
+                                            (requstPending==="incoming")
+                                            &&
+                                            <IonButton mode="ios" onClick={confirmRequest}>Accept Friend Request</IonButton>
                                         }
                                     </IonRow>
                                 </IonGrid>

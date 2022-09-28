@@ -13,6 +13,13 @@ platforms:
       - file: AndroidManifest.xml
         target: manifest
         inject: <uses-feature android:name="android.hardware.location.gps" />
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: |
+          <queries>
+            <package android:name="com.google.ar.core" />
+          </queries>
     gradle:  
       - file: app/build.gradle
         target: 
