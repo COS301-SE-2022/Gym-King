@@ -72,7 +72,7 @@ export const OTP: React.FC = () =>{
                                     marginRight: '12px', 
                                     fontSize: '1rem',  
                                     borderRadius: 4, 
-                                    color:'black',
+                                    color:'white',
                                     fontFamily:"'Comfortaa', cursive",
                                     backgroundColor:'rgba(255,255,255,0.5)',
                                     marginLeft: '13%'
@@ -92,13 +92,14 @@ export const OTP: React.FC = () =>{
                             )}
 
                             <br></br>
-                            <IonButton onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Next</IonButton>
+                            <IonButton mode="ios" onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Next</IonButton>
                             <br></br>
                             <button  onClick= {() =>{history.goBack()}} id = "center" color="secondary" className='puesdorHref centerBtn'>Back</button>
                     </form>
                 </IonContent>
 
                 <IonToast
+                mode="ios"
                 isOpen={showToast}
                 onDidDismiss={() => setShowToast(false)}
                 message="Invalid user details."

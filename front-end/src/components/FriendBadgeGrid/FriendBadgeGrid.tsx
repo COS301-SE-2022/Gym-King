@@ -8,7 +8,7 @@ export const FriendBadgeGrid=(prop:{badges:any[]})=>{
 
     return(
         
-        <IonGrid>
+        <IonGrid >
             <IonRow  className="ion-align-items-center">
                 {prop.badges.map(el => 
                     <IonCol className="center" key={el.id}>

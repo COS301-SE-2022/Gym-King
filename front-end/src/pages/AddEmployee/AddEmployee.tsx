@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import React, { useState} from 'react';
 import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
@@ -13,18 +13,24 @@ export const AddEmployee: React.FC = () =>{
     const [showError2Toast, setShowError2Toast] = useState(false);
     const [ownedGyms, setOwnedGyms] = useState([]);
     const [gymId, setGymId] = useState('')
+    const [loading, setLoading] = useState<boolean>(false);
+
     let history=useHistory()
     let formData : any;
 
     useIonViewDidEnter(()=>{
+        setLoading(true)
         let gymOwner = localStorage.getItem("email")
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${gymOwner}`)
         .then(response =>response.data)
         .then(response =>{
             setOwnedGyms(response);
-
+            setLoading(false)
         })
-        .catch(err => {console.log(err)}) 
+        .catch(err => {
+            setLoading(false)
+            console.log(err)
+        }) 
     })
 
     const setChosenGymLocation = (e:any) =>{
@@ -47,6 +53,7 @@ export const AddEmployee: React.FC = () =>{
     }
     
     const createEmployee=()=>{
+        setLoading(true)
         console.log(formData)
         
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
@@ -66,6 +73,7 @@ export const AddEmployee: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 //show toast
                 setShowSuccessToast(true);
 
@@ -73,6 +81,7 @@ export const AddEmployee: React.FC = () =>{
                 history.goBack();
             })
             .catch(err => {
+                setLoading(false)
                 setShowError1Toast(true);
                 console.log(err)
             }) 
@@ -81,10 +90,10 @@ export const AddEmployee: React.FC = () =>{
     return(
         <IonPage color='#220FE' >
                 <IonHeader>
-                    <ToolBar></ToolBar>
+                    <ToolBar ></ToolBar>
                 </IonHeader>
                 <br></br>
-                <IonContent fullscreen className='Content'>
+                <IonContent fullscreen className='Content' >
                     <form onSubmit={handleSubmit} >
                         <IonText className='PageTitle center'>Add Employee</IonText>
                         <br></br>
@@ -107,12 +116,13 @@ export const AddEmployee: React.FC = () =>{
                         <IonText className="smallHeading leftMargin">Gym*</IonText>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
-                        <IonButton color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
+                        <IonButton mode="ios" color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
 
                     </form>
                     <br></br>
                     <br></br>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccessToast}
                         onDidDismiss={() => setShowSuccessToast(false)}
                         message = "Employee added successfully!"
@@ -120,6 +130,7 @@ export const AddEmployee: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showError1Toast}
                         onDidDismiss={() => setShowError1Toast(false)}
                         message = "Employee Already Exists."
@@ -127,11 +138,20 @@ export const AddEmployee: React.FC = () =>{
                         color="danger"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showError2Toast}
                         onDidDismiss={()=>setShowError2Toast(false)}
                         message="Internal Error. Please try again later."
                         duration ={1000}
                         color="danger"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
                     />
                 </IonContent>
             </IonPage>

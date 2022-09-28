@@ -182,13 +182,14 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
     return (
         <>
             <IonToast
+                mode="ios"
                 isOpen={error.showError}
                 message={String(error.message)}
                 
                 onDidDismiss={() => setError({showError: false, message: "no error here"})}
                 duration={3000}
             /><br></br>
-            <IonButton color='primary' onClick={ViewAR} style={{"width":"80%"}} className="centerComp">View Model</IonButton>
+            <IonButton mode="ios" color='primary' onClick={ViewAR} style={{"width":"80%"}} className="centerComp">View Model</IonButton>
         </>
     )
 }

@@ -55,14 +55,13 @@ const OwnerProfilePage: React.FC = () =>{
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("pp", response.profile_picture)
                 
-                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
-                setLoading(false)
             })
         
         //get number of gyms owned
+        
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${localStorage.getItem("email")}`)
         .then(response =>response.data)
         .then(response =>{
@@ -71,6 +70,7 @@ const OwnerProfilePage: React.FC = () =>{
             {
                 setNumGyms(response.length)
             }
+            
         })
         .catch(err => {
             console.log(err)
@@ -84,14 +84,18 @@ const OwnerProfilePage: React.FC = () =>{
             if(response != null)
             {
                 setNumEmployees(response.length)
+                
             }
         })
         .catch(err => {
             console.log(err)
         }) 
+
+        setLoading(false)
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
 
                 method: 'PUT',
@@ -109,11 +113,13 @@ const OwnerProfilePage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
                 //show toast
                 
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 //setShowFail(true);
             }) 
@@ -295,13 +301,13 @@ const OwnerProfilePage: React.FC = () =>{
                     <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
-                            <IonToolbar>
+                            <IonToolbar mode="ios">
                             <IonButtons slot="start">
-                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
+                                <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton mode="ios" color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -324,12 +330,13 @@ const OwnerProfilePage: React.FC = () =>{
 
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton className='width21' type="button" >Change Password</IonButton>
+                                <IonButton mode="ios" className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         
                     </IonModal>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -337,6 +344,7 @@ const OwnerProfilePage: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -344,6 +352,7 @@ const OwnerProfilePage: React.FC = () =>{
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         spinner={"circles"}

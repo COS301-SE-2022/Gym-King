@@ -2,7 +2,7 @@
 * @file AddGym.tsx
 * @brief provides interface for adding new gyms to map
 */
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonLoading,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -39,6 +39,7 @@ const AddGym: React.FC = () => {
   const [showToast1, setShowToast1] = useState(false);
   //-showToast2  hook ,set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
 
 
@@ -77,15 +78,18 @@ const AddGym: React.FC = () => {
     })
       
   const getBrands = async() =>{
+    setLoading(true)
     let gyms: any[]=[]
     let array: string[]=[]
     await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
       .then((response) => response.data)
       .then((response) => {
+        setLoading(false)
           console.log(response)
            gyms = response
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
       }); 
 
@@ -100,7 +104,7 @@ const AddGym: React.FC = () => {
    * @brief calls the add gym api, and adds a gym record the gyms table, then calls the api to assign gym to an owner.
    */
   const addGym = () => {
-    
+    setLoading(true)
     axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym`,
     {
       method: "POST",
@@ -119,6 +123,7 @@ const AddGym: React.FC = () => {
   )
     .then((response) => response.data)
     .then((response) => {
+      
       console.log(response);
       sessionStorage.setItem("new_gid", response.g_id)
       console.log(sessionStorage.getItem("new_gid"))
@@ -139,14 +144,17 @@ const AddGym: React.FC = () => {
     )
       .then((response) => response.data)
       .then((response) => {
+        setLoading(false)
         console.log(response);
         sessionStorage.removeItem("new_gid")
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
       }); 
     })
     .catch((err) => {
+      setLoading(false)
       console.log(err);
       setShowToast2(true)
     });
@@ -190,10 +198,10 @@ const AddGym: React.FC = () => {
 
 
                 <IonText className="smallHeading leftMargin">Address:</IonText>
-                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                  <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
+                <IonButton mode="ios" expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
+                  <IonIcon  mode="ios" className="AddGymLocation" icon="location-outline"></IonIcon>
                   <span>{gymAddress}</span>
-                  <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
+                  <IonIcon mode="ios" class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
                 </IonButton>
                 <div className="width80 centerComp">
                   <Map
@@ -217,7 +225,9 @@ const AddGym: React.FC = () => {
                     </Overlay>
                   </Map>
                 </div>
+
               <IonButton
+                mode="ios"
                 class="AddGymAdd"
                 color="warning"
                 onClick={() => addGym()}
@@ -238,6 +248,14 @@ const AddGym: React.FC = () => {
         message="Error adding gym."
         duration={500}
         color="danger"
+      />
+      <IonLoading 
+          isOpen={loading}
+          message={"Loading"}
+          duration={2000}
+          spinner={"circles"}
+          onDidDismiss={() => setLoading(false)}
+          cssClass={"spinner"}
       />
       
       </IonContent>

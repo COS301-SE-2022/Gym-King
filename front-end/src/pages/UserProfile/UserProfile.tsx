@@ -32,23 +32,27 @@ const UserProfilePage: React.FC = () =>{
    
     
     const getNumberOfBadges = () =>{
-        
+        setLoading(true)
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 setNumBadges(response.length)
             })
             .catch(err => {
-        })
+                setLoading(false)
+            })
     }
     const getNumberOfClaims = () =>{
+        setLoading(false)
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
                 setNumClaims(response.length)
             })
             .catch(err => {
-        })
+                setLoading(false)
+            })
     }
 
     useIonViewDidEnter(()=>{
@@ -89,6 +93,7 @@ const UserProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateUserDetails = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
@@ -105,9 +110,10 @@ const UserProfilePage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                
+                setLoading(false)
             })
             .catch(err => {
+                setLoading(false)
             })
     }
 
@@ -198,6 +204,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 updateProfilePicture()
+                setLoading(false)
             })
             .catch(err => {
                 setLoading(false)
@@ -253,7 +260,7 @@ const UserProfilePage: React.FC = () =>{
                                                 <IonCol><IonText>{phone}</IonText></IonCol>
                                             </IonRow>
                                             <IonRow>
-                                                <IonButton id="open-modal" expand="block">Edit Details</IonButton>
+                                                <IonButton mode="ios" id="open-modal" expand="block">Edit Details</IonButton>
                                             </IonRow>
                                         </IonGrid>
                                     </IonCardContent>
@@ -298,16 +305,16 @@ const UserProfilePage: React.FC = () =>{
 
 
 
-                    <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
+                    <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
+                                <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton mode="ios" color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -329,28 +336,29 @@ const UserProfilePage: React.FC = () =>{
                                 <IonLabel className="smallHeading" position="floating">Phone</IonLabel>
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
 
-                                <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
-                                <IonButton className='width21' type="button" >Change Password</IonButton>
+                               
                             </form>
                         </IonContent>
                         
                     </IonModal>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
-                        duration={1000}
+                        duration={2000}
                         color="success"
                     />
-                    <IonToast
+                    <IonToast   
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
-                        duration={1000}
+                        duration={2000}
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         duration={2000}

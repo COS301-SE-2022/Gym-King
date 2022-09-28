@@ -19,10 +19,10 @@ export class EmployeeList extends React.Component<Props>{
     render(){
         const list = this.props.list!
         return(
-                <IonList>
+                <IonList mode="ios">
                     {
                         list.map((el:any)=>(
-                            <IonItem  key={el.email}  onClick={() => this.goToProfile(el.email, el.fullname, el.username, el.number, el.g_id, el.profile_picture)} >
+                            <IonItem mode="ios" key={el.email}  onClick={() => this.goToProfile(el.email, el.fullname, el.username, el.number, el.g_id, el.profile_picture)} >
                                 <IonAvatar slot="start">
                                 <IonImg src={el.profile_picture} alt=""/>
                                 </IonAvatar>
