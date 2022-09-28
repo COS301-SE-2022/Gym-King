@@ -116,7 +116,8 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
         const setChosenGymLocation= (e:any) =>{
             console.log(e);
             setActiveGymName(e.gym_name)
-            setGymId(e.g_id)
+            setGymId(e)
+            localStorage.setItem("gymId", e)
         }
 
         
@@ -131,7 +132,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                 badgeName: e.target.badgeName.value,
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
-                gymId: gymId,
+                gymId: localStorage.getItem("gymId"),
                 req1: e.target.req1.value,
                 req2: e.target.req2.value,
                 req3: e.target.req3.value

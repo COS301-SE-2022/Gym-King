@@ -34,7 +34,6 @@ const FriendsPage: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 userEmail: localStorage.getItem("email"),
-
             })
         })
         .then(response =>response.data)
