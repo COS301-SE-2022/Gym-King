@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader,  IonButton, IonCardSubtitle, IonCard, IonCardTitle, IonModal, createAnimation, useIonViewWillEnter, IonToast} from '@ionic/react';
+import {IonContent, IonPage, IonHeader,  IonButton, IonCardSubtitle, IonCard, IonCardTitle, IonModal, createAnimation, useIonViewWillEnter, IonToast, IonLoading} from '@ionic/react';
 import React, { useState } from 'react';
 import {ToolBar} from '../../components/toolbar/Toolbar';
 import Leaderboard from '../Leaderboard/Leaderboard';
@@ -18,11 +18,14 @@ const GymPage: React.FC = () =>{
     const [subscribed, setSubscribed]= useState(false)
 
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     const [showSubscribe, setShowSubscribe] = useState(false);
     const [showUnsubscribe, setShowUnubscribe] = useState(false);
 
     useIonViewWillEnter(async()=>{
+        setLoading(true)
         await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/checkIfSubscribed`,{
             method: 'POST',
             headers: {
@@ -38,11 +41,13 @@ const GymPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setSubscribed(response)
             
         })
         .catch(err => {
+            setLoading(false)
             console.log(err)  
         })
     })
@@ -80,6 +85,7 @@ const GymPage: React.FC = () =>{
     }
 
     const subscribe = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/createSubscription`,{
             method: 'POST',
             headers: {
@@ -94,18 +100,20 @@ const GymPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setSubscribed(true)
             setShowSubscribe(true)
         })
         .catch(err => {
+            setLoading(false)
             console.log(err)
             
         })
     }
 
     const unsubscribe = ()=>{
-        console.log(gid)
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/deleteSubscription`,{
             method: 'DELETE',
             headers: {
@@ -120,13 +128,14 @@ const GymPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setSubscribed(false)
             setShowUnubscribe(true)
         })
         .catch(err => {
+            setLoading(false)
             console.log(err)
-            
         })
     }
 
@@ -181,6 +190,14 @@ const GymPage: React.FC = () =>{
                 message="Unsubscribed!"
                 duration={1000}
                 color="success"
+            />
+            <IonLoading 
+                isOpen={loading}
+                message={"Loading"}
+                duration={2000}
+                spinner={"circles"}
+                onDidDismiss={() => setLoading(false)}
+                cssClass={"spinner"}
             />
         </IonPage>
     )
