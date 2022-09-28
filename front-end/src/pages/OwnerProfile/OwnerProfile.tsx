@@ -60,8 +60,18 @@ const OwnerProfilePage: React.FC = () =>{
         
         //get number of gyms owned
         
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${localStorage.getItem("username")}`)
-        .then(response =>response.data)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             if(response != null)
@@ -75,7 +85,18 @@ const OwnerProfilePage: React.FC = () =>{
         }) 
 
         //get number of employees
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${localStorage.getItem("username")}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
