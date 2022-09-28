@@ -71,7 +71,8 @@ const OwnerProfilePage: React.FC = () =>{
                 apikey: sessionStorage.getItem("key")
 
             })
-        })        .then(response =>response.data)
+        })        
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             if(response != null)
