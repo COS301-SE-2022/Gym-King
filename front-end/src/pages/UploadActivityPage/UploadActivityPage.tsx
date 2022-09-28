@@ -11,6 +11,7 @@ import {claimSchema} from '../../validation/UploadClaimValidation'
 import './index'
 import { LayersModel } from '@tensorflow/tfjs';
 import ActivityInputs from '../../components/activityInputs/ActivityInputs';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 interface InternalValues {
     file: any;
 }
@@ -19,14 +20,14 @@ export type UploadActivityStates = {act?:any}
 
 let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
 const UploadActivityPage: React.FC = () =>{
-    const inputRefTakeVideo = useRef<HTMLInputElement>(null);
-    const inputRefUploadVideo = useRef<HTMLInputElement>(null);
+const inputRefTakeVideo = useRef<HTMLInputElement>(null);
+const inputRefUploadVideo = useRef<HTMLInputElement>(null);
  //HOOKS AND VARAIBES
- const [award,setAward]=useState<boolean>(false)
- const [isValid, setIsValid] = useState(false);
- const [submitted, setSubmitted] = useState(false);
- const [Icon,setIcon]=useState<string[]>([""])
- const [model,setModel]=useState<any>()  
+const [award,setAward]=useState<boolean>(false)
+const [isValid, setIsValid] = useState(false);
+const [submitted, setSubmitted] = useState(false);
+const [Icon,setIcon]=useState<string[]>([""])
+const [model,setModel]=useState<any>()  
 const [message,setMessage]=useState<string>("loading")
 const [showToast1, setShowToast1] = useState(false);
 const [b_id, setB_id] = useState('');
@@ -71,6 +72,8 @@ const SetAI_enabled=async(msg:string)=>
 }
 //METHODS     
 const loadModel =async() => {
+    if(model===undefined)
+    {
     var new_model:LayersModel
     try{
 
@@ -95,6 +98,7 @@ const loadModel =async() => {
         history.goBack()
         
     }
+}
 };
 
     
@@ -158,14 +162,33 @@ const determineReps=async(predictions:string[])=>{
         
     
 }
+const toBase64 =(file:File) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
+const writeToFile=async()=>{
+    console.log('media/'+values.current.file.name)
+    var media:string=(await toBase64(values.current.file) as string)
+    await Filesystem.writeFile({
+        path: 'media/'+values.current.file.name,
+        data: media,
+        directory: Directory.Data
+      });
+}
 const handleSubmit_AI = async (path:any) =>{
+    
+    console.log(values.current.file)
+    await writeToFile()
     //  await sendClaim();
     // saveImage(values.current.file)
-    console.log("model:",model)
+   console.log("model:",model)
     setMessage("Calculating")
     setLoading(true)
     console.log("extracting frames")
-    await VideoToFrames.getFrames("./assets/.mp4", VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+    await VideoToFrames.getFrames('./media/'+values.current.file.name, VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
         console.log("running through neural network")
         console.log(frame)
         let predictions=await categroize(frame)
@@ -335,7 +358,7 @@ useIonViewDidEnter(async()=>{
                             <input ref={inputRefTakeVideo} onClick={()=>{console.log("hit")}}  type="file"className='HiddenInputFile'  name="video" accept="video/*" capture="environment" onChange={(ev) => onFileChange(ev)}/>
                             <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className="btnSubmit centerComp" color="warning">Upload Video</IonButton>  
                             <input ref={inputRefUploadVideo}  type="file" className='HiddenInputFile' accept=".mp4" onChange={(ev) => onFileChange(ev)} />
-                            <IonButton onClick={sendClaim} className="btnSubmit centerComp" color="warning">Submit</IonButton>  
+                            <IonButton onClick={handleSubmit_AI } className="btnSubmit centerComp" color="warning">Submit</IonButton>  
                         </div>
                    ):(
                     <div>
@@ -379,8 +402,8 @@ useIonViewDidEnter(async()=>{
                         isOpen={error_toast}
                         onDidDismiss={() => setError_toast(false)}
                         message={error_Mesg}
-                        duration={500}
-                        color="error"
+                        duration={1000}
+                        color="danger"
                     />
                     <IonLoading 
                         isOpen={loading}
