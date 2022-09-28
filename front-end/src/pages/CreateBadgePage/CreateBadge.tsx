@@ -110,7 +110,8 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
             localStorage.setItem('act', e);
             //setActivityType(e)
         }
-        const setChosenGymLocation = (e:any) =>{
+
+        const setChosenGymLocation= (e:any) =>{
             console.log(e);
             setGymId(e)
         }

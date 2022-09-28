@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewDidEnter, IonCol, IonGrid, IonRow} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextarea, IonToast, IonLoading, useIonViewDidEnter, IonCol, IonGrid, IonRow, IonLabel} from '@ionic/react';
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {useState } from 'react';
 import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
@@ -6,6 +6,7 @@ import SegmentButton from '../../components/segmentButton/segmentButton';
 import { useHistory } from 'react-router-dom';
 import BadgeSlider from '../../components/BadgeSlider/BadgeSlider';
 import axios from "axios";
+import { onlyLettersAndSpaces } from '../../utils/validation';
 
 
 const EditBadge: React.FC = () =>{
@@ -28,6 +29,54 @@ const EditBadge: React.FC = () =>{
         let formData:any;
         let badgeId= localStorage.getItem("badgeid");
         let tags =""
+
+        //FORM VALIDATION 
+        const [errors, setErrors] = useState({
+            name: '',
+            activitytype:'',
+            description: '',
+            challenge:'',
+            req1:'',
+            req2:'',
+            req3:'',
+            gym:'',
+
+        });
+    
+        const handleError = (error:string, input:string) => {
+            setErrors(prevState => ({...prevState, [input]: error}));
+        };
+    
+        const  validate = () => {
+            let isValid = true
+            console.log(formData.gymId)
+    
+            if(formData.badgeName && onlyLettersAndSpaces(formData.badgeName)) {
+                handleError('Please input a valid name', 'name');
+                isValid = false;
+            }
+            else
+                handleError('', 'name');
+
+            console.log(gymId)
+            if(gymId==="") {
+                handleError('Please select a gym', 'gym');
+                isValid = false;
+            }
+            else
+                handleError('', 'gym');
+    
+            if(localStorage.getItem('act') ==='') {
+                handleError('Please select an activty type', 'activitytype');
+                isValid = false;
+            }
+            else
+                handleError('', 'activitytype');
+
+
+    
+            return isValid;
+        }
 
         //METHODS 
         const setChosenActivityType = (e:any) =>{
@@ -53,7 +102,7 @@ const EditBadge: React.FC = () =>{
                 };
                 
                 
-                const isValid = await createBadgeSchema.isValid(formData);
+                const isValid = validate()
 
                 if(isValid)
                 {
@@ -193,18 +242,30 @@ const EditBadge: React.FC = () =>{
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Edit Badge</IonText>
                     <form onSubmit={handleSubmit} >
-                        <IonText className='inputHeading leftMargin'>Badge Name:</IonText> <br></br><br></br>
-                        <IonInput onKeyUp={changeName} name='badgeName' type='text' value={badgename} className='textInput centerComp smallerTextBox ' ></IonInput><br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Badge Name:</IonText> <br></br><br></br>
+                        <IonInput onKeyUp={changeName} name='badgeName' type='text' value={badgename} className='textInput centerComp smallerTextBox ' ></IonInput>
+                        {errors.name!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.name}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br><br></br>
 
 
-                        <IonText className='inputHeading leftMargin'>Activity Type:</IonText> <br></br><br></br>
-                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType} data-testid="segBtn"></SegmentButton><br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Activity Type:</IonText> <br></br><br></br>
+                        <SegmentButton list={['STRENGTH', 'CARDIO']} val={localStorage.getItem('act')} chosenValue={setChosenActivityType} data-testid="segBtn"></SegmentButton>
+                        {errors.activitytype!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.activitytype}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br><br></br>
 
 
-                        <IonText className='inputHeading leftMargin'>Badge Challenge:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Badge Challenge:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeChallenge"  value={badgechallenge} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
-                        <IonText className='inputHeading leftMargin'>Badge Description:</IonText> <br></br><br></br>
+                        <IonText className='smallHeading leftMargin10'>Badge Description:</IonText> <br></br><br></br>
                         <IonTextarea name="badgeDescription"  value={badgedescription} className="centerComp textInput smallerTextBox textarea" placeholder="Enter here..."></IonTextarea><br></br><br></br>
 
                         {
@@ -213,7 +274,7 @@ const EditBadge: React.FC = () =>{
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Weight:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Weight:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req1" className="textInput" value={req1}></IonInput>
@@ -221,7 +282,7 @@ const EditBadge: React.FC = () =>{
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin' >Reps:</IonText>
+                                        <IonText className='smallHeading leftMargin' ><i>Reps:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req2" className="textInput" value={req2}></IonInput>
@@ -229,7 +290,7 @@ const EditBadge: React.FC = () =>{
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Sets:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Sets:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req3" className="textInput" value={req3}></IonInput>
@@ -243,7 +304,7 @@ const EditBadge: React.FC = () =>{
                             <IonGrid>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Distance:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Distance:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req1" className="textInput" value={req1}></IonInput>
@@ -251,7 +312,7 @@ const EditBadge: React.FC = () =>{
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin' >Duration:</IonText>
+                                        <IonText className='smallHeading leftMargin' ><i>Duration:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req2" className="textInput"  value={req2}></IonInput>
@@ -259,7 +320,7 @@ const EditBadge: React.FC = () =>{
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonText className='smallHeading leftMargin'>Level of Difficulty:</IonText>
+                                        <IonText className='smallHeading leftMargin'><i>Difficulty:</i></IonText>
                                     </IonCol>
                                     <IonCol>
                                         <IonInput type="number" name="req3" className="textInput" value={req2}></IonInput>
@@ -267,6 +328,8 @@ const EditBadge: React.FC = () =>{
                                 </IonRow>
                             </IonGrid>
                         }
+                        
+                        <br></br>
                         <BadgeSlider bIcon={sessionStorage.getItem("bi")!} name = {badgename}></BadgeSlider>
                         
                         <IonButton mode="ios" className=" btnFitWidth  width80 centerComp" color='success' type='submit' >SAVE CHANGES</IonButton>
