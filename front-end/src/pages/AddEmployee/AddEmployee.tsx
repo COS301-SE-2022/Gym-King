@@ -36,7 +36,6 @@ export const AddEmployee: React.FC = () =>{
 
     const  validate = () => {
         let isValid = true
-        console.log
 
         if(formData.email && !validEmail(formData.email)) {
             handleError('Please input a valid email', 'email');
@@ -52,12 +51,12 @@ export const AddEmployee: React.FC = () =>{
         else
             handleError('', 'name');
 
-        if(formData.name && onlyLettersAndSpaces(formData.name)) {
-            handleError('Please input a valid name', 'name');
+        if(formData.phone && !validPhone(formData.phone)) {
+            handleError('Please input a valid phone number', 'phone');
             isValid = false;
         }
         else
-            handleError('', 'name');
+            handleError('', 'phone');
 
         if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
             handleError('Please input a valid username', 'username');
