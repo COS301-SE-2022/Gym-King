@@ -14,8 +14,7 @@ const ManageEmployees: React.FC = () =>{
     const [gymList, setGymList] = useState(new Array())
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
-    let email = localStorage.getItem('email')
-    
+    let username = localStorage.getItem('username')
 
     
     useIonViewDidEnter(()=>
@@ -36,7 +35,7 @@ const ManageEmployees: React.FC = () =>{
         sessionStorage.setItem("owner_email", owner!)
         sessionStorage.setItem("owner_pass", owner_pass!)
 
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${owner}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${username}`)
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -47,7 +46,7 @@ const ManageEmployees: React.FC = () =>{
          })
 
          //get the owner's gyms
-         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${username}`)
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
