@@ -113,7 +113,7 @@ const NotFriendProfile: React.FC = () =>{
             .then(response =>{
                 setLoading(false)
                 console.log(response)
-                setRequestPending("outgoing")
+                setRequestPending("incoming")
             })
             .catch(err => {
                 setLoading(false)
