@@ -55,14 +55,13 @@ const OwnerProfilePage: React.FC = () =>{
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("pp", response.profile_picture)
                 
-                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
-                setLoading(false)
             })
         
         //get number of gyms owned
+        
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${localStorage.getItem("email")}`)
         .then(response =>response.data)
         .then(response =>{
@@ -71,6 +70,7 @@ const OwnerProfilePage: React.FC = () =>{
             {
                 setNumGyms(response.length)
             }
+            
         })
         .catch(err => {
             console.log(err)
@@ -84,14 +84,18 @@ const OwnerProfilePage: React.FC = () =>{
             if(response != null)
             {
                 setNumEmployees(response.length)
+                
             }
         })
         .catch(err => {
             console.log(err)
         }) 
+
+        setLoading(false)
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
 
                 method: 'PUT',
@@ -109,11 +113,13 @@ const OwnerProfilePage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
                 //show toast
                 
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 //setShowFail(true);
             }) 
