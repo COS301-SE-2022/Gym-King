@@ -341,7 +341,7 @@ const owners = express.Router()
         oldFileName = owner.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -410,7 +410,7 @@ const owners = express.Router()
           oldFileName = brand.gym_logo.split('/');
           if (oldFileName.length == 5){
             oldFileName = oldFileName[4];
-            oldFileName = oldFileName.replace('%2F','/')
+            oldFileName = oldFileName.replace(/%2F/g,'/')
           }
           else{
             oldFileName = 'empty';
@@ -609,7 +609,7 @@ const owners = express.Router()
         oldFileName = owner.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';

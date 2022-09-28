@@ -365,7 +365,7 @@ const employees = express.Router()
         oldFileName = employee.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -435,7 +435,7 @@ const employees = express.Router()
             oldFileName = ret.proof.split('/');
             if (oldFileName.length == 5){
               oldFileName = oldFileName[4];
-              oldFileName = oldFileName.replace('%2F','/')
+              oldFileName = oldFileName.replace(/%2F/g,'/')
             }
             else{
               oldFileName = 'empty';
@@ -549,7 +549,7 @@ const employees = express.Router()
             oldFileName = claim.proof.split('/');
             if (oldFileName.length == 5){
               oldFileName = oldFileName[4];
-              oldFileName = oldFileName.replace('%2F','/')
+              oldFileName = oldFileName.replace(/%2F/g,'/')
             }
             else{
               oldFileName = 'empty';
@@ -592,7 +592,7 @@ const employees = express.Router()
         oldFileName = employee.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
