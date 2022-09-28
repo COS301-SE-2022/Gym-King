@@ -35,7 +35,18 @@ const ManageEmployees: React.FC = () =>{
         sessionStorage.setItem("owner_email", owner!)
         sessionStorage.setItem("owner_pass", owner_pass!)
 
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${username}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -46,7 +57,18 @@ const ManageEmployees: React.FC = () =>{
          })
 
          //get the owner's gyms
-         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${username}`)
+         axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
