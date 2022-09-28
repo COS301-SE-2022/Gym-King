@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter, useIonViewDidLeave} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter, useIonViewDidLeave, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
@@ -12,8 +12,11 @@ const NotFriendProfile: React.FC = () =>{
         const [fullname, setFullname]= useState("")
         const [profilePicture, setProfilePicture]= useState("")
         const [requstPending, setRequestPending] = useState(false)
+        const [loading, setLoading] = useState<boolean>(false);
 
         useIonViewDidEnter(async()=>{
+
+            setLoading(true)
             setUsername(sessionStorage.getItem("foundUsername")!)
             setEmail((sessionStorage.getItem("foundEmail")!))
             setFullname(sessionStorage.getItem("foundFullname")!)
@@ -35,10 +38,12 @@ const NotFriendProfile: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
                 setRequestPending(response)
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 
             })
@@ -47,6 +52,7 @@ const NotFriendProfile: React.FC = () =>{
 
 
         const sendFriendRequest = ()=>{
+            setLoading(true)
             axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
                 method: 'POST',
                 headers: {
@@ -61,10 +67,12 @@ const NotFriendProfile: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
                 setRequestPending(true)
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 
             })
@@ -139,6 +147,14 @@ const NotFriendProfile: React.FC = () =>{
 
                     <br></br>
                 
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 </IonContent>
             </IonPage>
         )
