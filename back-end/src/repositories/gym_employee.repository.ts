@@ -36,7 +36,7 @@ export const employeeRepository = GymKingDataSource.getRepository(gym_employee).
         return await this.manager.update(gym_employee, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
     },
     async updateEmployeeAPIKey(email: string, apikey: string) {
-        return await this.manager.update(gym_employee, { email: email }, {apikey: apikey})
+        return this.manager.update(gym_employee, { email: email }, {apikey: apikey})
     },
     async updateEmployeeProfilePicture(email: string, profilepicture: string) {
         return await this.manager.update(gym_employee, { email: email }, {profile_picture: profilepicture})
