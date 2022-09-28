@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton, IonToast, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
@@ -16,10 +16,12 @@ const FriendProfile: React.FC = () =>{
         let friendFullname = sessionStorage.getItem("friendFullname")
 
         const [friendBadges, setFriendBadges] = useState([])
+        const [showRemoveFriend, setShowRemoveFriend] = useState(false);
+        const [loading, setLoading] = useState<boolean>(false);
 
 
         useIonViewWillEnter(async ()=>{
-            
+            setLoading(true)
             await axios(process.env["REACT_APP_GYM_KING_API"]+`/user/badges`,{
                 method: 'POST',
                 headers: {
@@ -32,10 +34,12 @@ const FriendProfile: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
                 setFriendBadges(response)
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
             })
         
@@ -43,6 +47,7 @@ const FriendProfile: React.FC = () =>{
         },[])
 
         const removeFriend = () =>{
+            setLoading(true)
             axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/deleteRequest`,{
                 method: 'DELETE',
                 headers: {
@@ -57,10 +62,13 @@ const FriendProfile: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
+                setShowRemoveFriend(true)
                 history.goBack()
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 
             })
@@ -103,14 +111,32 @@ const FriendProfile: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton style={{"width":"100%"}} onClick={removeFriend}>Remove Friend</IonButton>
+                            <IonButton mode="ios" style={{"width":"100%"}} onClick={removeFriend}>Remove Friend</IonButton>
                         </IonRow>
                         
                     </IonGrid>
 
                     <br></br>
+
+                    <IonToast
+                        mode="ios"
+                        isOpen={showRemoveFriend}
+                        onDidDismiss={() => setShowRemoveFriend(false)}
+                        message="Friend removed"
+                        duration={1000}
+                        color="success"
+                    />
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 
                 </IonContent>
+
             </IonPage>
         )
         

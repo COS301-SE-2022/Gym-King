@@ -24,6 +24,7 @@ import { useHistory } from 'react-router-dom';
                     <RegisterForm history={history} /*showSuccessToast={setShowSuccessToast(true)} showError1Toast={setShowError1Toast(true)} showError2Toast={setShowError1Toast(true)}*/></RegisterForm>
 
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccessToast}
                         onDidDismiss={() => setShowSuccessToast(false)}
                         message= "Account created successfully!"
@@ -31,6 +32,7 @@ import { useHistory } from 'react-router-dom';
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showError1Toast}
                         onDidDismiss={() => setShowError1Toast(false)}
                         message="User Already Exists."
@@ -38,6 +40,7 @@ import { useHistory } from 'react-router-dom';
                         color="danger"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showError2Toast}
                         onDidDismiss={() => setShowError2Toast(false)}
                         message="Internal Error. Please try again later."

@@ -81,25 +81,28 @@
    return(
    <div data-testid="GymCard">
      <IonCard
+        mode="ios"
        color="primary"   
        class="ion-padding gymCardMargin"
        onClick={() => setShowActionSheet(true)}
      >
-       <IonCardTitle class="inputHeading">
+       <IonCardTitle class="inputHeading" mode="ios">
          {prop.name}
        </IonCardTitle>
        
-       <IonCardSubtitle className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
+       <IonCardSubtitle mode="ios" className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
          {prop.address}
        </IonCardSubtitle>
      </IonCard>
  
            <IonActionSheet
+              mode="ios"
                isOpen={showActionSheet}
                onDidDismiss={()=>setShowActionSheet(false)}
                cssClass="my-custom-class"
                
                buttons={[{
+                  
                    text: 'Edit',
                    id:'edit-button',
                    icon: create,
@@ -154,6 +157,7 @@
            </IonActionSheet>
  
            <IonToast
+            mode="ios"
              isOpen={showToast1}
              onDidDismiss={() => setShowToast1(false)}
              message="Gym has been deleted."
@@ -162,6 +166,7 @@
              />
  
            <IonToast
+            mode="ios"
              isOpen={showToast2}
              onDidDismiss={() => setShowToast2(false)}
              message={toastMessage}
@@ -170,6 +175,7 @@
            />
                  
            <IonLoading 
+           mode="ios"
              isOpen={loading}
              message={"Loading"}
              duration={2000}

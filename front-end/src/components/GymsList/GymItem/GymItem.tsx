@@ -1,4 +1,4 @@
-import { IonItem, IonAvatar, IonImg, IonLabel} from '@ionic/react';
+import { IonItem, IonAvatar, IonImg, IonLabel, IonLoading} from '@ionic/react';
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -15,8 +15,11 @@ const GymsList: React.FC<props> = (props) =>{
         const [gymName, setGymName] = useState("")
         const [gymAddress, setGymAddress] = useState("")
         const [gymProfile, setGymProfile] = useState("")
+        const [loading, setLoading] = useState<boolean>(false);
+
 
         useEffect(()=>{
+            setLoading(true)
             //get gym info 
              axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${props.gymId}`)
             .then(response =>response.data)
@@ -34,9 +37,11 @@ const GymsList: React.FC<props> = (props) =>{
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand/${gymBrandName}`)
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 setGymProfile(response.gym_logo)
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
             })
         })
@@ -52,13 +57,23 @@ const GymsList: React.FC<props> = (props) =>{
 
 
         return(
-
-            <IonItem button detail  onClick={()=>viewGymProfile(gymBrandName, gymAddress)} key={props.gymId}>
+            <>
+            <IonItem mode="ios" button detail  onClick={()=>viewGymProfile(gymBrandName, gymAddress)} key={props.gymId}>
                     <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
                         <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${gymProfile})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                     </IonAvatar>
-                    <IonLabel>{gymName}</IonLabel>
-            </IonItem>)
+                    <IonLabel mode="ios">{gymName}</IonLabel>
+            </IonItem>
+            <IonLoading 
+                isOpen={loading}
+                message={"Loading"}
+                duration={2000}
+                spinner={"circles"}
+                onDidDismiss={() => setLoading(false)}
+                cssClass={"spinner"}
+            />
+            </>
+            )
                     
                 
         

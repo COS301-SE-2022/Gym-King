@@ -170,8 +170,9 @@ const handleKeyDown = (event: { key: string }) => {
           <img src={image}  alt='building icon' id ="GymPicture"/>
         </Overlay>
     </Map>
-    <IonFab vertical="top" horizontal="end" slot="fixed">
-          <IonFabButton 
+    <IonFab  vertical="top" horizontal="end" slot="fixed">
+          <IonFabButton  
+              mode="ios"
               onClick={()=>{
                 if(lock){
                   setLock(false);
@@ -185,6 +186,7 @@ const handleKeyDown = (event: { key: string }) => {
             <IonIcon icon={icon} />
           </IonFabButton>
           <IonFabButton
+            mode="ios"
             onClick={()=>{
               setCenter([gymCoord[0],gymCoord[1]])
             }}>
@@ -192,6 +194,7 @@ const handleKeyDown = (event: { key: string }) => {
           </IonFabButton>
         </IonFab>
     <IonModal
+          mode="ios"
           ref={modal}
           trigger="open-modal"
           isOpen={open}
@@ -200,27 +203,27 @@ const handleKeyDown = (event: { key: string }) => {
           backdropDismiss={false}
           backdropBreakpoint={0.5}
         >
-          <IonContent className="ion-padding">
+          <IonContent className="ion-padding" >
             <IonGrid>
               <IonRow>
-                <IonSearchbar onClick={() => modal.current?.setCurrentBreakpoint(0.75)} 
+                <IonSearchbar mode="ios" onClick={() => modal.current?.setCurrentBreakpoint(0.75)} 
                               onIonChange={(e: any) => {
                                   setGymAddress(e.target.value);
                               }} 
                               onKeyDown={handleKeyDown} placeholder={"address"} value={gymAddress}></IonSearchbar>
               </IonRow>
               <IonRow>
-                <IonButton  onClick={()=>{
+                <IonButton mode="ios"  onClick={()=>{
                                           getLocation();
                                           setGymAddress(gymAddress);
                                           modal.current?.setCurrentBreakpoint(0.25)
                                       }}>
-                              <IonIcon slot="start" icon={location}></IonIcon>
+                              <IonIcon mode="ios" slot="start" icon={location}></IonIcon>
                               <IonLabel>Use My Location</IonLabel>
                                 </IonButton>
               </IonRow>
               <IonRow>
-                <IonButton color="warning"
+                <IonButton mode="ios" color="warning"
                             onClick={()=>{
                               sessionStorage.setItem("gymAddress",gymAddress)
                               sessionStorage.setItem("Lat",String(gymCoord[0]))
@@ -234,13 +237,13 @@ const handleKeyDown = (event: { key: string }) => {
               
                 {
                   addresses.map((el:any)=>(
-                      <IonItem key={el.id}
+                      <IonItem mode="ios" key={el.id }
                         onClick={()=>{
                             changeCoords(el.lat,el.long);
                             setGymAddress(el.address);
                             modal.current?.setCurrentBreakpoint(0.25)
                         }}>
-                          <IonIcon slot="start" icon={location}></IonIcon>
+                          <IonIcon mode="ios" slot="start" icon={location}></IonIcon>
                         <IonLabel>{el.address}</IonLabel>
                       </IonItem>
                   )

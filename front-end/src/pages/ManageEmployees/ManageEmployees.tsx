@@ -41,12 +41,9 @@ const ManageEmployees: React.FC = () =>{
         .then(response =>{
             console.log(response)
             setEmployeeList(response)
-
-            setLoading(false)
         })
         .catch(err => {
             console.log(err)
-            setLoading(false)
          })
 
          //get the owner's gyms
@@ -55,6 +52,7 @@ const ManageEmployees: React.FC = () =>{
             .then(response =>{
                 console.log(response)
                 setGymList(response)
+                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
@@ -78,16 +76,16 @@ const ManageEmployees: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>My Employees</IonText>
-                <IonButton routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>
+                <IonButton mode="ios" routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>
                 <br></br><br></br>
-                <IonAccordionGroup>
+                <IonAccordionGroup mode="ios">
                 {
                     gymList.map((el:any)=>
-                        <IonAccordion key={el.g_id} value={el.g_id}>
-                            <IonItem slot="header">
+                        <IonAccordion key={el.g_id} value={el.g_id} mode="ios">
+                            <IonItem slot="header" mode="ios">
                                 <IonLabel>{el.gym_brandname}</IonLabel>
                              </IonItem>
-                             <IonList slot="content">
+                             <IonList slot="content" mode="ios">
                                 <EmployeeList list={(getEmployeesByGym(el.g_id))} history={history}></EmployeeList>
                             </IonList>
                         </IonAccordion>
@@ -95,6 +93,7 @@ const ManageEmployees: React.FC = () =>{
                 </IonAccordionGroup>    
                 
                 <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={"Loading"}
                         spinner={"circles"}

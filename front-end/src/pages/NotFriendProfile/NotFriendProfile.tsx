@@ -1,27 +1,58 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter, useIonViewDidLeave} from '@ionic/react';
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonImg, IonButton, useIonViewDidEnter, useIonViewDidLeave, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
 
 const NotFriendProfile: React.FC = () =>{
         //localStorage.setItem("friendRequest","true")
-        let history=useHistory()
 
         
         const [username, setUsername]= useState("")
-        const [email, setEmail]= useState("")
+        const [email, setEmail]= useState(sessionStorage.getItem("foundEmail"))
         const [fullname, setFullname]= useState("")
         const [profilePicture, setProfilePicture]= useState("")
+        const [requstPending, setRequestPending] = useState(false)
+        const [loading, setLoading] = useState<boolean>(false);
 
-        useIonViewDidEnter(()=>{
+        useIonViewDidEnter(async()=>{
+
+            setLoading(true)
             setUsername(sessionStorage.getItem("foundUsername")!)
             setEmail((sessionStorage.getItem("foundEmail")!))
             setFullname(sessionStorage.getItem("foundFullname")!)
             setProfilePicture(sessionStorage.getItem("foundProfilePicture")!)
+
+            //see if a request is pending 
+            console.log(email)
+            await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/checkIfPendingFriends`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    user1email : localStorage.getItem("email"),
+                    password: localStorage.getItem("password"),
+                    user2email: email
+                })
+            })
+            .then(response =>response.data)
+            .then(response =>{
+                setLoading(false)
+                console.log(response)
+                setRequestPending(response)
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+                
+            })
+
         })
 
+
         const sendFriendRequest = ()=>{
+            setLoading(true)
             axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
                 method: 'POST',
                 headers: {
@@ -36,10 +67,12 @@ const NotFriendProfile: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)
-                history.goBack()
+                setRequestPending(true)
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 
             })
@@ -64,7 +97,7 @@ const NotFriendProfile: React.FC = () =>{
                             sessionStorage.getItem("isFriendRequest")==="true"
                             &&
                             <IonRow >
-                                <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
+                                <IonCard mode="ios" className="profileCard" style={{"paddingBottom":"2em"}}>
                                     <IonGrid>
                                         <IonRow>
                                             <IonCol >
@@ -95,7 +128,16 @@ const NotFriendProfile: React.FC = () =>{
                                     </IonRow>
                                     <br></br><br></br>
                                     <IonRow>
-                                        <IonButton onClick={sendFriendRequest}>Send Friend Request</IonButton>
+                                        {
+                                            !requstPending
+                                            &&
+                                            <IonButton mode="ios" onClick={sendFriendRequest}>Send Friend Request</IonButton>
+                                        }
+                                        {
+                                            requstPending
+                                            &&
+                                            <IonButton mode="ios" disabled={true}>Request Sent</IonButton>
+                                        }
                                     </IonRow>
                                 </IonGrid>
                             </IonCard>
@@ -105,6 +147,14 @@ const NotFriendProfile: React.FC = () =>{
 
                     <br></br>
                 
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 </IonContent>
             </IonPage>
         )
