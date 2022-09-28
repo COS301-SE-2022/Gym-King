@@ -178,12 +178,12 @@ const NotFriendProfile: React.FC = () =>{
                                             <IonButton mode="ios" onClick={sendFriendRequest}>Send Friend Request</IonButton>
                                         }
                                         {
-                                            (requstPending==="outgoing")
+                                            (requstPending==="incoming")
                                             &&
                                             <IonButton mode="ios" disabled={true}>Request Sent</IonButton>
                                         }
                                         {
-                                            (requstPending==="incoming")
+                                            (requstPending==="outgoing")
                                             &&
                                             <IonButton mode="ios" onClick={confirmRequest}>Accept Friend Request</IonButton>
                                         }
