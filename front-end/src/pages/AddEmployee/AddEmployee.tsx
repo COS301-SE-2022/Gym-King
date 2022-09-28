@@ -73,7 +73,7 @@ export const AddEmployee: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                setLoading(false)
+            setLoading(false)
                 //show toast
                 setShowSuccessToast(true);
 
@@ -92,28 +92,27 @@ export const AddEmployee: React.FC = () =>{
                 <IonHeader>
                     <ToolBar ></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content' >
                     <form onSubmit={handleSubmit} >
                         <IonText className='PageTitle center'>Add Employee</IonText>
                         <br></br>
 
-                        <IonText className="smallHeading leftMargin">Email*</IonText>
-                        <IonInput name='email' type='text' className='textInput  smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="inputHeading leftMargin">Email*</IonText>
+                        <IonInput name='email' type='text' className='textInput  smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Full name*</IonText>
-                        <IonInput name='name' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="inputHeading leftMargin">Full name*</IonText>
+                        <IonInput name='name' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Phone Number*</IonText>
-                        <IonInput name='number' type='number' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="inputHeading leftMargin">Phone Number*</IonText>
+                        <IonInput name='number' type='number' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin"> Username*</IonText>
-                        <IonInput name='username' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="inputHeading leftMargin"> Username*</IonText>
+                        <IonInput name='username' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Password*</IonText>
-                        <IonInput name='password' type='password' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="inputHeading leftMargin">Password*</IonText>
+                        <IonInput name='password' type='password' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Gym*</IonText>
+                        <IonText className="inputHeading leftMargin">Gym*</IonText>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
                         <IonButton mode="ios" color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
