@@ -22,26 +22,26 @@ beforeAll(async () => {
     .catch((err) => {
         console.log("Connection not made: "+err);
     })
-    let response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Test Brand 1"
     });
-    response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Test Brand 2"
     });
-    response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Test Brand"
     });
-    response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Changed Brand 1"
     });
-    response = await request(server).post('/owners/owner').send({
+    await request(server).post('/owners/owner').send({
         "email":"owner@example.com",
         "fullname":"Test Test",
         "number":"0123456789",
         "username":"Test",
         "password":"Test"
     });
-    response = await request(server).post('/users/login').send({
+    let response = await request(server).post('/users/login').send({
         "email":"owner@example.com",
         "password":"Test",
         "usertype":"gym_owner"
@@ -58,7 +58,7 @@ beforeAll(async () => {
         "gymIcon":"Test Logo"
     });
     gid = response.body.g_id;
-    response = await request(server).post('/employees/employee').send({
+    await request(server).post('/employees/employee').send({
         "ownerEmail":"owner@example.com",
         "apikey":ownerApikey,
         "email": "employee@example.com",

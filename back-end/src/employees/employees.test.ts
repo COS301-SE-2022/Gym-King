@@ -3,7 +3,6 @@ import "reflect-metadata";
 import { GymKingDataSource } from "../datasource";
 import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
-import { gymBrandRepository } from "../repositories/gym_brand.repository";
 import { employeeRepository } from "../repositories/gym_employee.repository";
 import { server } from "../server";
 const request = require('supertest');
@@ -21,26 +20,26 @@ beforeAll(async () => {
     .catch((err) => {
         console.log("Connection not made: "+err);
     })
-    let response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Test Brand 1"
     });
-    response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Test Brand 2"
     });
-    response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Test Brand"
     });
-    response = await request(server).post('/brands/brand').send({
+    await request(server).post('/brands/brand').send({
         "brandname": "Changed Brand 1"
     });
-    response = await request(server).post('/owners/owner').send({
+    await request(server).post('/owners/owner').send({
         "email":"owner@example.com",
         "fullname":"Test Test",
         "number":"0123456789",
         "username":"Test",
         "password":"Test"
     });
-    response = await request(server).post('/users/login').send({
+    let response = await request(server).post('/users/login').send({
         "email":"owner@example.com",
         "password":"Test",
         "usertype":"gym_owner"
@@ -56,7 +55,7 @@ beforeAll(async () => {
         "gymCoordLat": 28.1905
     });
     gid = response.body.g_id;
-    response = await request(server).post('/users/user').send({
+    await request(server).post('/users/user').send({
         "email": "user@example.com",
         "fullname": "Test Test",
         "number": "0123456789",

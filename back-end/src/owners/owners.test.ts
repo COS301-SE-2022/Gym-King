@@ -1,8 +1,6 @@
 jest.setTimeout(25000)
 import "reflect-metadata";
 import { GymKingDataSource } from "../datasource";
-import { gym_brand } from "../entities/gym_brand.entity";
-import { gymBrandRepository } from "../repositories/gym_brand.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
 import { server } from "../server";

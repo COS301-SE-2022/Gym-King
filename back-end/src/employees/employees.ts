@@ -5,7 +5,6 @@ import { badgeRepository } from "../repositories/badge.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
 import { firebase_admin } from "../firebase.connection";
 import { ownerRepository } from "../repositories/gym_owner.repository";
-import { ownerOTPRepository } from "../repositories/owner_otp.repository";
 
 const express = require("express");
 const cors = require("cors");
