@@ -6,15 +6,12 @@ import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
 import axios from "axios";
 import * as tf from "@tensorflow/tfjs"
-import { Directory, Filesystem} from '@capacitor/filesystem';
-import { Capacitor, Plugins } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
 import NNAlert from '../../components/NN_outcome/NN_outcome';
 import {  VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capacitor-video-recorder';
 import '@teamhive/capacitor-video-recorder';
 import './index'
 import { LayersModel } from '@tensorflow/tfjs';
-
-import fetch from 'node-fetch';
 const config: VideoRecorderPreviewFrame = {
     id: 'video-record',
     stackPosition: 'front', // 'front' overlays your app', 'back' places behind your app.
@@ -28,7 +25,7 @@ const config: VideoRecorderPreviewFrame = {
 interface InternalValues {
     file: any;
 }
-const IMAGE_DIR='GymKing-media'
+
 export type UploadActivityStates = {act?:any}
 
 let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
@@ -49,8 +46,11 @@ const UploadActivityPage: React.FC = () =>{
     const [model,setModel]=useState<any>()  
     const [message,setMessage]=useState<string>("loading")
     const loadModel =async() => {
+        if(model===undefined)
+        {
         var new_model:LayersModel
         try{
+
             setMessage("Loading neural Network")
             setLoading(true)
             console.log("loading model")
@@ -72,6 +72,7 @@ const UploadActivityPage: React.FC = () =>{
             history.goBack()
             
         }
+    }
     };
 
     const [award,setAward]=useState<boolean>(false)
@@ -82,7 +83,7 @@ const UploadActivityPage: React.FC = () =>{
     }
     const [badgeMessage,setBadgeMessage]=useState<string>("unsuccessful")
     const SetBadgeMessage=async(msg:string)=>{
-        setMessage(()=>{
+        setBadgeMessage(()=>{
             return msg;
         })
     }
@@ -90,10 +91,6 @@ const UploadActivityPage: React.FC = () =>{
 
     const [Icon,setIcon]=useState<string[]>(["b","cycle"])
     let email = localStorage.getItem("email") 
-    localStorage.setItem( 'e1', "");
-    localStorage.setItem( 'e2', "");
-    localStorage.setItem( 'e3', "");
-    let formdata: any
     const [showToast1, setShowToast1] = useState(false);
     const [b_id, setB_id] = useState('');
     const [badgename, setBadgename] = useState('push up gold badge');
@@ -167,7 +164,7 @@ const UploadActivityPage: React.FC = () =>{
         setMessage("Calculating")
         setLoading(true)
         console.log("extracting frames")
-        await VideoToFrames.getFrames("./assets/video.mp4", VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+        await VideoToFrames.getFrames("./assets/.mp4", VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
             console.log("running through neural network")
             console.log(frame)
             let predictions=await categroize(frame)
@@ -185,7 +182,7 @@ const UploadActivityPage: React.FC = () =>{
         useIonViewDidEnter(async()=>{
         
             await loadModel()
-          /*  let badgeId= sessionStorage.getItem("badgeid");
+            let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
                 .then(response =>response.data)
@@ -224,7 +221,7 @@ const UploadActivityPage: React.FC = () =>{
             .catch(err => {
                 console.log(err)
                 setLoading(false)
-            })*/
+            })
         })
         const values =useRef<InternalValues>({
             file: false,
