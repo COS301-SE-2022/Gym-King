@@ -13,6 +13,7 @@ import {  VideoRecorderCamera, VideoRecorderPreviewFrame } from '@teamhive/capac
 import '@teamhive/capacitor-video-recorder';
 import './index'
 import { LayersModel } from '@tensorflow/tfjs';
+
 import fetch from 'node-fetch';
 const config: VideoRecorderPreviewFrame = {
     id: 'video-record',
@@ -32,17 +33,18 @@ export type UploadActivityStates = {act?:any}
 
 let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
 const UploadActivityPage: React.FC = () =>{
-    
+    const inputRefTakeVideo = useRef<HTMLInputElement>(null);
+    const inputRefUploadVideo = useRef<HTMLInputElement>(null);
     const handleTakeVideo=async()=>{  
-       const { VideoRecorder } = Plugins;
-        await VideoRecorder.initialize({
-            camera: VideoRecorderCamera.FRONT, // Can use BACK
-            previewFrames: [config]
-        });
-        VideoRecorder.startRecording();
-        const res = await VideoRecorder.stopRecording();
-        // The video url is the local file path location of the video output.
-        return res.videoUrl;
+    //    const { VideoRecorder } = Plugins;
+    //     await VideoRecorder.initialize({
+    //         camera: VideoRecorderCamera.FRONT, // Can use BACK
+    //         previewFrames: [config]
+    //     });
+    //     VideoRecorder.startRecording();
+    //     const res = await VideoRecorder.stopRecording();
+    //     // The video url is the local file path location of the video output.
+    //    return res.videoUrl;
     }
     const [model,setModel]=useState<any>()  
     const [message,setMessage]=useState<string>("loading")
@@ -52,7 +54,7 @@ const UploadActivityPage: React.FC = () =>{
             setMessage("Loading neural Network")
             setLoading(true)
             console.log("loading model")
-            new_model = await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
+            new_model = await tf.loadLayersModel('./assets/model/trained_modeltjs_test/model.json');
             console.log("success")
             setLoading(false)
             setMessage("Loading")
@@ -165,7 +167,7 @@ const UploadActivityPage: React.FC = () =>{
         setMessage("Calculating")
         setLoading(true)
         console.log("extracting frames")
-        await VideoToFrames.getFrames("https://storage.googleapis.com/gymkingfiles.appspot.com/claims%2F1664197886149.mp4", VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+        await VideoToFrames.getFrames("./assets/video.mp4", VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
             console.log("running through neural network")
             console.log(frame)
             let predictions=await categroize(frame)
@@ -284,10 +286,14 @@ const UploadActivityPage: React.FC = () =>{
                         </IonRow>
                     </IonGrid>
                     <IonText className='PageTitle center'>{badgename}</IonText>
-                   
-                    <IonButton onClick={ handleSubmit} className="btnSubmit centerComp" color="warning">TAKE VIDEO</IonButton>
-                    <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
-                    <IonButton onClick={sendClaim} className="btnSubmit centerComp" color="warning">Submit</IonButton>  
+
+                    <IonButton onClick={()=>{ inputRefTakeVideo.current?.click()  }} className="btnSubmit centerComp" color="warning">Take Video</IonButton>  
+                    <input ref={inputRefTakeVideo} onClick={()=>{console.log("hit")}}  type="file"className='HiddenInputFile'  name="video" accept="video/*" capture="environment" onChange={(ev) => onFileChange(ev)}/>
+
+                    <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className="btnSubmit centerComp" color="warning">Upload Video</IonButton>  
+                    <input ref={inputRefUploadVideo}  type="file" className='HiddenInputFile' accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
+                    
+                    <IonButton onClick={()=>{handleSubmit("")}} className="btnSubmit centerComp" color="warning">Submit</IonButton>  
                     <IonToast
                         isOpen={showToast1}
                         onDidDismiss={() => setShowToast1(false)}
