@@ -19,7 +19,6 @@ const GymsList: React.FC<props> = (props) =>{
 
 
         useEffect(()=>{
-            setLoading(true)
             //get gym info 
              axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${props.gymId}`)
             .then(response =>response.data)
@@ -37,11 +36,9 @@ const GymsList: React.FC<props> = (props) =>{
             axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand/${gymBrandName}`)
             .then(response =>response.data)
             .then(response =>{
-                setLoading(false)
                 setGymProfile(response.gym_logo)
             })
             .catch(err => {
-                setLoading(false)
                 console.log(err)
             })
         })

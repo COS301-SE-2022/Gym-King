@@ -1,4 +1,4 @@
-jest.setTimeout(25000)
+jest.setTimeout(250000)
 import { render } from '@testing-library/react';
 import {BadgeCanvas } from './BadgeCanvas'
 

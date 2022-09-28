@@ -2,7 +2,7 @@
 * @file EditGym.tsx
 * @brief provides interface for editing a gym detail
 */
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonLoading,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonLabel,IonLoading,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./EditGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 import axios from "axios";
 import DropDown from "../../components/dropdown/dropdown";
+import { onlyLettersAndSpaces } from "../../utils/validation";
 
 /**
  * const EditGym
@@ -25,7 +26,7 @@ const EditGym: React.FC = () => {
   //-gymAddress hook, hook that sets the address of a gym
   const [gymName, setGymName] = useState<string>(sessionStorage.getItem("gymName")!);
   //-gymAddress hook, hook that sets the address of a gym
-  const [gymAddress, setGymAddress] = useState<string>("address");
+  const [gymAddress, setGymAddress] = useState<string>(sessionStorage.getItem("gymAddress")!);
   //-coordinate hook, hook that sets the coordinates of the gym
   const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
   //-zoom  variable{number}, stores default zoom value for the map
@@ -36,9 +37,55 @@ const EditGym: React.FC = () => {
   const [showToast2, setShowToast2] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [gymBrand, setGymBrand] = useState<string>(""); 
+  const [gymBrand, setGymBrand] = useState<string>(''); 
   const [gymBrands, setGymBrands]= useState(new Array<string>())
 
+
+  //FORM VALIDATION 
+  const [errors, setErrors] = useState({
+      name: '',
+      brand: '',
+      address:''
+  });
+
+  const handleError = (error:string, input:string) => {
+      setErrors(prevState => ({...prevState, [input]: error}));
+  };
+
+  const  validate = () => {
+      let isValid = true
+
+      if(gymName==="" || onlyLettersAndSpaces(gymName)) {
+          handleError('Please input a valid name', 'name');
+          isValid = false;
+      }
+      else
+          handleError('', 'name');
+
+          console.log(gymBrand)
+
+      if(gymBrand ==='') {
+          handleError('Please select a gym brand', 'brand');
+          isValid = false;
+      }
+      else
+          handleError('', 'brand');
+
+      if(gymAddress ==='') {
+          handleError('Please select an address', 'address');
+          isValid = false;
+      }
+      else
+          handleError('', 'address');
+
+      return isValid;
+  }
+
+  const handleSubmit = ()=>{
+    let isValid = validate()
+    if(isValid)
+      saveGym()
+  }
 //================================================================================================
 //    FUNCTIONS
 //=================================================================================================
@@ -53,7 +100,7 @@ const EditGym: React.FC = () => {
     if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
-        setGymBrand(sessionStorage.getItem("gymBrand") as string)
+        //setGymBrand(sessionStorage.getItem("gymBrand") as string)
         setGymAddress(sessionStorage.getItem("gymAddress") as string)
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
@@ -172,12 +219,23 @@ const EditGym: React.FC = () => {
               <IonInput required className="textInput  smallerTextBox leftMargin width80" value={gymName} onIonChange={(e: any) => {
                   setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                 }}>{" "}
-              </IonInput> <br></br>
+              </IonInput> 
+              {errors.name!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.name}</IonLabel><br></br>
+                    </>
+              )}
+              <br></br>
 
               <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
                 <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
-                    <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
+                    <DropDown list={gymBrands} chosenValue={chosenValue} value={gymBrand}></DropDown>
               </div>
+              {errors.brand!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.brand}</IonLabel><br></br>
+                    </>
+                )}
               <br></br>
 
               <IonText className="smallHeading leftMargin">Address:</IonText>
@@ -208,11 +266,18 @@ const EditGym: React.FC = () => {
                   </Overlay>
                 </Map>
               </div>
+              {errors.address!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.address}</IonLabel><br></br>
+                    </>
+              )}
+
+              <br></br>
             <IonButton
               mode="ios"
               class="AddGymAdd"
               color="warning"
-              onClick={() => saveGym()}
+              onClick={handleSubmit}
             >Save changes</IonButton>
         </form>
 

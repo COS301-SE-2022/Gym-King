@@ -5,6 +5,7 @@ import ToolBar from '../../components/toolbar/Toolbar';
 import './AddEmployee.css';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
+import { onlyAlphanumericAndUnderscore, onlyLettersAndSpaces, validEmail, validPassword, validPhone } from '../../utils/validation';
 
 export const AddEmployee: React.FC = () =>{
 
@@ -17,6 +18,69 @@ export const AddEmployee: React.FC = () =>{
 
     let history=useHistory()
     let formData : any;
+
+
+    const [errors, setErrors] = useState({
+        email: '',
+        name: '',
+        number:'',
+        username:'',
+        password:'',
+        gid:''
+    });
+
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+
+
+        if(formData.email && !validEmail(formData.email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+
+        if(formData.name && !onlyLettersAndSpaces(formData.name)) {
+            handleError('Please input a valid name', 'name');
+            isValid = false;
+        }
+        else
+            handleError('', 'name');
+
+        if(formData.number && !validPhone(formData.number)) {
+            handleError('Please input a valid phone', 'phone');
+            isValid = false;
+        }
+        else
+            handleError('', 'phone');
+
+        if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
+            handleError('Please input a valid username', 'username');
+            isValid = false;
+        }
+        else
+            handleError('', 'username');
+
+        if(formData.password && !validPassword(formData.password)) {
+            handleError('Must be at least 8 characters with at least  1 uppercase, lowercase, number and symbol.', 'password');
+            isValid = false;
+        }
+        else
+            handleError('', 'password');
+
+        if(formData.gid !=="") {
+            handleError('Please select a gym.', 'gid');
+            isValid = false;
+        }
+        else
+            handleError('', 'gid');
+
+        return isValid;
+    }
 
     useIonViewDidEnter(()=>{
         setLoading(true)
@@ -85,7 +149,7 @@ export const AddEmployee: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                setLoading(false)
+            setLoading(false)
                 //show toast
                 setShowSuccessToast(true);
 
@@ -110,22 +174,22 @@ export const AddEmployee: React.FC = () =>{
                         <IonText className='PageTitle center'>Add Employee</IonText>
                         <br></br>
 
-                        <IonText className="smallHeading leftMargin">Email*</IonText>
-                        <IonInput name='email' type='text' className='textInput  smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="smallHeading leftMargin10">Email*</IonText>
+                        <IonInput name='email' type='text' className='textInput  smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Full name*</IonText>
-                        <IonInput name='name' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="smallHeading leftMargin10">Full name*</IonText>
+                        <IonInput name='name' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Phone Number*</IonText>
-                        <IonInput name='number' type='number' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="smallHeading leftMargin10">Phone Number*</IonText>
+                        <IonInput name='number' type='number' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin"> Username*</IonText>
-                        <IonInput name='username' type='text' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="smallHeading leftMargin10"> Username*</IonText>
+                        <IonInput name='username' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Password*</IonText>
-                        <IonInput name='password' type='password' className='textInput smallerTextBox leftMargin' required></IonInput><br></br>
+                        <IonText className="smallHeading leftMargin10">Password*</IonText>
+                        <IonInput name='password' type='password' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="smallHeading leftMargin">Gym*</IonText>
+                        <IonText className="smallHeading leftMargin10">Gym*</IonText>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
                         <IonButton mode="ios" color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
