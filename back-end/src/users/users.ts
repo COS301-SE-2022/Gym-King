@@ -1207,7 +1207,7 @@ const users = express.Router()
       res.json(results);
     }
   })
-  .get("/users/user/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
+  .get("/users/user/requests/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
     try {
       let Requests = await friendRepository.findAll();
       res.json(Requests);
@@ -1258,7 +1258,7 @@ const users = express.Router()
   /**
    * POST create a subscription relation. also checks for an existing subscription between the user and gym
    * @param {string} fromEmail the user making the subscription.
-   * @param {string} toEmail the user receiving the request.
+   * @param {string} gid gym id.
    * @returns message confirming creation.
    */
   .post('/users/user/createSubscription', cors(corsOptions), async (req: any, res: any) => {
@@ -1374,7 +1374,7 @@ const users = express.Router()
     try {
 
       let query = req.body;
-      if(query.gid  && query.pushMessage && query.pushTitle && query.isSilent!=null){
+      if(query.g_id  && query.pushMessage && query.pushTitle && query.isSilent!=null){
         const tokens:string[] = [];
         const emails:string[] = [];
 
@@ -1400,7 +1400,7 @@ const users = express.Router()
           }
         }
 
-        let gymSubscribers = await subscriptionRepository.findBySubbed(query.gid );
+        let gymSubscribers = await subscriptionRepository.findBySubbed(query.g_id );
         
         let i = 0;
         for(const trgt of gymSubscribers) {
