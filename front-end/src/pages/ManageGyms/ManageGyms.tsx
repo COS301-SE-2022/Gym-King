@@ -23,7 +23,7 @@ const ManageGyms: React.FC = () =>{
     const [showToast1, setShowToast1] = useState(false);
 
     let email = localStorage.getItem("email");
-
+    let username = localStorage.getItem("username");
     useIonViewDidEnter(()=>
     {
         if(sessionStorage.getItem("gid")!=null)
@@ -46,7 +46,7 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${username}`)
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -64,7 +64,7 @@ const ManageGyms: React.FC = () =>{
      */
         const deleteClicked= () => {
             setLoading(true)
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${username}`)
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
