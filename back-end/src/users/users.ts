@@ -648,7 +648,7 @@ const users = express.Router()
               } else {
                 await userRepository.updateUserAPIKey(query.email,apikey);
               }
-              const results = { 'success': true,'profile_picture': result.profile_picture,'apikey':apikey };
+              const results = { 'success': true,'username':result.username,'profile_picture': result.profile_picture,'apikey':apikey };
               res.json( results );
             }
           }
