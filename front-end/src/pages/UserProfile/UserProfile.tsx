@@ -32,23 +32,27 @@ const UserProfilePage: React.FC = () =>{
    
     
     const getNumberOfBadges = () =>{
-        
+        setLoading(true)
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 setNumBadges(response.length)
             })
             .catch(err => {
-        })
+                setLoading(false)
+            })
     }
     const getNumberOfClaims = () =>{
+        setLoading(false)
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
             .then(response =>response.data)
             .then(response =>{
                 setNumClaims(response.length)
             })
             .catch(err => {
-        })
+                setLoading(false)
+            })
     }
 
     useIonViewDidEnter(()=>{
@@ -89,6 +93,7 @@ const UserProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateUserDetails = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
@@ -105,9 +110,10 @@ const UserProfilePage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                
+                setLoading(false)
             })
             .catch(err => {
+                setLoading(false)
             })
     }
 
@@ -198,6 +204,7 @@ const UserProfilePage: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 updateProfilePicture()
+                setLoading(false)
             })
             .catch(err => {
                 setLoading(false)
