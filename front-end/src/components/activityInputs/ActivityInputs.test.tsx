@@ -1,3 +1,5 @@
+jest.setTimeout(25000)
+
 import { render } from '@testing-library/react';
 import ActivityInputs from './ActivityInputs'
 
