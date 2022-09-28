@@ -92,27 +92,28 @@ export const AddEmployee: React.FC = () =>{
                 <IonHeader>
                     <ToolBar ></ToolBar>
                 </IonHeader>
+                <br></br>
                 <IonContent fullscreen className='Content' >
                     <form onSubmit={handleSubmit} >
                         <IonText className='PageTitle center'>Add Employee</IonText>
                         <br></br>
 
-                        <IonText className="inputHeading leftMargin">Email*</IonText>
+                        <IonText className="smallHeading leftMargin10">Email*</IonText>
                         <IonInput name='email' type='text' className='textInput  smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="inputHeading leftMargin">Full name*</IonText>
+                        <IonText className="smallHeading leftMargin10">Full name*</IonText>
                         <IonInput name='name' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="inputHeading leftMargin">Phone Number*</IonText>
+                        <IonText className="smallHeading leftMargin10">Phone Number*</IonText>
                         <IonInput name='number' type='number' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="inputHeading leftMargin"> Username*</IonText>
+                        <IonText className="smallHeading leftMargin10"> Username*</IonText>
                         <IonInput name='username' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="inputHeading leftMargin">Password*</IonText>
+                        <IonText className="smallHeading leftMargin10">Password*</IonText>
                         <IonInput name='password' type='password' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
 
-                        <IonText className="inputHeading leftMargin">Gym*</IonText>
+                        <IonText className="smallHeading leftMargin10">Gym*</IonText>
                         <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
 
                         <IonButton mode="ios" color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
