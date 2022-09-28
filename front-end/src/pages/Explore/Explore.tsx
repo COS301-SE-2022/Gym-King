@@ -1,5 +1,5 @@
 import React, { useRef, useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonSearchbar, IonCard, IonCardContent, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -11,7 +11,8 @@ const Explore: React.FC = () =>{
 
     const searchUser = useRef<HTMLIonSearchbarElement>(null)
     const searchGym = useRef<HTMLIonSearchbarElement>(null)
-    
+    const [loading, setLoading] = useState<boolean>(false);
+
     //search user
     const [foundUser, setFoundUser]= useState(false)
     const [username, setUsername]= useState("")
@@ -31,6 +32,7 @@ const Explore: React.FC = () =>{
     
 
     useIonViewWillEnter(async()=>{
+        setLoading(true)
         await axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/suggestion`,{
             method: 'POST',
             headers: {
@@ -45,11 +47,13 @@ const Explore: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setBadgeSuggestions(response)
             
         })
         .catch(err => {
+            setLoading(false)
             console.log(err)  
         })
     },[badgeSuggestions])
@@ -293,7 +297,14 @@ const Explore: React.FC = () =>{
                     </IonGrid>
                     <BadgeSuggestions badges={badgeSuggestions}></BadgeSuggestions>
 
-
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 </IonContent>
             </IonPage>
         )
