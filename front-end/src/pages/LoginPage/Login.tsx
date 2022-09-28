@@ -64,10 +64,10 @@ export const Login: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                console.log(response)/*
-                if(response.success){
-                console.log(response)
+                //console.log(response)
                 
+                if(response.success){
+                    sessionStorage.setItem("key", response.apikey)
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
                    localStorage.setItem("password", formData.password)
@@ -84,7 +84,7 @@ export const Login: React.FC = () =>{
                     //console.log(response.results)
                     setLoading(false)
                     
-                }*/
+                }
             })
             .catch(err => {
                 //console.log(err)
