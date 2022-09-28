@@ -13,7 +13,6 @@ const GymOwnerViewBadge: React.FC = () =>{
 
         //GET REQUEST:
         useIonViewWillEnter(()=>{
-            var username=localStorage.getItem("username")
             setLoading(true);
             axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
                 method: 'POST',

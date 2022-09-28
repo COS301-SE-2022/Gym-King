@@ -22,7 +22,6 @@ const ManageGyms: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
     const [showToast1, setShowToast1] = useState(false);
 
-    let username = localStorage.getItem("username");
     useIonViewDidEnter(()=>
     {
         if(sessionStorage.getItem("gid")!=null)

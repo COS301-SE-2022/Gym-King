@@ -14,7 +14,6 @@ const ManageEmployees: React.FC = () =>{
     const [gymList, setGymList] = useState(new Array())
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
-    let username = localStorage.getItem('username')
 
     
     useIonViewDidEnter(()=>
