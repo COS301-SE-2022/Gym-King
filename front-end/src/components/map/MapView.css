@@ -41,7 +41,7 @@ main {
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
 }
 
-.main {
+ion-input .main {
     --overflow: hidden !important;
 }
 
