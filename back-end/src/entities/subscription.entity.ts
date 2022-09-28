@@ -5,14 +5,14 @@ import { gym } from "./gym.entity";
 @Entity()
 export class subscription {
     
-    @PrimaryColumn({length: 320})
+    @PrimaryColumn({type: "varchar",length: 320})
     @ManyToOne(() => gym_user, (gym_user) => gym_user.email)
-    @JoinColumn({name: "fromUser"})
-    fromUser: gym_user;
+    @JoinColumn({name: "fromuser"})
+    fromuser: gym_user;
     
-    @PrimaryColumn({length: 4})
+    @PrimaryColumn({type: "varchar",length: 4})
     @ManyToOne(() => gym, (gym) => gym.g_id)
-    @JoinColumn({name: "toGym"})
-    toGym: gym;
+    @JoinColumn({name: "togym"})
+    togym: gym;
 
 }

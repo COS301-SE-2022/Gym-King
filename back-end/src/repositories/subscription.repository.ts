@@ -19,7 +19,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns list of subsriptions that contain the given 'fromUser'
      */
     async findBySubscriber(email: string) {
-        return this.findBy({fromUser: email });
+        return this.findBy({fromuser: email });
     },
 
     /**
@@ -28,7 +28,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns list of subsribers
      */
     async findBySubbed(gid: string){
-        return this.findBy({toGym: gid });
+        return this.findBy({togym: gid });
     },
 
     /**
@@ -38,7 +38,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns {boolean}
      */
      async checkIfSubscribed(email: string, gid: string) {
-        let result = await this.findOneBy({fromUser: email, toGym: gid});
+        let result = await this.findOneBy({fromuser: email, togym: gid});
         if (result != null){
             return true;
         } else {
@@ -58,8 +58,8 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
         let fromUser = await userRepository.findByEmail(fromEmail);
         let toGym = await gymRepository.findByGID(toGymID);
 
-        newSub.fromUser = fromUser;
-        newSub.toGym = toGym;
+        newSub.fromuser = fromUser;
+        newSub.togym = toGym;
 
         return this.manager.save(newSub);
 
@@ -72,7 +72,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns success status
      */
     async removeSubsription(fromEmail: string, toGymID: string){
-        return this.manager.delete(subscription, {fromUser: fromEmail, toGym: toGymID})
+        return this.manager.delete(subscription, {fromuser: fromEmail, togym: toGymID})
     },
 
     /**
@@ -82,7 +82,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns a subsriber and subscribe-ee
      */
     async findByFromTo(fromEmail: string, toGymID: string){
-        return this.findOneBy({ fromUser: fromEmail, toGym: toGymID });
+        return this.findOneBy({ fromuser: fromEmail, togym: toGymID });
     },
 
 
