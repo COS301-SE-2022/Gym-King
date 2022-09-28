@@ -27,12 +27,10 @@ const ManageEmployees: React.FC = () =>{
         sessionStorage.removeItem("employee_profilepicture");
 
         var owner=localStorage.getItem('email')
-        var owner_pass = localStorage.getItem("password")
         setLoading(true)
 
         console.log(owner)
         sessionStorage.setItem("owner_email", owner!)
-        sessionStorage.setItem("owner_pass", owner_pass!)
 
         axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees`,{
             method: 'POST',
