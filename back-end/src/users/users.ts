@@ -877,7 +877,6 @@ const users = express.Router()
    */
    .post('/users/user/checkIfSubscribed', cors(corsOptions), async (req: any, res: any) => {
     try{
-      const bcrypt = require('bcryptjs')
       let query = req.body;
       if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
