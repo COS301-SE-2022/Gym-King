@@ -113,6 +113,9 @@ const utils = express.Router()
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
           "Gym_Membership VARCHAR(50),"+
+          "APIKEY VARCHAR(64),"+
+          "PushKey VARCHAR(1024),"+
+          "notificationToggle BOOLEAN DEFAULT TRUE,"+
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (Gym_Membership)" +
           "REFERENCES GYM_BRAND(Gym_Brandname)" +
@@ -127,6 +130,7 @@ const utils = express.Router()
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
+          "APIKEY VARCHAR(64),"+
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (G_ID)" +
           "REFERENCES GYM(G_ID)" +
@@ -140,6 +144,7 @@ const utils = express.Router()
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
+          "APIKEY VARCHAR(64),"+
           "PRIMARY KEY(email)" +
           ")"
       );
@@ -239,6 +244,15 @@ const utils = express.Router()
         "FOREIGN KEY (toUser) REFERENCES GYM_USER(email)" +
       ")"
       );
+      result = await client.query(
+        "CREATE TABLE IF NOT EXISTS SUBSCRIPTION(" +
+        "fromUser VARCHAR(320)," +
+        "toGym VARCHAR(4)," +
+        "PRIMARY KEY(fromUser,toGym)," +
+        "FOREIGN KEY (fromUser) REFERENCES GYM_USER(email)," +
+        "FOREIGN KEY (toGym) REFERENCES GYM(g_id)" +
+      ")"
+      );
       const results = { success: true};
       res.json(results);
       client.release();
@@ -254,36 +268,36 @@ const utils = express.Router()
    * @param 
    * @returns 
    */
-  .delete("/tables/drop", async (req: any, res: any) => {
-    try {
-      // const client = await pool.connect();
-      // let result = await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
-      // result = await client.query("DROP TABLE IF EXISTS USER_OTP");
-      // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
-      // result = await client.query("DROP TABLE IF EXISTS OWNER_OTP");
-      // result = await client.query("DROP TABLE IF EXISTS FRIEND");
-      // result = await client.query("DROP TABLE IF EXISTS REQUEST_EMPLOYEE");
-      // result = await client.query("DROP TABLE IF EXISTS SUBSCRIPTION");
-      // result = await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
-      // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
-      // result = await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
-      // result = await client.query("DROP TABLE IF EXISTS BADGE_OWNED");
-      // result = await client.query("DROP TABLE IF EXISTS BADGE");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_OWNED");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_USER");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
-      // result = await client.query("DROP TABLE IF EXISTS GYM")
-      // result = await client.query("DROP TABLE IF EXISTS GYM_BRAND");
-      // const results = { success: true, results: result };
-      res.json({'message':'not implemented!'});
-      // client.release();
-    } catch (err) {
-      const results = { success: false, results: err };
-      console.error(err);
-      res.json(results);
-    }
-  })
+  // .delete("/tables/drop", async (req: any, res: any) => {
+  //   try {
+  //     // const client = await pool.connect();
+  //     // let result = await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
+  //     // result = await client.query("DROP TABLE IF EXISTS USER_OTP");
+  //     // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
+  //     // result = await client.query("DROP TABLE IF EXISTS OWNER_OTP");
+  //     // result = await client.query("DROP TABLE IF EXISTS FRIEND");
+  //     // result = await client.query("DROP TABLE IF EXISTS REQUEST_EMPLOYEE");
+  //     // result = await client.query("DROP TABLE IF EXISTS SUBSCRIPTION");
+  //     // result = await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
+  //     // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
+  //     // result = await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
+  //     // result = await client.query("DROP TABLE IF EXISTS BADGE_OWNED");
+  //     // result = await client.query("DROP TABLE IF EXISTS BADGE");
+  //     // result = await client.query("DROP TABLE IF EXISTS GYM_OWNED");
+  //     // result = await client.query("DROP TABLE IF EXISTS GYM_USER");
+  //     // result = await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
+  //     // result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
+  //     // result = await client.query("DROP TABLE IF EXISTS GYM")
+  //     // result = await client.query("DROP TABLE IF EXISTS GYM_BRAND");
+  //     // const results = { success: true, results: result };
+  //     res.json({'message':'not implemented!'});
+  //     // client.release();
+  //   } catch (err) {
+  //     const results = { success: false, results: err };
+  //     console.error(err);
+  //     res.json(results);
+  //   }
+  // })
   //=========================================================================================================//
   /**
    * ...
