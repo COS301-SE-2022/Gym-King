@@ -98,6 +98,7 @@ const EditBadge: React.FC = () =>{
 
         // UPDATE BADGE PUT REQUEST 
         const updateBadge= ()=>{
+            setLoading(true)
             let at = localStorage.getItem('act');
             let bn = formData.badgeName;
             let bc = formData.badgeChallenge;
@@ -130,19 +131,22 @@ const EditBadge: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 //console.log(response)
-
+                setLoading(false)
                 //show toast
                 setShowToast(true);
 
                 //redirect to view badges  
                 history.goBack()
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            }) 
         } 
 
         // DELETE BADGE DELETE REQUEST 
         const deleteBadge=()=>{
-            
+            setLoading(true)
             axios(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
                 "method":"DELETE",
                 headers: {
@@ -156,14 +160,17 @@ const EditBadge: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 //console.log(response);
-                
+                setLoading(false)
                 //show toast 
                 setShowToastDelete(true);
 
                 //redirect to view badges 
                 history.goBack(  )
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            }) 
         } 
         
         const changeName = (e:any) =>{
