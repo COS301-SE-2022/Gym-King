@@ -1,5 +1,5 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router';
 import axios from "axios";
@@ -11,6 +11,7 @@ export const ResetPassword: React.FC = () =>{
     let history=useHistory()
     let formData:any
     const [showToast, setShowToast] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
 
     const [errors, setErrors] = useState({
@@ -81,6 +82,7 @@ export const ResetPassword: React.FC = () =>{
     }
 
     const resetUserPassword = ()=>{
+        setLoading(true)
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/password`, 
         {
             method: "PUT",
@@ -96,6 +98,7 @@ export const ResetPassword: React.FC = () =>{
         })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 if(response.success){
                     console.log(response)
                    history.push("/Login")
@@ -107,11 +110,13 @@ export const ResetPassword: React.FC = () =>{
                 }
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
             })
     }
 
     const resetEmployeePassword = ()=>{
+        setLoading(true)
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/employees/employee/password`, 
         {
             method: "PUT",
@@ -127,6 +132,8 @@ export const ResetPassword: React.FC = () =>{
         })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
+
                 if(response.success){
                     console.log(response)
                    history.push("/Login")
@@ -138,13 +145,16 @@ export const ResetPassword: React.FC = () =>{
                 }
             })
             .catch(err => {
+                setLoading(false)
+
                 console.log(err)
             })
     }
 
     const resetOwnerPassword = ()=>{
 
-        
+        setLoading(true)
+
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/owners/owner/password`, 
         {
             method: "PUT",
@@ -160,10 +170,14 @@ export const ResetPassword: React.FC = () =>{
         })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
+
                     console.log(response)
                    history.push("/Login")
             })
             .catch(err => {
+                setLoading(false)
+
                 console.log(err)
             })
     }
@@ -208,6 +222,14 @@ export const ResetPassword: React.FC = () =>{
                 message="Invalid user details."
                 duration={1000}
                 color="danger"
+                />
+                <IonLoading 
+                    isOpen={loading}
+                    message={"Loading"}
+                    duration={2000}
+                    spinner={"circles"}
+                    onDidDismiss={() => setLoading(false)}
+                    cssClass={"spinner"}
                 />
             </IonPage>
 
