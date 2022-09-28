@@ -566,7 +566,6 @@ const owners = express.Router()
   .delete("/owner/delete/gym",cors(corsOptions),async(req:any,res:any)=>{
     try{
       let query=req.body;
-      const bcrypt=require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email)
       if(owner != null && owner.apikey == query.apikey){
         let result;
