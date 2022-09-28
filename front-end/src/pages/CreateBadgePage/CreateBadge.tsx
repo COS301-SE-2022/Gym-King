@@ -2,7 +2,6 @@ import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonTextare
 
 import ToolBar from '../../components/toolbar/Toolbar';
 import React, {  useState } from 'react';
-import { createBadgeSchema } from '../../validation/CreateBadgeValidation';
 import SegmentButton from '../../components/segmentButton/segmentButton';
 import RadioGroup from '../../components/radioGroup/radioGroup';
 
