@@ -64,7 +64,7 @@ export const Login: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                console.log(response)
+                console.log(response)/*
                 if(response.success){
                 console.log(response)
                 
@@ -84,7 +84,7 @@ export const Login: React.FC = () =>{
                     //console.log(response.results)
                     setLoading(false)
                     
-                }
+                }*/
             })
             .catch(err => {
                 //console.log(err)
@@ -199,6 +199,7 @@ export const Login: React.FC = () =>{
                 color="success"
                 />
                 <IonLoading 
+                    mode="ios"
                     isOpen={loading}
                     message={"Loading"}
                     duration={2000}
