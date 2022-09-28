@@ -1,4 +1,4 @@
-import {IonToolbar, IonContent, IonHeader, IonItem,  IonList, IonMenu, IonTitle, IonMenuToggle,  IonLabel, IonIcon} from '@ionic/react';
+import {IonToolbar, IonContent, IonHeader, IonItem,  IonList, IonMenu, IonTitle, IonMenuToggle,  IonLabel, IonIcon, IonRouterOutlet} from '@ionic/react';
 import { exit } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 
@@ -8,8 +8,9 @@ import './BurgerMenu.css'
 export const BurgerMenu=(props:{listItems:any[]})=>{
         // used for routing
         let history=useHistory()
-        return(
+        return(<>
                 <IonMenu side="start" menuId="first" contentId='main' >
+                    
                     <IonHeader>
                         <IonToolbar color="primary" mode="ios">
                             <IonTitle>Menu</IonTitle>
@@ -43,7 +44,8 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                         </IonList>
                     </IonContent>
                 </IonMenu>
-                
+                <IonRouterOutlet id="main"></IonRouterOutlet>
+                </>
         )
 }
 
