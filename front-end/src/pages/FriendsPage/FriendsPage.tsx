@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +10,7 @@ const FriendsPage: React.FC = () =>{
     let history=useHistory()
     // eslint-disable-next-line 
     const [numFriendRequests, setNumFriendRequests] = useState(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const goToFriendRequests=()=>{
         history.push("/FriendRequests")
@@ -18,6 +19,7 @@ const FriendsPage: React.FC = () =>{
     const [friends, setFriends] = useState([]);
 
     useIonViewWillEnter(()=>{
+        setLoading(true)
         //remove session storage
         sessionStorage.removeItem("friendUsername")
         sessionStorage.removeItem("friendEmail")
@@ -37,10 +39,12 @@ const FriendsPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setFriends(response)
         })
         .catch(err => {
+            setLoading(false)
             console.log(err)
             
         })
@@ -68,6 +72,15 @@ const FriendsPage: React.FC = () =>{
                     <IonText className="inputHeading">All Friends</IonText>
                     <FriendsList friendsList={friends}></FriendsList>
                     
+
+                    <IonLoading 
+                        isOpen={loading}
+                        message={"Loading"}
+                        duration={2000}
+                        spinner={"circles"}
+                        onDidDismiss={() => setLoading(false)}
+                        cssClass={"spinner"}
+                    />
                 </IonContent>
             </IonPage>
         )
