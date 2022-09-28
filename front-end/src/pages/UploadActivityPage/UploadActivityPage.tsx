@@ -122,6 +122,7 @@ const UploadActivityPage: React.FC = () =>{
         }
         // SEND CLAIM POST REQUEST 
         const sendClaim=()=>{
+            setLoading(true)
             let i1= formdata.i1;
             let i2= formdata.i2;
             let i3= formdata.i3;
@@ -140,12 +141,16 @@ const UploadActivityPage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(fail)
                 //console.log(response);
                 setShowToast1(true);
                 sessionStorage.removeItem("badgeid")
                 history.goBack();
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            }) 
         }
     
         return(
