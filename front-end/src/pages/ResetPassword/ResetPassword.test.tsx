@@ -1,3 +1,4 @@
+jest.setTimeout(25000)
 import { render} from '@testing-library/react';
 import ResetPassword from './ResetPassword';
 import axios from "axios";

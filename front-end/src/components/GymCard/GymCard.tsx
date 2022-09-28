@@ -52,7 +52,7 @@
        data: JSON.stringify({ 
          "gid":prop.id,
          "email":localStorage.getItem("email"),
-         "password":password,
+         "apikey":sessionStorage.getItem("key"),
        })
      }
    )
