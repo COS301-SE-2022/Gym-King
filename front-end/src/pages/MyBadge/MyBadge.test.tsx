@@ -1,4 +1,5 @@
 
+jest.setTimeout(25000)
 import { render} from '@testing-library/react';
 import MyBadge from './MyBadge';
 

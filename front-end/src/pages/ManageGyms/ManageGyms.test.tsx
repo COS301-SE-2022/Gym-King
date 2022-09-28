@@ -1,3 +1,4 @@
+jest.setTimeout(25000)
 import {render,screen} from '@testing-library/react';
 import ManageGyms from './ManageGyms';
 /*UNIT TESTING*/
