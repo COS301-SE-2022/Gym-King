@@ -24,6 +24,7 @@ export const AcceptRejectPage: React.FC = () =>{
     const history=useHistory();
 
 
+
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
@@ -47,9 +48,11 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE BADGE NAME AND ACTIVITY TYPE OR THE CLAIM
         useIonViewDidEnter(()=>
             {
+                setLoading(true)
                 axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
                 .then(response =>response.data)
                 .then(response =>{
+                    setLoading(false)
                     console.log(response);
 
                     setBadgename(response.badgename)
@@ -57,7 +60,10 @@ export const AcceptRejectPage: React.FC = () =>{
                     setActivityType(response.activitytype)
                     //setG_id(response.results[0].g_id)
                 })
-                .catch(err => {console.log(err)})
+                .catch(err => {
+                    console.log(err)
+                    setLoading(false)
+                })
             },[badgeId])
         return (
             <IonPage color='#220FE' >
