@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import React, {useState } from 'react';
 import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -12,7 +12,7 @@ const GymOwnerViewBadge: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
         //GET REQUEST:
-        useIonViewWillEnter(()=>{
+        useIonViewDidEnter(()=>{
             setLoading(true);
             axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
                 method: 'POST',

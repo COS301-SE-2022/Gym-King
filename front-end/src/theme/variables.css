@@ -205,6 +205,10 @@ ion-card{
   margin-bottom: 20px;
 }
 
+.leftMargin10{
+  margin-left:10%
+}
+
 .btnRemoveFriend{
   width:50%;
 }

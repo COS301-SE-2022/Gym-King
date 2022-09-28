@@ -101,7 +101,7 @@ const ManageEmployees: React.FC = () =>{
                     gymList.map((el:any)=>
                         <IonAccordion key={el.g_id} value={el.g_id} mode="ios">
                             <IonItem slot="header" mode="ios">
-                                <IonLabel>{el.gym_brandname}</IonLabel>
+                                <IonLabel>{el.gym_name}</IonLabel>
                              </IonItem>
                              <IonList slot="content" mode="ios">
                                 <EmployeeList list={(getEmployeesByGym(el.g_id))} history={history}></EmployeeList>

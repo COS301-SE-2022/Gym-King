@@ -178,16 +178,16 @@ const UploadActivityPage: React.FC = () =>{
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={localStorage.getItem("activitytype")!} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
-                            !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
+                            !isValid && submitted && <IonText className="errText" style={{"color":"darkorange","paddingLeft":"14%"}}>Please enter the required fields</IonText>
                         }
                         <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
+                            <IonRow className='left '>
                                 <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
                         <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
-                                <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} />
+                            <IonRow className='left '>
+                                <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} required/>
                             </IonRow>
                         </IonGrid>
                         <br></br>
