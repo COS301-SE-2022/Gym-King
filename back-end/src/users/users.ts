@@ -1044,7 +1044,7 @@ const users = express.Router()
       {
         const user = await userRepository.findByEmail(query.email);
         if(user != null && user.apikey == query.apikey){
-          const result = await userRepository.notificationToggle(query.email);
+          await userRepository.notificationToggle(query.email);
           res.json({'success': true});
         }
         else {
