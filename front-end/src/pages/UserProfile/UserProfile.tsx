@@ -201,6 +201,7 @@ const UserProfilePage: React.FC = () =>{
 
         let formData = new FormData();
         formData.append("email", email)
+        formData.append("apikey", sessionStorage.getItem("key")!)
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)

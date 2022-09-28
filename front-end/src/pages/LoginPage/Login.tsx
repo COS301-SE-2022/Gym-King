@@ -64,12 +64,13 @@ export const Login: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                //console.log(response)
+                console.log(response)
                 
                 if(response.success){
                     sessionStorage.setItem("key", response.apikey)
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
+                   localStorage.setItem("username", response.username)
                    localStorage.setItem("password", formData.password)
                    localStorage.setItem("usertype",formData.usertype)
                    localStorage.setItem("profile_picture", response.profile_picture)
