@@ -1,4 +1,4 @@
-import { IonItem, IonList, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, IonButton, useIonViewWillEnter, IonToast} from '@ionic/react';
+import { IonItem, IonList, IonAvatar, IonImg, IonLabel, IonCol, IonGrid, IonRow, IonButton, useIonViewWillEnter, IonToast, IonLoading} from '@ionic/react';
 import React, {useState} from 'react'
 import axios from "axios";
 
@@ -44,6 +44,7 @@ const FriendRequestList: React.FC<props> = () =>{
 
     
     const confirmRequest = (otherEmail:any)=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/CreateRequest`,{
             method: 'POST',
             headers: {
@@ -61,14 +62,16 @@ const FriendRequestList: React.FC<props> = () =>{
             console.log(response)
             getFriendRequests()
             setShowConfirm(true)
+            setLoading(false)
         })
         .catch(err => {
             console.log(err)
-            
+            setLoading(false)
         })
        
     }
     const deleteRequest = (otherEmail:string)=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/deleteRequest`,{
             method: 'DELETE',
             headers: {
@@ -84,12 +87,14 @@ const FriendRequestList: React.FC<props> = () =>{
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
+            setLoading(false)
             getFriendRequests()
             setShowDelete(true)
+
         })
         .catch(err => {
             console.log(err)
-            
+            setLoading(false)
         })
     }
 
