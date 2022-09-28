@@ -15,7 +15,7 @@ const PendingBadgesPage: React.FC = () =>{
     //GET REQUEST:
     useIonViewDidEnter(()=>{
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("email")}`)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${localStorage.getItem("username")}`)
             .then(response =>response.data)
             .then(response =>{
                 console.log("PENDING BADGES",response)
