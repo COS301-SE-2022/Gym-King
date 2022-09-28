@@ -282,8 +282,6 @@ const EmployeeProfilePage: React.FC = () =>{
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
 
                                 <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton mode="ios" className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         
