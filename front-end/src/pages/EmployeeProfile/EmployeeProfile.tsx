@@ -72,6 +72,7 @@ const EmployeeProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
 
                 method: 'PUT',
@@ -89,9 +90,11 @@ const EmployeeProfilePage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)                
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 //setShowFail(true);
             }) 
@@ -127,6 +130,7 @@ const EmployeeProfilePage: React.FC = () =>{
     }
 
     const updateProfilePicture= ()=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
             headers: {
@@ -140,6 +144,7 @@ const EmployeeProfilePage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             setProfilePicture(response.profile_picture)
             setLoading(false)
         })
