@@ -159,7 +159,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @param status - the new status
      */
     async updatePendingStatus(fromEmail: string, toEmail: string, status: boolean) {
-        return await this.manager.update(friend, { fromuser: fromEmail, touser: toEmail }, {ispending: status})
+        return this.manager.update(friend, { fromuser: fromEmail, touser: toEmail }, {ispending: status})
     },
 
 
