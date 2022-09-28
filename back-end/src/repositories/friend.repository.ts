@@ -87,7 +87,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
             console.log(req)
-            if(req.ispending==false){
+            if(!req.ispending){
                 let user = await userRepository.findByEmail(req.touser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
@@ -98,7 +98,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
             console.log(req)
-            if(req.ispending==false){
+            if(!req.ispending){
                 let user = await userRepository.findByEmail(req.fromuser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
@@ -122,7 +122,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
        
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
-            if(req.ispending==true){
+            if(req.ispending){
                 let user = await userRepository.findByEmail(req.fromuser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
@@ -142,7 +142,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
         
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
-            if(req.ispending==true){
+            if(req.ispending){
                 let user = await userRepository.findByEmail(req.touser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
