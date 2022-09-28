@@ -45,6 +45,9 @@ import axios from "axios";
         const [chipColor7, setChipColor7] = useState(transparent)
         const [chipColor8, setChipColor8] = useState(transparent)
         const [chipColor9, setChipColor9] = useState(transparent)
+        const [chipColor10, setChipColor10] = useState(transparent)
+        const [chipColor11, setChipColor11] = useState(transparent)
+        const [chipColor12, setChipColor12] = useState(transparent)
 
 
         let cardioTags = ["gold","silver","bronze", "cardio", "running", "cycling", "hiit", "endurance", "steps","elliptical","rowing","short","long"]
@@ -288,6 +291,42 @@ import axios from "axios";
                         tags.push(value)
                     }
                     break
+                case 10:
+                    if(chipColor10 === color)
+                    {
+                        setChipColor10(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor10(color)
+                        tags.push(value)
+                    }
+                    break
+                case 11:
+                    if(chipColor11 === color)
+                    {
+                        setChipColor11(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor11(color)
+                        tags.push(value)
+                    }
+                    break
+                case 12:
+                    if(chipColor12 === color)
+                    {
+                        setChipColor12(transparent)
+                        setTags(tags.filter(e => e !== value));
+                    }
+                    else    
+                    {
+                        setChipColor12(color)
+                        tags.push(value)
+                    }
+                    break
 
 
                             
@@ -410,6 +449,10 @@ import axios from "axios";
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[7]}</IonLabel></IonChip>
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[8]}</IonLabel></IonChip>
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[9]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[10], 10)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[10]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[11], 11)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[11]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[12], 12)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[12]}</IonLabel></IonChip>
+
                                 </IonRow>
 
                             </IonGrid>
