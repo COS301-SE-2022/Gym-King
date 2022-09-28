@@ -39,6 +39,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`)
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
             setGymName(response.gym_name)
             setGymLocation(response.gym_address)
@@ -61,7 +62,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
     }
 
     const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
-        
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
 
             method: 'DELETE',
