@@ -49,6 +49,9 @@ export const ownerRepository = GymKingDataSource.getRepository(gym_owner).extend
         const bcrypt = require('bcryptjs')
         return await this.manager.update(gym_owner, { email: email }, { password: bcrypt.hashSync(password, bcrypt.genSaltSync())})
     },
+    async updateOwnerAPIKey(email: string, apikey: string) {
+        return await this.manager.update(gym_owner, { email: email }, {apikey: apikey})
+    },
     async updateOwnerProfilePicture(email: string, profilepicture: string) {
         return await this.manager.update(gym_owner, { email: email }, {profile_picture: profilepicture})
     },
