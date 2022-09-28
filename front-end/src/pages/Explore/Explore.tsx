@@ -28,7 +28,7 @@ const Explore: React.FC = () =>{
     const [gymAddress, setGymAddress] =useState("")
 
     //suggested badges
-    const [badgeSuggestions, setBadgeSuggestions] =useState([])
+    const [badgeSuggestions, setBadgeSuggestions] =useState()
     
 
     useIonViewWillEnter(async()=>{
@@ -49,7 +49,8 @@ const Explore: React.FC = () =>{
         .then(response =>{
             setLoading(false)
             console.log(response)
-            setBadgeSuggestions(response)
+            if(response.success)
+                setBadgeSuggestions(response)
             
         })
         .catch(err => {
@@ -140,8 +141,10 @@ const Explore: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            if(response.message)
+            console.log(response)
+            if(response.message==="Email does not exist!")
             {
+                
                 setFoundUser(false)
                 setEmail("")
                 setFullname("")
@@ -168,7 +171,8 @@ const Explore: React.FC = () =>{
         .then(response =>response.data)
         .then(response =>{
             
-            if(response ===null)
+            console.log(response)
+            if(response===null)
             {
                 setFoundGym(false)
                 setGid("")

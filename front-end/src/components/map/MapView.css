@@ -41,7 +41,7 @@ main {
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
 }
 
-ion-input .main {
+.mainMap {
     --overflow: hidden !important;
 }
 

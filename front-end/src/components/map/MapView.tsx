@@ -406,7 +406,7 @@ const MapView: React.FC = () =>{
     return (
         
         <>  
-            <IonContent  className="main" >
+            <IonContent  className='mainMap' >
                 
             <GymSearchBar 
             

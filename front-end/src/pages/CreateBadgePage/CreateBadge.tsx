@@ -132,6 +132,7 @@ import axios from "axios";
                 
                 console.log(message)
                 console.log(gymId)
+                
                 // api call to notify subscribers
                 axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendSubscriberNotification`,{
                     "method":"POST",

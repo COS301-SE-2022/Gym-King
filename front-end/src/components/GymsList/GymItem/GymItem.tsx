@@ -3,13 +3,11 @@ import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 
-export type props = {gymId?:any,gymBrandName?:any}
+export type props = {gymId?:any}
 
 const GymsList: React.FC<props> = (props) =>{
 
     let history=useHistory()
-
-
 
         const [gymBrandName, setGymBrandName] = useState("")
         const [gymName, setGymName] = useState("")

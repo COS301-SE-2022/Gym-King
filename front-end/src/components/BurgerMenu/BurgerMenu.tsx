@@ -9,16 +9,16 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
         // used for routing
         let history=useHistory()
         return(
-                <IonMenu id="main" side="start" menuId="first" contentId='main' >
+                <IonMenu  side="start" menuId="first" contentId='mainBurger' >
                     
                     <IonHeader>
                         <IonToolbar color="primary" mode="ios">
                             <IonTitle>Menu</IonTitle>
                         </IonToolbar>
                      </IonHeader>
-                    <IonContent id="main">
-                        <IonList mode="ios">
-                        <IonMenuToggle auto-hide="false" >
+                    <IonContent className='mainMap'>
+                        <IonList  mode="ios">
+                        <IonMenuToggle  auto-hide="false" >
                             {props.listItems.map((el:any)=>
                            
                             <IonItem  mode="ios" button routerLink={el.route} routerDirection="forward" key={Math.random()}>
@@ -28,7 +28,7 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                             </IonItem>
                             )}
                             <div id="logout-button">
-                            <IonItem mode="ios" button onClick={()=>{
+                            <IonItem  mode="ios" button onClick={()=>{
                                                         localStorage.removeItem("email")
                                                         localStorage.removeItem("password")
                                                         localStorage.removeItem("usertype")
