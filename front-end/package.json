@@ -5,6 +5,7 @@
   "dependencies": {
     "@capacitor/android": "4.2.0",
     "@capacitor/app": "1.1.1",
+    "@capacitor/app-launcher": "^4.0.1",
     "@capacitor/core": "4.2.0",
     "@capacitor/device": "^4.0.1",
     "@capacitor/geolocation": "^4.0.1",
@@ -12,7 +13,6 @@
     "@capacitor/ios": "4.2.0",
     "@capacitor/keyboard": "1.2.2",
     "@capacitor/push-notifications": "^4.1.0",
-    "@capacitor/app-launcher": "^4.0.1",
     "@capacitor/status-bar": "1.0.8",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
