@@ -29,7 +29,7 @@ const MyGyms: React.FC = () =>{
         .then(response =>response.data)
         .then(response =>{
             setLoading(false)
-            console.log(response)
+            console.log(response.results)
             setGyms(response.results)
         })
         .catch(err => {
@@ -58,7 +58,7 @@ const MyGyms: React.FC = () =>{
 
                     <IonLoading 
                         isOpen={loading}
-                        message={"Loading"}
+                        mode="ios"
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

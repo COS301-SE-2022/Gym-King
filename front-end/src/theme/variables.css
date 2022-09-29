@@ -296,11 +296,14 @@ ion-card{
 }
 
 
-.spinner{
-  --background: #873CFF;
+ion-loading.spinner{
+  --background: transparent;
   --spinner-color: #ffc409;
   --height: 4em;
+  --width: 2em;
 }
+
+
 
 .userImage{
   height: 7em;

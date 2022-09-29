@@ -432,7 +432,6 @@ const MapView: React.FC = () =>{
             <IonLoading 
                 mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
                 spinner={"circles"}
                 cssClass="spinner"

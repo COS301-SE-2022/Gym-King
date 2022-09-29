@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState} from 'react'
 import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
@@ -36,7 +36,6 @@ const FriendsPage: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 userEmail: localStorage.getItem("email"),
-
             })
         })
         .then(response =>response.data)
@@ -54,6 +53,7 @@ const FriendsPage: React.FC = () =>{
             setFriends([])
             
         })
+        console.log(friends)
 
     },[])
     //=================================================================================================
@@ -81,7 +81,7 @@ const FriendsPage: React.FC = () =>{
 
                     <IonLoading 
                         isOpen={loading}
-                        message={"Loading"}
+                        mode="ios"
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

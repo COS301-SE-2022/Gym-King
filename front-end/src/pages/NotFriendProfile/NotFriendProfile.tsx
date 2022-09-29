@@ -2,6 +2,8 @@ import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCa
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
+
 
 const NotFriendProfile: React.FC = () =>{
         //localStorage.setItem("friendRequest","true")
@@ -13,6 +15,7 @@ const NotFriendProfile: React.FC = () =>{
         const [profilePicture, setProfilePicture]= useState("")
         const [requstPending, setRequestPending] = useState("non")
         const [loading, setLoading] = useState<boolean>(false);
+        let history=useHistory()
 
         useIonViewDidEnter(async()=>{
 
@@ -58,9 +61,9 @@ const NotFriendProfile: React.FC = () =>{
                   'Content-Type': 'application/json',
                 },
                 data: JSON.stringify({ 
-                    fromEmail: email,
-                    toEmail: localStorage.getItem("email")
-    
+                    toEmail: email,
+                    fromEmail: localStorage.getItem("email")
+
                 })
             })
             .then(response =>response.data)
@@ -85,7 +88,7 @@ const NotFriendProfile: React.FC = () =>{
                 })
                 .then(response =>response.data)
                 .catch(err => {console.log(err)}) 
-    
+                history.goBack()
                 setLoading(false)
             })
             .catch(err => {
@@ -113,7 +116,7 @@ const NotFriendProfile: React.FC = () =>{
             .then(response =>{
                 setLoading(false)
                 console.log(response)
-                setRequestPending("outgoing")
+                setRequestPending("incoming")
             })
             .catch(err => {
                 setLoading(false)
@@ -178,12 +181,12 @@ const NotFriendProfile: React.FC = () =>{
                                             <IonButton mode="ios" onClick={sendFriendRequest}>Send Friend Request</IonButton>
                                         }
                                         {
-                                            (requstPending==="outgoing")
+                                            (requstPending==="incoming")
                                             &&
                                             <IonButton mode="ios" disabled={true}>Request Sent</IonButton>
                                         }
                                         {
-                                            (requstPending==="incoming")
+                                            (requstPending==="outgoing")
                                             &&
                                             <IonButton mode="ios" onClick={confirmRequest}>Accept Friend Request</IonButton>
                                         }
@@ -198,7 +201,7 @@ const NotFriendProfile: React.FC = () =>{
                 
                     <IonLoading 
                         isOpen={loading}
-                        message={"Loading"}
+                        mode="ios"
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
