@@ -23,8 +23,8 @@ export const userRepository = GymKingDataSource.getRepository(gym_user).extend({
     findByUsername(username: string) {
         return this.findOneBy({ username: username });
     },
-    async updateUser(email: string, name: string, surname: string, number: string, username: string) {
-        return await this.manager.update(gym_user, { email: email }, {name: name, surname: surname, number: number, username: username})
+    async updateUser(email: string, fullname: string, number: string, username: string, membership: string) {
+        return await this.manager.update(gym_user, { email: email }, {fullname: fullname,  number: number, username: username, gym_membership: membership})
     },
     async updateUserPassword(email: string, password: string) {
         const bcrypt = require('bcryptjs')
@@ -33,15 +33,18 @@ export const userRepository = GymKingDataSource.getRepository(gym_user).extend({
     async updateUserProfilePicture(email: string, profilepicture: string) {
         return await this.manager.update(gym_user, { email: email }, {profile_picture: profilepicture})
     },
-    saveUser(email: string, name: string, surname: string, number: string, username: string, password: string) {
+    async updateUserPushToken(email: string, token: string){
+        return await this.manager.update(gym_user, { email: email }, {pushkey: token})
+    },
+    saveUser(email: string, fullname: string, number: string, username: string, password: string, membership: string) {
         const bcrypt = require('bcryptjs')
         const user = new gym_user();
         user.email = email;
-        user.name = name;
-        user.surname = surname;
+        user.fullname = fullname;
         user.number = number;
         user.username = username;
         user.password = bcrypt.hashSync(password, bcrypt.genSaltSync());
+        user.gym_membership = membership;
         return this.manager.save(user);
     },
     deleteUser(email: string) {

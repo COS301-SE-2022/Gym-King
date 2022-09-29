@@ -1,21 +1,22 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import {render} from '@testing-library/react';
 import RegisterPage from './Register';
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<RegisterPage/>);
+test('renders without crashing', async () => {
+  const {baseElement} =await render(<RegisterPage/>);
   expect(baseElement).toBeDefined();
 });
 
-
+  
 
 ////////// INTEGRATION TESTS //////////
 
 describe('Testing connection to api', () => {
 
   test('should create a user', async () => {
-      (()=>{
+      (async()=>{
         
-        fetch(`https://gym-king.herokuapp.com/users/user`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',

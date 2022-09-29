@@ -1,16 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { badge_claim } from "./badge_claim.entity";
 import { badge_owned } from "./badge_owned.entity";
+import { gym_brand } from "./gym_brand.entity";
 @Entity()
 export class gym_user {
     @PrimaryColumn({length: 320})
     email: string
 
-    @Column({length: 100})
-    name: string
-
-    @Column({length: 100})
-    surname: string
+    @Column({length: 150,nullable: true})
+    fullname: string
 
     @Column({length: 10})
     number: string
@@ -21,7 +19,12 @@ export class gym_user {
     @Column({length: 300})
     password: string
 
-    @Column({length: 65535, default:"NONE"})
+    @Column({type: "varchar" ,length: 50})
+    @ManyToOne(() => gym_brand, (gym_brand) => gym_brand.gym_brandname)
+    @JoinColumn({name: "gym_membership"})
+    gym_membership: string
+
+    @Column({length: 65535, default:"NONE",nullable: true})
     profile_picture: string
 
     @OneToMany(() => badge_claim, (badge_claim) => badge_claim.email)
@@ -29,4 +32,7 @@ export class gym_user {
 
     @OneToMany(() => badge_owned, (badge_owned) => badge_owned.email)
     owned_emails: badge_owned[]
+
+    @Column({length: 1024,nullable: true})
+    pushkey:string
 }

@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import ManageEmployees from './ManageEmployees';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', ()=> {
-  const {baseElement} = render(<ManageEmployees />);
+test('renders without crashing', async()=> {
+  const {baseElement} = await render(<ManageEmployees />);
   expect(baseElement).toBeDefined();
 });
 
@@ -15,9 +16,9 @@ test('renders without crashing', ()=> {
 
 describe('Testing API calls', () => {
 
-  it('should load owners employees', async () => {
+  it('should load owners employees',  () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/owners/employees/${"owner_email"}`, {
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${"owner_email"}`, {
           "method":"GET"
         })
         .then(response =>response.json())
@@ -29,9 +30,9 @@ describe('Testing API calls', () => {
         })
       })
   });
-  it('should get owners gyms', async () => {
+  it('should get owners gyms',  () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/gyms/owned/${"owner_email"}`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"owner_email"}`,{
           "method":"GET"
         })
         .then(response =>response.json())

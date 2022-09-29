@@ -51,10 +51,10 @@ http://ionicframework.com/docs/theming/ */
   /** medium **/
 	--ion-color-medium: #92949c;
 	--ion-color-medium-rgb: 146,148,156;
-	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast: white;
 	--ion-color-medium-contrast-rgb: 0,0,0;
 	--ion-color-medium-shade: #808289;
-	--ion-color-medium-tint: #9d9fa6;
+	--ion-color-medium-tint: #9d9fa669;
   /** light **/
 	--ion-color-light: #f4f5f8;
 	--ion-color-light-rgb: 244,245,248;
@@ -64,7 +64,9 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-tint: #f5f6f9;
   --ion-text-color: #ffffff;
 
-  
+  --ion-color-darkorange: darkorange;
+
+
 }
 
  /*
@@ -76,6 +78,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-background-color-rgb: 18,18,18;
   --ion-text-color: white;
   --ion-text-color-rgb: 255,255,255;
+  --ion-font-family: 'Comfortaa', cursive;
 
   --ion-color-step-50: #301d8c;
 	--ion-color-step-100: #2d1b84;
@@ -116,6 +119,14 @@ http://ionicframework.com/docs/theming/ */
     margin-right:10%;
 }
 
+.btn{
+  font-family: 'Comfortaa', cursive;
+}
+
+.inner-scroll.scroll-y.overscroll{
+  background-color: #873CFF;
+}
+
 .Content
 {
     padding:5em;
@@ -130,10 +141,15 @@ ion-button{
   margin-right:10%;
 }
 
+
+.errText{
+  --ion-color:var(--ion-color-danger);
+  font-size: 14px;
+}
 .PageTitle
 {
     font-size:2em;
-    font-family: 'Comfortaa', cursive;
+    font-family: '', cursive;
     padding:5%;
 }
 .PageTitleNoPadding
@@ -154,7 +170,14 @@ ion-card{
   box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
 }
 
+.searchbar-input-container{
 
+  background-color: rgba(255,255,255,0.13);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 12px rgb(25 10 143 / 40%); 
+   border-radius: 2em;
+    color: black;
+}
 .textInput{
   background-color: rgba(255,255,255,0.07);
   border-radius: 7%;
@@ -164,6 +187,10 @@ ion-card{
 .inputHeading{
   font-family: 'Comfortaa', cursive;
   font-size:22px;
+}
+.mediumHeading{
+  font-family: 'Comfortaa', cursive;
+  font-size:20px;
 }
 .smallHeading{
   font-family: 'Comfortaa', cursive;
@@ -178,10 +205,32 @@ ion-card{
   margin-bottom: 20px;
 }
 
+.leftMargin10{
+  margin-left:10%
+}
+
+.btnRemoveFriend{
+  width:50%;
+}
+
 .width21{
   margin-left:0;
   margin-right:0;
   width: 21em;
+}
+
+.forgotPasswordForm{
+    height:fit-content;
+    width:75%;
+    background-color: rgba(255,255,255,0.13);
+    position:absolute;
+    transform: translate(-50%, -50%);
+    top:50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
+    padding: 35px 35px
 }
 
 .grid
@@ -247,11 +296,14 @@ ion-card{
 }
 
 
-.spinner{
-  --background: #873CFF;
+ion-loading.spinner{
+  --background: transparent;
   --spinner-color: #ffc409;
   --height: 4em;
+  --width: 2em;
 }
+
+
 
 .userImage{
   height: 7em;

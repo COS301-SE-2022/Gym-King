@@ -1,11 +1,10 @@
-import { render, wait } from '@testing-library/react';
+jest.setTimeout(25000)
+import { render } from '@testing-library/react';
 import ARPage from './ARPage';
-//import AcceptRejectPage from './AcceptReject'
-const request = require('supertest');
 
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<ARPage />);
+test('renders without crashing', async() => {
+    const { baseElement } =await render(<ARPage />);
     expect(baseElement).toBeDefined();
 });
 

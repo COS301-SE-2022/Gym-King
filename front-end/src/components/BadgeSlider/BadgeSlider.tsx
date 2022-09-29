@@ -258,7 +258,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
         <>
         
         
-        <IonCard class="glassForm">
+        <IonCard class="glassForm" mode="ios">
         <IonCardHeader color="primary">
             <IonCardTitle className='inputHeading' class ="ion-text-center">Create Badge Icon</IonCardTitle> 
         </IonCardHeader>
@@ -276,6 +276,7 @@ export const BadgeSlider: React.FC<BadgeInputProps> = ( inp ) => {
         
 
             <IonSlides
+                mode="ios"
                 options={slideOpts}
                 ref={mySlides2}
                 onIonSlideWillChange={()=>{handleRankChange() ;handleEmblemChange()}} 

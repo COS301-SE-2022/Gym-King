@@ -1,13 +1,24 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+jest.setTimeout(25000)
+import {  render } from '@testing-library/react';
 import CreateBadge from './CreateBadge';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<CreateBadge />);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<CreateBadge />);
     expect(baseElement).toBeDefined();
+});
+
+test('correctly displays labels', async () => {
+    const {baseElement} =await render(<CreateBadge />);
+    expect (baseElement).toHaveTextContent("Badge Name:");
+    expect (baseElement).toHaveTextContent("Activity Type:");
+    expect (baseElement).toHaveTextContent("Gym Location:");
+    expect (baseElement).toHaveTextContent("Badge Challenge:");
+    expect (baseElement).toHaveTextContent("Badge Description:");
+    
 });
 
 
@@ -15,10 +26,10 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load owned gym data', async () => {
+    it('should load owned gym data',  () => {
         (async ()=>{
             let gymOwner = "u20519517@tuks.co.za"
-            await fetch(`https://gym-king.herokuapp.com/gyms/owned?email=${gymOwner}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned?email=${gymOwner}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -32,10 +43,10 @@ describe('Testing connection to api', () => {
         })
     });
 
-    it('should create a badge', async () => {
-        (()=>{
+    it('should create a badge',  () => {
+        (async()=>{
 
-        fetch(`https://gym-king.herokuapp.com/badges/badge`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge`,{
             "method":"POST",
             headers: {
                 'Accept': 'application/json',

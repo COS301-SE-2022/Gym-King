@@ -1,8 +1,10 @@
+jest.setTimeout(250000)
+
 import { render } from '@testing-library/react';
 import ActivityInputs from './ActivityInputs'
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<ActivityInputs activityCategory='cardio' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<ActivityInputs activityCategory='cardio' inputs={null} />);
     expect(baseElement).toBeDefined();
   });
 
@@ -10,14 +12,14 @@ test('renders without crashing', () => {
 
 describe('Testing prop text values', () => {
 
-  test('correctly displays cardio activitytype inputs', async () => {
-    const {baseElement} = render(<ActivityInputs activityCategory='CARDIO' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
+  test('correctly displays cardio activitytype inputs',  async() => {
+    const {baseElement} =  await render(<ActivityInputs activityCategory='CARDIO' inputs={undefined} />);
     expect (baseElement).toHaveTextContent("Duration");
     expect (baseElement).toHaveTextContent("Distance");
     expect (baseElement).toHaveTextContent("Level of Difficulty");
   }); 
   test('correctly displays strength activitytype inputs', async () => {
-    const {baseElement} = render(<ActivityInputs activityCategory='strength' inputs={{input1:'00:23:00', input2:'3', input3:'4'}} />);
+    const {baseElement} =  await render(<ActivityInputs activityCategory='strength' inputs={undefined} />);
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");
     expect (baseElement).toHaveTextContent("Reps");

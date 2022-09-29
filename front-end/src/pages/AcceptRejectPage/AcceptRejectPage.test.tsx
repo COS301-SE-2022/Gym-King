@@ -1,24 +1,22 @@
-import { render, wait } from '@testing-library/react';
-import { useEffect } from 'react';
-import AcceptRejectCard from '../../components/AcceptRejectCard/AcceptRejectCard';
+jest.setTimeout(25000)
+
+import { render } from '@testing-library/react';
 import AcceptRejectPage from './AcceptReject';
-//import AcceptRejectPage from './AcceptReject'
-const request = require('supertest');
 
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<AcceptRejectPage />);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
 });
 
 describe('Testing integration of components', () => {
     
     test('sending in a list of claims displays it in the ActivityList component', async () => {
-        const {getByTestId } = render(<AcceptRejectPage />);
+        const {getByTestId } = await render(<AcceptRejectPage />);
     
         // make sure the accept reject cards are displayed 
         expect(getByTestId('ARC').innerHTML).toBeDefined()
@@ -34,9 +32,9 @@ describe('Testing connection to api', () => {
     let badgeId= "XRQ"
     let email ="u20519517@tuks.co.za"
 
-    it('should load claim data', async () => {
-        (()=>{
-            fetch(`https://gym-king.herokuapp.com/claims/claim?bid=${badgeId}&email=${email}`,{
+    it('should load claim data',  () => {
+        let test = (async()=>{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?bid=${badgeId}&username=${localStorage.getItem("username")!}`,{
                 "method":"GET"
             })
             .then(response =>response.json())
@@ -47,13 +45,14 @@ describe('Testing connection to api', () => {
                 expect (err).toBeDefined();
             })        
         }) 
+        test()
     });
 
-    it('should load claim data', async () => {
+    it('should load claim data',  () => {
         
-        (()=>
+        let test=(async()=>
         {
-            fetch(`https://gym-king.herokuapp.com/badges/badge?bid=${badgeId}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge?bid=${badgeId}`,{
             "method":"GET"
             })
             .then(response =>response.json())
@@ -64,5 +63,7 @@ describe('Testing connection to api', () => {
                 expect (err).toBeDefined();
             })
         })
+
+        test()
     });
   })

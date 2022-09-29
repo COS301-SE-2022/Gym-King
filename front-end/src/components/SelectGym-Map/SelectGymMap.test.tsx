@@ -1,3 +1,4 @@
+jest.setTimeout(25000)
 import { render } from '@testing-library/react';
 import {SelectGymMap} from './SelectGymMap'
 
@@ -6,7 +7,7 @@ import {SelectGymMap} from './SelectGymMap'
 
 */
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<SelectGymMap />);
+test('renders without crashing', async() => {
+    const { baseElement } =await render(<SelectGymMap />);
     expect(baseElement).toBeDefined();
   });

@@ -13,13 +13,13 @@ const GymOwnerPage: React.FC = () =>{
             </IonHeader>
             <BurgerMenu listItems={Menulist}></BurgerMenu>
             <br></br>
-            <IonContent fullscreen className ='Content' id="main">
+            <IonContent fullscreen className ='Content' id="mainBurger">
                 <IonText className='PageTitle center'>Owner Page</IonText>
-                <IonButton className='width80 centerComp' routerLink='/ManageGyms' routerDirection="forward" color="warning">Manage Gyms</IonButton>
+                <IonButton mode="ios" className='width80 centerComp' routerLink='/ManageGyms' routerDirection="forward" color="warning">Manage Gyms</IonButton>
                 <br></br>
-                <IonButton className='width80 centerComp' routerLink="/GymOwner-ViewBadges" routerDirection="forward" color="warning">Manage Badges</IonButton>
+                <IonButton mode="ios" className='width80 centerComp' routerLink="/GymOwner-ViewBadges" routerDirection="forward" color="warning">Manage Badges</IonButton>
                 <br></br>
-                <IonButton className='width80 centerComp' routerLink="/ManageEmployees" routerDirection="forward" color="warning" >Manage Employees</IonButton>
+                <IonButton mode="ios" className='width80 centerComp' routerLink="/ManageEmployees" routerDirection="forward" color="warning" >Manage Employees</IonButton>
             </IonContent>
         </IonPage>
     )

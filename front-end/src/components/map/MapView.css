@@ -18,30 +18,33 @@
   
 
 #float{
+    z-index: 10;
 	position:fixed;
-	width:50px;
-	height: 50px;
+	width:15vw;
+	height: 15vw;
 	bottom:40px;
-	left:45vw;
+    left: 35vw;
 	background-color:#3d1edb;
 	color:#FFF;
 	border-radius:50px;
 	box-shadow: 2px 2px 3px #999;
 }
 
-
-#my-float{
-	margin-top:22px;
+#btnIcon{
+    max-height: 35px;
+    height: 35px;
+    max-width: 35px;
+    width: 35px;
 }
-
 
 main {
     background-image: linear-gradient(to bottom right, #321E93, #873CFF);
 }
 
-ion-content {
-    --background: linear-gradient(to bottom right, #321E93, #a974ff) no-repeat center/cover fixed;
-  }
+.mainMap {
+    --overflow: hidden !important;
+}
+
 
 ion-input{
     display: block;

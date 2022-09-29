@@ -1,9 +1,10 @@
 import {IonContent, IonHeader, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, useIonViewDidEnter} from '@ionic/react';
 import React, {  useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
 import './Leaderboard.css';
 import LeaderboardValues from '../../components/LeaderBoardSwiper/LeaderBoardValues/LeaderboardValues';
+import axios from "axios";
+
 
 const Leaderboard: React.FC = () =>{
     const [overall, setOverall] = useState(new Array<any>());
@@ -23,16 +24,19 @@ const Leaderboard: React.FC = () =>{
             default:      return <LeaderboardValues scores={overall}></LeaderboardValues>
         }
     }
+
     const segmentChanged = (e: any)=>{
         setType(e.detail.value);
-     }
-     useIonViewDidEnter(()=>
+    }
+
+    useIonViewDidEnter(()=>
     {
         var gymid=sessionStorage.getItem("gid");
+        console.log(sessionStorage.getItem("gid"))
         var index:number;
         var Overall:any=[];
         var Cardio:any=[];
-        var Strenght:any=[];
+        var Strength:any=[];
 
         
 
@@ -85,10 +89,8 @@ const Leaderboard: React.FC = () =>{
             return bflag;
         }
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/leaderboard/score/${gymid}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/leaderboard/score/${gymid}`)
+        .then(response =>response.data)
         .then(response =>{
             let results=response;
             
@@ -108,8 +110,8 @@ const Leaderboard: React.FC = () =>{
                 }
                 else
                 {
-                    bflag2=inArray(results[i].username,Strenght)
-                    assign(results[i].username,getpoints(results[i].count,results[i].badgename),bflag2,index,Strenght)   
+                    bflag2=inArray(results[i].username,Strength)
+                    assign(results[i].username,getpoints(results[i].count,results[i].badgename),bflag2,index,Strength)   
                 }
                 assign(results[i].username,getpoints(results[i].count,results[i].badgename),bflag,index,Overall)
 
@@ -117,10 +119,10 @@ const Leaderboard: React.FC = () =>{
             }
             Overall.sort((a:any,b:any)=>{ return b.points-a.points})
             Cardio.sort((a:any,b:any)=>{ return b.points-a.points})
-            Strenght.sort((a:any,b:any)=>{ return b.points-a.points})
+            Strength.sort((a:any,b:any)=>{ return b.points-a.points})
             setOverall(Overall)
             setcardio(Cardio)
-            setstrength(Strenght)
+            setstrength(Strength)
         })
         .catch(err => {
             console.log(err)
@@ -136,15 +138,15 @@ const Leaderboard: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>Leaderboard</IonText>
-                <IonSegment onIonChange={segmentChanged} value={type}>
-                    <IonSegmentButton value="overall" >
+                <IonSegment mode="ios" onIonChange={segmentChanged} value={type}>
+                    <IonSegmentButton mode="ios" value="overall" >
                         <IonLabel>Overall</IonLabel>
                         
                     </IonSegmentButton>
-                    <IonSegmentButton value="cardio">
+                    <IonSegmentButton mode="ios" value="cardio">
                         <IonLabel>Cardio</IonLabel>
                     </IonSegmentButton>
-                    <IonSegmentButton value="strength">
+                    <IonSegmentButton mode="ios" value="strength">
                         <IonLabel>Strength</IonLabel>
                     </IonSegmentButton>
                 </IonSegment>
@@ -156,8 +158,8 @@ const Leaderboard: React.FC = () =>{
                 </div>
                 
                 <IonLoading 
+                    mode="ios"
                     isOpen={loading}
-                    message={"Loading"}
                     spinner={"circles"}
                     onDidDismiss={() => setLoading(false)}
                     cssClass={"spinner"}

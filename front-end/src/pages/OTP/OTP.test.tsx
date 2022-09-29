@@ -1,11 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import {render} from '@testing-library/react';
 import OTP from './OTP';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-  const { baseElement } = render(<OTP/>);
+test('renders without crashing',async () => {
+  const { baseElement } =await render(<OTP/>);
   expect(baseElement).toBeDefined();
 });

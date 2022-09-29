@@ -12,6 +12,6 @@
 
 .gym{
     padding:4%;
-    height:22em;
+    height:fit-content;
     width:80%;
 }

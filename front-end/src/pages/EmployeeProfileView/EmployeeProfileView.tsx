@@ -2,6 +2,7 @@ import {IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCar
 import React, {useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 const EmployeeProfileViewPage: React.FC = () =>{
     
@@ -13,7 +14,6 @@ const EmployeeProfileViewPage: React.FC = () =>{
     //employee details 
     const [email, setEmail] = useState<any>()
     const [name, setName] = useState<any>("")
-    const [surname, setSurname]= useState<any>("")
     const [username, setUsername]= useState<any>("")
     const [phone, setPhone]= useState<any>("")
     const [gymName, setGymName] = useState<any>("");
@@ -30,19 +30,18 @@ const EmployeeProfileViewPage: React.FC = () =>{
         setLoading(true)
         setEmail(sessionStorage.getItem("employee_email"))
         setName(sessionStorage.getItem("employee_name"))
-        setSurname(sessionStorage.getItem("employee_surname"))
         setUsername(sessionStorage.getItem("employee_username"))
         setPhone(sessionStorage.getItem("employee_phone"))
         //setGymId(localStorage.getItem("employee_gid"))
         setProfilePicture(sessionStorage.getItem("employee_profilepicture")!)
+        console.log(sessionStorage.getItem("employee_gid"))
 
-        fetch(`https://gym-king.herokuapp.com/gyms/gym/${sessionStorage.getItem("employee_gid")}`, {
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("employee_gid")}`)
+        .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             console.log(response)
-            setGymName(response.gym_brandname)
+            setGymName(response.gym_name)
             setGymLocation(response.gym_address)
             
                         
@@ -63,20 +62,21 @@ const EmployeeProfileViewPage: React.FC = () =>{
     }
 
     const deleteEmployee=(owner:string, owner_pass:string, employee_email:string)=>{
-        
-        fetch(`https://gym-king.herokuapp.com/employees/employee`, {
+        setLoading(true)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
+
             method: 'DELETE',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
+            data: JSON.stringify({ 
                 owneremail: owner,
-                ownerpassword: owner_pass,
+                apikey: sessionStorage.getItem("key"),
                 employeeemail: employee_email
             })
         })
-        .then(response =>response.json())
+        .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setShowDeleteEmployee(true)
@@ -111,7 +111,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                                 <IonText className=" un PageTitle center ">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">{name} {surname}</i>
+                                                <i className="center">{name}</i>
                                             </IonRow>
                                             
                                         </IonCol>
@@ -146,7 +146,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                                 </IonCard>
                         </IonRow>
                         <IonRow>
-                            <IonButton onClick={handleDelete}>Delete Employee</IonButton>
+                            <IonButton mode="ios" onClick={handleDelete}>Delete Employee</IonButton>
                         </IonRow>
                         
                     </IonGrid>
@@ -154,6 +154,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                     <br></br>
 
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -161,6 +162,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -168,6 +170,7 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="danger"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showDeleteEmployee}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Employee deleted!"
@@ -175,8 +178,8 @@ const EmployeeProfileViewPage: React.FC = () =>{
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

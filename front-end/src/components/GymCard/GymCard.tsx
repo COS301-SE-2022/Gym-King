@@ -7,12 +7,13 @@
  import { useState } from 'react';
  import { useHistory } from 'react-router-dom';
  import './GymCard.css'
+ import axios from 'axios';
  /**
   * 
   * @param prop takes in id{any},name{string}, address{string}, deleteClicked{any}
   * @returns GymCard component
   */
- export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any})=>{
+ export const GymCard=(prop:{id:any,name:string, brand:string,address:string,deleteClicked:any})=>{
  //=================================================================================================
  //    VARIABLES & HOOKS
  //=================================================================================================
@@ -40,21 +41,22 @@
     */
    const deleteGym = (password:string) => {
    setLoading(true)
-     fetch(`https://gym-king.herokuapp.com/owner/delete/gym`,
+     axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
+
      {
        method: "DELETE",
        headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json',
        },
-       body: JSON.stringify({ 
-         gid:prop.id,
+       data: JSON.stringify({ 
+         "gid":prop.id,
          "email":localStorage.getItem("email"),
-         "password":password,
+         "apikey":sessionStorage.getItem("key"),
        })
      }
    )
-     .then((response) => response.json())
+     .then((response) => response.data)
      .then((response) => {
        setLoading(false)
        console.log(response)
@@ -79,30 +81,36 @@
    return(
    <div data-testid="GymCard">
      <IonCard
+        mode="ios"
        color="primary"   
        class="ion-padding gymCardMargin"
        onClick={() => setShowActionSheet(true)}
      >
-       <IonCardTitle class="inputHeading">
+       <IonCardTitle class="inputHeading" mode="ios">
          {prop.name}
        </IonCardTitle>
        
-       <IonCardSubtitle className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
+       <IonCardSubtitle mode="ios" className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
          {prop.address}
        </IonCardSubtitle>
      </IonCard>
  
            <IonActionSheet
+              mode="ios"
                isOpen={showActionSheet}
                onDidDismiss={()=>setShowActionSheet(false)}
                cssClass="my-custom-class"
                
                buttons={[{
+                  
                    text: 'Edit',
                    id:'edit-button',
                    icon: create,
                    handler: () => {
                      sessionStorage.setItem("gid",prop.id  )
+                     sessionStorage.setItem("gymName",prop.name )
+                     sessionStorage.setItem("gymAddress",prop.address)
+                     sessionStorage.setItem("gymBrand",prop.brand)
                      history.push("/EditGym")
                    }
                  },{
@@ -151,6 +159,7 @@
            </IonActionSheet>
  
            <IonToast
+            mode="ios"
              isOpen={showToast1}
              onDidDismiss={() => setShowToast1(false)}
              message="Gym has been deleted."
@@ -159,6 +168,7 @@
              />
  
            <IonToast
+            mode="ios"
              isOpen={showToast2}
              onDidDismiss={() => setShowToast2(false)}
              message={toastMessage}
@@ -167,8 +177,8 @@
            />
                  
            <IonLoading 
+           mode="ios"
              isOpen={loading}
-             message={"Loading"}
              duration={2000}
              spinner={"circles"}
              onDidDismiss={() => setLoading(false)}

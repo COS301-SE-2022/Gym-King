@@ -1,5 +1,5 @@
 .registerForm{
-    height:600px;
+    height:fit-content;
     width:75%;
     background-color: rgba(255,255,255,0.13);
     position:absolute;
@@ -19,3 +19,19 @@
     outline:none;
     border:none;
 }
+
+.puesdorHref {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    /*input has OS specific font-family*/
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .centerBtn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+  }

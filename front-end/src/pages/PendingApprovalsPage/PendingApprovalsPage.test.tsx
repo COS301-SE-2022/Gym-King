@@ -1,8 +1,9 @@
+jest.setTimeout(25000)
 import { render } from '@testing-library/react';
 import PendingApprovalsPage from './PendingApprovalsPage'
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<PendingApprovalsPage />);
+test('renders without crashing', async() => {
+    const { baseElement } =await render(<PendingApprovalsPage />);
     expect(baseElement).toBeDefined();
 });
 
@@ -11,10 +12,10 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load pending claims data', async () => {
-        (()=>{
+    it('should load pending claims data',  () => {
+        (async ()=>{
             let gymId="lttD"
-            fetch(`https://gym-king.herokuapp.com/claims/claim?gid=${gymId}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim?gid=${gymId}`,{
                 "method":"GET"
             })
             .then(response =>response.json())

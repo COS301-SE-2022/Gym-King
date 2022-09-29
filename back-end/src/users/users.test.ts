@@ -6,10 +6,10 @@ import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { userOTPRepository } from "../repositories/user_otp.repository";
 import { server } from "../server";
 const request = require('supertest');
-let gid;
-let bid1;
-let bid2;
-let otp;
+let gid:string;
+let bid1:string;
+let bid2:string;
+let otp:any;
 beforeAll(async () => {
     await GymKingDataSource.initialize()
     .then(() => {
@@ -18,7 +18,20 @@ beforeAll(async () => {
     .catch((err) => {
         console.log("Connection not made: "+err);
     })
-    let response = await request(server).post('/gyms/gym').send({
+    let response = await request(server).post('/brands/brand').send({
+        "brandname": "Test Brand 1"
+    });
+    response = await request(server).post('/brands/brand').send({
+        "brandname": "Test Brand 2"
+    });
+    response = await request(server).post('/brands/brand').send({
+        "brandname": "Test Brand"
+    });
+    response = await request(server).post('/brands/brand').send({
+        "brandname": "Changed Brand 1"
+    });
+    response = await request(server).post('/gyms/gym').send({
+        "gymName":"Test",
         "gymBrandName": "Test Brand",
         "gymAddress": "Test Address",
         "gymCoordLong": -25.8661,
@@ -32,7 +45,11 @@ beforeAll(async () => {
         "badgedescription":"Description",
         "badgechallenge":"Challenge",
         "badgeicon":"b_cycle",
-        "activitytype":"CARDIO"
+        "requirement1":"3",
+        "requirement2":"2",
+        "requirement3":"1",
+        "activitytype":"CARDIO",
+        "tags":"test,test"
     });
     bid1 = response.body.b_id;
     response = await request(server).post('/badges/badge').send({
@@ -41,21 +58,52 @@ beforeAll(async () => {
         "badgedescription":"Description",
         "badgechallenge":"Challenge",
         "badgeicon":"b_bicep",
-        "activitytype":"STRENGTH"
+        "requirement1":"1",
+        "requirement2":"2",
+        "requirement3":"3",
+        "activitytype":"STRENGTH",
+        "tags":"test,test"
     });
     bid2 = response.body.b_id;
 });
 describe('Testing POST API Calls', () => {
-    test('responds to POST insert user', async () => {
-        const response = await request(server).post('/users/user').send({
-            "email": "test@example.com",
-            "name": "Test",
-            "surname": "Test",
-            "number": "0123456789",
-            "username":"Test",
-            "password":"Test"
-        });
-        expect(response.statusCode).toBe(200);
+    describe('responds to POST insert user', () => {
+        test('responds to incorrect gym brand insert user', async () => {
+            const response = await request(server).post('/users/user').send({
+                "email": "test@example.com",
+                "fullname": "Test Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test",
+                "membership":"Incorrect brand"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid gym brand!'})
+        })
+        test('responds to incorrect email insert user', async () => {
+            const response = await request(server).post('/users/user').send({
+                "email": "WrongEmail",
+                "fullname": "Test Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test",
+                "membership":"Test Brand 1"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid email entered!'})
+        })
+        test('responds to correct insert user', async () => {
+            const response = await request(server).post('/users/user').send({
+                "email": "test@example.com",
+                "fullname": "Test Test",
+                "number": "0123456789",
+                "username":"Test",
+                "password":"Test",
+                "membership":"Test Brand 1"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+        })
     });
     test('responds to correct GET user profile picture by email', async () => {
         const response = await request(server).get('/users/user/picture/test@example.com')
@@ -96,14 +144,30 @@ describe('Testing POST API Calls', () => {
             expect(response.body).toStrictEqual({ 'success': false, 'results':'invalid email or password'})
         });
     });
-    test('responds to POST insert user OTP', async () => {
-        const response = await request(server).post('/users/user/OTP').send({
-            "email": "test@example.com",
-        });
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toStrictEqual({'success':true});
-        otp = await userOTPRepository.findByEmail("test@example.com");
-        otp = otp.otp;
+    describe('responds to POST insert user OTP', () => {
+        test('responds to incorrect POST insert user OTP', async () => {
+            const response = await request(server).post('/users/user/OTP').send({
+                "email": "InvalidEmail",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid email entered!'});
+        })
+        test('responds to incorrect POST insert user OTP', async () => {
+            const response = await request(server).post('/users/user/OTP').send({
+                "email": "fakeEmail@example.com",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({ 'success': false ,'message':'User does not exist!' });
+        })
+        test('responds to correct POST insert user OTP', async () => {
+            const response = await request(server).post('/users/user/OTP').send({
+                "email": "test@example.com",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true});
+            otp = await userOTPRepository.findByEmail("test@example.com");
+            otp = otp.otp;
+        })
     });
     describe('responds to POST get user info', () => {
         test('responds to correct POST get user info', async () => {
@@ -114,11 +178,11 @@ describe('Testing POST API Calls', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({
                 email:'test@example.com',
-                name: 'Test',
-                surname: 'Test',
+                fullname: 'Test Test',
                 number: '0123456789',
                 username: 'Test',
-                profile_picture: 'NONE'
+                profile_picture: 'NONE',
+                gym_membership: "Test Brand 1"
             })
         });
         test('responds to incorrect password POST get user info', async () => {
@@ -150,7 +214,11 @@ describe('Testing GET API Calls', () => {
             "badgedescription":"Description",
             "badgechallenge":"Challenge",
             "badgeicon":"b_cycle",
-            "activitytype":"CARDIO"
+            "requirement1":"3",
+            "requirement2":"2",
+            "requirement3":"1",
+            "activitytype":"CARDIO",
+            "tags":"test,test"
         })
     });
     test('responds to GET badge 2', async () => {
@@ -163,7 +231,11 @@ describe('Testing GET API Calls', () => {
             "badgedescription":"Description",
             "badgechallenge":"Challenge",
             "badgeicon":"b_bicep",
-            "activitytype":"STRENGTH"
+            "requirement1":"1",
+            "requirement2":"2",
+            "requirement3":"3",
+            "activitytype":"STRENGTH",
+            "tags":"test,test"
         })
     });
     test('responds to GET badges by gym ID', async () => {
@@ -176,7 +248,11 @@ describe('Testing GET API Calls', () => {
             "badgedescription":"Description",
             "badgechallenge":"Challenge",
             "badgeicon":"b_cycle",
-            "activitytype":"CARDIO"
+            "requirement1":"3",
+            "requirement2":"2",
+            "requirement3":"1",
+            "activitytype":"CARDIO",
+            "tags":"test,test"
         },{
             "b_id":bid2,
             "g_id":gid,
@@ -184,7 +260,11 @@ describe('Testing GET API Calls', () => {
             "badgedescription":"Description",
             "badgechallenge":"Challenge",
             "badgeicon":"b_bicep",
-            "activitytype":"STRENGTH"
+            "requirement1":"1",
+            "requirement2":"2",
+            "requirement3":"3",
+            "activitytype":"STRENGTH",
+            "tags":"test,test"
         }])
     });
     test('responds to GET gym', async () => {
@@ -195,8 +275,7 @@ describe('Testing GET API Calls', () => {
             gym_brandname: "Test Brand",
             gym_address: "Test Address",
             gym_coord_long: -25.8661,
-            gym_coord_lat: 28.1905,
-            gym_icon:"Test Logo"
+            gym_coord_lat: 28.1905
         })
     });
     test('responds to GET badge claims', async () => {
@@ -211,7 +290,11 @@ describe('Testing GET API Calls', () => {
                 "badgedescription": "Description",
                 "badgeicon": "b_cycle",
                 "badgename": "Test Badge 1",
-                "g_id": gid
+                "requirement1":"3",
+                "requirement2":"2",
+                "requirement3":"1",
+                "g_id": gid,
+                "tags":"test,test"
             }, 
             "email": "test@example.com", 
             "input1": "test1", 
@@ -233,7 +316,11 @@ describe('Testing GET API Calls', () => {
                 "badgedescription": "Description",
                 "badgeicon": "b_bicep",
                 "badgename": "Test Badge 2",
-                "g_id": gid
+                "requirement1":"1",
+                "requirement2":"2",
+                "requirement3":"3",
+                "g_id": gid,
+                "tags":"test,test"
             }, 
             "email": "test@example.com", 
             "input1": "test1", 
@@ -242,17 +329,44 @@ describe('Testing GET API Calls', () => {
             "username": "Test"
         }])
     });
+    test('responds to GET brands', async () => {
+        const response = await request(server).get('/brands/brand/');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toMatchObject([
+            { gym_brandname: 'Test Brand 1', gym_logo: 'Default' },
+            { gym_brandname: 'Test Brand 2', gym_logo: 'Default' },
+            { gym_brandname: 'Test Brand', gym_logo: 'Default' },
+            { gym_brandname: 'Changed Brand 1', gym_logo: 'Default' }
+        ]);
+    })
+    describe('Testing get user by username', () => {
+        test('responds to GET user by username', async () => {
+            const response = await request(server).get('/users/user/Test');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({
+                email:"test@example.com",
+                fullname:"Test Test",
+                username:"Test",
+                profile_picture:"NONE" 
+            });
+        })
+        test('responds to GET wrong user by username', async () => {
+            const response = await request(server).get('/users/user/wrong');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({'message':'Invalid Username!'});
+        })
+    })
 });
 describe('Testing PUT API Calls', () => {
     describe('Testing PUT update user info', () => {
-        test('responds to correct password PUST update user info', async () => {
+        test('responds to correct password PUT update user info', async () => {
             let response = await request(server).put('/users/user/info').send({
                 "email": "test@example.com",
                 "password":"Test",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
-                "username":"Changed"
+                "username":"Changed",
+                "membership":"Changed Brand 1"
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({'success': true})
@@ -263,21 +377,21 @@ describe('Testing PUT API Calls', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({
                 email:'test@example.com',
-                name: 'Changed',
-                surname: 'Changed',
+                fullname: 'Changed Test',
                 number: '9876543210',
                 username: 'Changed',
-                profile_picture: 'NONE'
+                profile_picture: 'NONE',
+                gym_membership:"Changed Brand 1"
             });
         });
         test('responds to incorrect password PUT change user info', async () => {
             let response = await request(server).put('/users/user/info').send({
                 "email": "test@example.com",
                 "password":"wrong",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
-                "username":"Changed"
+                "username":"Changed",
+                "membership":"Changed Brand 1"
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
@@ -286,16 +400,37 @@ describe('Testing PUT API Calls', () => {
             let response = await request(server).put('/users/user/info').send({
                 "email": "wrong@example.com",
                 "password":"Test",
-                "name": "Changed",
-                "surname": "Changed",
+                "fullname": "Changed Test",
                 "number": "9876543210",
-                "username":"Changed"
+                "username":"Changed",
+                "membership":"Changed Brand 1"
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
         });
+        test('responds to incorrect membership PUT change user info', async () => {
+            let response = await request(server).put('/users/user/info').send({
+                "email": "test@example.com",
+                "password":"wrong",
+                "fullname": "Changed Test",
+                "number": "9876543210",
+                "username":"Changed",
+                "membership":"Incorrect membership"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'message':'Invalid gym brand!'})
+        });
     });
     describe('Testing PUT update user password', () => {
+        test('responds to incorrect invalid email PUT change user password', async () => {
+            let response = await request(server).put('/users/user/password').send({
+                "email": "InvalidEmail",
+                "otp":otp,
+                "newpassword": "Changed",
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'message':'Invalid email!'})
+        });
         test('responds to incorrect otp PUT change user password', async () => {
             let response = await request(server).put('/users/user/password').send({
                 "email": "test@example.com",

@@ -1,22 +1,17 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import UserProfilePage from './UserProfile';
 
-////TESTS TO BE PERFORMED////
-/*
-*/
-
-test('renders without crashing', () => {
-  const {baseElement} = render(<UserProfilePage />);
+test('renders without crashing', async() => {
+  const {baseElement} =await render(<UserProfilePage />);
   expect(baseElement).toBeDefined();
 });
 
-////////// INTEGRATION TESTS //////////
-
 describe('Testing connection to api', () => {
 
-    it('should get badges', async () => {
+    it('should get badges',  () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/owned/${"email"}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${"email"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -28,9 +23,9 @@ describe('Testing connection to api', () => {
             })
         })
     });
-    it('should get claims', async () => {
+    it('should get claims',  () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/claims/${"email"}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"email"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())
@@ -42,9 +37,9 @@ describe('Testing connection to api', () => {
             })
         })
     });
-    it('should get user info', async () => {
+    it('should get user info',  () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -65,9 +60,9 @@ describe('Testing connection to api', () => {
             })
         })
     });
-    it('should update user info', async () => {
+    it('should update user info',  () => {
         (async ()=>{
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',

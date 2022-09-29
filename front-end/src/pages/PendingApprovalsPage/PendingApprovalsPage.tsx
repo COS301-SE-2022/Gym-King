@@ -4,6 +4,7 @@ import ApprovalButton from '../../components/approvalButton/approvalButton';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingApprovalsPage.css';
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
 
 
 export type UploadActivityStates = {act?:any}
@@ -30,18 +31,18 @@ const PendingApprovalsPage: React.FC = () =>{
 
         setLoading(true)
         //get employee information 
-        fetch(`https://gym-king.herokuapp.com/employees/employee/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
 
@@ -55,10 +56,8 @@ const PendingApprovalsPage: React.FC = () =>{
                 setLoading(false);
             })
         console.log(localStorage.getItem("gid"));
-        fetch(`https://gym-king.herokuapp.com/claims/gym/${localStorage.getItem("gid")}`,{
-            "method":"GET"
-        })
-        .then(response =>response.json())
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/claims/gym/${localStorage.getItem("gid")}`)
+        .then(response =>response.data)
         .then(response =>{
             console.log(response);
             setClaims(response)
@@ -91,8 +90,8 @@ const PendingApprovalsPage: React.FC = () =>{
                     }
 
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
@@ -101,6 +100,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     />
                 </IonContent>
                 <IonToast
+                    mode="ios"
                     isOpen={showAcceptToast}
                     onDidDismiss={() => {setShowAcceptToast(false); localStorage.setItem("claimAccepted", "false")}}
                     message = "Claim accepted!"
@@ -108,6 +108,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     color="success"
                 />
                 <IonToast
+                    mode="ios"
                     isOpen={showRejectToast}
                     onDidDismiss={() => {setShowRejectToast(false); localStorage.setItem("claimRejected", "false")}}
                     message = "Claim rejected."

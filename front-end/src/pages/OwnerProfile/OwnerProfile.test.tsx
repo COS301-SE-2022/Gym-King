@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import OwnerProfilePage from './OwnerProfile';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<OwnerProfilePage />);
+test('renders without crashing', async() => {
+  const {baseElement} =await render(<OwnerProfilePage />);
   expect(baseElement).toBeDefined();
 });
 
@@ -15,9 +16,9 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should load owner info', async () => {
+  it('should load owner info',  () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -37,9 +38,9 @@ describe('Testing connection to api', () => {
         })
       })
   });
-  it('should load owner owned gyms', async () => {
+  it('should load owner owned gyms',  () => {
     (async ()=>{
-      fetch(`https://gym-king.herokuapp.com/gyms/owned/${"email"}`,{
+      await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${"email"}`,{
         method: 'GET'
       })
       .then(response =>response.json())
@@ -51,9 +52,9 @@ describe('Testing connection to api', () => {
       }) 
     });
   });
-  it('should load owner owned gyms', async () => {
+  it('should load owner owned gyms',  () => {
     (async ()=>{
-      fetch(`https://gym-king.herokuapp.com/owners/employees/empl_email`,{
+      await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/empl_email`,{
           method: 'GET'
       })
       .then(response =>response.json())
@@ -66,9 +67,9 @@ describe('Testing connection to api', () => {
     })  
   });
 
-  it('should update owner info', async () => {
+  it('should update owner info',  () => {
     (async ()=>{
-      fetch(`https://gym-king.herokuapp.com/owners/owner/info`,{
+      await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owners/owner/info`,{
           method: 'PUT',
           headers: {
             'Accept': 'application/json',

@@ -1,10 +1,13 @@
+jest.setTimeout(250000)
 import { render } from '@testing-library/react';
-import ActivityList from '../ActivityList/ActivityList';
 import AcceptRejectCard from './AcceptRejectCard'
 
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
+
+
+
+test('renders without crashing',async () => {
+    const { baseElement } = await render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof=""/>);
     expect(baseElement).toBeDefined();
   });
 
@@ -20,15 +23,14 @@ test('renders without crashing', () => {
 
 describe('Testing prop text values', () => {
   let username = "user1"
-  let activitytype = "STRENGTH";
-  let badgename = "Badge"
+
 
   test('correctly displays username', async () => {
-      const {baseElement} = render(<AcceptRejectCard profile="" userID="" username={username} badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof="" />);
+      const {baseElement} =  render(<AcceptRejectCard profile="" userID="" username={username} badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="" history="" proof="" />);
       expect (baseElement).toHaveTextContent(username);
   });
-  test('correctly displays strength activitytype inputs', async () => {
-    const {baseElement} = render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="STRENGTH" history="" proof=""/>);
+  test('correctly displays strength activitytype inputs', async  () => {
+    const {baseElement} =   render(<AcceptRejectCard profile="" userID="" username="" badgeId="" badgename="" badgechallenge="" i1="" i2="" i3="" activitytype="STRENGTH" history="" proof=""/>);
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");
     expect (baseElement).toHaveTextContent("Reps");
@@ -57,10 +59,10 @@ describe('Testing prop text values', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should update claim data', async () => {
+  it('should update claim data',  () => {
       
-      ( ()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+     let test = (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"PUT",
             headers: {
                 'Accept': 'application/json',
@@ -81,11 +83,13 @@ describe('Testing connection to api', () => {
 
         }) 
       } )
+
+      test()
   });
 
-  it('should reject a gym', async () => {
-      (()=>{
-        fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+  it('should reject a gym',  () => {
+    let test= (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
             "method":"DELETE",
             headers: {
                 'Accept': 'application/json',
@@ -106,6 +110,8 @@ describe('Testing connection to api', () => {
           expect(err).toBeDefined()
         })
       } )
+
+      test()
   });
 
 })

@@ -5,8 +5,11 @@ import { gymRepository } from "../repositories/gym.repository";
 import { employeeRepository } from "../repositories/gym_employee.repository";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 import { userRepository } from "../repositories/gym_user.repository";
-import { userOTPRepository } from "../repositories/user_otp.repository";
-import { storageRef } from "../firebase.connection";
+import { userOTPRepository } from "../repositories/user_otp.repository"; 
+import { firebase_admin } from "../firebase.connection";
+import { friendRepository } from "../repositories/friend.repository";
+import { subscriptionRepository } from "../repositories/subscription.repository";
+import { gymBrandRepository } from "../repositories/gym_brand.repository";
 
 const express = require('express');
 const cors = require('cors');
@@ -16,6 +19,23 @@ const path = require('path');
 const multer = require('multer');
 const userpicture = multer();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
+const notificationRef = firebase_admin.messaging();
+//=============================================================================================//
+//Nodemailer email connection 
+//=============================================================================================//
+var emailer = nodemailer.createTransport({
+  tls: {
+    rejectUnauthorized: false
+  },
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  }
+});
 
 //=============================================================================================//
 //Helper Functions 
@@ -43,6 +63,8 @@ const { v4: uuidv4 } = require('uuid');
     var d = R * c;
     return d;
   }
+
+
   //=========================================================================================================//
   /**
    * Converts numeric degrees to radians
@@ -87,8 +109,12 @@ function createID2(length: any) {
 // USER API
 //=============================================================================================//
 const allowedOrigins = [
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
+  'http://localhost:8080',
+  'http://localhost:8100',
   'http://localhost:3000',
-  'http://localhost:8100'
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -99,7 +125,10 @@ const corsOptions = {
     }
   },
 };
-
+const notification_options = {
+  priority: "high",
+  timeToLive: 60*60
+};
 //=============================================================================================//
 // USER ROUTER
 //=============================================================================================//
@@ -124,6 +153,24 @@ const users = express.Router()
         const result = await badgeRepository.findByBID(query);
         res.json( result );
       }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+
+
+  //=========================================================================================================//
+  /**
+   * GET - Return all the current gym brands that exist.
+   * @returns A list with all the brand names and logo.
+   */
+   .get('/brands/brand/', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const result = await gymBrandRepository.findAll();
+      res.json( result );
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -291,6 +338,36 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET a gym brand's logo picture.
+   * @param {string} brandname gym brand name.
+   * @returns {image} 
+   */
+   .get('/brands/brand/logo/:brandname', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.brandname;
+    const brand = await gymBrandRepository.findByBrandname(query);
+    if (brand != null && brand.gym_brandname == query){
+      res.json(brand.gym_logo);
+    } else{
+      res.json({'message':'Invalid gym brand!'})
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET user information.
+   * @param {string} username username of the user.
+   * @returns list of information of the user.
+   */
+   .get('/users/user/:username', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.username;
+    const user = await userRepository.findByUsername(query);
+    if (user != null && user.username == query){
+      res.json({fullname:user.fullname,username:user.username,email:user.email,profile_picture:user.profile_picture});
+    } else{
+      res.json({'message':'Invalid Username!'})
+    }
+  })
+  //=========================================================================================================//
+  /**
    * POST save a users claim for a badge to database.
    * @param {string} bid The badge ID of the badge.
    * @param {string} email The email of the user who claims they completed it.
@@ -307,40 +384,52 @@ const users = express.Router()
       let query = req.body;
       let file = req.file;
       const user = await userRepository.findByEmail(query.email);
-      if(bcrypt.compareSync(query.password, user.password)){
-        let newFileName = ``;
-        if (file.mimetype == 'image/jpeg'){
-          newFileName = `claims/${Date.now()}.jpg`;
-        }
-        else if (file.mimetype == 'image/png') {
-          newFileName = `claims/${Date.now()}.png`;
-        }
-        else {
-          res.json({'message':'Invalid file type.'})
-          return;
-        }
-        const blob = storageRef.file(newFileName);
-        const blobStream = blob.createWriteStream({
-          resumable: false,
-          metadata: {
-            firebaseStorageDownloadTokens: uuidv4(),
+      const claim = await badgeClaimRepository.findByBIDandEmail(query.bid,query.email);
+      const badge = await badgeRepository.findByBID(query.bid);
+      if(badge != null && badge.b_id == query.bid){
+        if (claim == null || claim.b_id != query.bid && claim.email != query.email){
+          if(bcrypt.compareSync(query.password, user.password)){
+            let newFileName = ``;
+            if (file.mimetype == 'image/jpeg'){
+              newFileName = `claims/${Date.now()}.jpg`;
+            }
+            else if (file.mimetype == 'image/png') {
+              newFileName = `claims/${Date.now()}.png`;
+            }
+            else if (file.mimetype == 'video/mp4') {
+              newFileName = `claims/${Date.now()}.mp4`;
+            }
+            else {
+              res.json({'message':'Invalid file type.'})
+              return;
+            }
+            const blob = storageRef.file(newFileName);
+            const blobStream = blob.createWriteStream({
+              resumable: false,
+              metadata: {
+                firebaseStorageDownloadTokens: uuidv4(),
+              }
+            });
+            blobStream.on('error', err => {
+              res.json({'success':false})
+            });
+            blobStream.on('finish', async () => {
+              await storageRef.file(newFileName).makePublic();
+              const claimURL = await storageRef.file(newFileName).publicUrl();
+              await badgeClaimRepository.saveClaim(query.bid, user.email, user.username, query.input1, query.input2, query.input3, claimURL)
+              res.json({'success':true});
+            });
+            blobStream.end(req.file.buffer);
           }
-        });
-        blobStream.on('error', err => {
-          res.json({'success':false})
-        });
-        blobStream.on('finish', async () => {
-          await storageRef.file(newFileName).makePublic();
-          const claimURL = await storageRef.file(newFileName).publicUrl();
-          await badgeClaimRepository.saveClaim(query.bid, user.email, user.username, query.input1, query.input2, query.input3, claimURL)
-          res.json({'success':true});
-        });
-        blobStream.end(req.file.buffer);
+          else {
+            res.json({'success':false,'message':'Invalid email or password!'});
+          } 
+        } else {
+          res.json({'success':false,'message':'Claim already exists!'});
+        }
+      } else {
+        res.json({'success':false,'message':'Invalid badge!'});
       }
-      else {
-        res.json({'message':'Invalid email or password!'});
-      }
-      
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -410,18 +499,27 @@ const users = express.Router()
   /**
    * POST save a gym user to the database.
    * @param {string} email The email of the user.
-   * @param {string} name The name of the user.
-   * @param {string} surname The surname of the user. 
+   * @param {string} fullname The full name of the user.
    * @param {string} number The phone number of the user. 
    * @param {string} username The username the user created.
    * @param {string} password The password the user created (NOT ecrypted).
+   * @param {string} membership The gym brand the user has a membership with!
    * @returns Returns params of completed insertion.
    */
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
     try {
-      const result = await userRepository.saveUser(req.body.email,req.body.name,req.body.surname,req.body.number,req.body.username,req.body.password);
-      const results = { 'success': true, 'results': (result) ? result.rows : null};
-      res.json( {results, body: result} );
+      if (req.body.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const brand = await gymBrandRepository.findByBrandname(req.body.membership);
+        if (brand != null && brand.gym_brandname == req.body.membership){
+          const result = await userRepository.saveUser(req.body.email,req.body.fullname,req.body.number,req.body.username,req.body.password,req.body.membership);
+          res.json({'success':true})
+        } else {
+          res.json({'success':false, 'message':'Invalid gym brand!'})
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -438,7 +536,7 @@ const users = express.Router()
    */
   .post('/gyms/aroundme', cors(corsOptions), async (req: any, res: any) => {
     try {
-      if (req.body.latCoord != null && req.body.longCoord != null) {
+      if (req.body.latCoord != null || req.body.longCoord != null) {
         let lat = parseFloat(req.body.latCoord);
         let long = parseFloat(req.body.longCoord);
         let rad = 20.0;
@@ -466,6 +564,23 @@ const users = express.Router()
       res.json(results);
     }
   })
+
+  .get('/gyms/getAllGyms', cors(corsOptions), async (req: any, res: any) => {
+    try {
+        // SQL statement to get all gyms
+        var gyms = await gymRepository.findAll();
+        gyms.forEach(element => {
+          element.key = element.g_id;
+        });
+        const results = { 'success': true, 'results': gyms };
+        res.json(results);
+      
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   //=========================================================================================================//
   /**
    * POST - create OTP for user.
@@ -475,11 +590,43 @@ const users = express.Router()
    .post('/users/user/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let result = await userOTPRepository.deleteUserOTP(query.email);
-      const newOTP = createID2(6);
-      result = await userOTPRepository.saveUserOTP(query.email,newOTP);
-      const results = { 'success': true };
-      res.json(results);
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let user = await userRepository.findByEmail(query.email);
+        if(user != null && user.email == query.email)
+        {
+          let result = await userOTPRepository.deleteUserOTP(query.email);
+          const newOTP = createID2(6);
+          result = await userOTPRepository.saveUserOTP(query.email,newOTP);
+          const emailerOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: "GYMKING User OTP",
+            text: 'Hello there, '
+            +user.fullname+'!'+
+            '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
+            'Your OTP is: '+newOTP+'\n'+
+            'This OTP will only be valid for 5 minutes!\n'+
+            'If this was not you please ignore this email!'
+          }
+          if (query.email != 'test@example.com'){
+            emailer.sendMail(emailerOptions, function(error : any, info : any){
+              if(error) {
+                console.log(error);
+                res.json({'success': false, 'message': 'OTP email failed to send!'})
+              } else {
+                res.json({ 'success': true });
+              }
+            })
+          } else {
+            res.json({ 'success': true });
+          }
+        } else {
+          res.json({ 'success': false ,'message':'User does not exist!' });
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -514,11 +661,11 @@ const users = express.Router()
   /**
    * PUT update a gym user.
    * @param {string} email The email of the user.
-   * @param {string} name The name of the user.
-   * @param {string} surname The surname of the user. 
+   * @param {string} fullname The full name of the user.
    * @param {string} number The phone number of the user. 
    * @param {string} username The username the user.
    * @param {string} password The password the user (NOT ecrypted).
+   * @param {string} membership The membership the user is connected with!
    * @returns Returns params of completed insertion.
    */
    .put('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
@@ -526,12 +673,17 @@ const users = express.Router()
       const query = req.body;
       const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
-      if (user != null && bcrypt.compareSync(query.password, user.password)) {
-        const result = await userRepository.updateUser(query.email,query.name,query.surname,query.number,query.username);
-        res.json({'success': true});
-      }
-      else {
-        res.json({'message':'Invalid email or password!'})
+      const brand = await gymBrandRepository.findByBrandname(query.membership);
+      if(brand != null && brand.gym_brandname == query.membership){
+        if (user != null && bcrypt.compareSync(query.password, user.password)) {
+          const result = await userRepository.updateUser(query.email,query.fullname,query.number,query.username,query.membership);
+          res.json({'success': true});
+        }
+        else {
+          res.json({'message':'Invalid email or password!'})
+        }
+      } else {
+        res.json({'message':'Invalid gym brand!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -617,16 +769,20 @@ const users = express.Router()
    .put('/users/user/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const user = await userRepository.findByEmail(query.email);
-      const otp = await userOTPRepository.findByEmail(query.email);
-      if (otp != null && otp.otp == query.otp) {
-        const result = await userRepository.updateUserPassword(user.email, query.newpassword);
-        const otp = await userOTPRepository.deleteUserOTP(query.email);
-        const results = { 'success': true };
-        res.json(results);
-      }
-      else {
-        res.json({'message':'Invalid email or OTP!'})
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const user = await userRepository.findByEmail(query.email);
+        const otp = await userOTPRepository.findByEmail(query.email);
+        if (otp != null && otp.otp == query.otp && (new Date().getTime() - new Date(otp.otptimestamp).getTime())*0.001/60 < 5) {
+          const result = await userRepository.updateUserPassword(user.email, query.newpassword);
+          const otp = await userOTPRepository.deleteUserOTP(query.email);
+          res.json({ 'success': true });
+        }
+        else {
+          res.json({'message':'Invalid email or OTP!'})
+        }
+      } else {
+        res.json({'message':'Invalid email!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -673,6 +829,502 @@ const users = express.Router()
       }
     } catch (err) {
       const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - create a request. also checks for an existing request between the two users and sets it to accpeted
+   * @param {string} fromEmail the user sending the request.
+   * @param {string} toEmail the user receiving the request.
+   * @returns message confirming creation.
+   */
+  .post('/users/user/CreateRequest', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.fromEmail && query.toEmail){
+        
+
+        let a = (await friendRepository.findByFromTo(query.fromEmail,query.toEmail))
+        let b = (await friendRepository.findByFromTo(query.toEmail,query.fromEmail))
+
+        // the user has already made the request
+        if( a != null){
+          throw "this request has already been created"
+        }
+        // the friend has sent the user a request
+        else if(b!=null){
+          
+          if(b.isPending){
+            // set the pending status to false. the friend request was accepted
+            let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
+            res.json({'success':true, 'results': 'request already exists, request was accepted'});    
+          }
+          else throw "this request has already been created and accepted";
+        }
+        // no request exists
+        else{
+          let result = await friendRepository.createRequest(query.fromEmail,query.toEmail);
+          res.json({'success':true,'results': 'request was created'});
+        }
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: "could not create request" ,reason: err};
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users friends
+   * @param {string} userEmail the user whos friends you want to get.
+   * @returns list of friends' emails .
+   */
+  .post('/users/user/getFriends', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail && query.userEmail.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+        let result = await friendRepository.findFriends(query.userEmail);
+        res.json(result);
+      }
+      else{
+        res.json({'success':false,'message':'Invalid Email!'});
+      }
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users received requests
+   * @param {string} userEmail the user whos received requests you want to get.
+   */
+  .post('/users/user/getReceivedRequests', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findReceivedRequests(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - get the users sent requests
+   * @param {string} userEmail the user whos sent requests you want to get.
+   */
+  .post('/users/user/getSentRequests', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.userEmail){
+
+          let result = await friendRepository.findSentRequests(query.userEmail);
+          res.json({'success' :true,'results': result});
+      }
+      else throw "missing email";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  .get("/users/user/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let Requests = await friendRepository.findAll();
+      res.json(Requests);
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json({results});
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * DELETE - delete a friend request or relation (the order of emails doesnt matter, this deletes any request that matches the given emails)
+   * @param {string} fromEmail the user who sent the request.
+   * @param {string} toEmail the user receiving the request.
+   **/
+  .delete("/users/user/deleteRequest", cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.toEmail){
+        // the user has already made the request
+        if((await friendRepository.findByFromTo(query.fromEmail,query.toEmail))!=null){
+          let result = await friendRepository.deleteRequest(query.fromEmail,query.toEmail);
+          res.json({'success':true, 'results': 'request was deleted'});    
+       
+        }
+        // the friend has sent the user a request
+        else if((await friendRepository.findByFromTo(query.toEmail,query.fromEmail))!=null){
+          // set the pending status to false. the friend request was accepted
+          let result = await friendRepository.deleteRequest(query.toEmail,query.fromEmail);
+          res.json({'success':true, 'results': 'request was deleted'});    
+        }
+        // no request exists
+        else{
+          throw "request not found"
+        }
+      }
+      else throw "missing email";
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST create a subscription relation. also checks for an existing subscription between the user and gym
+   * @param {string} fromEmail the user making the subscription.
+   * @param {string} toEmail the user receiving the request.
+   * @returns message confirming creation.
+   */
+  .post('/users/user/createSubscription', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.gid){
+        // no subsription found 
+        if((await subscriptionRepository.findByFromTo(query.fromEmail,query.gid))==null){
+          let result = await subscriptionRepository.createSubscription(query.fromEmail,query.gid);
+          res.json({'success':true, 'results': 'subsription was added'});    
+       
+        }
+        // subsription already exsists
+        else{
+          throw "subsription already exsists"
+        }
+      }
+      else throw "missing email or gym";
+    } 
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST get the gyms a user is subsribed to
+   * @param {string} fromEmail the users email.
+   * @returns the list of all gyms.
+   */
+  .post('/users/user/getGymSubscriptions', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.fromEmail){
+        let result = await subscriptionRepository.findBySubscriber(query.fromEmail);
+        res.json({'success':true, 'results': result});    
+      }
+      else{
+        throw "missing email"
+      }
+
+    }
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST get the subcribers of a gym
+   * @param {string} gid the gym id of the gym your searching.
+   * @returns the list of all subscribers.
+   */
+  .post('/users/user/getSubscribedUsers', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if(query.gid){
+        let result = await subscriptionRepository.findBySubbed(query.gid);
+        res.json({'success':true, 'results': result});    
+      }
+      else{
+        throw "missing gym id"
+      }
+    }
+    catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * DELETE - delete a subscription relation
+   * @param {string} fromEmail the subsribed user
+   * @param {string} toGym the gym that is subsribed to.
+   * @returns success status
+   **/
+  .delete("/users/user/deleteSubscription", cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.fromEmail && query.gid){
+        // the user has already made the request
+        if((await subscriptionRepository.findByFromTo(query.fromEmail,query.gid))!=null){
+          let result = await subscriptionRepository.removeSubsription(query.fromEmail,query.gid);
+          res.json({'success':true, 'results': 'subsription was removed'});    
+       
+        }
+
+        // no subsription exists
+        else{
+          throw "subsription not found"
+        }
+      }
+      else throw "missing email or gym";
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+
+  //=========================================================================================================//
+  /**
+   * POST send a push notification to all the users subscribed to the given gym
+   * 
+   * */
+   .post('/users/user/SendSubscriberNotification', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.gid  && query.pushMessage && query.pushTitle && query.isSilent!=null){
+        const tokens:string[] = [];
+        const emails:string[] = [];
+
+        let message_notification;
+        if(!query.isSilent){
+          message_notification = {
+            notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+        else{
+          message_notification = {
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+
+        let gymSubscribers = await subscriptionRepository.findBySubbed(query.gid );
+        
+        let i = 0;
+        for(const trgt of gymSubscribers) {
+          
+          try{
+            let user = await userRepository.findByEmail(trgt.fromUser);
+            console.log(user.pushkey)
+            if(user.pushkey!=null) {
+              tokens.push(user.pushkey)
+              emails.push(trgt)
+            }
+          } catch (err){
+            console.log(trgt+" is invalid");
+          }
+          
+          i++
+
+          if(i>=gymSubscribers.length){
+            if(tokens.length>0)
+            notificationRef.sendToDevice(tokens, message_notification, notification_options)
+         
+            res.json({'success' :true,'results': emails});
+          }
+        }
+        if(i===0) res.json({'success' :true,'results': "no users were notified"});
+     
+      }
+      else throw "malformed body";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST send a push notification to all the friends of the given user
+   * 
+   * */  
+
+
+   .post('/users/user/SendFriendsNotification', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.userEmail && query.pushMessage && query.pushTitle && query.isSilent!=null){
+        const tokens:string[] = [];
+        const emails:string[] = [];
+
+        let message_notification;
+        if(!query.isSilent){
+          message_notification = {
+            notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+        else{
+          message_notification = {
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+
+        let userFriends = await friendRepository.findFriends(query.userEmail );
+        
+        let i = 0;
+        for(const trgt of userFriends) {
+          
+          try{
+            let user = await userRepository.findByEmail(trgt.email);
+            console.log(user.pushkey)
+            if(user.pushkey!=null) {
+              tokens.push(user.pushkey)
+              emails.push(trgt)
+            }
+          } catch (err){
+            console.log(trgt+" is invalid");
+          }
+          
+          i++
+
+          if(i>=userFriends.length){
+            if(tokens.length>0)
+            notificationRef.sendToDevice(tokens, message_notification, notification_options)
+         
+            res.json({'success' :true,'results': emails});
+          }
+        }
+        if(i===0) res.json({'success' :true,'results': "no users were notified"});
+     
+      }
+      else throw "malformed body";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST send a push notification to all the users subscribed to the given gym
+   **/
+   .post('/users/user/SendGenericNotification', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+
+      if(query.pushMessage && query.pushTarget && query.pushTitle && query.isSilent!=null){
+        const tokens:string[] = [];
+        const emails:string[] = [];
+
+        let message_notification;
+        if(!query.isSilent){
+          message_notification = {
+            notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+        else{
+          message_notification = {
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+
+        let i = 0;
+        for(const trgt of query.pushTarget) {
+            try{
+              let user = await userRepository.findByEmail(trgt);
+              console.log(user.pushkey)
+              if(user.pushkey!=null) {
+                console.log("loop")
+                tokens.push(user.pushkey)
+                emails.push(trgt)
+              }
+            } catch (err){
+              console.log(trgt+" is invalid");
+            }
+            
+            i++
+
+            if(i>=query.pushTarget.length){
+              if(tokens.length>0)
+              notificationRef.sendToDevice(tokens, message_notification, notification_options)
+           
+              res.json({'success' :true,'results': emails});
+            }
+        };
+
+        if(i===0) res.json({'success' :true,'results': "no users were notified"});
+      }
+      else throw "malformed body";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  .put('/users/user/pushToken', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      if (query.email && query.token)
+      {
+        const user = await userRepository.findByEmail(query.email);
+
+        await userRepository.updateUserPushToken(user.email, query.token);
+
+        res.json({ 'success': true, 'message': 'push token has been modified' });
+      }
+      else 
+        throw "malformed request body"
+
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);
     }

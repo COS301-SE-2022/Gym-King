@@ -6,6 +6,7 @@ import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
+import axios from "axios";
 
 interface InternalValues {
     file: any;
@@ -68,13 +69,11 @@ const UploadActivityPage: React.FC = () =>{
         useIonViewDidEnter(()=>{
             let badgeId= sessionStorage.getItem("badgeid");
             setLoading(true)
-            fetch(`https://gym-king.herokuapp.com/badges/badge/${badgeId}`,{
-                "method":"GET"
-            })
-            .then(response =>response.json())
+            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+            .then(response =>response.data)
             .then(response =>{
-                //console.log("rsponse",response)
-                setB_id(response.b_id)
+                console.log("rsponse",response)
+                setB_id(response.bid)
                 localStorage.setItem("activitytype", response.activitytype)
                 setDescription(response.badgechallenge)
                 setBadgename(response.badgename)
@@ -86,18 +85,18 @@ const UploadActivityPage: React.FC = () =>{
                 setLoading(false)
             })
 
-            fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setUsername(response.username);
                 console.log(username)
@@ -123,30 +122,35 @@ const UploadActivityPage: React.FC = () =>{
         }
         // SEND CLAIM POST REQUEST 
         const sendClaim=()=>{
+            setLoading(true)
             let i1= formdata.i1;
             let i2= formdata.i2;
             let i3= formdata.i3;
             let formData = new FormData();
                 formData.append("bid", b_id)
                 formData.append("email", email!)
-                formData.append("password", localStorage.getItem("password")!)
+                formData.append("apikey", sessionStorage.getItem("key")!)
                 formData.append("input1", i1)
                 formData.append("input2", i2)
                 formData.append("input3", i3)
                 formData.append('proof', values.current.file, values.current.file.name);
                 console.log(formData);
-            fetch(`https://gym-king.herokuapp.com/claims/claim`,{
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
                 "method":"POST",
-                body: formData
+                data: formData
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 //console.log(response);
                 setShowToast1(true);
                 sessionStorage.removeItem("badgeid")
                 history.goBack();
             })
-            .catch(err => {console.log(err)}) 
+            .catch(err => {
+                setLoading(false)
+                console.log(err)
+            }) 
         }
     
         return(
@@ -174,20 +178,24 @@ const UploadActivityPage: React.FC = () =>{
                         <IonText className='inputHeading center'>Enter your activity details:</IonText>
                         <ActivityInputs activityCategory={localStorage.getItem("activitytype")!} inputs={updateInputs}></ActivityInputs> <br></br>
                         {
-                            !isValid && submitted && <IonText className='inputError'>Please enter the required fields</IonText>
+                            !isValid && submitted && <IonText className="errText" style={{"color":"darkorange","paddingLeft":"14%"}}>Please enter the required fields</IonText>
                         }
                         <IonGrid className='centerLeft grid'>
-                            <IonRow className='left topMargin'>
+                            <IonRow className='left '>
                                 <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
-                        <input  type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
+                        <IonGrid className='centerLeft grid'>
+                            <IonRow className='left '>
+                                <input  type="file" accept=".jpg, .png, .avi, .mkv, .asf, .wmv, .mp4, .m4v, .mov, .3gp, .vro, .mpg, .mpeg, .mov" onChange={(ev) => onFileChange(ev)} required/>
+                            </IonRow>
+                        </IonGrid>
                         <br></br>
-                        <IonButton className="btnSubmit centerComp" type='submit' color="warning">SUBMIT</IonButton>
+                        <IonButton mode="ios" className="btnSubmit centerComp btn" type='submit' color="warning">SUBMIT</IonButton>
                     </form>
                     <br></br>
-                    <br></br>
                     <IonToast
+                        mode="ios"
                         isOpen={showToast1}
                         onDidDismiss={() => setShowToast1(false)}
                         message="Your claim has been uploaded."
@@ -195,8 +203,8 @@ const UploadActivityPage: React.FC = () =>{
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}

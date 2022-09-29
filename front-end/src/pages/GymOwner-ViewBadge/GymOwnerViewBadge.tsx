@@ -1,9 +1,9 @@
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, useIonViewDidEnter, IonLoading} from '@ionic/react';
 import React, {useState } from 'react';
 import GymOwnerViewBadgeGrid from '../../components/GymOwner-ViewBadgeGrid/GymOwnerViewBadgeGrid';
 import { ToolBar } from '../../components/toolbar/Toolbar';
-
 import './GymOwnerViewBadge.css';
+import axios from "axios";
 
 
 const GymOwnerViewBadge: React.FC = () =>{
@@ -12,13 +12,21 @@ const GymOwnerViewBadge: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
         //GET REQUEST:
-        useIonViewWillEnter(()=>{
-            var email=localStorage.getItem("email")
+        useIonViewDidEnter(()=>{
             setLoading(true);
-            fetch(`https://gym-king.herokuapp.com/gyms/owned/${email}`,{
-                "method":"GET"
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key")
+    
+                })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setLoading(false)
@@ -28,7 +36,7 @@ const GymOwnerViewBadge: React.FC = () =>{
                     
                     arr.push(
                         {
-                            'GymName':response[i].gym_brandname,
+                            'GymName':response[i].gym_name,
                             'GymID':response[i].g_id,
                         }
                     )
@@ -51,9 +59,9 @@ const GymOwnerViewBadge: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Badges</IonText>
-                    <IonButton routerLink='/CreateBadge' routerDirection='forward' color="warning">CREATE BADGE</IonButton>
+                    <IonButton mode="ios" routerLink='/CreateBadge' routerDirection='forward' color="warning">CREATE BADGE</IonButton>
                     <br></br><br></br>
-                    <IonAccordionGroup>
+                    <IonAccordionGroup mode="ios">
                     {badgeList.map(el => 
                         <IonAccordion key={el.GymID} value={el.GymID}>
                             <IonItem slot="header">
@@ -67,8 +75,8 @@ const GymOwnerViewBadge: React.FC = () =>{
                     </IonAccordionGroup>    
 
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './PendingBadges.css';
+import axios from "axios";
 
 const PendingBadgesPage: React.FC = () =>{
 
@@ -14,10 +15,18 @@ const PendingBadgesPage: React.FC = () =>{
     //GET REQUEST:
     useIonViewDidEnter(()=>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
-                method: 'GET'
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/claims`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
             })
-            .then(response =>response.json())
+        })
+            .then(response =>response.data)
             .then(response =>{
                 console.log("PENDING BADGES",response)
                 setClaims(response)
@@ -42,15 +51,15 @@ const PendingBadgesPage: React.FC = () =>{
                     
                     {
                         
-                        claims !== [] && claims?.map(el =>{
+                        claims.length!==0 && claims?.map(el =>{
                             
                             return ( <PendingBadgeItem badgeName={el.b_id.badgename} key={el.email + el.b_id} badgeIcon={el.b_id.badgeicon}></PendingBadgeItem>)
                         }) 
                     }
                     
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}

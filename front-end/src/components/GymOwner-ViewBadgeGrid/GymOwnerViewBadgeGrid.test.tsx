@@ -1,3 +1,4 @@
+jest.setTimeout(250000)
 import { render } from '@testing-library/react';
 import GymOwnerViewBadgeGrid from './GymOwnerViewBadgeGrid';
 ////TESTS TO BE PERFORMED////
@@ -5,8 +6,8 @@ import GymOwnerViewBadgeGrid from './GymOwnerViewBadgeGrid';
 */
 
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<GymOwnerViewBadgeGrid gymID=""/>);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<GymOwnerViewBadgeGrid gymID=""/>);
     expect(baseElement).toBeDefined();
   });
 
@@ -15,10 +16,10 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-  test('should get a gyms badges',  () => {
+  test('should get a gyms badges', () => {
       
-      ( ()=>{
-        fetch(`https://gym-king.herokuapp.com/badges/gym/a4f`,{
+      ( async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/badges/gym/a4f`,{
                 "method":"GET"
             })
             .then(response =>response.json())

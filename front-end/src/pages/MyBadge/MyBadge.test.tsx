@@ -1,12 +1,14 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import MyBadge from './MyBadge';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-  const { baseElement } = render(<MyBadge/>);
+test('renders without crashing', async() => {
+  const { baseElement } =await render(<MyBadge/>);
   expect(baseElement).toBeDefined();
 });
 
@@ -15,9 +17,9 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should load user badges', async () => {
+  it('should load user badges',  () => {
       (async ()=>{
-        fetch(`https://gym-king.herokuapp.com/users/owned/${"user_email"}`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${"user_email"}`,{
             "method":"GET"
         })
         .then(response =>response.json())

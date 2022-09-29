@@ -1,3 +1,4 @@
 node_modules
-.testing.env
-.developing.env
+*.env
+yarn.lock
+coverage

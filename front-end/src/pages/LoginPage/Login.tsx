@@ -1,39 +1,76 @@
-
 import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
-
+import axios from "axios";
+import { validEmail } from '../../utils/validation';
 
 export const Login: React.FC = () =>{
     
     let formData:any;
     let history=useHistory()
-    const [showToast, setShowToast] = useState(false);
-    const [userType, setUserType] = useState('user');
+    const [showToast1, setShowToast1] = useState(false);
+    const [showToast2, setShowToast2] = useState(false);
+    const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
+
+
+    const [errors, setErrors] = useState({
+        email: '',
+        usertype: '',
+    });
+
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+        let email =formData.email
+        let usertype = formData.usertype
+
+        if(email && !validEmail(email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+    
+
+        if(usertype ==='') {
+            handleError('Please select a user type', 'usertype');
+            isValid = false;
+        }
+        else
+            handleError('', 'usertype');
+
+        return isValid;
+    }
 
 
     const loginSubmit= ()=>{
             setLoading(true)
-            fetch('https://gym-king.herokuapp.com/users/login',{
-                method: 'POST',
+            axios.post(`${process.env["REACT_APP_GYM_KING_API"]}/users/login`, 
+            {
+                email: formData.email,
+                password: formData.password,
+                usertype: userType
+            },
+            {
                 headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    email: formData.email,
-                    password: formData.password,
-                    usertype: formData.usertype
-                 })
-                })
-            .then(response =>response.json())
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response =>response.data)
             .then(response =>{
+                console.log(response)
+                
                 if(response.success){
-                    console.log(response)
+                    sessionStorage.setItem("key", response.apikey)
                    // window.location.href = "http://"+window.location.host+"/home";
                    localStorage.setItem("email", formData.email)
+                   localStorage.setItem("username", response.username)
                    localStorage.setItem("password", formData.password)
                    localStorage.setItem("usertype",formData.usertype)
                    localStorage.setItem("profile_picture", response.profile_picture)
@@ -43,17 +80,19 @@ export const Login: React.FC = () =>{
                    navigate();
                 }else{
                     
-                    setShowToast(true);
-                    console.log(response.success)
-                    console.log(response.results)
+                    setShowToast1(true);
+                    //console.log(response.success)
+                    //console.log(response.results)
                     setLoading(false)
+                    
                 }
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
     } 
     const navigate=()=>{
+        setLoading(true)
         let usertype=localStorage.getItem("usertype")
         if(usertype==="gym_user")
         {
@@ -66,18 +105,25 @@ export const Login: React.FC = () =>{
         else{
             history.push("/EmployeeHome")
         }
+        setLoading(false)
     }
     
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
+
         formData={
-            email: e.target.email.value,
+            email: e.target.email.value.trim(),
             password: e.target.userPassword.value,
             usertype: userType
         };
-        console.log(formData)
-        loginSubmit();
+
+        let isValid = validate()
+        if(isValid)
+        {
+            loginSubmit();
+        }
+        
         
     }
      const segmentChanged = (e: any)=>{
@@ -87,24 +133,29 @@ export const Login: React.FC = () =>{
     
     return (
         
-            <IonPage>
+            <IonPage >
                 <IonHeader>
                 </IonHeader>
-                <IonContent  fullscreen className='grad loginPage'>
-                    <form action="https://gym-king.herokuapp.com/users/login" onSubmit={handleSubmit} method="POST" className='loginForm'>
+                <IonContent  fullscreen className='grad loginPage' >
+                    <form onSubmit={handleSubmit} method="POST" className='loginForm' >
                         <IonText className='center inputHeading'>Login</IonText>
                             <br></br><br></br>
                             <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
                             <IonInput className='textInput' name='email' type='text' required></IonInput>
-                            
+                            {errors.email!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                                </>
+                            )}
                             <br></br>
+
+
                             <IonLabel className="smallHeading" position="floating">Password*</IonLabel>
                             <IonInput className='textInput' name='userPassword' type='password' required ></IonInput>
-
                             <br></br>
 
                             <IonLabel className="smallHeading" position="floating">User type</IonLabel>
-                            <IonSegment onIonChange={segmentChanged}  >
+                            <IonSegment mode="ios" onIonChange={segmentChanged} >
                                 <IonSegmentButton value="gym_user">
                                     <IonLabel>User</IonLabel>
                                 </IonSegmentButton>
@@ -115,28 +166,42 @@ export const Login: React.FC = () =>{
                                     <IonLabel>Owner</IonLabel>
                                 </IonSegmentButton>
                             </IonSegment>
+                            {errors.usertype!=="" && (
+                                <>
+                                <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.usertype}</IonLabel><br></br>
+                                </>
+                            )}
 
                             <br></br>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
+                            <IonButton mode='ios' color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
                             <br></br>
                             <div className='center'>
-                                <IonText className="linkLabel">Don't have an account?</IonText><a href="http://localhost:3000/Register" color="secondary" className='linkLabel'>Register</a>
+                                <IonText className="linkLabel">Don't have an account?</IonText><button  onClick= {() =>{history.push("/Register")}}  color="secondary" className='linkLabel puesdorHref'>Register</button>
                             </div>
                             <br></br>
-                            <a href="http://localhost:3000/OTP" color="secondary" className='linkLabel center'>Forgot Password?</a>
+                            <button  onClick= {() =>{history.push("/ForgotPassword")}} color="secondary" className='puesdorHref centerBtn'>Forgot Password?</button>
                     </form>
                 </IonContent>
 
                 <IonToast
-                isOpen={showToast}
-                onDidDismiss={() => setShowToast(false)}
+                mode="ios"
+                isOpen={showToast1}
+                onDidDismiss={() => setShowToast1(false)}
                 message="Invalid user details."
                 duration={1000}
                 color="danger"
                 />
+                <IonToast
+                mode="ios"
+                isOpen={showToast2}
+                onDidDismiss={() => setShowToast2(false)}
+                message="Welcome to Gym King."
+                duration={500}
+                color="success"
+                />
                 <IonLoading 
+                    mode="ios"
                     isOpen={loading}
-                    message={"Loading"}
                     duration={2000}
                     spinner={"circles"}
                     onDidDismiss={() => setLoading(false)}
@@ -151,5 +216,3 @@ export const Login: React.FC = () =>{
 
 
 export default Login;
-
-

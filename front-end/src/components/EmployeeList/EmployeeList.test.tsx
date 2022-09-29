@@ -1,11 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(250000)
+import { render} from '@testing-library/react';
 import EmployeeList from './EmployeeList';
 
-////TESTS TO BE PERFORMED////
-/*
-*/
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<EmployeeList list={[]} history=""/>);
+test('renders without crashing',async () => {
+  const {baseElement} = await render(<EmployeeList list={[]} history={undefined}/>);
   expect(baseElement).toBeDefined();
 });

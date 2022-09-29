@@ -54,6 +54,15 @@ import ManageEmployees from './pages/ManageEmployees/ManageEmployees';
 import EmployeeProfileViewPage from './pages/EmployeeProfileView/EmployeeProfileView';
 import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
+import FriendsPage from './pages/FriendsPage/FriendsPage';
+import FriendProfile from './pages/FriendProfile/FriendProfile';
+import NotFriendProfile from './pages/NotFriendProfile/NotFriendProfile';
+import FriendRequests from './pages/FriendRequests/FriendRequests';
+import Explore from './pages/Explore/Explore';
+import PushNotificationsContainer from './components/Push/Push';
+import MyGyms from './pages/MyGyms/MyGyms';
 /*develop*/
 
 
@@ -62,10 +71,11 @@ setupIonicReact();
 
 const App: React.FC = () => (
 
-  <IonApp>
+  <IonApp >
 
-    <IonReactRouter>
+    <IonReactRouter >
       <IonRouterOutlet>
+        
         <Route exact path="/home">
           <Home />
         </Route>
@@ -117,6 +127,9 @@ const App: React.FC = () => (
         <Route exact path='/OTP'>
           <OTP></OTP>
         </Route>
+        <Route exact path='/ForgotPassword'>
+          <ForgotPassword></ForgotPassword>
+        </Route>
         <Route exact path ='/MyBadge'>
           <MyBadge></MyBadge>
         </Route>
@@ -162,6 +175,31 @@ const App: React.FC = () => (
         <Route exact path='/Splash'>
           <SplashPage></SplashPage>
         </Route>
+        <Route exact path='/ResetPassword'>
+          <ResetPassword></ResetPassword>
+          </Route>
+        <Route exact path='/FriendsPage'>
+          <FriendsPage></FriendsPage>
+        </Route>
+        <Route exact path='/FriendProfile'>
+          <FriendProfile></FriendProfile>
+        </Route>
+        <Route exact path='/NotFriendProfile'>
+          <NotFriendProfile></NotFriendProfile>
+        </Route>
+        <Route exact path='/FriendRequests'>
+          <FriendRequests></FriendRequests>
+        </Route>
+        <Route exact path='/Explore'>
+          <Explore></Explore>
+        </Route>
+        <Route exact path='/Notifications'>
+          <PushNotificationsContainer></PushNotificationsContainer>
+        </Route>
+        <Route exact path='/MyGyms'>
+          <MyGyms></MyGyms>
+        </Route>
+
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

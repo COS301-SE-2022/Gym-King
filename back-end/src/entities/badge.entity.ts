@@ -1,3 +1,4 @@
+import { text } from "body-parser";
 import "reflect-metadata";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { badge_claim } from "./badge_claim.entity";
@@ -17,11 +18,20 @@ export class badge {
     @Column({length: 300})
     badgechallenge: string
 
-    @Column({length: 65535})
+    @Column({length: 65535,nullable: true})
     badgeicon: string
 
-    @Column({length: 8})
+    @Column({length: 8,nullable: true})
     activitytype: string
+
+    @Column({length: 100,nullable: true})
+    requirement1: string
+
+    @Column({length: 100,nullable: true})
+    requirement2: string
+
+    @Column({length: 100,nullable: true})
+    requirement3: string
 
     @OneToMany(() => badge_claim, (badge_claim) => badge_claim.b_id)
     badges_claim: badge_claim[]
@@ -33,4 +43,7 @@ export class badge {
     @ManyToOne(() => gym, (gym) => gym.g_id)
     @JoinColumn({name: "g_id"})
     g_id: gym
+
+    @Column({type: "text",nullable: true})
+    tags: string
 }

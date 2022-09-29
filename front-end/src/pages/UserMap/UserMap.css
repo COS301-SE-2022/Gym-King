@@ -1,1 +1,4 @@
-#main {--overflow: hidden}
+.main {
+    --overflow: hidden !important;
+}
+

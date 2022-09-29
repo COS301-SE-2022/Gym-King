@@ -1,13 +1,76 @@
-import { IonPage, IonContent, IonImg, useIonViewDidEnter} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewDidEnter, useIonRouter} from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
+import { Geolocation } from '@capacitor/geolocation';
+import { PushNotifications, PushNotificationSchema, DeliveredNotifications, ActionPerformed } from '@capacitor/push-notifications';
 
 
 
 export const SplashPage: React.FC = () =>
 {
+    PushNotifications.removeAllListeners();
+    PushNotifications.addListener('pushNotificationReceived',
+        (notification: PushNotificationSchema) => {
+
+            let n = { id: notification.id, title: notification.data.title, body: notification.data.body, type: 'foreground' }
+            
+            let notificationStorage = localStorage.getItem("notificationStorage")
+            if(notificationStorage === null){
+                localStorage.setItem("notificationStorage",JSON.stringify([n]))
+            }
+            else{
+                let notifications = JSON.parse(notificationStorage)
+                notifications = [...notifications,n]
+                localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+            }
+        
+        }
+    );
+    
+    PushNotifications.addListener('pushNotificationActionPerformed',
+    (actionPerformed: ActionPerformed) => {
+        let n = { id: actionPerformed.notification.id, title: actionPerformed.notification.data.title, body: actionPerformed.notification.data.body, type: 'foreground' }
+            
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage === null){
+            localStorage.setItem("notificationStorage",JSON.stringify([n]))
+        }
+        else{
+            let notifications = JSON.parse(notificationStorage)
+            notifications = [...notifications,n]
+            localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+        }
+    }
+);
+    PushNotifications.getDeliveredNotifications().then((Delivered:DeliveredNotifications)=>{
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        
+        if(notificationStorage === null){
+            notificationStorage = "[]"
+        }       
+        let notifications = JSON.parse(notificationStorage!)
+        for(const n of Delivered.notifications ){
+                console.log(n)
+                notifications.push(n)
+        }        
+        localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+        PushNotifications.removeAllDeliveredNotifications()
+    })
+
+    const getPermissons = () => {
+
+        Geolocation.checkPermissions().then(
+            result => {console.log("permissions granted")},
+            err =>{ console.log(err)
+                Geolocation.requestPermissions();},
+            
+        );    
+          
+    }
+    const router = useIonRouter();
     useIonViewDidEnter(()=>{
+        getPermissons();
         setTimeout(() => {
             if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
             {
@@ -15,7 +78,7 @@ export const SplashPage: React.FC = () =>
             }
             else
             {
-                window.location.href="http://localhost:3000/Login"
+                router.push("/Login");
 
             }
           }, 3000);
@@ -27,14 +90,14 @@ export const SplashPage: React.FC = () =>
         let usertype=localStorage.getItem("usertype")
         if(usertype==="gym_user")
         {
-            window.location.href="http://localhost:3000/userMap"
+            router.push("userMap");
         }
         else if(usertype==="gym_owner")
         {
-            window.location.href="http://localhost:3000/GymOwnerPage"
+            router.push("GymOwnerPage");
         }
         else{
-            window.location.href="http://localhost:3000/EmployeeHome"
+            router.push("EmployeeHome");
         }
     }
     return (

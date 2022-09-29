@@ -3,6 +3,8 @@ import React, {useRef, useState, } from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./UserProfile.css";
 import { useHistory } from 'react-router-dom';
+import axios from "axios";
+import { onlyAlphanumericAndUnderscore, onlyLettersAndSpaces, validEmail, validPhone } from '../../utils/validation';
 
 interface InternalValues {
     file: any;
@@ -16,67 +18,146 @@ const UserProfilePage: React.FC = () =>{
     const [loading, setLoading] = useState<boolean>(false);
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
-    const [surname, setSurname]= useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFail, setShowFail] = useState(false);
     const [numClaims, setNumClaims] = useState("");
     const [numBadges, setNumBadges] = useState("");
+    const [numFriends, setNumFriends] = useState("");
+
     const [profilePicture, setProfilePicture] = useState(localStorage.getItem("profile_picture"));
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
+
+    //FORM VALIDATION 
+    const [errors, setErrors] = useState({
+        username: '',
+        fullname: '',
+        email: '',
+        phone: '',
+    });
+
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+
+        if(email && !validEmail(email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+    
+        if(name && onlyLettersAndSpaces(name)) {
+            handleError('Please input a valid name', 'fullname');
+            isValid = false;
+        }
+        else
+            handleError('', 'fullname');
+        
+        if(username && !onlyAlphanumericAndUnderscore(username)) {
+            handleError('Please input a valid username', 'username');
+            isValid = false;
+        }
+        else
+            handleError('', 'username');  
+
+        if(phone && !validPhone(phone)) {
+            handleError('Please input a valid phone number', 'phone');
+            isValid = false;
+        }
+        else
+            handleError('', 'phone');  
+
+        return isValid;
+    }
    
     
     const getNumberOfBadges = () =>{
-        
-        fetch(`https://gym-king.herokuapp.com/users/owned/${localStorage.getItem("email")}`,{
-                method: 'GET'
-            })
-            .then(response =>response.json())
+        setLoading(true)
+        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/users/owned/${localStorage.getItem("username")}`)
+            .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 setNumBadges(response.length)
             })
             .catch(err => {
-        })
+                setLoading(false)
+            })
     }
     const getNumberOfClaims = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/claims/${localStorage.getItem("email")}`,{
-                method: 'GET'
+        setLoading(false)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/claims`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
             })
-            .then(response =>response.json())
+        })
+            .then(response =>response.data)
             .then(response =>{
                 setNumClaims(response.length)
             })
             .catch(err => {
+                setLoading(false)
+            })
+    }
+
+    const getNumberofFriends = ()=>{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                userEmail: localStorage.getItem("email"),
+
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            setLoading(false)
+            console.log(response)
+            setNumFriends(response.length)
+        })
+        .catch(err => {
+            setLoading(false)
+            console.log(err)
+            
         })
     }
 
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true);
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setEmail(response.email);
-                setName(response.name);
-                setSurname( response.surname);
+                setName(response.fullname);
                 setPhone( response.number);
                 setUsername(response.username);
-                setPassword(localStorage.getItem("password")!);
                 setProfilePicture(response.profile_picture)
                 sessionStorage.setItem("pp", response.profile_picture)
 
@@ -89,31 +170,33 @@ const UserProfilePage: React.FC = () =>{
         
         getNumberOfBadges()
         getNumberOfClaims()
+        getNumberofFriends()
          // eslint-disable-next-line react-hooks/exhaustive-deps
 
     },[profilePicture])
 
     const updateUserDetails = () =>{
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        setLoading(true)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: email,
-                    name: name, 
-                    surname: surname, 
+                    fullname: name, 
                     username: username, 
                     number: phone, 
-                    password: localStorage.getItem("password"), 
+                    apikey: sessionStorage.getItem("key"), 
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
-                
+                setLoading(false)
             })
             .catch(err => {
+                setLoading(false)
             })
     }
 
@@ -123,12 +206,19 @@ const UserProfilePage: React.FC = () =>{
     }
 
     const updateDetails = (e:any) =>{
-        //update 
-        updateUserDetails()
-        //dismiss
-        dismiss()
 
-        setShowSuccess(true);
+        let isValid = validate()
+        console.log(isValid)
+        if(isValid)
+        {
+            //update 
+            updateUserDetails()
+            //dismiss
+            dismiss()
+
+            setShowSuccess(true);
+        }
+        
     }
     
     const updateEmail=(e:any)=>{
@@ -138,9 +228,7 @@ const UserProfilePage: React.FC = () =>{
     const updateName=(e:any)=>{
         setName(e.detail.value)
     }
-    const updateSurname=(e:any)=>{
-        setSurname(e.detail.value)
-    }
+
     const updatePhone=(e:any)=>{
         setPhone(e.detail.value)
     }
@@ -157,18 +245,18 @@ const UserProfilePage: React.FC = () =>{
     
     const updateProfilePicture = () =>{
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/user/info`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    akikey: sessionStorage.getItem("key")
                 })
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("profile_picture", response.profile_picture!)
@@ -195,22 +283,27 @@ const UserProfilePage: React.FC = () =>{
 
         let formData = new FormData();
         formData.append("email", email)
-        formData.append("password", password)
+        formData.append("apikey", sessionStorage.getItem("key")!)
         formData.append('profilepicture', values.current.file, values.current.file.name);
 
         setLoading(true)
-        fetch(`https://gym-king.herokuapp.com/users/user/picture`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/picture`,{
                 "method":"PUT",
-                body: formData
+                data: formData
             })
-            .then(response =>response.json())
+            .then(response =>response.data)
             .then(response =>{
                 updateProfilePicture()
+                setLoading(false)
             })
             .catch(err => {
                 setLoading(false)
             }) 
         
+    }
+
+    const openFriends = ()=>{
+        history.push("/FriendsPage")
     }
 
 
@@ -235,7 +328,7 @@ const UserProfilePage: React.FC = () =>{
                                                 <IonText color="light" className="PageTitle center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
-                                                <i className="center">{name} {surname}</i>
+                                                <i className="center">{name}</i>
                                             </IonRow>
                                             
                                         </IonCol>
@@ -257,7 +350,19 @@ const UserProfilePage: React.FC = () =>{
                                                 <IonCol><IonText>{phone}</IonText></IonCol>
                                             </IonRow>
                                             <IonRow>
-                                                <IonButton id="open-modal" expand="block">Edit Details</IonButton>
+                                                <IonButton mode="ios" id="open-modal" expand="block">Edit Details</IonButton>
+                                            </IonRow>
+                                        </IonGrid>
+                                    </IonCardContent>
+                                </IonCard>
+                        </IonRow>
+                        <IonRow>
+                                <IonCard className="profileCard" onClick={openFriends}>
+                                    <IonCardContent>
+                                        <IonGrid>
+                                            <IonRow>
+                                                <IonCol size="10"><b className="inputHeading">My Friends</b></IonCol>
+                                                <IonCol><IonText className="inputHeading">{numFriends}</IonText></IonCol>
                                             </IonRow>
                                         </IonGrid>
                                     </IonCardContent>
@@ -290,16 +395,16 @@ const UserProfilePage: React.FC = () =>{
 
 
 
-                    <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
+                    <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
+                                <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton mode="ios" color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -308,47 +413,59 @@ const UserProfilePage: React.FC = () =>{
 
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
-
+                                {errors.username!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.username}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
-                                <IonLabel className="smallHeading" position="floating">Name</IonLabel>
+                                <IonLabel className="smallHeading" position="floating">Full name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
-                                
-                                <br></br>
-                                <IonLabel className="smallHeading" position="floating">Surname</IonLabel>
-                                <IonInput className='textInput' name='surname' type='text' required value={surname}  onIonChange={updateSurname}></IonInput>
-
+                                {errors.fullname!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.fullname}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Email</IonLabel>
                                 <IonInput className='textInput' name='email' type='email' required value={email} onIonChange={updateEmail}></IonInput>
-                                
+                                {errors.email!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Phone</IonLabel>
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
-
-                                <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel><br></br>
-                                <IonButton className='width21' type="button" >Change Password</IonButton>
+                                {errors.phone!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.phone}</IonLabel><br></br>
+                                    </>
+                                )}
+                               
                             </form>
                         </IonContent>
                         
                     </IonModal>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
-                        duration={1000}
+                        duration={2000}
                         color="success"
                     />
-                    <IonToast
+                    <IonToast   
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
-                        duration={1000}
+                        duration={2000}
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

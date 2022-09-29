@@ -3,7 +3,7 @@ import { badgeClaimRepository } from "../repositories/badge_claim.repository";
 import { badgeOwnedRepository } from "../repositories/badge_owned.repository";
 import { badgeRepository } from "../repositories/badge.repository";
 import { employeeOTPRepository } from "../repositories/employee_otp.repository";
-import { storageRef } from "../firebase.connection";
+import { firebase_admin } from "../firebase.connection";
 import { ownerRepository } from "../repositories/gym_owner.repository";
 
 const express = require("express");
@@ -12,11 +12,30 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const employeepicture = multer();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
+//=============================================================================================//
+//Nodemailer email connection 
+//=============================================================================================//
+var emailer = nodemailer.createTransport({
+  tls: {
+    rejectUnauthorized: false
+  },
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  }
+});
 
 const allowedOrigins = [
-  'http://localhost:3000',
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost',
+  'http://localhost:8080',
   'http://localhost:8100',
-  'http://localhost:5000'
+  'http://localhost:3000',
 ];
 const corsOptions = {
   origin: (origin: any, callback: any) => {
@@ -121,8 +140,7 @@ const employees = express.Router()
   /**
    * POST - Insert an employee.
    * @param {string} email email.
-   * @param {string} name name.
-   * @param {string} surname surname.
+   * @param {string} fullname The full name of employee.
    * @param {string} number phone number.
    * @param {string} username username.
    * @param {string} password Password.
@@ -130,32 +148,41 @@ const employees = express.Router()
    * @returns Message confirming insertion.
    */
    .post("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
-     try {
-       let query = req.body;
-       let result = await employeeRepository.saveEmployee(query.email,query.name,query.surname,query.number,query.username,query.password,query.gid);
-       res.json({'success':true});
-     } catch (err) {
-       const results = { success: false, results: err };
-       console.error(err);
-       res.json(results);
-     }
-   })
+    try {
+      let query = req.body;
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let result = await employeeRepository.saveEmployee(query.email,query.fullname,query.number,query.username,query.password,query.gid);
+        res.json({'success':true});
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
+    } catch (err) {
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
   //=========================================================================================================//
   /**
    * POST - Insert a badge into the database.
-   * @param {string} gid email used to find claim.
-   * @param {string} badgename badge ID used to find claim.
-   * @param {string} badgedescription email used to find claim.
-   * @param {string} badgechallenge badge ID used to find claim.
-   * @param {string} badgeicon email used to find claim.
-   * @param {string} activitytype email used to find claim.
-   * @returns A claim made by user for badge.
+   * @param {string} gid gym ID for badge.
+   * @param {string} badgename badge name.
+   * @param {string} badgedescription badge description.
+   * @param {string} badgechallenge badge challenge.
+   * @param {string} badgeicon Icon for badge.
+   * @param {string} requirement1 requirement 1 for badge.
+   * @param {string} requirement2 requirement 2 for badge.
+   * @param {string} requirement3 requirement 3 for badge.
+   * @param {string} activitytype Activity type.
+   * @param {string[]} tags list of tags.
+   * @returns message confirming.
    */
   .post("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
       let ID = createID(3);
-      let result = await badgeRepository.saveBadge(ID,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
+      let result = await badgeRepository.saveBadge(ID,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
       res.json(result);
     } catch (err) {
       const results = { success: false, results: err };
@@ -172,11 +199,43 @@ const employees = express.Router()
    .post('/employees/employee/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      let result = await employeeOTPRepository.deleteEmployeeOTP(query.email);
-      const newOTP = createID2(6);
-      result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
-      const results = { 'success': true };
-      res.json(results);
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let employeee = await employeeRepository.findByEmail(query.email);
+        if(employeee != null && employeee.email == query.email)
+        {
+          let result = await employeeOTPRepository.deleteEmployeeOTP(query.email);
+          const newOTP = createID2(6);
+          result = await employeeOTPRepository.saveEmployeeOTP(query.email,newOTP);
+          const emailerOptions = {
+            from: process.env.EMAIL,
+            to: employeee.email,
+            subject: "GYMKING Employee OTP",
+            text: 'Hello there, '
+            +employeee.fullname+'!'+
+            '!\nThis is an email notifying you of the creation of an OTP for your account.\n'+
+            'Your OTP is: '+newOTP+'\n'+
+            'This OTP will only be valid for 5 minutes!\n'+
+            'If this was not you please ignore this email!'
+          }
+          if (query.email != 'test@example.com'){
+            emailer.sendMail(emailerOptions, function(error : any, info : any){
+              if(error) {
+                console.log(error);
+                res.json({'success': false, 'message': 'OTP email failed to send!'})
+              } else {
+                res.json({ 'success': true });
+              }
+            })
+          } else {
+            res.json({ 'success': true });
+          }
+        } else {
+          res.json({ 'success': false ,'message':'Employee does not exist!' });
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -218,16 +277,20 @@ const employees = express.Router()
    .put('/employees/employee/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const employee = await employeeRepository.findByEmail(query.email);
-      const otp = await employeeOTPRepository.findByEmail(query.email);
-      if (otp != null && otp.otp == query.otp) {
-        const result = await employeeRepository.updateEmployeePassword(employee.email, query.newpassword);
-        const otp = await employeeOTPRepository.deleteEmployeeOTP(query.email);
-        const results = { 'success': true };
-        res.json(results);
-      }
-      else {
-        res.json({'message':'Invalid email or OTP!'})
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const employee = await employeeRepository.findByEmail(query.email);
+        const otp = await employeeOTPRepository.findByEmail(query.email);
+        if (otp != null && otp.otp == query.otp && (new Date().getTime() - new Date(otp.otptimestamp).getTime())*0.001/60 < 5) {
+          const result = await employeeRepository.updateEmployeePassword(employee.email, query.newpassword);
+          const otp = await employeeOTPRepository.deleteEmployeeOTP(query.email);
+          res.json({ 'success': true });
+        }
+        else {
+          res.json({'message':'Invalid email or OTP!'});
+        }
+      } else {
+        res.json({'message':'Invalid email!'});
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -239,8 +302,7 @@ const employees = express.Router()
   /**
    * PUT update a gym employee.
    * @param {string} email The email of the employee.
-   * @param {string} name The name of the employee.
-   * @param {string} surname The surname of the employee. 
+   * @param {string} fullname The full name of the employee.
    * @param {string} number The phone number of the employee. 
    * @param {string} username The username the employee.
    * @param {string} password The password the employee (NOT ecrypted).
@@ -252,7 +314,7 @@ const employees = express.Router()
       const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
       if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
-        const result = await employeeRepository.updateEmployee(query.email,query.name,query.surname,query.number,query.username);
+        const result = await employeeRepository.updateEmployee(query.email,query.fullname,query.number,query.username);
         res.json({'success':true});
       }
       else {
@@ -362,7 +424,7 @@ const employees = express.Router()
         result = await badgeClaimRepository.deleteClaim(ret.b_id.b_id, ret.email);
         result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id.b_id,ret.email);
         if (result != null) {
-          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id.b_id,ret.email,ret.input1,ret.input2,ret.input3);
         } else {
           result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
         }
@@ -386,13 +448,17 @@ const employees = express.Router()
    * @param {string} badgedescription edited badgedescription.
    * @param {string} badgechallenge edited badgechallenge.
    * @param {string} activitytype edited activitytype.
+   * @param {string} requirement1 edited requirement 1 for badge.
+   * @param {string} requirement2 edited requirement 2 for badge.
+   * @param {string} requirement3 edited requirement 3 for badge.
    * @param {string} badgeicon edited badgeicon.
+   * @param {string[]} tags new list of tags.
    * @returns Message confirming update.
    */
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.badgeicon);
+      let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
       res.json({'success':true});
     } catch (err) {
       const results = { success: false, results: err };
