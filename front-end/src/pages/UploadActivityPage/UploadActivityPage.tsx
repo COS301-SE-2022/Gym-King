@@ -150,11 +150,13 @@ const determineReps=async(predictions:string[])=>{
         
         if(reps_required<=rep_count)
         {
+
             console.log("congrats")
+            await SetBadgeMessage("You've completed "+reps_required+" reps!!")
             await SetAward(true)
         }
         else{
-            await SetBadgeMessage("Isufficient reps. expected "+reps_required+", but detected : "+rep_count)
+            await SetBadgeMessage("Isufficient reps.\nexpected "+reps_required+", but detected : "+rep_count)
             console.log("Isufficient reps. expected "+reps_required +", but detected : "+rep_count)
             await SetAward(false)
         }
@@ -208,6 +210,7 @@ const handleSubmit_AI = async () =>{
 }   
 const reset= () => {
     setAlert(false)
+    history.goBack()
 }
 const handleSubmit = async (e:any) =>{
     await writeToFile()
@@ -423,7 +426,7 @@ useIonViewDidEnter(async()=>{
                         cssClass={"spinner"}
                         
                     />
-                    <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} BadgeEmblem={Icon[1]} Badgerank={Icon[0]} idEmblem="UploadEmblem" idRank='UploadRank'></NNAlert>
+                    <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} submitClaim={sendClaim}></NNAlert>
                 </IonContent>
             </IonPage>
         )

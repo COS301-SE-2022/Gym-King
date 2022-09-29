@@ -1,11 +1,8 @@
 import { IonAlert} from '@ionic/react';
-import { useHistory } from 'react-router';
-import BadgeImage from '../../components/BadgeImage/BadgeImage';
 /*look at viewbadge page to see implementation
 */
-export const NNAlert=(props:{award:boolean,show:boolean,message:string,BadgeEmblem:string,Badgerank:string,idEmblem:string,idRank:string,reset:any})=>{
+export const NNAlert=(props:{award:boolean,show:boolean,message:string,reset:any,submitClaim:any})=>{
         // used for routing
-        let history=useHistory()
         return(   
             <div> 
             {props.award
@@ -13,8 +10,10 @@ export const NNAlert=(props:{award:boolean,show:boolean,message:string,BadgeEmbl
                     isOpen={props.show}
                     onDidDismiss={() =>props.reset()}
                     header="Congradulations"
-                    message={`<BadgeImage BadgeEmblem="${props.BadgeEmblem}" Badgerank="${props.Badgerank}" idEmblem="UploadEmblem" idRank='UploadRank'></BadgeImage>`}
-                    buttons={['cool']}
+                    message={props.message}
+                    buttons={[{text:'YES',
+                                cssClass:"alert-button-yes",
+                                handler:()=>props.reset}]}
                 />)
                 :(
                     <IonAlert
@@ -22,7 +21,9 @@ export const NNAlert=(props:{award:boolean,show:boolean,message:string,BadgeEmbl
                     onDidDismiss={() => props.reset()}
                     header="Badge claim failed"
                     message={props.message}
-                    buttons={['send to Employee','close']}></IonAlert>
+                    buttons={[
+                        {text:'close',handler:()=>props.reset()},
+                        {text:'send to Employee',cssClass:"alert-button-yes",handler:()=>props.submitClaim}]}></IonAlert>
                 )
                 }
             </div> 
