@@ -1,14 +1,16 @@
-import { IonPage, IonContent, IonImg } from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewDidEnter } from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
 import { PushNotifications, PushNotificationSchema, DeliveredNotifications, ActionPerformed } from '@capacitor/push-notifications';
+import { useHistory } from 'react-router';
 
 
 
 export const SplashPage: React.FC = () =>
 {
+    let history=useHistory()
     PushNotifications.removeAllListeners();
     PushNotifications.addListener('pushNotificationReceived',
         (notification: PushNotificationSchema) => {
@@ -70,20 +72,12 @@ export const SplashPage: React.FC = () =>
           
     }
     // const router = useIonRouter();
-    // useIonViewDidEnter(()=>{
-    //     getPermissons();
-        // setTimeout(() => {
-        //     if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
-        //     {
-        //         navigate()
-        //     }
-        //     else
-        //     {
-        //         router.push("/Login");
-
-        //     }
-        //   }, 3000);
-
+    useIonViewDidEnter(()=>{
+        getPermissons();
+        setTimeout(() => {
+            history.push("/Login");
+          }, 3000);
+    })
         
         
     //})
