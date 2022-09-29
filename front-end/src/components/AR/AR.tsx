@@ -69,7 +69,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
 
         // loop thrugh all valid emblems and compare with inp.emblem
         embID.forEach(element => {
-            if(inp.emblem === element) valid = true
+            inp.emblem === element ? valid = true : valid=false
         });
 
         //return false if no match was found
@@ -79,7 +79,7 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
         // loop thrugh all valid ranks and compare with inp.ranks
         valid = false
         rankID.forEach(element => {
-            if(inp.rank === element) valid = true
+            inp.rank === element ? valid = true : valid =false
         });
 
         return valid

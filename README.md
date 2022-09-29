@@ -50,7 +50,7 @@ yarn run lint
 ```
 
 ## Documentation
-[SRS](https://github.com/COS301-SE-2022/Gym-King/files/9672711/Gym-King.SRS.pdf) <br>
+[SRS](https://github.com/COS301-SE-2022/Gym-King/files/9673688/Gym-King.SRS.pdf) <br>
 [Coding  Standards](https://github.com/COS301-SE-2022/Gym-King/files/9672720/Gym-King.Coding.Standards.pdf) <br>
 [User Manual](https://github.com/COS301-SE-2022/Gym-King/files/9672734/Gym-King.User.Manual.pdf) <br>
 [Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9672739/Gym-King.Architecture.pdf) <br>

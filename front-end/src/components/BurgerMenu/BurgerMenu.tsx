@@ -30,6 +30,7 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
                             <div id="logout-button">
                             <IonItem  mode="ios" button onClick={()=>{
                                                         localStorage.removeItem("email")
+                                                        localStorage.removeItem("username")
                                                         localStorage.removeItem("password")
                                                         localStorage.removeItem("usertype")
                                                         sessionStorage.removeItem("key")
