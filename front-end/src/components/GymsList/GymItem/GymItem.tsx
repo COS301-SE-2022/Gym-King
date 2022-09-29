@@ -17,6 +17,8 @@ const GymsList: React.FC<props> = (props) =>{
 
 
         useEffect(()=>{
+            console.log(props.gymId)
+
             //get gym info 
              axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${props.gymId}`)
             .then(response =>response.data)

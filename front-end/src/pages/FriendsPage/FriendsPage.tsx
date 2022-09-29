@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter, IonLoading} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
@@ -18,7 +18,7 @@ const FriendsPage: React.FC = () =>{
 
     const [friends, setFriends] = useState([]);
 
-    useEffect(()=>{
+    useIonViewWillEnter(()=>{
         setLoading(true)
         //remove session storage
         sessionStorage.removeItem("friendUsername")

@@ -141,7 +141,7 @@ const UploadActivityPage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                setLoading(fail)
+                setLoading(false)
                 //console.log(response);
                 setShowToast1(true);
                 sessionStorage.removeItem("badgeid")

@@ -29,7 +29,7 @@ const MyGyms: React.FC = () =>{
         .then(response =>response.data)
         .then(response =>{
             setLoading(false)
-            console.log(response)
+            console.log(response.results)
             setGyms(response.results)
         })
         .catch(err => {

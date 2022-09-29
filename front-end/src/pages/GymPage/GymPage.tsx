@@ -81,6 +81,7 @@ const GymPage: React.FC = () =>{
         history.push("/ViewBadges")
     }
     const goToLeaderboard = () =>{
+        sessionStorage.setItem("gid",gid!)
         history.push("/Leaderboard")
     }
 

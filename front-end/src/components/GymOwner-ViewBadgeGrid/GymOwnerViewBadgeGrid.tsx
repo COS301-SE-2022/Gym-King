@@ -1,5 +1,5 @@
 import { IonCol, IonGrid, IonLoading, IonRow, useIonViewWillEnter} from '@ionic/react';
-import { useEffect, useState, } from 'react';
+import {  useState, } from 'react';
 import ViewBadgeCard from './ViewBadgeCard/ViewBadgeCard';
 import axios from 'axios';
 

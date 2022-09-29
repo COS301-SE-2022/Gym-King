@@ -32,6 +32,7 @@ const Leaderboard: React.FC = () =>{
     useIonViewDidEnter(()=>
     {
         var gymid=sessionStorage.getItem("gid");
+        console.log(sessionStorage.getItem("gid"))
         var index:number;
         var Overall:any=[];
         var Cardio:any=[];
