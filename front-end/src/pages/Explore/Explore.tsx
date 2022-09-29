@@ -28,7 +28,7 @@ const Explore: React.FC = () =>{
     const [gymAddress, setGymAddress] =useState("")
 
     //suggested badges
-    const [badgeSuggestions, setBadgeSuggestions] =useState([])
+    const [badgeSuggestions, setBadgeSuggestions] =useState()
     
 
     useIonViewWillEnter(async()=>{
@@ -49,7 +49,8 @@ const Explore: React.FC = () =>{
         .then(response =>{
             setLoading(false)
             console.log(response)
-            setBadgeSuggestions(response)
+            if(response.success)
+                setBadgeSuggestions(response)
             
         })
         .catch(err => {
@@ -126,6 +127,7 @@ const Explore: React.FC = () =>{
 
 
     const findUser = (user:any) =>{
+        console.log(user)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getUser`,{
             method: 'POST',
             headers: {
@@ -140,7 +142,8 @@ const Explore: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            if(response.message)
+            console.log(response)
+            if(response.message==="User does not exist!")
             {
                 setFoundUser(false)
                 setEmail("")
@@ -168,7 +171,8 @@ const Explore: React.FC = () =>{
         .then(response =>response.data)
         .then(response =>{
             
-            if(response ===null)
+            console.log(response)
+            if(response===null)
             {
                 setFoundGym(false)
                 setGid("")
@@ -226,6 +230,7 @@ const Explore: React.FC = () =>{
                         <IonRow>
                         {
                             foundUser && 
+                            <>
                             <IonCard mode="ios" button style={{ "width":"100%", "height":"4em"}} onClick={viewUserProfile}>
                                 <IonCardContent style={{"padding":"0%", }}>
                                     <IonGrid>
@@ -244,6 +249,7 @@ const Explore: React.FC = () =>{
                                     
                                 </IonCardContent>
                             </IonCard>
+                            </>
                         }
                         </IonRow>
                         <br></br>
@@ -300,11 +306,12 @@ const Explore: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
+                        showBackdrop={true}
+                        
                     />
                 </IonContent>
             </IonPage>

@@ -24,7 +24,6 @@ const inputRefTakeVideo = useRef<HTMLInputElement>(null);
 const inputRefUploadVideo = useRef<HTMLInputElement>(null);
  //HOOKS AND VARAIBES
 const [award,setAward]=useState<boolean>(false)
-const [path,setPath]=useState<any>("")
 const [isValid, setIsValid] = useState(false);
 const [submitted, setSubmitted] = useState(false);
 const [reps_required,setRepsRequired] =useState(0)
@@ -180,7 +179,6 @@ const writeToFile=async()=>{
             directory:Directory.Data
         });
         console.log(result)
-        setPath(result)
 }
 
 const handleSubmit_AI = async () =>{
@@ -193,8 +191,6 @@ const handleSubmit_AI = async () =>{
     setMessage("Calculating")
     setLoading(true)
     console.log("extracting frames")
-    console.log("********************************************************************************************************");
-    console.log("********************************************************************************************************");
     const url = URL.createObjectURL(values.current.file);
     console.log(url)
     await VideoToFrames.getFrames(url, VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {

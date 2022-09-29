@@ -41,14 +41,17 @@ const GymPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            setLoading(false)
-            console.log(response)
-            setSubscribed(response)
+
+            if(response===true){
+                console.log(response)
+                setSubscribed(true)
+            }
             
+            setLoading(false)
         })
         .catch(err => {
             setLoading(false)
-            console.log(err)  
+            console.log(err) 
         })
     })
 
@@ -81,6 +84,7 @@ const GymPage: React.FC = () =>{
         history.push("/ViewBadges")
     }
     const goToLeaderboard = () =>{
+        sessionStorage.setItem("gid",gid!)
         history.push("/Leaderboard")
     }
 
@@ -193,7 +197,7 @@ const GymPage: React.FC = () =>{
             />
             <IonLoading 
                 isOpen={loading}
-                message={"Loading"}
+                mode="ios"
                 duration={2000}
                 spinner={"circles"}
                 onDidDismiss={() => setLoading(false)}

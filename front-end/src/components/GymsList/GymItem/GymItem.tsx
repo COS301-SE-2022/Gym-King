@@ -9,8 +9,6 @@ const GymsList: React.FC<props> = (props) =>{
 
     let history=useHistory()
 
-
-
         const [gymBrandName, setGymBrandName] = useState("")
         const [gymName, setGymName] = useState("")
         const [gymAddress, setGymAddress] = useState("")
@@ -19,6 +17,8 @@ const GymsList: React.FC<props> = (props) =>{
 
 
         useEffect(()=>{
+            console.log(props.gymId)
+
             //get gym info 
              axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${props.gymId}`)
             .then(response =>response.data)
@@ -41,7 +41,9 @@ const GymsList: React.FC<props> = (props) =>{
             .catch(err => {
                 console.log(err)
             })
-        })
+            
+            setLoading(false)
+        },[props,gymBrandName])
         
 
         const viewGymProfile = (brandname:string, address:string) =>{
@@ -62,8 +64,8 @@ const GymsList: React.FC<props> = (props) =>{
                     <IonLabel mode="ios">{gymName}</IonLabel>
             </IonItem>
             <IonLoading 
+                mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 duration={2000}
                 spinner={"circles"}
                 onDidDismiss={() => setLoading(false)}

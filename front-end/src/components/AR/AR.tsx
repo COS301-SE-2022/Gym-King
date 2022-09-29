@@ -5,8 +5,7 @@
 import {IonButton, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import './AR.css';
-import { Device } from '@capacitor/device';
-import compList from './compatibleDevices'
+import { AppLauncher } from '@capacitor/app-launcher';
 
 /**
  * @brief input inteface for IonToast 
@@ -110,18 +109,20 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
      * @returns boolean
      */
     const IsAndroid = async () =>{
-        return await isCompatible();
-    }
-
-    const isCompatible= async () =>{
-        const info = await Device.getInfo();
-        console.log(info.model);
-        if(compList.indexOf(info.model)>=0)
+        let app:string = 'com.google.ar.core'
+        
+        const { value } = await AppLauncher.canOpenUrl({ url: app });
+        if(value===true) {
+            console.log(app + ' is available')
             return true
-        else
+        }
+        else {
+            console.log(app + ' is NOT available')
             return false
-
+        }
     }
+      
+    
     
     //=========================================================================================================//
     /**
@@ -158,7 +159,8 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
                 href+="end;";
 
                 // launch intent
-                window.location.replace(href) ;
+
+                await AppLauncher.openUrl({ url: href});
                 console.log("isAndroid:" + href);
                 
             }

@@ -14,7 +14,7 @@ export const Gym: React.FC<props>  = (props) =>{
 
     useEffect(()=>{
         getBrands()
-    })
+    },[])
 
     const getBrands = async() =>{
         let gyms: any[]=[]
@@ -72,7 +72,6 @@ export const Gym: React.FC<props>  = (props) =>{
             <IonLoading 
                 mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 duration={2000}
                 spinner={"circles"}
                 onDidDismiss={() => setLoading(false)}

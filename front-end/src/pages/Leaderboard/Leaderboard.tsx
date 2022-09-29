@@ -32,6 +32,7 @@ const Leaderboard: React.FC = () =>{
     useIonViewDidEnter(()=>
     {
         var gymid=sessionStorage.getItem("gid");
+        console.log(sessionStorage.getItem("gid"))
         var index:number;
         var Overall:any=[];
         var Cardio:any=[];
@@ -159,7 +160,6 @@ const Leaderboard: React.FC = () =>{
                 <IonLoading 
                     mode="ios"
                     isOpen={loading}
-                    message={"Loading"}
                     spinner={"circles"}
                     onDidDismiss={() => setLoading(false)}
                     cssClass={"spinner"}

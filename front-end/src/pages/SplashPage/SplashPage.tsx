@@ -3,7 +3,7 @@ import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
-import { PushNotifications, PushNotificationSchema, DeliveredNotifications } from '@capacitor/push-notifications';
+import { PushNotifications, PushNotificationSchema, DeliveredNotifications, ActionPerformed } from '@capacitor/push-notifications';
 
 
 
@@ -27,6 +27,22 @@ export const SplashPage: React.FC = () =>
         
         }
     );
+    
+    PushNotifications.addListener('pushNotificationActionPerformed',
+    (actionPerformed: ActionPerformed) => {
+        let n = { id: actionPerformed.notification.id, title: actionPerformed.notification.data.title, body: actionPerformed.notification.data.body, type: 'foreground' }
+            
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage === null){
+            localStorage.setItem("notificationStorage",JSON.stringify([n]))
+        }
+        else{
+            let notifications = JSON.parse(notificationStorage)
+            notifications = [...notifications,n]
+            localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+        }
+    }
+);
     PushNotifications.getDeliveredNotifications().then((Delivered:DeliveredNotifications)=>{
         let notificationStorage = localStorage.getItem("notificationStorage")
         
