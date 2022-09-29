@@ -32,6 +32,7 @@ export class  ActivityInputs extends React.Component<props, states>{
      * @param ? - event, any
      * @result ? - input activitied are updated 
     */
+    
     handleChange = (e:any) =>{
         let input = e.target.name;
         let value = e.target.value;

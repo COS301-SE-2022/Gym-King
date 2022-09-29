@@ -18,6 +18,15 @@ test('correctly displays labels', async () => {
     expect (baseElement).toHaveTextContent("Gym Location:");
     expect (baseElement).toHaveTextContent("Badge Challenge:");
     expect (baseElement).toHaveTextContent("Badge Description:");
+    expect (baseElement).toHaveTextContent("Please select the words that relate to this badge:");
+    
+});
+
+test('correctly displays labels', async () => {
+    const {baseElement} =await render(<CreateBadge />);
+    expect (baseElement).toHaveTextContent("gold");
+    expect (baseElement).toHaveTextContent("silver");
+    expect (baseElement).toHaveTextContent("bronze");
     
 });
 
