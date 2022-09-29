@@ -83,7 +83,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     fullname: name, 
                     number: phone, 
                     username: username, 
-                    apikey: sessionStorage.getItem("apikey"), 
+                    apikey: sessionStorage.getItem("key"), 
                 })
             })
             .then(response =>response.data)
