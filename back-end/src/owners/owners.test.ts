@@ -62,7 +62,7 @@ describe('Testing POST API Calls', () => {
                 "password":"Wrong",
                 "usertype":"gym_owner"
             });
-            expect(response.statusCode).toBe(400);
+            expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({ 'success': false, 'results':"invalid password" })
         });
         test('responds to incorrect email POST login owner', async () => {
@@ -71,7 +71,7 @@ describe('Testing POST API Calls', () => {
                 "password":"Test",
                 "usertype":"gym_owner"
             });
-            expect(response.statusCode).toBe(404);
+            expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({ 'success': false, 'results':'invalid email or password'})
         });
     });

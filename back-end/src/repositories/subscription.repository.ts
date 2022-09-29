@@ -28,7 +28,20 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns list of subsribers
      */
     async findBySubbed(gid: string){
-        return this.findBy({togym: gid });
+
+        let reqs = await this.findBy({ togym: gid});
+
+        let ret=[];
+        for (let i = 0; i < reqs.length; i++) {
+            const req = reqs[i];
+            console.log(req)
+
+            let user = await userRepository.findByEmail(req.fromuser);
+            ret.push({email:user.email})
+            
+        }
+
+        return ret;
     },
 
     /**

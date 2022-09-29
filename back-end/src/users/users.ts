@@ -126,7 +126,7 @@ const corsOptions = {
 };
 const notification_options = {
   priority: "high",
-  timeToLive: 60*60
+  timeToLive: 60*60*30
 };
 //=============================================================================================//
 // USER ROUTER
@@ -626,18 +626,18 @@ const users = express.Router()
           result = await userRepository.findByEmail(uE);
         }
         if(result == null) {
-          res.status(404); 
+          // res.status(404); 
           res.json( { 'success': false, 'results':'invalid email or password'} );
         }
         else {
           if(result.length==0) {
-            res.status(404);
+            // res.status(404);
             res.json( { 'success': false, 'results':'invalid email or password'} );
           }
           else{
             let hashPass = result.password;
             if(!bcrypt.compareSync(uP, hashPass)) {
-              res.status(400);
+              // res.status(400);
               res.json( { 'success': false, 'results':"invalid password" } );
             }else{
               let apikey = createAPIKey();
@@ -654,7 +654,7 @@ const users = express.Router()
           }
         }
       }else {
-        res.status(400);
+        // res.status(400);
         res.json(  { 'success': false, 'results':'missing email or password'} );
       }
     } catch (err) {
@@ -1124,7 +1124,7 @@ const users = express.Router()
         // the friend has sent the user a request
         else if(b!=null){
           
-          if(b.isPending){
+          if(b.ispending==true){
             // set the pending status to false. the friend request was accepted
             let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
             res.json({'success':true, 'results': 'request already exists, request was accepted'});    
@@ -1405,7 +1405,7 @@ const users = express.Router()
         for(const trgt of gymSubscribers) {
           
           try{
-            let user = await userRepository.findByEmail(trgt.fromUser);
+            let user = await userRepository.findByEmail(trgt.email);
             console.log(user.pushkey)
             if(user.pushkey!=null) {
               tokens.push(user.pushkey)
