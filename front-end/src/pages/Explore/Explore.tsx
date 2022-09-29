@@ -28,7 +28,7 @@ const Explore: React.FC = () =>{
     const [gymAddress, setGymAddress] =useState("")
 
     //suggested badges
-    const [badgeSuggestions, setBadgeSuggestions] =useState()
+    const [badgeSuggestions, setBadgeSuggestions] =useState(new Array())
     
 
     useIonViewWillEnter(async()=>{
@@ -49,7 +49,6 @@ const Explore: React.FC = () =>{
         .then(response =>{
             setLoading(false)
             console.log(response)
-            if(response.success)
                 setBadgeSuggestions(response)
             
         })
@@ -57,7 +56,7 @@ const Explore: React.FC = () =>{
             setLoading(false)
             console.log(err)  
         })
-    },[badgeSuggestions])
+    },[])
 
     const areFriends = async(a:string, b:string)=>{
         let areFriends=false;
