@@ -71,35 +71,35 @@ export const SplashPage: React.FC = () =>
     const router = useIonRouter();
     useIonViewDidEnter(()=>{
         getPermissons();
-        setTimeout(() => {
-            if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
-            {
-                navigate()
-            }
-            else
-            {
-                router.push("/Login");
+        // setTimeout(() => {
+        //     if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
+        //     {
+        //         navigate()
+        //     }
+        //     else
+        //     {
+        //         router.push("/Login");
 
-            }
-          }, 3000);
+        //     }
+        //   }, 3000);
 
         
         
     })
-    const navigate=()=>{
-        let usertype=localStorage.getItem("usertype")
-        if(usertype==="gym_user")
-        {
-            router.push("userMap");
-        }
-        else if(usertype==="gym_owner")
-        {
-            router.push("GymOwnerPage");
-        }
-        else{
-            router.push("EmployeeHome");
-        }
-    }
+    // const navigate=()=>{
+    //     let usertype=localStorage.getItem("usertype")
+    //     if(usertype==="gym_user")
+    //     {
+    //         router.push("userMap");
+    //     }
+    //     else if(usertype==="gym_owner")
+    //     {
+    //         router.push("GymOwnerPage");
+    //     }
+    //     else{
+    //         router.push("EmployeeHome");
+    //     }
+    // }
     return (
         <IonPage>
             <IonContent fullscreen className='splash'>

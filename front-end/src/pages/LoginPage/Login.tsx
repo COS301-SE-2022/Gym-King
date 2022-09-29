@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast, useIonViewWillEnter} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import './Login.css';
@@ -23,6 +23,10 @@ export const Login: React.FC = () =>{
     const handleError = (error:string, input:string) => {
         setErrors(prevState => ({...prevState, [input]: error}));
     };
+
+    useIonViewWillEnter(()=>{
+
+    })
 
     const  validate = () => {
         let isValid = true
