@@ -3,7 +3,6 @@ import React, {  useRef, useState } from 'react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import './UploadActivityPage.css';
 import {ActivityInputs} from '../../components/activityInputs/ActivityInputs';
-import {claimSchema} from '../../validation/UploadClaimValidation'
 import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
 import axios from "axios";
@@ -16,7 +15,9 @@ export type UploadActivityStates = {act?:any}
 const UploadActivityPage: React.FC = () =>{
         
         // STATES AND VARIABLES 
+        // eslint-disable-next-line
         const [isValid, setIsValid] = useState(false);
+        // eslint-disable-next-line
         const [submitted, setSubmitted] = useState(false);
         const [Icon,setIcon]=useState<string[]>([""])
         let email = localStorage.getItem("email") 
@@ -48,15 +49,10 @@ const UploadActivityPage: React.FC = () =>{
             if(formdata.i3 == null)
                 localStorage.setItem( 'e3', "This field is required");
 
-            const isValid = await claimSchema.isValid(formdata);
-            setSubmitted(true);
-            if(isValid)
-            {
-                setIsValid(true);
-                //handle post request 
+            //const isValid = await claimSchema.isValid(formdata);
+
                 sendClaim();
-               
-            }
+    
             
         }
         

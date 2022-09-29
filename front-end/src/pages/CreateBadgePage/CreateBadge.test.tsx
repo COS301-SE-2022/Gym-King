@@ -18,6 +18,18 @@ test('correctly displays labels', async () => {
     expect (baseElement).toHaveTextContent("Gym Location:");
     expect (baseElement).toHaveTextContent("Badge Challenge:");
     expect (baseElement).toHaveTextContent("Badge Description:");
+    expect (baseElement).toHaveTextContent("IconView");
+    expect (baseElement).toHaveTextContent("ModelCREATE");
+    expect (baseElement).toHaveTextContent("STRENGTHCARDIO");
+    expect (baseElement).toHaveTextContent("Creating BadgeBadge Name: Activity Type: STRENGTHCARDIOGym Location: Badge Challenge: Badge Description: Requirements: Create Badge IconView ModelCREATE");
+    
+});
+
+test('correctly displays labels', async () => {
+    const {baseElement} =await render(<CreateBadge />);
+    //expect (baseElement).toHaveTextContent("gold");
+    //expect (baseElement).toHaveTextContent("silver");
+    //expect (baseElement).toHaveTextContent("bronze");
     
 });
 
