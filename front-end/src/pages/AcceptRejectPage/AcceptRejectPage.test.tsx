@@ -8,11 +8,13 @@ import AcceptRejectPage from './AcceptReject';
 /*
 */
 
+//tests if the page renders without crashing
 test('renders without crashing', async() => {
     const { baseElement } = await render(<AcceptRejectPage />);
     expect(baseElement).toBeDefined();
 });
 
+//tests the integration between the components
 describe('Testing integration of components', () => {
     
     test('sending in a list of claims displays it in the ActivityList component', async () => {
@@ -28,6 +30,7 @@ describe('Testing integration of components', () => {
 
 ////////// INTEGRATION TESTS //////////
 
+////Tests the connection with the API can ensures that the API call returns the correct information
 describe('Testing connection to api', () => {
     let badgeId= "XRQ"
     let email ="u20519517@tuks.co.za"
