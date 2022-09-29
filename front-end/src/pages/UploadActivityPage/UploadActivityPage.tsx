@@ -11,7 +11,7 @@ import NNAlert from '../../components/NN_outcome/NN_outcome';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import './index'
 import ActivityInputs from '../../components/activityInputs/ActivityInputs';
-import { Filesystem} from '@capacitor/filesystem';
+import { Directory, Filesystem} from '@capacitor/filesystem';
 interface InternalValues {
     file: any;
 }
@@ -24,6 +24,7 @@ const inputRefTakeVideo = useRef<HTMLInputElement>(null);
 const inputRefUploadVideo = useRef<HTMLInputElement>(null);
  //HOOKS AND VARAIBES
 const [award,setAward]=useState<boolean>(false)
+const [path,setPath]=useState<any>("")
 const [isValid, setIsValid] = useState(false);
 const [submitted, setSubmitted] = useState(false);
 const [reps_required,setRepsRequired] =useState(0)
@@ -173,13 +174,16 @@ const writeToFile=async()=>{
    
         var media=(await toBase64(values.current.file) as string)
         console.log('base64',media)
-        await Filesystem.writeFile({
-            path: 'Phone/DCIM/Camera'+values.current.file.name,
-            data: media
+       let result= await Filesystem.writeFile({
+            path: values.current.file.name,
+            data: media,
+            directory:Directory.Data
         });
+        console.log(result)
+        setPath(result)
 }
 
-const handleSubmit_AI = async (path:any) =>{
+const handleSubmit_AI = async () =>{
     
     console.log(values.current.file)
     await writeToFile()
@@ -189,7 +193,11 @@ const handleSubmit_AI = async (path:any) =>{
     setMessage("Calculating")
     setLoading(true)
     console.log("extracting frames")
-    await VideoToFrames.getFrames('Phone/DCIM/Camera'+values.current.file.name, VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+    console.log("********************************************************************************************************");
+    console.log("********************************************************************************************************");
+    const url = URL.createObjectURL(values.current.file);
+    console.log(url)
+    await VideoToFrames.getFrames(url, VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
         console.log("running through neural network")
         console.log(frame)
         let predictions=await categroize(frame)
