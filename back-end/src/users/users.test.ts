@@ -143,6 +143,18 @@ describe('Testing POST API Calls', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({'success':true})
         })
+        test('responds to correct insert user', async () => {
+            const response = await request(server).post('/users/user').send({
+                "email": "friend@example.com",
+                "fullname": "Friend Friend",
+                "number": "9876543210",
+                "username":"Friend",
+                "password":"Friend",
+                "membership":"Test Brand 2"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':true})
+        })
     });
     test('responds to correct GET user profile picture by username', async () => {
         const response = await request(server).get('/users/user/picture/Test')
@@ -185,6 +197,71 @@ describe('Testing POST API Calls', () => {
             expect(response.body).toStrictEqual({ 'success': false, 'results':'invalid email or password'})
         });
     });
+    describe('responds to POST check if friends', () => {
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'InvalidEmail',
+                'apikey':apikey,
+                'user2email':'InvalidEmail'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid emails entered!'});
+        })
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'test@example.com',
+                'apikey':apikey,
+                'user2email':'InvalidEmail'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid emails entered!'});
+        })
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'InvalidEmail',
+                'apikey':apikey,
+                'user2email':'friend@example.com'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'Invalid emails entered!'});
+        })
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'wrong@example.com',
+                'apikey':apikey,
+                'user2email':'friend@example.com'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false, 'message':'User does not exist!'});
+        })
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'friend@example.com',
+                'apikey':apikey,
+                'user2email':'test@example.com'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false,'message':'Invalid email or apikey!'});
+        })
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'test@example.com',
+                'apikey':'wrong',
+                'user2email':'friend@example.com'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({'success':false,'message':'Invalid email or apikey!'});
+        })
+        test('responds to incorrect POST check if friends', async () => {
+            const response = await request(server).post('/users/user/checkIfFriends').send({
+                'user1email':'test@example.com',
+                'apikey':apikey,
+                'user2email':'friend@example.com'
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual(false);
+        })
+    })
     describe('responds to POST insert user OTP', () => {
         test('responds to incorrect POST insert user OTP', async () => {
             const response = await request(server).post('/users/user/OTP').send({
@@ -313,6 +390,7 @@ describe('Testing GET API Calls', () => {
         expect(response.statusCode).toBe(200);
         expect(response.body).toMatchObject({
             g_id: gid,
+            gym_name : "Test",
             gym_brandname: "Test Brand",
             gym_address: "Test Address",
             gym_coord_long: -25.8661,
@@ -383,6 +461,57 @@ describe('Testing GET API Calls', () => {
             { gym_brandname: 'Changed Brand 1', gym_logo: 'Default' }
         ]);
     })
+    test('responds to GET brands by brandname', async () => {
+        const response = await request(server).get('/brands/brand/Test Brand 1');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toMatchObject(
+            { gym_brandname: 'Test Brand 1', gym_logo: 'Default' }
+        );
+    })
+    test('responds to GET brands by brandname', async () => {
+        const response = await request(server).get('/brands/brand/Test Brand 2');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toMatchObject(
+            { gym_brandname: 'Test Brand 2', gym_logo: 'Default' }
+        );
+    })
+    test('responds to GET gyms by gym name', async () => {
+        const response = await request(server).get('/gyms/gym/name/Test');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toMatchObject({
+            g_id: gid,
+            gym_name : "Test",
+            gym_brandname: "Test Brand",
+            gym_address: "Test Address",
+            gym_coord_long: -25.8661,
+            gym_coord_lat: 28.1905
+        });
+    })
+    describe('Testing get brands by brandname', () => {
+        test('responds to GET brand logo by brand name', async () => {
+            const response = await request(server).get('/brands/brand/logo/Test Brand');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toEqual('Default');
+        })
+        test('responds to GET wrong brand logo by brand name', async () => {
+            const response = await request(server).get('/brands/brand/logo/Wrong');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({'message':'Invalid gym brand!'});
+        })
+        test('responds to GET brand badges by brand name', async () => {
+            const response = await request(server).get('/brands/brand/badges/Test Brand');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject([
+                {"activitytype": "CARDIO", "b_id": bid1, "badgechallenge": "Challenge", "badgedescription": "Description", "badgeicon": "b_cycle", "badgename": "Test Badge 1", "g_id": gid, "requirement1": "3", "requirement2": "2", "requirement3": "1", "tags": "test,test"}, 
+                {"activitytype": "STRENGTH", "b_id": bid2, "badgechallenge": "Challenge", "badgedescription": "Description", "badgeicon": "b_bicep", "badgename": "Test Badge 2", "g_id": gid, "requirement1": "1", "requirement2": "2", "requirement3": "3", "tags": "test,test"}
+            ]);
+        })
+        test('responds to GET wrong brand badges by brand name', async () => {
+            const response = await request(server).get('/brands/brand/badges/Wrong');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject([]);
+        })
+    });
     describe('Testing get user by username', () => {
         test('responds to GET user by username', async () => {
             const response = await request(server).get('/users/user/Test');
@@ -393,10 +522,20 @@ describe('Testing GET API Calls', () => {
                 profile_picture:"NONE" 
             });
         })
+        test('responds to GET user by username', async () => {
+            const response = await request(server).get('/users/user/picture/Test');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toEqual("NONE");
+        })
         test('responds to GET wrong user by username', async () => {
             const response = await request(server).get('/users/user/wrong');
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({'message':'Invalid Username!'});
+        })
+        test('responds to GET picture wrong user by username', async () => {
+            const response = await request(server).get('/users/user/picture/wrong');
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toMatchObject({'message':'Invalid username!'});
         })
     })
 });
