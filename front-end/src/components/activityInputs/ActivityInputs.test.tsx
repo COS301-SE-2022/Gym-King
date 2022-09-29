@@ -23,7 +23,13 @@ describe('Testing prop text values', () => {
     expect (baseElement).toHaveTextContent("Weight");
     expect (baseElement).toHaveTextContent("Sets");
     expect (baseElement).toHaveTextContent("Reps");
+
+    expect(() => handleChange()).not.toThrow();
   }); 
 });
 
+
+function handleChange(): any {
+  console.log("change")
+}
 

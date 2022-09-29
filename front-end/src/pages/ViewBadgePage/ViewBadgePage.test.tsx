@@ -8,6 +8,10 @@ test('renders without crashing', async() => {
   expect(baseElement).toBeDefined();
 });
 
+test('correctly displays strength activitytype inputs', async () => {
+const {baseElement} =  await render(<ViewBadgePage />);
+expect (baseElement).toHaveTextContent("View Badges");
+}); 
 ////////// INTEGRATION TESTS //////////
 
 describe('Testing connection to api', () => {

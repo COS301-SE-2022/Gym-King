@@ -42,7 +42,7 @@ export function SelectGymMap() {
   //-open hook {boolean},determines wether modal is open or closed
   const [open,setOpen]=useState(true)
   //-gymAddress hook {string}, stores the address of the string
-  const [gymAddress, setGymAddress] = useState<string>("address");
+  const [gymAddress, setGymAddress] = useState<string>("");
   //-addresses {string[]}, stores address list obtained from geocoder
   const [addresses,setaddresses]=useState<any>([])
   //-icon hook{icon}, seticon of the lockbutton
@@ -101,7 +101,7 @@ export function SelectGymMap() {
         console.log(e)
     }
     console.log("using geocoding api");
-    Geocoder.init("");
+    Geocoder.init("AIzaSyA5ITQYj-KgOmXlk4fgP-Ar5b9b3me3Fm8");
     Geocoder.from(gymCoord[0],gymCoord[1])
     .then((json) => {
         if(json.status==="OK")
@@ -120,7 +120,7 @@ const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       console.log("enter was pressed")
       console.log("using geocoding api");
-      Geocoder.init("");
+      Geocoder.init("AIzaSyA5ITQYj-KgOmXlk4fgP-Ar5b9b3me3Fm8");
       Geocoder.from(gymAddress)
         .then((json) => {
           if(json.status==="OK")

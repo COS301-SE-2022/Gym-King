@@ -1,12 +1,8 @@
 jest.setTimeout(250000)
 import { render } from '@testing-library/react';
-import MapView from './MapView'
-
-
+import FriendProfile from './FriendProfile';
 
 test('renders without crashing', async () => {
-    const { baseElement } =await  render(<MapView />);
+    const { baseElement } =await  render(<FriendProfile />);
     expect(baseElement).toBeDefined();
   });
-
-  
