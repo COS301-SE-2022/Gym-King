@@ -19,13 +19,16 @@ export const badgeRepository = GymKingDataSource.getRepository(badge).extend({
     findByGID(gid: string) {
         return this.findBy({ g_id: gid });
     },
+    async findByBrand(brandname: string){
+        return badgeRepository.query(`SELECT * FROM BADGE WHERE g_id IN (SELECT g_id FROM GYM WHERE gym_brandname = $1)`,[brandname])
+    },
     async updateBadge(bid: string, gid: string, badgename: string, badgedescription: string, badgechallenge: string, at: string, requirement1: string , requirement2: string , requirement3: string,badgeicon: string, tags: string) {
         return await this.manager.update(badge, {b_id: bid, g_id: gid}, {badgename: badgename, badgedescription: badgedescription, badgechallenge: badgechallenge, activitytype: at, requirement1: requirement1, requirement2: requirement2, requirement3: requirement3, badgeicon: badgeicon, tags: tags})
     },
     async getLeaderboardByGID(gid: string) {
         return badgeRepository.query(`SELECT iv.B_id, b.Badgename, iv.Username, iv.Count, b.Activitytype FROM BADGE as b  
-        inner join (SELECT B_ID, Username, Count FROM BADGE_OWNED WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '${gid}')) as iv 
-        on b.B_id = iv.B_id`)
+        inner join (SELECT B_ID, Username, Count FROM BADGE_OWNED WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = $1)) as iv 
+        on b.B_id = iv.B_id`,[gid])
     },
     async saveBadge(bid: string, gid: string, badgename: string, badgedescription: string, badgechallenge: string, at: string, requirement1: string , requirement2: string , requirement3: string, badgeicon: string, tags: string) {
         const result = await gymRepository.findByGID(gid);

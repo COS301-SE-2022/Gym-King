@@ -20,6 +20,9 @@ export class gym_owner {
     @Column({length: 65535, default:"NONE",nullable: true})
     profile_picture: string
 
+    @Column({length: 64,default: null, nullable: true})
+    apikey: string
+
     @OneToMany(() => gym_owned, (gym_owned) => gym_owned.email)
     gyms_owned: gym_owned[]
 }
