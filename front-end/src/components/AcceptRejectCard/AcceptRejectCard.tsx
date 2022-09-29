@@ -41,13 +41,14 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
                 'Content-Type': 'application/json'
             },
             data: JSON.stringify({ 
+                empEmail:localStorage.getItem("email"),
+                apikey:sessionStorage.getItem("key"),
                 bid: props.badgeId,
                 email: props.userID
             })
         })
         .then(response =>response.data)
         .then(response =>{
-
             localStorage.setItem("claimAccepted", "true")
             setLoading(false)
             props.history.goBack()
@@ -70,14 +71,14 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
                 'Content-Type': 'application/json'
             },
             data: JSON.stringify({ 
+                empEmail:localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key"),
                 bid: props.badgeId,
                 email: props.userID
             })
         })
         .then(response =>response.data)
         .then(response =>{
-            console.log(response.results);
-
             localStorage.setItem("claimRejected", "true")
             setLoading(false)
             props.history.goBack()
