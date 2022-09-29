@@ -127,7 +127,7 @@ const UploadActivityPage: React.FC = () =>{
             let i2= formdata.i2;
             let i3= formdata.i3;
             let formData = new FormData();
-                formData.append("bid", b_id)
+                formData.append("bid", sessionStorage.getItem("badgeid")!)
                 formData.append("email", email!)
                 formData.append("apikey", sessionStorage.getItem("key")!)
                 formData.append("input1", i1)
@@ -142,7 +142,8 @@ const UploadActivityPage: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 setLoading(false)
-                //console.log(response);
+                console.log(response);
+                console.log(sessionStorage.getItem("badgeid"));
                 setShowToast1(true);
                 sessionStorage.removeItem("badgeid")
                 history.goBack();
