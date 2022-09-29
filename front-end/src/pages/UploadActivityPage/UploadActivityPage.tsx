@@ -141,7 +141,7 @@ const UploadActivityPage: React.FC = () =>{
             })
             .then(response =>response.data)
             .then(response =>{
-                setLoading(fail)
+                setLoading(false)
                 //console.log(response);
                 setShowToast1(true);
                 sessionStorage.removeItem("badgeid")
@@ -205,7 +205,6 @@ const UploadActivityPage: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}

@@ -136,7 +136,6 @@ const MyBadge: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}

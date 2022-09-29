@@ -406,7 +406,7 @@ const MapView: React.FC = () =>{
     return (
         
         <>  
-            <IonContent  overflow-scroll="false" >
+            <IonContent  className='mainMap' >
                 
             <GymSearchBar 
             
@@ -432,7 +432,6 @@ const MapView: React.FC = () =>{
             <IonLoading 
                 mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
                 spinner={"circles"}
                 cssClass="spinner"
