@@ -1,3 +1,4 @@
+//The Gym Owner Page is the home page for the Gym Owner, this page has three buttons to allow the Gym Owner to navigate through the app
 import {IonContent, IonPage, IonHeader, IonText, IonButton} from '@ionic/react';
 import React from 'react';
 import BurgerMenu from '../../components/BurgerMenu/BurgerMenu';
