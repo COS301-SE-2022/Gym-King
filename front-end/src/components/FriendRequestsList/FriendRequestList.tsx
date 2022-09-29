@@ -54,8 +54,8 @@ const FriendRequestList: React.FC<props> = () =>{
               'Content-Type': 'application/json',
             },
             data: JSON.stringify({ 
-                fromEmail: otherEmail,
-                toEmail: localStorage.getItem("email")
+                fromEmail: localStorage.getItem("email"), 
+                toEmail: otherEmail 
 
             })
         })
