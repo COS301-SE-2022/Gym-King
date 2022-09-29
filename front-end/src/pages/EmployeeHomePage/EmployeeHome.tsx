@@ -13,7 +13,7 @@ const EmployeeHomePage: React.FC = () =>{
             </IonHeader>
             <BurgerMenu listItems={Menulist} data-testid="bm"></BurgerMenu>
             <br></br>
-            <IonContent fullscreen className ='Content' id="main">
+            <IonContent fullscreen className ='Content' id="mainBurger">
                 <IonText className='PageTitle center'>Employee Page</IonText>
                 <IonButton mode="ios" className="width80 centerComp" routerLink='/PendingApprovals' routerDirection="forward" color="warning">Pending Approvals</IonButton>
             </IonContent>

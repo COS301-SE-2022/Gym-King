@@ -127,6 +127,7 @@ const Explore: React.FC = () =>{
 
 
     const findUser = (user:any) =>{
+        console.log(user)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getUser`,{
             method: 'POST',
             headers: {
@@ -142,9 +143,8 @@ const Explore: React.FC = () =>{
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
-            if(response.message==="Email does not exist!")
+            if(response.message==="User does not exist!")
             {
-                
                 setFoundUser(false)
                 setEmail("")
                 setFullname("")
@@ -230,6 +230,7 @@ const Explore: React.FC = () =>{
                         <IonRow>
                         {
                             foundUser && 
+                            <>
                             <IonCard mode="ios" button style={{ "width":"100%", "height":"4em"}} onClick={viewUserProfile}>
                                 <IonCardContent style={{"padding":"0%", }}>
                                     <IonGrid>
@@ -248,6 +249,7 @@ const Explore: React.FC = () =>{
                                     
                                 </IonCardContent>
                             </IonCard>
+                            </>
                         }
                         </IonRow>
                         <br></br>
@@ -304,11 +306,12 @@ const Explore: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
+                        showBackdrop={true}
+                        
                     />
                 </IonContent>
             </IonPage>

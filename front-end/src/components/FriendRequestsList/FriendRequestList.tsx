@@ -54,8 +54,8 @@ const FriendRequestList: React.FC<props> = () =>{
               'Content-Type': 'application/json',
             },
             data: JSON.stringify({ 
-                fromEmail: otherEmail,
-                toEmail: localStorage.getItem("email")
+                toEmail: otherEmail,
+                fromEmail: localStorage.getItem("email")
 
             })
         })
@@ -170,8 +170,8 @@ const FriendRequestList: React.FC<props> = () =>{
                 color="success"
             />
             <IonLoading 
+            mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 duration={2000}
                 spinner={"circles"}
                 onDidDismiss={() => setLoading(false)}

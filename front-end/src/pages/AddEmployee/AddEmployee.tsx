@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewDidEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonButton, IonInput, IonToast, useIonViewDidEnter, IonLoading, IonLabel} from '@ionic/react';
 import React, { useState} from 'react';
 import { RadioGroup } from '../../components/radioGroup/radioGroup';
 import ToolBar from '../../components/toolbar/Toolbar';
@@ -34,79 +34,78 @@ export const AddEmployee: React.FC = () =>{
         setErrors(prevState => ({...prevState, [input]: error}));
     };
 
-    // const  validate = () => {
-    //     let isValid = true
-    //     console.log
+    const  validate = () => {
+        let isValid = true
 
-    //     if(formData.email && !validEmail(formData.email)) {
-    //         handleError('Please input a valid email', 'email');
-    //         isValid = false;
-    //     }
-    //     else
-    //         handleError('', 'email');
+        if(formData.email && !validEmail(formData.email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
 
-    //     if(formData.name && !onlyLettersAndSpaces(formData.name)) {
-    //         handleError('Please input a valid name', 'name');
-    //         isValid = false;
-    //     }
-    //     else
-    //         handleError('', 'name');
+        if(formData.name && onlyLettersAndSpaces(formData.name)) {
+            handleError('Please input a valid name', 'name');
+            isValid = false;
+        }
+        else
+            handleError('', 'name');
 
-    //     if(formData.number && !validPhone(formData.number)) {
-    //         handleError('Please input a valid phone', 'phone');
-    //         isValid = false;
-    //     }
-    //     else
-    //         handleError('', 'phone');
+        if(formData.phone && !validPhone(formData.phone)) {
+            handleError('Please input a valid phone number', 'phone');
+            isValid = false;
+        }
+        else
+            handleError('', 'phone');
 
-    //     if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
-    //         handleError('Please input a valid username', 'username');
-    //         isValid = false;
-    //     }
-    //     else
-    //         handleError('', 'username');
+        if(formData.username && !onlyAlphanumericAndUnderscore(formData.username)) {
+            handleError('Please input a valid username', 'username');
+            isValid = false;
+        }
+        else
+            handleError('', 'username');
 
-    //     if(formData.password && !validPassword(formData.password)) {
-    //         handleError('Must be at least 8 characters with at least  1 uppercase, lowercase, number and symbol.', 'password');
-    //         isValid = false;
-    //     }
-    //     else
-    //         handleError('', 'password');
+        if(formData.password && !validPassword(formData.password)) {
+            handleError('Must be at least 8 characters with at least  1 uppercase, lowercase, number and symbol.', 'password');
+            isValid = false;
+        }
+        else
+            handleError('', 'password');
 
-    //     if(formData.gid !=="") {
-    //         handleError('Please select a gym.', 'gid');
-    //         isValid = false;
-    //     }
-    //     else
-    //         handleError('', 'gid');
+        if(formData.gid ==="") {
+            handleError('Please select a gym.', 'gid');
+            isValid = false;
+        }
+        else
+            handleError('', 'gid');
 
-    //     return isValid;
-    // }
+        return isValid;
+    }
 
-    // useIonViewDidEnter(()=>{
-    //     setLoading(true)
-    //     axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
-    //         method: 'POST',
-    //         headers: {
-    //           'Accept': 'application/json',
-    //           'Content-Type': 'application/json',
-    //         },
-    //         data: JSON.stringify({ 
-    //             email: localStorage.getItem("email"),
-    //             apikey: sessionStorage.getItem("key")
+    useIonViewDidEnter(()=>{
+        setLoading(true)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
 
-    //         })
-    //     })
-    //     .then(response =>response.data)
-    //     .then(response =>{
-    //         setOwnedGyms(response);
-    //         setLoading(false)
-    //     })
-    //     .catch(err => {
-    //         setLoading(false)
-    //         console.log(err)
-    //     }) 
-    // })
+            })
+        })
+        .then(response =>response.data)
+        .then(response =>{
+            setOwnedGyms(response);
+            setLoading(false)
+        })
+        .catch(err => {
+            setLoading(false)
+            console.log(err)
+        }) 
+    })
 
     const setChosenGymLocation = (e:any) =>{
         console.log(e);
@@ -124,7 +123,10 @@ export const AddEmployee: React.FC = () =>{
             password: e.target.password.value,
             gid: gymId,
         };
-        createEmployee();
+
+        let isValid = validate()
+        if(isValid)
+            createEmployee();
     }
     
     const createEmployee=()=>{
@@ -176,22 +178,58 @@ export const AddEmployee: React.FC = () =>{
                         <br></br>
 
                         <IonText className="smallHeading leftMargin10">Email*</IonText>
-                        <IonInput name='email' type='text' className='textInput  smallerTextBox centerComp width80' required></IonInput><br></br>
+                        <IonInput name='email' type='text' className='textInput  smallerTextBox centerComp width80' required></IonInput>
+                        {errors.email!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin10" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br>
 
                         <IonText className="smallHeading leftMargin10">Full name*</IonText>
-                        <IonInput name='name' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
+                        <IonInput name='name' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput>
+                        {errors.name!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin10" style={{"color":"darkorange"}}>{errors.name}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br>
 
                         <IonText className="smallHeading leftMargin10">Phone Number*</IonText>
-                        <IonInput name='number' type='number' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
+                        <IonInput name='number' type='number' className='textInput smallerTextBox centerComp width80' required></IonInput>
+                        {errors.number!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin10" style={{"color":"darkorange"}}>{errors.number}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br>
 
                         <IonText className="smallHeading leftMargin10"> Username*</IonText>
-                        <IonInput name='username' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
+                        <IonInput name='username' type='text' className='textInput smallerTextBox centerComp width80' required></IonInput>
+                        {errors.username!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin10" style={{"color":"darkorange"}}>{errors.username}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br>
 
                         <IonText className="smallHeading leftMargin10">Password*</IonText>
-                        <IonInput name='password' type='password' className='textInput smallerTextBox centerComp width80' required></IonInput><br></br>
+                        <IonInput name='password' type='password' className='textInput smallerTextBox centerComp width80' required></IonInput>
+                        {errors.password!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin10" style={{"color":"darkorange"}}>{errors.password}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br>
 
                         <IonText className="smallHeading leftMargin10">Gym*</IonText>
-                        <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup><br></br><br></br>
+                        <RadioGroup list={ownedGyms} chosenValue={setChosenGymLocation}></RadioGroup>
+                        {errors.gid!=="" && (
+                            <>
+                            <IonLabel className="errText leftMargin10" style={{"color":"darkorange"}}>{errors.gid}</IonLabel><br></br>
+                            </>
+                        )}
+                        <br></br><br></br>
 
                         <IonButton mode="ios" color="warning" className="btnAddEmployee width80 centerComp" type="submit" expand="block">Add Employee</IonButton>
 
@@ -223,8 +261,8 @@ export const AddEmployee: React.FC = () =>{
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

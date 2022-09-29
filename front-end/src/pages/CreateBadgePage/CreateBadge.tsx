@@ -112,10 +112,12 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
             localStorage.setItem('act', e);
             //setActivityType(e)
         }
-        const setChosenGymLocation = (e:any) =>{
+
+        const setChosenGymLocation= (e:any) =>{
             console.log(e);
             setActiveGymName(e.gym_name)
-            setGymId(e.g_id)
+            setGymId(e)
+            localStorage.setItem("gymId", e)
         }
 
         
@@ -130,7 +132,7 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                 badgeName: e.target.badgeName.value,
                 badgeDescription: e.target.badgeDescription.value,
                 badgeChallenge:e.target.badgeChallenge.value,
-                gymId: gymId,
+                gymId: localStorage.getItem("gymId"),
                 req1: e.target.req1.value,
                 req2: e.target.req2.value,
                 req3: e.target.req3.value
@@ -552,9 +554,9 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[7], 7)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[7]}</IonLabel></IonChip>
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[8], 8)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[8]}</IonLabel></IonChip>
                                     <IonChip mode="ios" onClick={()=>selectTag(strengthTags[9], 9)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[9]}</IonLabel></IonChip>
-                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[10], 10)}  style={{"backgroundColor": chipColor7}} ><IonLabel>{strengthTags[10]}</IonLabel></IonChip>
-                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[11], 11)}  style={{"backgroundColor": chipColor8}} ><IonLabel>{strengthTags[11]}</IonLabel></IonChip>
-                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[12], 12)}  style={{"backgroundColor": chipColor9}} ><IonLabel>{strengthTags[12]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[10], 10)}  style={{"backgroundColor": chipColor10}} ><IonLabel>{strengthTags[10]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[11], 11)}  style={{"backgroundColor": chipColor11}} ><IonLabel>{strengthTags[11]}</IonLabel></IonChip>
+                                    <IonChip mode="ios" onClick={()=>selectTag(strengthTags[12], 12)}  style={{"backgroundColor": chipColor12}} ><IonLabel>{strengthTags[12]}</IonLabel></IonChip>
 
                                 </IonRow>
                                 
@@ -607,8 +609,8 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                         color="success"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
