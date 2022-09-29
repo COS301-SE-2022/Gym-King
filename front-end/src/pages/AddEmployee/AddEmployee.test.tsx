@@ -2,12 +2,13 @@ jest.setTimeout(25000)
 import { render} from '@testing-library/react';
 import AddEmployee from './AddEmployee';
 
-
+//tests to see if the page renders without crashing
 test('renders without crashing', async ()=> {
   const{baseElement} =await render(<AddEmployee/>);
   expect(baseElement).toBeDefined();
 });
 
+//tests to see if all the form labels are properly displayed
 test('correctly diplays labels ', async () => {
   const {baseElement} =await render(<AddEmployee/>);
   expect (baseElement).toHaveTextContent("Email*");
@@ -22,6 +23,7 @@ test('correctly diplays labels ', async () => {
 
 //////// INTEGRATION TESTS ///////////
 
+//tests the connection to the API and confirms that the API calls return the correct information
 describe('Testing connection to api', () => {
   let email ="u20519517@tuks.co.za"
 
