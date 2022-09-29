@@ -41,14 +41,17 @@ const GymPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            setLoading(false)
-            console.log(response)
-            setSubscribed(response)
+
+            if(response===true){
+                console.log(response)
+                setSubscribed(true)
+            }
             
+            setLoading(false)
         })
         .catch(err => {
             setLoading(false)
-            console.log(err)  
+            console.log(err) 
         })
     })
 
