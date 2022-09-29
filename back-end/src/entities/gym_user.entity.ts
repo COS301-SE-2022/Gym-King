@@ -7,7 +7,7 @@ export class gym_user {
     @PrimaryColumn({length: 320})
     email: string
 
-    @Column({length: 150})
+    @Column({length: 150,nullable: true})
     fullname: string
 
     @Column({length: 10})
@@ -32,4 +32,13 @@ export class gym_user {
 
     @OneToMany(() => badge_owned, (badge_owned) => badge_owned.email)
     owned_emails: badge_owned[]
+
+    @Column({length: 1024,nullable: true})
+    pushkey:string
+
+    @Column({length: 64,default: null, nullable: true})
+    apikey: string
+
+    @Column({type: "boolean", default: true})
+    notificationtoggle: boolean
 }

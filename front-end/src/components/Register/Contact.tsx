@@ -29,14 +29,14 @@ export const Contact: React.FC<props> = (props) => {
           isValid = false;
         }
         else
-            handleError('', 'name');
+            handleError('', 'email');
     
         if(phone && !validPhone(phone)) {
             handleError('Please input a valid phone number', 'phone');
             isValid = false;
         }
         else
-            handleError('', 'surname');
+            handleError('', 'phone');
 
         return isValid;
     }
@@ -59,7 +59,7 @@ export const Contact: React.FC<props> = (props) => {
         props.prev();
     };
         return(
-            <form className='registerForm'  onSubmit={next}>
+            <form className='registerForm'  onSubmit={next} >
                 <IonText className='center inputHeading'>Register</IonText>
                 <br></br>
 
@@ -84,10 +84,10 @@ export const Contact: React.FC<props> = (props) => {
                 <IonGrid>
                     <IonRow>
                         <IonCol size='6'>
-                            <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >Previous</IonButton>
+                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >Previous</IonButton>
                         </IonCol>
                         <IonCol size='6'>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Next</IonButton>
+                            <IonButton mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Next</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

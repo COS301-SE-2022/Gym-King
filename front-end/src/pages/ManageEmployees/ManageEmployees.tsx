@@ -14,8 +14,6 @@ const ManageEmployees: React.FC = () =>{
     const [gymList, setGymList] = useState(new Array())
     const [loading, setLoading] = useState<boolean>(false);
     let history=useHistory()
-    let email = localStorage.getItem('email')
-    
 
     
     useIonViewDidEnter(()=>
@@ -29,32 +27,50 @@ const ManageEmployees: React.FC = () =>{
         sessionStorage.removeItem("employee_profilepicture");
 
         var owner=localStorage.getItem('email')
-        var owner_pass = localStorage.getItem("password")
         setLoading(true)
 
         console.log(owner)
         sessionStorage.setItem("owner_email", owner!)
-        sessionStorage.setItem("owner_pass", owner_pass!)
 
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees/${owner}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/owners/employees`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
             setEmployeeList(response)
-
-            setLoading(false)
         })
         .catch(err => {
             console.log(err)
-            setLoading(false)
          })
 
          //get the owner's gyms
-         axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+         axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
                 setGymList(response)
+                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
@@ -78,16 +94,16 @@ const ManageEmployees: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>My Employees</IonText>
-                <IonButton routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>
+                <IonButton mode="ios" routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>
                 <br></br><br></br>
-                <IonAccordionGroup>
+                <IonAccordionGroup mode="ios">
                 {
                     gymList.map((el:any)=>
-                        <IonAccordion key={el.g_id} value={el.g_id}>
-                            <IonItem slot="header">
-                                <IonLabel>{el.gym_brandname}</IonLabel>
+                        <IonAccordion key={el.g_id} value={el.g_id} mode="ios">
+                            <IonItem slot="header" mode="ios">
+                                <IonLabel>{el.gym_name}</IonLabel>
                              </IonItem>
-                             <IonList slot="content">
+                             <IonList slot="content" mode="ios">
                                 <EmployeeList list={(getEmployeesByGym(el.g_id))} history={history}></EmployeeList>
                             </IonList>
                         </IonAccordion>
@@ -95,8 +111,8 @@ const ManageEmployees: React.FC = () =>{
                 </IonAccordionGroup>    
                 
                 <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}

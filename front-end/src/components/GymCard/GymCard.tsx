@@ -13,7 +13,7 @@
   * @param prop takes in id{any},name{string}, address{string}, deleteClicked{any}
   * @returns GymCard component
   */
- export const GymCard=(prop:{id:any,name:string,address:string,deleteClicked:any})=>{
+ export const GymCard=(prop:{id:any,name:string, brand:string,address:string,deleteClicked:any})=>{
  //=================================================================================================
  //    VARIABLES & HOOKS
  //=================================================================================================
@@ -52,7 +52,7 @@
        data: JSON.stringify({ 
          "gid":prop.id,
          "email":localStorage.getItem("email"),
-         "password":password,
+         "apikey":sessionStorage.getItem("key"),
        })
      }
    )
@@ -81,30 +81,36 @@
    return(
    <div data-testid="GymCard">
      <IonCard
+        mode="ios"
        color="primary"   
        class="ion-padding gymCardMargin"
        onClick={() => setShowActionSheet(true)}
      >
-       <IonCardTitle class="inputHeading">
+       <IonCardTitle class="inputHeading" mode="ios">
          {prop.name}
        </IonCardTitle>
        
-       <IonCardSubtitle className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
+       <IonCardSubtitle mode="ios" className='subheading' style={{"marginBottom":"0%", "marginTop":"2%", "marginLeft":"0%"}}>
          {prop.address}
        </IonCardSubtitle>
      </IonCard>
  
            <IonActionSheet
+              mode="ios"
                isOpen={showActionSheet}
                onDidDismiss={()=>setShowActionSheet(false)}
                cssClass="my-custom-class"
                
                buttons={[{
+                  
                    text: 'Edit',
                    id:'edit-button',
                    icon: create,
                    handler: () => {
                      sessionStorage.setItem("gid",prop.id  )
+                     sessionStorage.setItem("gymName",prop.name )
+                     sessionStorage.setItem("gymAddress",prop.address)
+                     sessionStorage.setItem("gymBrand",prop.brand)
                      history.push("/EditGym")
                    }
                  },{
@@ -153,6 +159,7 @@
            </IonActionSheet>
  
            <IonToast
+            mode="ios"
              isOpen={showToast1}
              onDidDismiss={() => setShowToast1(false)}
              message="Gym has been deleted."
@@ -161,6 +168,7 @@
              />
  
            <IonToast
+            mode="ios"
              isOpen={showToast2}
              onDidDismiss={() => setShowToast2(false)}
              message={toastMessage}
@@ -169,8 +177,8 @@
            />
                  
            <IonLoading 
+           mode="ios"
              isOpen={loading}
-             message={"Loading"}
              duration={2000}
              spinner={"circles"}
              onDidDismiss={() => setLoading(false)}

@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import EmployeeProfileView from './EmployeeProfileView';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-  const {baseElement } = render(<EmployeeProfileView/>);
+test('renders without crashing', async() => {
+  const {baseElement } =await render(<EmployeeProfileView/>);
   expect(baseElement).toBeDefined();
 });
 
@@ -15,9 +16,9 @@ test('renders without crashing', () => {
 
 describe('Testing connection to API', () => {
 
-    it('should load employee data', async () => {
+    it('should load employee data',  () => {
         (async ()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${"gym_id"}`, {
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${"gym_id"}`, {
             "method":"GET"
             })
             .then(response =>response.json())
@@ -32,9 +33,9 @@ describe('Testing connection to API', () => {
             })
         })
     });
-    it('should delete employee', async () => {
+    it('should delete employee',  () => {
         (async ()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`, {
                 method: 'DELETE',
                 headers: {
                 'Accept': 'application/json',

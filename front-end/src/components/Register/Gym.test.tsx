@@ -1,12 +1,14 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
+import React from 'react';
 import Gym from './Gym';
 
-test('renders without crashing', () => {
-  const{baseElement} = render(<Gym/>);
+test('renders without crashing', async() => {
+  const{baseElement} = await render(<Gym handleChange={null} next={null} prev={null}/>);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly displays labels', async () => {
-  const {baseElement} = render(<Gym />);
+  const {baseElement} =await render(<Gym handleChange={null} next={null} prev={null} />);
   expect (baseElement).toHaveTextContent("Please select your gym*");
 });

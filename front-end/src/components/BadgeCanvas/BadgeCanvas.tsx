@@ -48,14 +48,13 @@ export const BadgeCanvas: React.FC<BadgeCanvasInputProps> = ({
      */
     return (
         <>
-        <IonCard>
+        <IonCard mode="ios">
             <IonCardHeader>
-                <IonCardTitle className='inputHeading' class ="ion-text-center">{name}</IonCardTitle> 
-
-
+                <IonCardTitle mode="ios" className='inputHeading' class ="ion-text-center">{name}</IonCardTitle> 
             </IonCardHeader>
 
             <IonSlides
+                mode="ios"
                 onIonSlidesDidLoad={() => handleSlidesLoad()} 
                 ref={slidesEl}
             >

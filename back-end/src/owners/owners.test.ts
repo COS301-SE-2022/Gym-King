@@ -1,14 +1,14 @@
 jest.setTimeout(25000)
 import "reflect-metadata";
 import { GymKingDataSource } from "../datasource";
-import { gym_brand } from "../entities/gym_brand.entity";
-import { gymBrandRepository } from "../repositories/gym_brand.repository";
+import { ownerRepository } from "../repositories/gym_owner.repository";
 import { ownerOTPRepository } from "../repositories/owner_otp.repository";
 import { server } from "../server";
 const request = require('supertest');
 let gid1:string;
 let gid2:string;
 let otp:any;
+let apikey:string;
 beforeAll(async () => {
     await GymKingDataSource.initialize()
     .then(() => {
@@ -44,6 +44,37 @@ describe('Testing POST API Calls', () => {
             expect(response.body).toStrictEqual({'success':true})
         })
     });
+    describe('Testing Login calls', () => {
+        test('responds to correct POST login owner', async () => {
+            const response = await request(server).post('/users/login').send({
+                "email": "owner@example.com",
+                "password":"Test",
+                "usertype":"gym_owner"
+            });
+            let result = await ownerRepository.findByEmail('owner@example.com');
+            apikey = result.apikey
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({"username":"Test","profile_picture":"NONE",'success':true,'apikey':apikey})
+        });
+        test('responds to incorrect password POST login owner', async () => {
+            const response = await request(server).post('/users/login').send({
+                "email": "owner@example.com",
+                "password":"Wrong",
+                "usertype":"gym_owner"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({ 'success': false, 'results':"invalid password" })
+        });
+        test('responds to incorrect email POST login owner', async () => {
+            const response = await request(server).post('/users/login').send({
+                "email": "wrong@example.com",
+                "password":"Test",
+                "usertype":"gym_owner"
+            });
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toStrictEqual({ 'success': false, 'results':'invalid email or password'})
+        });
+    });
     describe('responds to POST insert gym brand', () => {
         test('responds to POST insert gym brand', async () => {
             let response = await request(server).post('/brands/brand').send({
@@ -70,6 +101,8 @@ describe('Testing POST API Calls', () => {
     })
     test('responds to POST insert gym', async () => {
         let response = await request(server).post('/gyms/gym').send({
+            "email":"owner@example.com",
+            "apikey":apikey,
             "gymName":"Test",
             "gymBrandName": "Test Brand 1",
             "gymAddress": "Test Address 1",
@@ -87,6 +120,8 @@ describe('Testing POST API Calls', () => {
             gym_coord_long: -25.8661
         })
         response = await request(server).post('/gyms/gym').send({
+            "email":"owner@example.com",
+            "apikey":apikey,
             "gymName":"Test",
             "gymBrandName": "Test Brand 2",
             "gymAddress": "Test Address 2",
@@ -104,37 +139,9 @@ describe('Testing POST API Calls', () => {
             gym_coord_long: -25.8661
         })
     });
-    describe('Testing Login calls', () => {
-        test('responds to correct POST login owner', async () => {
-            const response = await request(server).post('/users/login').send({
-                "email": "owner@example.com",
-                "password":"Test",
-                "usertype":"gym_owner"
-            });
-            expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({"profile_picture":"NONE",'success':true})
-        });
-        test('responds to incorrect password POST login owner', async () => {
-            const response = await request(server).post('/users/login').send({
-                "email": "owner@example.com",
-                "password":"Wrong",
-                "usertype":"gym_owner"
-            });
-            expect(response.statusCode).toBe(400);
-            expect(response.body).toStrictEqual({ 'success': false, 'results':"invalid password" })
-        });
-        test('responds to incorrect email POST login owner', async () => {
-            const response = await request(server).post('/users/login').send({
-                "email": "wrong@example.com",
-                "password":"Test",
-                "usertype":"gym_owner"
-            });
-            expect(response.statusCode).toBe(404);
-            expect(response.body).toStrictEqual({ 'success': false, 'results':'invalid email or password'})
-        });
-    });
     test('Testing POST owner owns a gym', async () => {
         let response = await request(server).post('/gyms/owned').send({
+            "apikey":apikey,
             "gid": gid1,
             "email":"owner@example.com"
         });
@@ -144,6 +151,7 @@ describe('Testing POST API Calls', () => {
             email: "owner@example.com"
         })
         response = await request(server).post('/gyms/owned').send({
+            "apikey":apikey,
             "gid": gid2,
             "email":"owner@example.com"
         });
@@ -153,6 +161,8 @@ describe('Testing POST API Calls', () => {
             email: "owner@example.com"
         })
         response = await request(server).post('/employees/employee').send({
+            "ownerEmail":"owner@example.com",
+            "apikey":apikey,
             "email": "emp1@example.com",
             "fullname": "Test Test",
             "number": "0123456789",
@@ -163,6 +173,8 @@ describe('Testing POST API Calls', () => {
         expect(response.statusCode).toBe(200);
         expect(response.body).toStrictEqual({'success':true})
         response = await request(server).post('/employees/employee').send({
+            "ownerEmail":"owner@example.com",
+            "apikey":apikey,
             "email": "emp2@example.com",
             "fullname": "Test Test",
             "number": "0123456789",
@@ -202,38 +214,41 @@ describe('Testing POST API Calls', () => {
         test('responds to correct POST get owner info', async () => {
             const response = await request(server).post('/owners/owner/info').send({
                 "email": "owner@example.com",
-                "password": "Test"
+                "apikey": apikey
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toMatchObject({
                 "email": "owner@example.com",
                 "fullname": "Test Test",
                 "number": "0123456789",
-                "username":"Test"
+                "username":"Test",
+                "profile_picture": "NONE"
             })
         });
-        test('responds to incorrect password POST get owner info', async () => {
+        test('responds to incorrect apikey POST get owner info', async () => {
             const response = await request(server).post('/owners/owner/info').send({
                 "email": "owner@example.com",
-                "password": "wrong"
+                "apikey": "wrong"
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'})
         });
         test('responds to incorrect email POST get owner info', async () => {
             const response = await request(server).post('/owners/owner/info').send({
                 "email": "wrong@example.com",
-                "password": "Test"
+                "apikey": apikey
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'})
         });
     });
-});
-describe('Testing GET API Calls', () => {
-    test('responds to GET employees of owner', async () => {
-        const response = await request(server).get('/owners/employees/owner@example.com')
+    test('responds to POST employees of owner', async () => {
+        const response = await request(server).post('/owners/employees/').send({
+            "email":"owner@example.com",
+            "apikey":apikey
+        })
         expect(response.statusCode).toBe(200);
+        console.log(response.body);
         if (response.body[0].g_id == gid1){
             expect(response.body[0]).toMatchObject({
                 email: "emp1@example.com",
@@ -271,9 +286,13 @@ describe('Testing GET API Calls', () => {
             });
         }
     });
-    test('responds to GET owned gyms', async () => {
-        const response = await request(server).get('/gyms/owned/owner@example.com')
+    test('responds to POST owned gyms', async () => {
+        const response = await request(server).post('/gyms/owned/getGyms').send({
+            "email":"owner@example.com",
+            "apikey":apikey
+        })
         expect(response.statusCode).toBe(200);
+        console.log(response.body);
         if (response.body[0].g_id == gid1){
             expect(response.body[0]).toMatchObject({ 
                 g_id: gid1,
@@ -307,15 +326,17 @@ describe('Testing GET API Calls', () => {
             });
         }
     });
-    test('responds to correct GET owner profile picture by email', async () => {
-        const response = await request(server).get('/owners/owner/picture/owner@example.com')
+});
+describe('Testing GET API Calls', () => {
+    test('responds to correct GET owner profile picture by username', async () => {
+        const response = await request(server).get('/owners/owner/picture/Test')
         expect(response.statusCode).toBe(200);
         expect(response.body).toBe('NONE');
     });
-    test('responds to incorrect GET owner profile picture by email', async () => {
+    test('responds to incorrect GET owner profile picture by username', async () => {
         const response = await request(server).get('/owners/owner/picture/wrong')
         expect(response.statusCode).toBe(200);
-        expect(response.body).toStrictEqual({'message':'Invalid email!'});
+        expect(response.body).toStrictEqual({'message':'Invalid username!'});
     });
 });
 describe('Testing PUT API Calls', () => {
@@ -323,7 +344,7 @@ describe('Testing PUT API Calls', () => {
         test('responds to correct PUT update owner info', async () => {
             let response = await request(server).put('/owners/owner/info').send({
                 "email": "owner@example.com",
-                "password":"Test",
+                "apikey": apikey,
                 "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
@@ -332,7 +353,7 @@ describe('Testing PUT API Calls', () => {
             expect(response.body).toStrictEqual({'success': true})
             response = await request(server).post('/owners/owner/info').send({
                 "email": "owner@example.com",
-                "password":"Test"
+                "apikey": apikey
             });
             expect(response.statusCode).toBe(200);
              expect(response.body).toMatchObject({
@@ -343,32 +364,34 @@ describe('Testing PUT API Calls', () => {
                 profile_picture: 'NONE'
             });
         });
-        test('responds to incorrect password PUT change owner info', async () => {
+        test('responds to incorrect apikey PUT change owner info', async () => {
             let response = await request(server).put('/owners/owner/info').send({
                 "email": "owner@example.com",
-                "password":"wrong",
+                "apikey": "wrong",
                 "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'})
             });
         test('responds to incorrect email PUT change owner info', async () => {
             let response = await request(server).put('/owners/owner/info').send({
                 "email": "wrong@example.com",
-                "password":"Test",
+                "apikey": apikey,
                 "fullname": "Changed Test",
                 "number": "9876543210",
                 "username":"Changed"
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'})
         });
     });
     describe('Testing PUT update gym info', () => {
         test('responds to PUT update gym info', async () => {
             let response = await request(server).put('/gyms/gym/info').send({
+                email: "owner@example.com",
+                apikey: apikey,
                 gid: gid1,
                 gymName: "Changed Test",
                 gymBrandName: "Changed Brand 1",
@@ -431,35 +454,37 @@ describe('Testing PUT API Calls', () => {
                 "password":"Changed",
                 "usertype":"gym_owner"
             });
+            let result = await ownerRepository.findByEmail('owner@example.com');
+            apikey = result.apikey
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({"profile_picture":"NONE",'success':true})
+            expect(response.body).toStrictEqual({"username":"Changed","profile_picture":"NONE",'success':true,'apikey':apikey})
         });
     });
 });
 describe('Testing DELETE API Calls', () => {
     describe('Testing DELETE gym', () => {
-        test('responds to incorrect owner password to DELETE gym', async () => {
+        test('responds to incorrect owner apikey to DELETE gym', async () => {
             let response = await request(server).delete('/owner/delete/gym').send({
                 "email": "owner@example.com",
-                "password":"wrong",
+                "apikey": "wrong",
                 "gid": gid1
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'})
         });
         test('responds to incorrect owner email to DELETE gym', async () => {
             let response = await request(server).delete('/owner/delete/gym').send({
                 "email": "wrong@example.com",
-                "password":"Changed",
+                "apikey": apikey,
                 "gid": gid1
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'})
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'})
         });
         test('responds to correct DELETE gym', async () => {
             let response = await request(server).delete('/owner/delete/gym').send({
                 "email": "owner@example.com",
-                "password":"Changed",
+                "apikey": apikey,
                 "gid": gid1
             });
             expect(response.statusCode).toBe(200);
@@ -467,26 +492,26 @@ describe('Testing DELETE API Calls', () => {
         });
     });
     describe('Testing DELETE owner', () => {
-        test('responds to incorrect password DELETE owner', async () => {
+        test('responds to incorrect apikey DELETE owner', async () => {
             let response = await request(server).delete('/owners/delete').send({
                 "email": "owner@example.com",
-                "password": "wrong"
+                "apikey": "wrong"
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'});
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'});
         });
         test('responds to incorrect email DELETE owner', async () => {
             let response = await request(server).delete('/owners/delete').send({
                 "email": "wrong@example.com",
-                "password": "Changed"
+                "apikey": apikey
             });
             expect(response.statusCode).toBe(200);
-            expect(response.body).toStrictEqual({'message':'Invalid email or password!'});
+            expect(response.body).toStrictEqual({'message':'Invalid email or apikey!'});
         });
         test('responds to correct DELETE owner', async () => {
             let response = await request(server).delete('/owners/delete').send({
                 "email": "owner@example.com",
-                "password": "Changed"
+                "apikey": apikey
             });
             expect(response.statusCode).toBe(200);
             expect(response.body).toStrictEqual({ 'success': true });

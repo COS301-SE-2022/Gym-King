@@ -20,8 +20,8 @@ export const badgeClaimRepository = GymKingDataSource.getRepository(badge_claim)
     },
     async findByGID(gid: string){
         return badgeRepository.query(`SELECT gu.email, gu.username, gu.profile_picture, iv.b_id, iv.input1, iv.input2, iv.input3, iv.proof, iv.date FROM GYM_USER as gu  
-        inner join (SELECT * FROM BADGE_CLAIM WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = '${gid}')) as iv 
-        on gu.email = iv.email`)
+        inner join (SELECT * FROM BADGE_CLAIM WHERE B_ID IN ( SELECT B_ID FROM BADGE WHERE G_ID = $1)) as iv 
+        on gu.email = iv.email`,[gid])
     },
     async saveClaim(bid: string, email: string, username: string, input1: string, input2: string, input3: string, proof: string) {
         const badgeEntity = new badge();

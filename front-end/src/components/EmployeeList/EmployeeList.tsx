@@ -6,10 +6,9 @@ export type Props = {list?:Array<string>, history:any};
 
 export class EmployeeList extends React.Component<Props>{
 
-    goToProfile = (email:string, name:string, surname:string, username:string, phone:string, gid:string, profilePic:string)=>{
+    goToProfile = (email:string, fullname:string, username:string, phone:string, gid:string, profilePic:string)=>{
         sessionStorage.setItem("employee_email", email);
-        sessionStorage.setItem("employee_name", name);
-        sessionStorage.setItem("employee_surname", surname);
+        sessionStorage.setItem("employee_name", fullname);
         sessionStorage.setItem("employee_username", username);
         sessionStorage.setItem("employee_phone",phone);
         sessionStorage.setItem("employee_gid", gid);
@@ -20,15 +19,15 @@ export class EmployeeList extends React.Component<Props>{
     render(){
         const list = this.props.list!
         return(
-                <IonList>
+                <IonList mode="ios">
                     {
                         list.map((el:any)=>(
-                            <IonItem  key={el.email}  onClick={() => this.goToProfile(el.email, el.name, el.surname, el.username, el.number, el.g_id, el.profile_picture)} >
+                            <IonItem mode="ios" key={el.email}  onClick={() => this.goToProfile(el.email, el.fullname, el.username, el.number, el.g_id, el.profile_picture)} >
                                 <IonAvatar slot="start">
                                 <IonImg src={el.profile_picture} alt=""/>
                                 </IonAvatar>
                                 <IonLabel>
-                                <h2>{el.name} {el.surname}</h2>
+                                <h2>{el.fullname}</h2>
                                 </IonLabel>
                             </IonItem>
                         ))

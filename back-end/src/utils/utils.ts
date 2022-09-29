@@ -84,14 +84,14 @@ const utils = express.Router()
   .post("/tables/create", cors(corsOptions), async (req: any, res: any) => {
     try {
       const client = await pool.connect();
-      let result = await client.query(
+      await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_BRAND(" +
           "Gym_BrandName VARCHAR(50)," +
           "gym_logo VARCHAR(65535)," +
           "PRIMARY KEY(Gym_BrandName)" +
           ")"
       );
-      result = await client.query(
+      await client.query(
         "CREATE TABLE IF NOT EXISTS GYM(" +
           "G_ID VARCHAR(4)," +
           "Gym_Name TEXT,"+
@@ -104,7 +104,7 @@ const utils = express.Router()
           "REFERENCES GYM_BRAND(Gym_BrandName)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_USER(" +
           "email VARCHAR(320)," +
           "Fullname VARCHAR(150)," +
@@ -113,12 +113,15 @@ const utils = express.Router()
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
           "Gym_Membership VARCHAR(50),"+
+          "APIKEY VARCHAR(64),"+
+          "PushKey VARCHAR(1024),"+
+          "notificationToggle BOOLEAN DEFAULT TRUE,"+
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (Gym_Membership)" +
           "REFERENCES GYM_BRAND(Gym_Brandname)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_EMPLOYEE(" +
           "email VARCHAR(320)," +
           "G_ID VARCHAR(4)," +
@@ -127,12 +130,13 @@ const utils = express.Router()
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
+          "APIKEY VARCHAR(64),"+
           "PRIMARY KEY(email)," +
           "FOREIGN KEY (G_ID)" +
           "REFERENCES GYM(G_ID)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_OWNER(" +
           "email VARCHAR(320)," +
           "Fullname VARCHAR(150)," +
@@ -140,10 +144,11 @@ const utils = express.Router()
           "Username VARCHAR(50)," +
           "Password VARCHAR(300)," +
           "Profile_picture VARCHAR(65535),"+
+          "APIKEY VARCHAR(64),"+
           "PRIMARY KEY(email)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS GYM_OWNED(" +
           "email VARCHAR(320)," +
           "G_ID VARCHAR(4)," +
@@ -154,7 +159,7 @@ const utils = express.Router()
           "REFERENCES GYM_OWNER(email)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS BADGE(" +
           "B_ID VARCHAR(3)," +
           "G_ID VARCHAR(4)," +
@@ -172,7 +177,7 @@ const utils = express.Router()
           "REFERENCES GYM(G_ID)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS BADGE_OWNED(" +
           "B_ID VARCHAR(3)," +
           "email VARCHAR(320)," +
@@ -187,7 +192,7 @@ const utils = express.Router()
           "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS BADGE_CLAIM(" +
           "B_ID VARCHAR(3)," +
           "email VARCHAR(320)," +
@@ -202,7 +207,7 @@ const utils = express.Router()
           "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS USER_OTP(" +
           "email VARCHAR(320)," +
           "otp VARCHAR(50)," +
@@ -211,7 +216,7 @@ const utils = express.Router()
           "FOREIGN KEY (email) REFERENCES GYM_USER(email)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS EMPLOYEE_OTP(" +
           "email VARCHAR(320)," +
           "otp VARCHAR(50)," +
@@ -220,7 +225,7 @@ const utils = express.Router()
           "FOREIGN KEY (email) REFERENCES GYM_EMPLOYEE(email)" +
         ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS OWNER_OTP(" +
           "email VARCHAR(320)," +
           "otp VARCHAR(50)," +
@@ -229,7 +234,7 @@ const utils = express.Router()
           "FOREIGN KEY (email) REFERENCES GYM_OWNER(email)" +
           ")"
       );
-      result = await client.query(
+       await client.query(
         "CREATE TABLE IF NOT EXISTS FRIEND(" +
         "fromUser VARCHAR(320)," +
         "toUser VARCHAR(320)," +
@@ -237,6 +242,15 @@ const utils = express.Router()
         "PRIMARY KEY(fromUser,toUser)," +
         "FOREIGN KEY (fromUser) REFERENCES GYM_USER(email)," +
         "FOREIGN KEY (toUser) REFERENCES GYM_USER(email)" +
+      ")"
+      );
+       await client.query(
+        "CREATE TABLE IF NOT EXISTS SUBSCRIPTION(" +
+        "fromUser VARCHAR(320)," +
+        "toGym VARCHAR(4)," +
+        "PRIMARY KEY(fromUser,toGym)," +
+        "FOREIGN KEY (fromUser) REFERENCES GYM_USER(email)," +
+        "FOREIGN KEY (toGym) REFERENCES GYM(g_id)" +
       ")"
       );
       const results = { success: true};
@@ -254,36 +268,36 @@ const utils = express.Router()
    * @param 
    * @returns 
    */
-  .delete("/tables/drop", async (req: any, res: any) => {
-    try {
-      // const client = await pool.connect();
-      // let result = await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
-      // result = await client.query("DROP TABLE IF EXISTS USER_OTP");
-      // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
-      // result = await client.query("DROP TABLE IF EXISTS OWNER_OTP");
-      // result = await client.query("DROP TABLE IF EXISTS FRIEND");
-      // result = await client.query("DROP TABLE IF EXISTS REQUEST_EMPLOYEE");
-      // result = await client.query("DROP TABLE IF EXISTS SUBSCRIPTION");
-      // result = await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
-      // result = await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
-      // result = await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
-      // result = await client.query("DROP TABLE IF EXISTS BADGE_OWNED");
-      // result = await client.query("DROP TABLE IF EXISTS BADGE");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_OWNED");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_USER");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
-      // result = await client.query("DROP TABLE IF EXISTS GYM_OWNER");
-      // result = await client.query("DROP TABLE IF EXISTS GYM")
-      // result = await client.query("DROP TABLE IF EXISTS GYM_BRAND");
-      // const results = { success: true, results: result };
-      res.json({'message':'not implemented!'});
-      // client.release();
-    } catch (err) {
-      const results = { success: false, results: err };
-      console.error(err);
-      res.json(results);
-    }
-  })
+  // .delete("/tables/drop", async (req: any, res: any) => {
+  //   try {
+  //     // const client = await pool.connect();
+  //     //  await client.query("DROP TABLE IF EXISTS BADGE_CLAIM");
+  //     //  await client.query("DROP TABLE IF EXISTS USER_OTP");
+  //     //  await client.query("DROP TABLE IF EXISTS EMPLOYEE_OTP");
+  //     //  await client.query("DROP TABLE IF EXISTS OWNER_OTP");
+  //     //  await client.query("DROP TABLE IF EXISTS FRIEND");
+  //     //  await client.query("DROP TABLE IF EXISTS REQUEST_EMPLOYEE");
+  //     //  await client.query("DROP TABLE IF EXISTS SUBSCRIPTION");
+  //     //  await client.query("DROP TABLE IF EXISTS USER_PROFILE_PICTURE");
+  //     //  await client.query("DROP TABLE IF EXISTS EMPLOYEE_PROFILE_PICTURE");
+  //     //  await client.query("DROP TABLE IF EXISTS OWNER_PROFILE_PICTURE");
+  //     //  await client.query("DROP TABLE IF EXISTS BADGE_OWNED");
+  //     //  await client.query("DROP TABLE IF EXISTS BADGE");
+  //     //  await client.query("DROP TABLE IF EXISTS GYM_OWNED");
+  //     //  await client.query("DROP TABLE IF EXISTS GYM_USER");
+  //     //  await client.query("DROP TABLE IF EXISTS GYM_EMPLOYEE");
+  //     //  await client.query("DROP TABLE IF EXISTS GYM_OWNER");
+  //     //  await client.query("DROP TABLE IF EXISTS GYM")
+  //     //  await client.query("DROP TABLE IF EXISTS GYM_BRAND");
+  //     // const results = { success: true, results: result };
+  //     res.json({'message':'not implemented!'});
+  //     // client.release();
+  //   } catch (err) {
+  //     const results = { success: false, results: err };
+  //     console.error(err);
+  //     res.json(results);
+  //   }
+  // })
   //=========================================================================================================//
   /**
    * ...

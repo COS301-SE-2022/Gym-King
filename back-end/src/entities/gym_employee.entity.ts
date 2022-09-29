@@ -5,7 +5,7 @@ export class gym_employee {
     @PrimaryColumn({length: 320})
     email: string
 
-    @Column({length: 150})
+    @Column({length: 150,nullable: true})
     fullname: string
     
     @Column({length: 10})
@@ -24,4 +24,7 @@ export class gym_employee {
     @ManyToOne(() => gym, (gym) => gym.g_id,{ eager: true })
     @JoinColumn({name: "g_id"})
     g_id: gym
+
+    @Column({length: 64,default: null, nullable: true})
+    apikey: string
 }

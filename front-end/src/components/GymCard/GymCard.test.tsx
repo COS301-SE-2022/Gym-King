@@ -1,10 +1,10 @@
-import {render,screen} from '@testing-library/react';
-import { response } from 'express';
+jest.setTimeout(250000)
+import {render} from '@testing-library/react';
 import GymCard from './GymCard';
 /*UNIT TESTING*/
 //test if pages rendered
-test('renders without crashing', () => {
-  const { baseElement } = render(<GymCard id="" name="" address='' deleteClicked=""/>);
+test('renders without crashing', async() => {
+  const { baseElement } =await render(<GymCard brand="" id="" name="" address='' deleteClicked=""/>);
   expect(baseElement).toBeDefined();
 });
 
@@ -12,9 +12,9 @@ describe('Testing prop text values', () => {
 
     
     test('correctly displays gym card info', async () => {
-        render(<GymCard id="" name="a gym" address='123 street' deleteClicked=""/>);
-        expect(screen.getByText(/a gym/i)).toBeInTheDocument();
-        expect(screen.getByText(/123 street/i)).toBeInTheDocument();
+        const { baseElement } = await render(<GymCard brand ="" id="" name="a gym" address='123 street' deleteClicked=""/>);
+        expect (baseElement).toHaveTextContent("a gym");
+        expect (baseElement).toHaveTextContent("123 street");
     }); 
   });
 
@@ -23,10 +23,10 @@ describe('Testing prop text values', () => {
 
 describe('Testing connection to api', () => {
 
-  test('should delete a badge',  () => {
+  test('should delete a badge',  async() => {
       
-      ( ()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
+      let test =( async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/owner/delete/gym`,
         {
             method: "DELETE",
             headers: {
@@ -48,6 +48,8 @@ describe('Testing connection to api', () => {
             expect(err).toBeDefined()
           });
       })
+
+      test()
   });
 })
 

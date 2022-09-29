@@ -1,13 +1,66 @@
-import { IonPage, IonContent, IonImg, useIonViewDidEnter, useIonRouter} from '@ionic/react';
+import { IonPage, IonContent, IonImg, useIonViewDidEnter } from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
+import { PushNotifications, PushNotificationSchema, DeliveredNotifications, ActionPerformed } from '@capacitor/push-notifications';
+import { useHistory } from 'react-router';
 
 
 
 export const SplashPage: React.FC = () =>
 {
+    let history=useHistory()
+    PushNotifications.removeAllListeners();
+    PushNotifications.addListener('pushNotificationReceived',
+        (notification: PushNotificationSchema) => {
+
+            let n = { id: notification.id, title: notification.data.title, body: notification.data.body, type: 'foreground' }
+            
+            let notificationStorage = localStorage.getItem("notificationStorage")
+            if(notificationStorage === null){
+                localStorage.setItem("notificationStorage",JSON.stringify([n]))
+            }
+            else{
+                let notifications = JSON.parse(notificationStorage)
+                notifications = [...notifications,n]
+                localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+            }
+        
+        }
+    );
+    
+    PushNotifications.addListener('pushNotificationActionPerformed',
+    (actionPerformed: ActionPerformed) => {
+        let n = { id: actionPerformed.notification.id, title: actionPerformed.notification.data.title, body: actionPerformed.notification.data.body, type: 'foreground' }
+            
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        if(notificationStorage === null){
+            localStorage.setItem("notificationStorage",JSON.stringify([n]))
+        }
+        else{
+            let notifications = JSON.parse(notificationStorage)
+            notifications = [...notifications,n]
+            localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+        }
+    }
+);
+    PushNotifications.getDeliveredNotifications().then((Delivered:DeliveredNotifications)=>{
+        let notificationStorage = localStorage.getItem("notificationStorage")
+        
+        if(notificationStorage === null){
+            notificationStorage = "[]"
+        }       
+        let notifications = JSON.parse(notificationStorage!)
+        for(const n of Delivered.notifications ){
+                console.log(n)
+                notifications.push(n)
+        }        
+        localStorage.setItem("notificationStorage",JSON.stringify(notifications))
+        PushNotifications.removeAllDeliveredNotifications()
+    })
+
+    // eslint-disable-next-line
     const getPermissons = () => {
 
         Geolocation.checkPermissions().then(
@@ -18,38 +71,30 @@ export const SplashPage: React.FC = () =>
         );    
           
     }
-    const router = useIonRouter();
+    // const router = useIonRouter();
     useIonViewDidEnter(()=>{
         getPermissons();
         setTimeout(() => {
-            if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
-            {
-                navigate()
-            }
-            else
-            {
-                router.push("/Login");
-
-            }
+            history.push("/Login");
           }, 3000);
-
-        
-        
     })
-    const navigate=()=>{
-        let usertype=localStorage.getItem("usertype")
-        if(usertype==="gym_user")
-        {
-            router.push("userMap");
-        }
-        else if(usertype==="gym_owner")
-        {
-            router.push("GymOwnerPage");
-        }
-        else{
-            router.push("EmployeeHome");
-        }
-    }
+        
+        
+    //})
+    // const navigate=()=>{
+    //     let usertype=localStorage.getItem("usertype")
+    //     if(usertype==="gym_user")
+    //     {
+    //         router.push("userMap");
+    //     }
+    //     else if(usertype==="gym_owner")
+    //     {
+    //         router.push("GymOwnerPage");
+    //     }
+    //     else{
+    //         router.push("EmployeeHome");
+    //     }
+    // }
     return (
         <IonPage>
             <IonContent fullscreen className='splash'>

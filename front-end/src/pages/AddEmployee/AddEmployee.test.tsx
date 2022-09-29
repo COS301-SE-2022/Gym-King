@@ -1,14 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import AddEmployee from './AddEmployee';
 
 
-test('renders without crashing', ()=> {
-  const{baseElement} = render(<AddEmployee/>);
+test('renders without crashing', async ()=> {
+  const{baseElement} =await render(<AddEmployee/>);
   expect(baseElement).toBeDefined();
 });
 
 test('correctly diplays labels ', async () => {
-  const {baseElement} = render(<AddEmployee/>);
+  const {baseElement} =await render(<AddEmployee/>);
   expect (baseElement).toHaveTextContent("Email*");
   //expect (baseElement).toHaveTextContent("Full name*");
   expect (baseElement).toHaveTextContent("Phone Number");
@@ -22,12 +23,11 @@ test('correctly diplays labels ', async () => {
 //////// INTEGRATION TESTS ///////////
 
 describe('Testing connection to api', () => {
-  let badgeId= "XRQ"
   let email ="u20519517@tuks.co.za"
 
-  it('should load claim data', async () => {
-      (()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`,{
+  it('should load claim data',  () => {
+      let test =(async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`,{
           "method":"GET"
         })
         .then(response =>response.json())
@@ -39,12 +39,14 @@ describe('Testing connection to api', () => {
           expect(err).toBeDefined()
         }) 
         })
+
+        test()
   });
 
-  it('should load claim data', async () => {
-      (()=>
+  it('should load claim data',  () => {
+      let test = (async()=>
       {
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee`,{
             "method":"POST",
             headers: {
                 'Accept': 'application/json',
@@ -69,6 +71,8 @@ describe('Testing connection to api', () => {
             expect(err).toBeDefined()
       }) 
       })
+
+      test()
   });
 })
 

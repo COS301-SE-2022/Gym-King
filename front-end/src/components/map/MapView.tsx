@@ -21,6 +21,11 @@ interface LocationError {
 const MapView: React.FC = () =>{
     let history=useHistory()
 
+    // state that controls the selectedGymMenu display
+    const [showModal, setShowModal] = useState(false);
+
+    
+
     //=========================================================================================================//
     //                                                       MAP                                               //
     //=========================================================================================================//
@@ -47,6 +52,7 @@ const MapView: React.FC = () =>{
 
     const [gymData, setGymData]=useState({
         g_id: "",
+        gym_name:"",
         gym_brandname: "",
         gym_address: "",
         gym_coord_lat: 0,
@@ -56,8 +62,7 @@ const MapView: React.FC = () =>{
     
     const [gymsInSearchTab, setGymsInSearchTab] = useState<any[]>([]);
     
-    // state that controls the selectedGymMenu display
-    const [showModal, setShowModal] = useState(false);
+    
 
 
 
@@ -99,6 +104,7 @@ const MapView: React.FC = () =>{
                 
                 // set the gyms array for the search tab
                 setGymsInSearchTab(outGyms);
+                console.log(gymsInSearchTab)
         }
         // display nearby gyms
         else
@@ -339,7 +345,7 @@ const MapView: React.FC = () =>{
         const interval = setInterval(() => {
             if(first) {
                 getLocation(first);
-                setRefresh(20000);
+                setRefresh(60000);
                 setFirst(false);
                 getAllGyms();
             }
@@ -400,9 +406,10 @@ const MapView: React.FC = () =>{
     return (
         
         <>  
-            <IonContent  overflow-scroll="false" >
+            <IonContent  className='mainMap' >
                 
             <GymSearchBar 
+            
                 gyms={gymsInSearchTab} 
                 nearByCallBack = {() =>{
                         setShowModal(false);
@@ -423,13 +430,14 @@ const MapView: React.FC = () =>{
             /> 
                 
             <IonLoading 
+                mode="ios"
                 isOpen={loading}
-                message={"Loading"}
                 onDidDismiss={() => setLoading(false)}
                 spinner={"circles"}
                 cssClass="spinner"
             />
             <IonToast
+                mode="ios"
                 isOpen={error.showError}
                 message={String(error.message)}
                 
@@ -459,7 +467,7 @@ const MapView: React.FC = () =>{
                     setShowModal(false)
                 }}        
             >
-                <IonButton shape="round" id="float" onClick={() => { 
+                <IonButton mode="ios" shape="round" id="float" onClick={() => { 
                     
                     getLocation(true)
                     setGymsInMapView()
@@ -470,7 +478,7 @@ const MapView: React.FC = () =>{
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
                 <img src={location} width={50} height={50} alt='' />
                 </Overlay>      
-                {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string;}) => {
+                {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string; gym_name:string}) => {
                     return (
                         <Overlay 
                             key={item.key}
@@ -485,20 +493,22 @@ const MapView: React.FC = () =>{
 
             </Map>
 
-            <IonModal  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
+            <IonModal mode="ios"  id = "overlay" showBackdrop = {false} backdropDismiss={true}  isOpen={showModal} enterAnimation={enterAnimation} leaveAnimation={leaveAnimation}>
 
-                <IonCard style={{"margin":"0px", "height":"100%"}}  >
+                <IonCard mode="ios" style={{"margin":"0px", "height":"100%"}}  >
                     <IonCardHeader>
-                        <IonCardTitle className='center Subheading'>{gymData.gym_brandname}</IonCardTitle>
+                        <IonCardTitle className='center Subheading'>{ gymData.gym_name}</IonCardTitle>
                     </IonCardHeader >
                     <IonCardContent id="buttonBox" >
-                        <IonButtons>
+                        <IonButtons >
                             <IonButton  
+                                mode="ios"
                                 shape='round' 
                                 color="dark"
                                 className='btnView'
                                 onClick={()=>{
 
+                                    sessionStorage.setItem('gym_name',gymData.gym_name);
                                     sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
                                     sessionStorage.setItem('gym_address',gymData.gym_address);
                                     sessionStorage.setItem('gid',gymData.g_id);
@@ -509,7 +519,7 @@ const MapView: React.FC = () =>{
                             >
                                 View
                             </IonButton>
-                            <IonButton onClick={()=>setShowModal(false)} shape='round' className='btnClose' color="light">Close</IonButton>
+                            <IonButton mode="ios" onClick={()=>setShowModal(false)} shape='round' className='btnClose' color="light">Close</IonButton>
                         </IonButtons>
                     
                     </IonCardContent>

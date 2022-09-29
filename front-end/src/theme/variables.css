@@ -51,7 +51,7 @@ http://ionicframework.com/docs/theming/ */
   /** medium **/
 	--ion-color-medium: #92949c;
 	--ion-color-medium-rgb: 146,148,156;
-	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast: white;
 	--ion-color-medium-contrast-rgb: 0,0,0;
 	--ion-color-medium-shade: #808289;
 	--ion-color-medium-tint: #9d9fa669;
@@ -66,7 +66,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-darkorange: darkorange;
 
-  
+
 }
 
  /*
@@ -78,6 +78,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-background-color-rgb: 18,18,18;
   --ion-text-color: white;
   --ion-text-color-rgb: 255,255,255;
+  --ion-font-family: 'Comfortaa', cursive;
 
   --ion-color-step-50: #301d8c;
 	--ion-color-step-100: #2d1b84;
@@ -118,6 +119,10 @@ http://ionicframework.com/docs/theming/ */
     margin-right:10%;
 }
 
+.btn{
+  font-family: 'Comfortaa', cursive;
+}
+
 .inner-scroll.scroll-y.overscroll{
   background-color: #873CFF;
 }
@@ -144,7 +149,7 @@ ion-button{
 .PageTitle
 {
     font-size:2em;
-    font-family: 'Comfortaa', cursive;
+    font-family: '', cursive;
     padding:5%;
 }
 .PageTitleNoPadding
@@ -183,6 +188,10 @@ ion-card{
   font-family: 'Comfortaa', cursive;
   font-size:22px;
 }
+.mediumHeading{
+  font-family: 'Comfortaa', cursive;
+  font-size:20px;
+}
 .smallHeading{
   font-family: 'Comfortaa', cursive;
   font-size:16px;
@@ -194,6 +203,14 @@ ion-card{
   margin-left:5%;
   margin-right: 5%;
   margin-bottom: 20px;
+}
+
+.leftMargin10{
+  margin-left:10%
+}
+
+.btnRemoveFriend{
+  width:50%;
 }
 
 .width21{
@@ -279,11 +296,14 @@ ion-card{
 }
 
 
-.spinner{
-  --background: #873CFF;
+ion-loading.spinner{
+  --background: transparent;
   --spinner-color: #ffc409;
   --height: 4em;
+  --width: 2em;
 }
+
+
 
 .userImage{
   height: 7em;

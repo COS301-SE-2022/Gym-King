@@ -39,7 +39,7 @@ const PendingApprovalsPage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -90,8 +90,8 @@ const PendingApprovalsPage: React.FC = () =>{
                     }
 
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
@@ -100,6 +100,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     />
                 </IonContent>
                 <IonToast
+                    mode="ios"
                     isOpen={showAcceptToast}
                     onDidDismiss={() => {setShowAcceptToast(false); localStorage.setItem("claimAccepted", "false")}}
                     message = "Claim accepted!"
@@ -107,6 +108,7 @@ const PendingApprovalsPage: React.FC = () =>{
                     color="success"
                 />
                 <IonToast
+                    mode="ios"
                     isOpen={showRejectToast}
                     onDidDismiss={() => {setShowRejectToast(false); localStorage.setItem("claimRejected", "false")}}
                     message = "Claim rejected."

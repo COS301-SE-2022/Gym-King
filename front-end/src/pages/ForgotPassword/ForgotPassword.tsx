@@ -1,5 +1,5 @@
 
-import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonToast} from '@ionic/react';
 import React, { useState } from "react";
 import { useHistory } from 'react-router';
 import axios from "axios";
@@ -11,6 +11,8 @@ export const ForgotPassword: React.FC = () =>{
     let history=useHistory()
     let formData:any
     const [showToast, setShowToast] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
     const [userType, setUserType] = useState('');
     const [errors, setErrors] = useState({
         email: '',
@@ -81,6 +83,7 @@ export const ForgotPassword: React.FC = () =>{
     }
 
     const sendUserOTP = () =>{
+        setLoading(true)
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/OTP`, 
         {
             method: "POST",
@@ -95,20 +98,23 @@ export const ForgotPassword: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 if(response.success){
+                    setLoading(false)
                     console.log(response)
                    history.push("/OTP")
 
                 }else{
-                    
+                    setLoading(false)
                     console.log(response.success)
                     console.log(response.results)
                 }
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
             })
     }
     const sendEmployeeOTP = () =>{
+        setLoading(true)
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/employees/employee/OTP`, 
         {
             method: "POST",
@@ -123,20 +129,23 @@ export const ForgotPassword: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 if(response.success){
+                    setLoading(false)
                     console.log(response)
                    history.push("/OTP")
 
                 }else{
-                    
+                    setLoading(false)
                     console.log(response.success)
                     console.log(response.results)
                 }
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
             })
     }
     const sendOwnerOTP = () =>{
+        setLoading(true)
         axios(`${process.env["REACT_APP_GYM_KING_API"]}/owners/owner/OTP`, 
         {
             method: "POST",
@@ -151,16 +160,18 @@ export const ForgotPassword: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 if(response.success){
+                    setLoading(false)
                     console.log(response)
                    history.push("/OTP")
 
                 }else{
-                    
+                    setLoading(false)
                     console.log(response.success)
                     console.log(response.results)
                 }
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
             })
     }
@@ -187,14 +198,14 @@ export const ForgotPassword: React.FC = () =>{
                         <br></br>
 
                         <IonLabel className="smallHeading" position="floating">User type*</IonLabel>
-                        <IonSegment onIonChange={segmentChanged}  >
-                            <IonSegmentButton value="gym_user">
+                        <IonSegment mode="ios" onIonChange={segmentChanged}  >
+                            <IonSegmentButton mode="ios" value="gym_user">
                                 <IonLabel>User</IonLabel>
                             </IonSegmentButton>
-                            <IonSegmentButton value="gym_employee">
+                            <IonSegmentButton mode="ios" value="gym_employee">
                                 <IonLabel>Employee</IonLabel>
                             </IonSegmentButton>
-                            <IonSegmentButton value="gym_owner">
+                            <IonSegmentButton mode="ios" value="gym_owner">
                                 <IonLabel>Owner</IonLabel>
                             </IonSegmentButton>
                         </IonSegment>
@@ -204,7 +215,7 @@ export const ForgotPassword: React.FC = () =>{
                                 </>
                         )}
                         <br></br>
-                        <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Send OTP</IonButton>
+                        <IonButton mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Send OTP</IonButton>
                      
                         <br></br>
                         <div className='center'>
@@ -214,11 +225,20 @@ export const ForgotPassword: React.FC = () =>{
                 </IonContent>
 
                 <IonToast
+                mode="ios"
                 isOpen={showToast}
                 onDidDismiss={() => setShowToast(false)}
                 message="Invalid user details."
                 duration={1000}
                 color="danger"
+                />
+                <IonLoading 
+                    mode="ios"
+                    isOpen={loading}
+                    duration={2000}
+                    spinner={"circles"}
+                    onDidDismiss={() => setLoading(false)}
+                    cssClass={"spinner"}
                 />
             </IonPage>
 

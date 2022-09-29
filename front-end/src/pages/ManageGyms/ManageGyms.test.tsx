@@ -1,9 +1,10 @@
+jest.setTimeout(25000)
 import {render,screen} from '@testing-library/react';
 import ManageGyms from './ManageGyms';
 /*UNIT TESTING*/
 //test if pages rendered
-test('renders without crashing', () => {
-  const { baseElement } = render(<ManageGyms/>);
+test('renders without crashing', async() => {
+  const { baseElement } =await render(<ManageGyms/>);
   expect(baseElement).toBeDefined();
   const linkElement = screen.getByText(/My Gyms/i);
   expect(linkElement).toBeInTheDocument();
@@ -12,7 +13,7 @@ test('renders without crashing', () => {
 describe('Integration Tests', () => {
 
   test('sending in a list of activity types displays correctly as a segment button', async () => {
-      render(<ManageGyms />);
+      await render(<ManageGyms />);
       expect(screen.getByTestId('GymCard').innerHTML).toBeDefined()
   });
 })
@@ -22,10 +23,10 @@ describe('Integration Tests', () => {
 
 describe('Testing connection to api', () => {
 
-  it('should load owned gyms', async () => {
+  it('should load owned gyms',  () => {
       
-      ( ()=>{
-          fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
+      (async ()=>{
+          await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
             "method":"GET"
           })
           .then(response =>response.json())
@@ -38,9 +39,9 @@ describe('Testing connection to api', () => {
       } )
   });
 
-  it('should delete a gym', async () => {
-      (()=>{
-        fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
+  it('should delete a gym',  () => {
+      (async()=>{
+        await fetch(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/email`,{
                 "method":"GET"
             })
             .then(response =>response.json())

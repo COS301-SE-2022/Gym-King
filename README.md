@@ -12,6 +12,14 @@
 ![](https://img.shields.io/github/issues-pr-closed/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/last-commit/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
 ![](https://img.shields.io/github/commit-activity/m/COS301-SE-2022/Gym-King?style=for-the-badge&cacheSeconds=300)
+[![CodeQL](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/codeql-analysis.yml)
+[![Android Build](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/buildApk.yml)
+[![Meta Test](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/metatest.yml)
+[![CI Tests](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/index.yml)
+[![Dependency Review](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/COS301-SE-2022/Gym-King/actions/workflows/dependency-review.yml)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2022_Gym-King&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2022_Gym-King)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2022_Gym-King&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2022_Gym-King)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2022_Gym-King&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2022_Gym-King)
 
 </div>
 </div>
@@ -28,23 +36,32 @@ Gym King is an application designed to give gym goers an extra motivatinal boost
 Gym King is a collaborative project between the University of Pretoria's COS 301 module team Codebusters and EPI-USE Labs. The Codebusters team members are Robyn Hancock, Jade Peche, Dylan Whiteford, Thivessh Jhugroo and Ryan Broemer. The EPI-USE members are Gianni Volpi, Egor Kharatyan and Marnes Prinsloo. 
 
 ## Basic Commands
-- yarn run start
-- yarn run build
-- yarn run test
-- yarn run lint
+```sh
+yarn run start
+```
+```sh
+yarn run build
+```
+```sh
+yarn run test
+```
+```sh
+yarn run lint
+```
 
 ## Documentation
-[SRS](https://github.com/COS301-SE-2022/Gym-King/files/9214442/Gym.King.-SRS.-.Demo.3.pdf) <br>
-[Coding  Standards](https://github.com/COS301-SE-2022/Gym-King/files/9213631/Gym.King.-.Coding.Standards.-.Demo.3.pdf) <br>
-[User Manual](https://github.com/COS301-SE-2022/Gym-King/files/9213640/Gym.King.-.User.Manual.-.Demo.3.pdf) <br> 
-[Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9213638/Gym.King.-.Architectural.Design.-.Demo.3.pdf) <br>
-[Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9213653/Gym.King.-.Technical.Installation.Manual.-.Demo.3.pdf)
-
+[SRS](https://github.com/COS301-SE-2022/Gym-King/files/9673688/Gym-King.SRS.pdf) <br>
+[Coding  Standards](https://github.com/COS301-SE-2022/Gym-King/files/9672720/Gym-King.Coding.Standards.pdf) <br>
+[User Manual](https://github.com/COS301-SE-2022/Gym-King/files/9672734/Gym-King.User.Manual.pdf) <br>
+[Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9672739/Gym-King.Architecture.pdf) <br>
+[Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9673815/Gym-King.Technical.Installation.pdf) <br>
+[Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
 
 ## Demo Links
 [DEMO 1](https://drive.google.com/drive/folders/132bKBFuXsvhc-b2iAB62nvvUncE5EgON?usp=sharing) <br>
 [DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing) <br>
-[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing)
+[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing) <br>
+[DEMO 4](https://drive.google.com/drive/folders/1RPw-w63NyvPK7CqI_FjRLAhPyyxJ8Fdk?usp=sharing)
 
 ## Github Project Board
 [Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)

@@ -2,7 +2,7 @@
 * @file EditGym.tsx
 * @brief provides interface for editing a gym detail
 */
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonLabel,IonLoading,IonPage,IonText,IonToast, useIonViewWillEnter} from "@ionic/react";
 import "./EditGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 import axios from "axios";
 import DropDown from "../../components/dropdown/dropdown";
+import { onlyLettersAndSpaces } from "../../utils/validation";
 
 /**
  * const EditGym
@@ -23,9 +24,9 @@ const EditGym: React.FC = () => {
   //-history variable,this variables uses the useHistory from react-router to navigate
   const history=useHistory()
   //-gymAddress hook, hook that sets the address of a gym
-  const [gymName, setGymName] = useState<string>("name");
+  const [gymName, setGymName] = useState<string>(sessionStorage.getItem("gymName")!);
   //-gymAddress hook, hook that sets the address of a gym
-  const [gymAddress, setGymAddress] = useState<string>("address");
+  const [gymAddress, setGymAddress] = useState<string>(sessionStorage.getItem("gymAddress")!);
   //-coordinate hook, hook that sets the coordinates of the gym
   const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
   //-zoom  variable{number}, stores default zoom value for the map
@@ -34,11 +35,57 @@ const EditGym: React.FC = () => {
   const [showToast1, setShowToast1] = useState(false);
   //-showToast2  hook, set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
-  //-gymIcon {string}, stores gym icon
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [gymBrand, setGymBrand] = useState<string>(""); 
+  const [gymBrand, setGymBrand] = useState<string>(''); 
   const [gymBrands, setGymBrands]= useState(new Array<string>())
 
+
+  //FORM VALIDATION 
+  const [errors, setErrors] = useState({
+      name: '',
+      brand: '',
+      address:''
+  });
+
+  const handleError = (error:string, input:string) => {
+      setErrors(prevState => ({...prevState, [input]: error}));
+  };
+
+  const  validate = () => {
+      let isValid = true
+
+      if(gymName==="" || onlyLettersAndSpaces(gymName)) {
+          handleError('Please input a valid name', 'name');
+          isValid = false;
+      }
+      else
+          handleError('', 'name');
+
+          console.log(gymBrand)
+
+      if(gymBrand ==='') {
+          handleError('Please select a gym brand', 'brand');
+          isValid = false;
+      }
+      else
+          handleError('', 'brand');
+
+      if(gymAddress ==='') {
+          handleError('Please select an address', 'address');
+          isValid = false;
+      }
+      else
+          handleError('', 'address');
+
+      return isValid;
+  }
+
+  const handleSubmit = ()=>{
+    let isValid = validate()
+    if(isValid)
+      saveGym()
+  }
 //================================================================================================
 //    FUNCTIONS
 //=================================================================================================
@@ -53,11 +100,12 @@ const EditGym: React.FC = () => {
     if(sessionStorage.getItem("gymName")!=null)
       {
         setGymName(sessionStorage.getItem("gymName") as string)
-        setGymBrand(sessionStorage.getItem("gymBrand") as string)
+        //setGymBrand(sessionStorage.getItem("gymBrand") as string)
         setGymAddress(sessionStorage.getItem("gymAddress") as string)
         setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
       }
     else if(sessionStorage.getItem("gymBrand") == null){
+      setLoading(true)
       axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/${sessionStorage.getItem("gid")}`,
         {
           "method": "get",
@@ -73,9 +121,11 @@ const EditGym: React.FC = () => {
         sessionStorage.setItem("Long",String(response.gym_coord_long))
         setGymName(sessionStorage.getItem("gymName") as string)
         setGymAddress(sessionStorage.getItem("gymAddress") as string)
-        setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))]) 
+        setCoordinate([Number(sessionStorage.getItem("Lat")),Number(sessionStorage.getItem("Long"))])
+        setLoading(false) 
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
         setShowToast2(true)
       });
@@ -83,15 +133,18 @@ const EditGym: React.FC = () => {
   })
 
   const getBrands = async() =>{
+    setLoading(true)
     let gyms: any[]=[]
     let array: string[]=[]
     await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
       .then((response) => response.data)
       .then((response) => {
+        setLoading(false)
           console.log(response)
            gyms = response
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
       }); 
 
@@ -106,7 +159,8 @@ const EditGym: React.FC = () => {
    * @brief calls api to update a gyms' details
   */
   const saveGym = () => {
-    axios(process.env["REACT_APP_GYM_KING_API"]+`/owner/gym/info`,
+    setLoading(true)
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym/info`,
 
       {
         method: "PUT",
@@ -115,8 +169,9 @@ const EditGym: React.FC = () => {
           'Content-Type': 'application/json',
         },
         data: JSON.stringify({ 
+          email: localStorage.getItem("email"),
+          apikey: sessionStorage.getItem("key"),
           gid:sessionStorage.getItem("gid"),
-
           gymName: gymName, 
           gymBrandName: gymBrand,
           address:gymAddress,
@@ -127,10 +182,12 @@ const EditGym: React.FC = () => {
     )
     .then((response) => response.data)
     .then((response) => {
+      setLoading(false)
       setShowToast1(true)
       history.goBack()
     })
     .catch((err) => {
+      setLoading(false)
       console.log(err);
       setShowToast2(true)
     });
@@ -162,19 +219,30 @@ const EditGym: React.FC = () => {
               <IonInput required className="textInput  smallerTextBox leftMargin width80" value={gymName} onIonChange={(e: any) => {
                   setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                 }}>{" "}
-              </IonInput> <br></br>
+              </IonInput> 
+              {errors.name!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.name}</IonLabel><br></br>
+                    </>
+              )}
+              <br></br>
 
               <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
                 <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
-                    <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
+                    <DropDown list={gymBrands} chosenValue={chosenValue} value={gymBrand}></DropDown>
               </div>
+              {errors.brand!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.brand}</IonLabel><br></br>
+                    </>
+                )}
               <br></br>
 
               <IonText className="smallHeading leftMargin">Address:</IonText>
-              <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
+              <IonButton mode="ios" expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
+                <IonIcon mode="ios" className="AddGymLocation" icon="location-outline"></IonIcon>
                 <span>{gymAddress}</span>
-                <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
+                <IonIcon mode="ios" class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
               </IonButton>
               <div className="width80 centerComp">
                 <Map
@@ -198,14 +266,23 @@ const EditGym: React.FC = () => {
                   </Overlay>
                 </Map>
               </div>
+              {errors.address!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.address}</IonLabel><br></br>
+                    </>
+              )}
+
+              <br></br>
             <IonButton
+              mode="ios"
               class="AddGymAdd"
               color="warning"
-              onClick={() => saveGym()}
+              onClick={handleSubmit}
             >Save changes</IonButton>
         </form>
 
         <IonToast
+          mode="ios"
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}
         message="Gym has been saved successfully."
@@ -213,11 +290,20 @@ const EditGym: React.FC = () => {
         color="success"
       />
       <IonToast
+        mode="ios"
         isOpen={showToast2}
         onDidDismiss={() => setShowToast2(false)}
         message="Error adding gym."
         duration={500}
         color="danger"
+      />
+        <IonLoading 
+            mode="ios"
+          isOpen={loading}
+          duration={2000}
+          spinner={"circles"}
+          onDidDismiss={() => setLoading(false)}
+          cssClass={"spinner"}
       />
       
       </IonContent>

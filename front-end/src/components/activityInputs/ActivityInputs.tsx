@@ -32,6 +32,7 @@ export class  ActivityInputs extends React.Component<props, states>{
      * @param ? - event, any
      * @result ? - input activitied are updated 
     */
+    
     handleChange = (e:any) =>{
         let input = e.target.name;
         let value = e.target.value;
@@ -52,25 +53,28 @@ export class  ActivityInputs extends React.Component<props, states>{
             return(
 
                 <>
-                    <IonGrid className='centerLeft grid'>
+                    <IonGrid className=' grid'>
                         <IonRow className='left topMargin'>
                             <IonText className='Subheading'>Duration:</IonText>
                         </IonRow>
-                    </IonGrid>
-                    <IonInput name='i1' type='text' className='textInput width80 marginLeft' value={this.activityStates.i1} onIonChange={this.props.inputs && this.handleChange} ></IonInput>
-                    
-                    <IonGrid className='centerLeft grid'>
+                        <IonRow>
+                            <IonInput name='i1' type='text' className='textInput width80 ' value={this.activityStates.i1} onIonChange={this.props.inputs && this.handleChange} ></IonInput>
+                        </IonRow>
+
                         <IonRow className='left topMargin'>
                             <IonText className='Subheading'>Distance:</IonText>
                         </IonRow>
-                    </IonGrid>
-                    <IonInput name='i2' type='text' className='textInput width80 marginLeft' value={this.activityStates.i2} onIonChange={this.props.inputs && this.handleChange}></IonInput>
-                    <IonGrid className='centerLeft grid'>
+                        <IonRow>
+                            <IonInput name='i2' type='text' className='textInput width80' value={this.activityStates.i2} onIonChange={this.props.inputs && this.handleChange}></IonInput>
+                        </IonRow>
                         <IonRow className='left topMargin'>
                             <IonText className='Subheading'>Level of Difficulty:</IonText>
                         </IonRow>
+                        <IonRow>
+                            <IonInput name='i3' type='text' className='textInput width80' value={this.activityStates.i3} onIonChange={this.props.inputs && this.handleChange}></IonInput>
+                        </IonRow>
                     </IonGrid>
-                    <IonInput name='i3' type='text' className='textInput width80 marginLeft' value={this.activityStates.i3} onIonChange={this.props.inputs && this.handleChange}></IonInput>
+
                 </>
             )
         }

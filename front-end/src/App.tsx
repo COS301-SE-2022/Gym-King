@@ -1,7 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
 import AddGym from './pages/AddGym/AddGym';
 import AddGymLocation from './pages/AddGymLocation/AddGymLocation';
 
@@ -56,6 +55,13 @@ import AddEmployee from './pages/AddEmployee/AddEmployee';
 import SplashPage from './pages/SplashPage/SplashPage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
+import FriendsPage from './pages/FriendsPage/FriendsPage';
+import FriendProfile from './pages/FriendProfile/FriendProfile';
+import NotFriendProfile from './pages/NotFriendProfile/NotFriendProfile';
+import FriendRequests from './pages/FriendRequests/FriendRequests';
+import Explore from './pages/Explore/Explore';
+import PushNotificationsContainer from './components/Push/Push';
+import MyGyms from './pages/MyGyms/MyGyms';
 /*develop*/
 
 
@@ -64,14 +70,11 @@ setupIonicReact();
 
 const App: React.FC = () => (
 
-  <IonApp>
+  <IonApp >
 
-    <IonReactRouter>
+    <IonReactRouter >
       <IonRouterOutlet>
-        
-        <Route exact path="/home">
-          <Home />
-        </Route>
+
         <Route exact path="/">
           <Redirect to="/Splash" />
         </Route>
@@ -170,6 +173,27 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/ResetPassword'>
           <ResetPassword></ResetPassword>
+          </Route>
+        <Route exact path='/FriendsPage'>
+          <FriendsPage></FriendsPage>
+        </Route>
+        <Route exact path='/FriendProfile'>
+          <FriendProfile></FriendProfile>
+        </Route>
+        <Route exact path='/NotFriendProfile'>
+          <NotFriendProfile></NotFriendProfile>
+        </Route>
+        <Route exact path='/FriendRequests'>
+          <FriendRequests></FriendRequests>
+        </Route>
+        <Route exact path='/Explore'>
+          <Explore></Explore>
+        </Route>
+        <Route exact path='/Notifications'>
+          <PushNotificationsContainer></PushNotificationsContainer>
+        </Route>
+        <Route exact path='/MyGyms'>
+          <MyGyms></MyGyms>
         </Route>
 
       </IonRouterOutlet>

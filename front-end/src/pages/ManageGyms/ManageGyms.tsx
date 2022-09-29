@@ -2,7 +2,7 @@
  * @file ManageGyms.tsx
  * @brief provides interface for an owner to manage all of his/her gyms
  */
-import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonButton, IonLoading, useIonViewDidEnter, IonToast} from '@ionic/react';
 import React, {useState } from 'react';
 import GymCard from '../../components/GymCard/GymCard';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -20,7 +20,7 @@ const ManageGyms: React.FC = () =>{
     const [gymList,setGymList]=useState<any>([{'id':"1",'name':"",'address':""}])
     //-loading hook {boolean} determines when loading icon is shown
     const [loading, setLoading] = useState<boolean>(false);
-    let email = localStorage.getItem("email");
+    const [showToast1, setShowToast1] = useState(false);
 
     useIonViewDidEnter(()=>
     {
@@ -44,7 +44,18 @@ const ManageGyms: React.FC = () =>{
 
         
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: localStorage.getItem("email"),
+                apikey: sessionStorage.getItem("key")
+
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
             console.log(response)
@@ -62,7 +73,18 @@ const ManageGyms: React.FC = () =>{
      */
         const deleteClicked= () => {
             setLoading(true)
-            axios.get(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/${email}`)
+            axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/owned/getGyms`,{
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                data: JSON.stringify({ 
+                    email: localStorage.getItem("email"),
+                    apikey: sessionStorage.getItem("key")
+    
+                })
+            })
             .then(response =>response.data)
             .then(response =>{
                 console.log(response)
@@ -84,21 +106,32 @@ const ManageGyms: React.FC = () =>{
             <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Gyms</IonText>
-                    <IonButton className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>
+                    <IonButton mode="ios" className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>
+                    
                     {gymList.map((el:any)=>
-                        <GymCard key={el.g_id} id={el.g_id} name={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
+                        <GymCard key={el.g_id} id={el.g_id} name={el.gym_name} brand={el.gym_brandname} address={el.gym_address} deleteClicked={deleteClicked}></GymCard>
                     )}
                     
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
                         
                     />
+                    <IonToast
+                        mode="ios"
+                        isOpen={showToast1}
+                        onDidDismiss={() => setShowToast1(false)}
+                        message="Gym deleted."
+                        duration={1000}
+                        color="success"
+                    />
                     <br></br><br></br><br></br>
+
+                    
             </IonContent>
             
         </IonPage>

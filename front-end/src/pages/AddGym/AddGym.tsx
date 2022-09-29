@@ -2,7 +2,7 @@
 * @file AddGym.tsx
 * @brief provides interface for adding new gyms to map
 */
-import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
+import {IonButton,IonContent,IonHeader,IonIcon,IonInput,IonLabel,IonLoading,IonPage,IonText,IonToast, useIonViewDidEnter} from "@ionic/react";
 import "./AddGym.css";
 import { ToolBar } from "../../components/toolbar/Toolbar";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import image from '../../icons/gym.png'
 import axios from "axios";
 import DropDown from "../../components/dropdown/dropdown";
+import { onlyLettersAndSpaces } from "../../utils/validation";
 
 /**
  * const addGym
@@ -30,7 +31,7 @@ const AddGym: React.FC = () => {
   //-gymBrand hook, hook that sets the brand of a gym
   const [gymBrand, setGymBrand] = useState<string>(""); 
   //- gymAddress hook, hook that sets the address of a gym         
-  const [gymAddress, setGymAddress] = useState<string>("address");
+  const [gymAddress, setGymAddress] = useState<string>("");
   //-coordinate hook, hook that sets the coordinates of the gym 
   const [coordinate, setCoordinate] = useState<[number, number]>([-25.7545,28.2314]);
   //-zoom  variable {number}, stores default zoom value for the map
@@ -39,9 +40,47 @@ const AddGym: React.FC = () => {
   const [showToast1, setShowToast1] = useState(false);
   //-showToast2  hook ,set showToast2 variable on unsuccesseful adding of a gym
   const [showToast2, setShowToast2] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
 
+    const [errors, setErrors] = useState({
+      name: '',
+      brand: '',
+      address:''
+  });
 
+  const handleError = (error:string, input:string) => {
+      setErrors(prevState => ({...prevState, [input]: error}));
+  };
+
+  const  validate = () => {
+      let isValid = true
+
+      if(gymName==="" || onlyLettersAndSpaces(gymName)) {
+          handleError('Please input a valid name', 'name');
+          isValid = false;
+      }
+      else
+          handleError('', 'name');
+
+      if(gymBrand ==="") {
+          handleError('Please select a gym brand', 'brand');
+          isValid = false;
+      }
+      else
+          handleError('', 'brand');
+
+      if(gymAddress ==="") {
+          handleError('Please select an address', 'address');
+          isValid = false;
+      }
+      else
+          handleError('', 'address');
+  
+
+
+      return isValid;
+  }
  
 //=================================================================================================
 //    FUNCTIONS
@@ -77,15 +116,18 @@ const AddGym: React.FC = () => {
     })
       
   const getBrands = async() =>{
+    setLoading(true)
     let gyms: any[]=[]
     let array: string[]=[]
     await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/brands/brand`)
       .then((response) => response.data)
       .then((response) => {
+        setLoading(false)
           console.log(response)
            gyms = response
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
       }); 
 
@@ -95,12 +137,20 @@ const AddGym: React.FC = () => {
       console.log(array)
       setGymBrands(array)
   }
+
+  const handleSubmit = () =>{
+      let isValid = validate()
+      if(isValid)
+        addGym()
+  }
   /**
    * AddGym function
    * @brief calls the add gym api, and adds a gym record the gyms table, then calls the api to assign gym to an owner.
    */
   const addGym = () => {
     
+
+    setLoading(true)
     axios(process.env["REACT_APP_GYM_KING_API"]+`/gyms/gym`,
     {
       method: "POST",
@@ -109,6 +159,8 @@ const AddGym: React.FC = () => {
         'Content-Type': 'application/json',
       },
       data: { 
+        email: localStorage.getItem("email"),
+        apikey: sessionStorage.getItem("key"),
         gymName: gymName,
         gymBrandName: gymBrand,
         gymAddress: gymAddress,
@@ -119,6 +171,7 @@ const AddGym: React.FC = () => {
   )
     .then((response) => response.data)
     .then((response) => {
+      
       console.log(response);
       sessionStorage.setItem("new_gid", response.g_id)
       console.log(sessionStorage.getItem("new_gid"))
@@ -133,20 +186,24 @@ const AddGym: React.FC = () => {
         },
         data:{ 
           email: localStorage.getItem('email'),
+          apikey:sessionStorage.getItem("key"),
           gid: sessionStorage.getItem("new_gid")
         }
       }
     )
       .then((response) => response.data)
       .then((response) => {
+        setLoading(false)
         console.log(response);
         sessionStorage.removeItem("new_gid")
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
       }); 
     })
     .catch((err) => {
+      setLoading(false)
       console.log(err);
       setShowToast2(true)
     });
@@ -180,20 +237,31 @@ const AddGym: React.FC = () => {
                 <IonInput required className="textInput  smallerTextBox leftMargin width80" value={gymName} onIonChange={(e: any) => {
                     setGymName(e.target.value);sessionStorage.setItem("gymName",gymName)
                   }}>{" "}
-                </IonInput> <br></br>
+                </IonInput>
+                {errors.name!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.name}</IonLabel><br></br>
+                    </>
+                )}
+                <br></br>
 
                 <IonText className="smallHeading leftMargin">Gym Brand:</IonText>
                 <div style={{"padding":"2%", "width":"83%", "marginLeft":"7%", "height":"9%"}} className=" ">
                   <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
                 </div>
+                {errors.brand!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.brand}</IonLabel><br></br>
+                    </>
+                )}
                 <br></br>
 
 
                 <IonText className="smallHeading leftMargin">Address:</IonText>
-                <IonButton expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
-                  <IonIcon className="AddGymLocation" icon="location-outline"></IonIcon>
+                <IonButton mode="ios" expand="block" class="flex-margin" routerLink="/AddGymLocation" color="secondary">
+                  <IonIcon  mode="ios" className="AddGymLocation" icon="location-outline"></IonIcon>
                   <span>{gymAddress}</span>
-                  <IonIcon class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
+                  <IonIcon mode="ios" class="AddGymArrow" icon="chevron-forward-outline"></IonIcon>
                 </IonButton>
                 <div className="width80 centerComp">
                   <Map
@@ -217,11 +285,20 @@ const AddGym: React.FC = () => {
                     </Overlay>
                   </Map>
                 </div>
+                {errors.address!=="" && (
+                    <>
+                    <IonLabel className="errText leftMargin" style={{"color":"darkorange"}}>{errors.address}</IonLabel><br></br>
+                    </>
+                )}
+
+              <br></br>
               <IonButton
+                mode="ios"
                 class="AddGymAdd"
                 color="warning"
-                onClick={() => addGym()}
+                onClick={handleSubmit}
               >ADD</IonButton>
+              <br></br><br></br>
           </form>
 
 
@@ -238,6 +315,14 @@ const AddGym: React.FC = () => {
         message="Error adding gym."
         duration={500}
         color="danger"
+      />
+      <IonLoading 
+        mode="ios"
+          isOpen={loading}
+          duration={2000}
+          spinner={"circles"}
+          onDidDismiss={() => setLoading(false)}
+          cssClass={"spinner"}
       />
       
       </IonContent>

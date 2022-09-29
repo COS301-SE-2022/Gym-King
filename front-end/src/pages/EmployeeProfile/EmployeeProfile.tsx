@@ -3,6 +3,7 @@ import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import "./EmployeeProfile.css";
 import axios from "axios";
+import { validEmail, onlyLettersAndSpaces, onlyAlphanumericAndUnderscore, validPhone } from '../../utils/validation';
 
 interface InternalValues {
     file: any;
@@ -15,7 +16,6 @@ const EmployeeProfilePage: React.FC = () =>{
     const page = useRef(null);
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [username, setUsername]= useState("")
     const [phone, setPhone]= useState("")
@@ -27,14 +27,54 @@ const EmployeeProfilePage: React.FC = () =>{
     const [showFail, setShowFail] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    
-
-
-
 
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
 
+    //FORM VALIDATION 
+    const [errors, setErrors] = useState({
+        username: '',
+        fullname: '',
+        email: '',
+        phone: '',
+    });
 
+    const handleError = (error:string, input:string) => {
+        setErrors(prevState => ({...prevState, [input]: error}));
+    };
+
+    const  validate = () => {
+        let isValid = true
+
+        if(email && !validEmail(email)) {
+            handleError('Please input a valid email', 'email');
+            isValid = false;
+        }
+        else
+            handleError('', 'email');
+
+        if(name && onlyLettersAndSpaces(name)) {
+            handleError('Please input a valid name', 'fullname');
+            isValid = false;
+        }
+        else
+            handleError('', 'fullname');
+        
+        if(username && !onlyAlphanumericAndUnderscore(username)) {
+            handleError('Please input a valid username', 'username');
+            isValid = false;
+        }
+        else
+            handleError('', 'username');  
+
+        if(phone && !validPhone(phone)) {
+            handleError('Please input a valid phone number', 'phone');
+            isValid = false;
+        }
+        else
+            handleError('', 'phone');  
+
+        return isValid;
+    }
     useIonViewDidEnter(()=>{
         setPresentingElement(page.current); //for modal
         setLoading(true)
@@ -47,7 +87,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 },
                 data: JSON.stringify({ 
                     email: localStorage.getItem("email"),
-                    password: localStorage.getItem("password")
+                    apikey: sessionStorage.getItem("key")
                 })
             })
             .then(response =>response.data)
@@ -61,7 +101,6 @@ const EmployeeProfilePage: React.FC = () =>{
                 setGymAddress(response.g_id.gym_address);
                 setProfilePicture(response.profile_picture)
                 localStorage.setItem("profilepicture", profilePicture)
-                setPassword(localStorage.getItem("password")!)
                 setLoading(false);
             })
             .catch(err => {
@@ -72,6 +111,7 @@ const EmployeeProfilePage: React.FC = () =>{
     },[profilePicture])
 
     const updateEmployeeDetails = () =>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
 
                 method: 'PUT',
@@ -84,14 +124,16 @@ const EmployeeProfilePage: React.FC = () =>{
                     fullname: name, 
                     number: phone, 
                     username: username, 
-                    password: localStorage.getItem("password"), 
+                    apikey: sessionStorage.getItem("key"), 
                 })
             })
             .then(response =>response.data)
             .then(response =>{
+                setLoading(false)
                 console.log(response)                
             })
             .catch(err => {
+                setLoading(false)
                 console.log(err)
                 //setShowFail(true);
             }) 
@@ -103,12 +145,17 @@ const EmployeeProfilePage: React.FC = () =>{
     }
 
     const updateDetails = (e:any) =>{
-        //update 
-        updateEmployeeDetails()
-        //dismiss
-        dismiss()
+        let isValid=validate()
+        if(isValid)
+        {
+            //update 
+            updateEmployeeDetails()
+            //dismiss
+            dismiss()
 
-        setShowSuccess(true);
+            setShowSuccess(true);
+        }
+        
     }
     
     const updateEmail=(e:any)=>{
@@ -127,6 +174,7 @@ const EmployeeProfilePage: React.FC = () =>{
     }
 
     const updateProfilePicture= ()=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/employees/employee/info`,{
             method: 'POST',
             headers: {
@@ -135,11 +183,12 @@ const EmployeeProfilePage: React.FC = () =>{
             },
             data: JSON.stringify({ 
                 email: localStorage.getItem("email"),
-                password: localStorage.getItem("password")
+                apikey: sessionStorage.getItem("key")
             })
         })
         .then(response =>response.data)
         .then(response =>{
+            setLoading(false)
             setProfilePicture(response.profile_picture)
             setLoading(false)
         })
@@ -166,7 +215,7 @@ const EmployeeProfilePage: React.FC = () =>{
         
                 let formData = new FormData();
                 formData.append("email", email)
-                formData.append("password", password)
+                formData.append("apikey", sessionStorage.getItem("key")!)
                 formData.append('profilepicture', values.current.file, values.current.file.name);
         
                 setLoading(true)
@@ -195,7 +244,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     <br></br>
                     <IonGrid>
                         <IonRow>
-                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
+                            <IonCard mode="ios" className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size='5'>
@@ -248,16 +297,16 @@ const EmployeeProfilePage: React.FC = () =>{
 
                     <br></br>
 
-                    <IonModal ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
+                    <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
                             <IonToolbar>
                             <IonButtons slot="start">
-                                <IonButton color="light" onClick={dismiss}>Close</IonButton>
+                                <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
                             <IonTitle>Edit Details</IonTitle>
                             <IonButtons slot="end">
-                                <IonButton color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
+                                <IonButton mode="ios" color="warning" onClick={updateDetails} type="submit">Confirm</IonButton>
                             </IonButtons>
                             </IonToolbar>
                         </IonHeader>
@@ -266,26 +315,42 @@ const EmployeeProfilePage: React.FC = () =>{
 
                                 <IonLabel className="smallHeading" position="floating">Username</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={username} onIonChange={updateUsername}></IonInput>
-
+                                {errors.username!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.username}</IonLabel><br></br>
+                                    </>
+                                )}
+                                <br></br>
                                 <IonLabel className="smallHeading" position="floating">Full name</IonLabel>
                                 <IonInput className='textInput' name='name' type='text' required value={name} onIonChange={updateName}></IonInput>
-                                
+                                {errors.fullname!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.fullname}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Email</IonLabel>
                                 <IonInput className='textInput' name='email' type='email' required value={email} onIonChange={updateEmail}></IonInput>
-                                
+                                {errors.email!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
                                 <IonLabel className="smallHeading" position="floating">Phone</IonLabel>
                                 <IonInput className='textInput' name='phonenumber' type='text' required value={phone} onIonChange={updatePhone}></IonInput>
-
+                                {errors.phone!=="" && (
+                                    <>
+                                    <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.phone}</IonLabel><br></br>
+                                    </>
+                                )}
                                 <br></br>
-                                <IonLabel className="smallHeading" position="floating">Password</IonLabel>
-                                <IonButton className='width21' type="button" >Change Password</IonButton>
                             </form>
                         </IonContent>
                         
                     </IonModal>
                     <IonToast
+                        mode="ios"
                         isOpen={showSuccess}
                         onDidDismiss={() => setShowSuccess(false)}
                         message="Details updated!"
@@ -293,6 +358,7 @@ const EmployeeProfilePage: React.FC = () =>{
                         color="success"
                     />
                     <IonToast
+                        mode="ios"
                         isOpen={showFail}
                         onDidDismiss={() => setShowFail(false)}
                         message="Could not update. Try again later."
@@ -300,8 +366,8 @@ const EmployeeProfilePage: React.FC = () =>{
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         duration={2000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}

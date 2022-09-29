@@ -1,3 +1,4 @@
+jest.setTimeout(250000)
 import { render } from '@testing-library/react';
 import ViewBadgeCard from './ViewBadgeCard';
 ////TESTS TO BE PERFORMED////
@@ -5,7 +6,7 @@ import ViewBadgeCard from './ViewBadgeCard';
 */
 
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<ViewBadgeCard BadgeTitle="" BadgeDesc="" BadgeID="" Badgerank="" BadgeEmblem="" />);
+test('renders without crashing', async() => {
+    const { baseElement } =await render(<ViewBadgeCard BadgeTitle="" BadgeDesc="" BadgeID="" Badgerank="" BadgeEmblem="" />);
     expect(baseElement).toBeDefined();
   });

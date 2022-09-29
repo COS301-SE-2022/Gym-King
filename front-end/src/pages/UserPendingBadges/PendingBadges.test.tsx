@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react';
+jest.setTimeout(25000)
+import { render} from '@testing-library/react';
 import PendingBadgesPage from './PendingBadges';
 
 ////TESTS TO BE PERFORMED////
 /*
 */
 
-test('renders without crashing', () => {
-  const {baseElement} = render(<PendingBadgesPage />);
+test('renders without crashing', async() => {
+  const {baseElement} =await render(<PendingBadgesPage />);
   expect(baseElement).toBeDefined();
 });
 
@@ -14,9 +15,9 @@ test('renders without crashing', () => {
 
 describe('Testing connection to api', () => {
 
-    it('should load pending badges', async () => {
+    it('should load pending badges',  () => {
         (async ()=>{
-            fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"useremail"}`,{
+            await fetch(process.env["REACT_APP_GYM_KING_API"]+`/users/claims/${"useremail"}`,{
                 method: 'GET'
             })
             .then(response =>response.json())

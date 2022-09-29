@@ -1,8 +1,9 @@
+jest.setTimeout(250000)
 import { render } from '@testing-library/react';
 import FileChooser from './FileChooser'
 
-test('renders without crashing', () => {
-    const { baseElement } = render(<FileChooser numFiles={0} />);
+test('renders without crashing', async() => {
+    const { baseElement } = await render(<FileChooser numFiles={1} />);
     expect(baseElement).toBeDefined();
   });
 

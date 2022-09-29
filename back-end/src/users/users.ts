@@ -8,7 +8,6 @@ import { userRepository } from "../repositories/gym_user.repository";
 import { userOTPRepository } from "../repositories/user_otp.repository"; 
 import { firebase_admin } from "../firebase.connection";
 import { friendRepository } from "../repositories/friend.repository";
-import { subscription } from "../entities/subscription.entity";
 import { subscriptionRepository } from "../repositories/subscription.repository";
 import { gymBrandRepository } from "../repositories/gym_brand.repository";
 
@@ -23,6 +22,7 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 
 const storageRef = firebase_admin.storage().bucket(process.env.FIREBASE_DB_URL)
+const notificationRef = firebase_admin.messaging();
 //=============================================================================================//
 //Nodemailer email connection 
 //=============================================================================================//
@@ -63,6 +63,8 @@ var emailer = nodemailer.createTransport({
     var d = R * c;
     return d;
   }
+
+
   //=========================================================================================================//
   /**
    * Converts numeric degrees to radians
@@ -75,18 +77,17 @@ var emailer = nodemailer.createTransport({
   }
 //=========================================================================================================//
   /**
-   * Makes a generated ID given a size input.
-   * @param {number} size of the generated ID.
-   * @returns {string} Generated ID.
+   * Makes a generated API key.
+   * @returns {string} Generated API Key.
    */
-  function createID(length: any) {
-  let ID = "";
+  function createAPIKey() {
+  let apikey = "";
   let characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < length; i++) {
-    ID += characters.charAt(Math.floor(Math.random() * 62));
+  for (let i = 0; i < 64; i++) {
+    apikey += characters.charAt(Math.floor(Math.random() * 62));
   }
-  return ID;
+  return apikey;
 }
 //=========================================================================================================//
   /**
@@ -123,7 +124,10 @@ const corsOptions = {
     }
   },
 };
-
+const notification_options = {
+  priority: "high",
+  timeToLive: 60*60*30
+};
 //=============================================================================================//
 // USER ROUTER
 //=============================================================================================//
@@ -171,6 +175,40 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET - Return the gym brand info.
+   * @param {string} brandname brand name.
+   * @returns A gym brands information.
+   */
+   .get('/brands/brand/:brandname', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.brandname;
+      const result = await gymBrandRepository.findByBrandname(query);
+      res.json( result );
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET - Return the gym info.
+   * @param {string} gymName gym's name (not brand name!).
+   * @returns Gyms information.
+   */
+   .get('/gyms/gym/name/:gymName', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.gymName;
+      const result = await gymRepository.findByGymName(query);
+      res.json( result );
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
    * GET - returns all badges that belong to a specific gym.
    * @param {string} gid input of the gym ID to find all badges that belong to gym.
    * @returns A list with information on all badges that belong to gym.
@@ -188,20 +226,24 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * GET - returns all badges that a user earned
+   * POST - returns all badges that a user earned
    * @param {string} email input of user ID
+   * @param {string} apikey user's api key
    * @returns A list of badges user earned
    */
    .post('/user/badges',cors(corsOptions),async(req: any, res: any)=>
    {
-     try
-     {
-       let query= req.body.email;
-       const results= await badgeOwnedRepository.findByEmail(query)
-       res.json(results)
+     try {
+       let query= req.body;
+       let user = await userRepository.findByEmail(query.email);
+       if(user != null && user.apikey == query.apikey){
+        const results= await badgeOwnedRepository.findByEmail(query.email);
+        res.json(results);
+       } else {
+        res.json({'success':false,'message':'Invalid email or apikey!'})
+       }
      }
-     catch(err)
-     {
+     catch(err) {
        const results = { 'success': false, 'results': err };
        console.error(err);
        res.json(results);
@@ -209,15 +251,46 @@ const users = express.Router()
    })
   //=========================================================================================================//
   /**
-   * GET - returns all badge claims of a user.
+   * POST - returns all badge claims of a user.
    * @param {string} email email of gym_user.
+   * @param {string} apikey user's api key
    * @returns list of all claims the user has made.
    */
-   .get('/users/claims/:email', cors(corsOptions), async (req: any, res: any) => {
+   .post('/users/claims/', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.params.email;
-      const result = await badgeClaimRepository.findByEmail(query);
-      res.json(result);
+      let query= req.body;
+       let user = await userRepository.findByEmail(query.email);
+       if(user != null && user.apikey == query.apikey){
+        const results= await badgeClaimRepository.findByEmail(query.email);
+        res.json(results);
+       } else {
+        res.json({'success':false,'message':'Invalid email or apikey!'})
+       }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * GET - Return info of user from username
+   * @param {string} username username of user.
+   * @returns Information of the user.
+   */
+   .get('/users/user/:username', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.params.username;
+      const result = await userRepository.findByUsername(query);
+      if (result != null && result.username == query){
+        res.json({
+          username: result.username,
+          fullname: result.fullname,
+          profile_picture: result.profile_picture
+        })
+      } else {
+        res.json({'message':'Invalid Username!'})
+      }
     } catch (err) {
       const results = { 'success': false, 'results': err };
       console.error(err);
@@ -227,13 +300,13 @@ const users = express.Router()
   //=========================================================================================================//
   /**
    * GET - returns all badges owned of a user.
-   * @param {string} email email of gym_user.
+   * @param {string} username username of gym_user.
    * @returns list of all badges owned by user.
    */
-   .get('/users/owned/:email', cors(corsOptions), async (req: any, res: any) => {
+   .get('/users/owned/:username', cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.params.email;
-      const result = await badgeOwnedRepository.findByEmail(query);
+      let query = req.params.username;
+      const result = await badgeOwnedRepository.findByUsername(query);
       res.json(result);
     } catch (err) {
       const results = { 'success': false, 'results': err };
@@ -315,17 +388,17 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
-   * GET a users profile picture.
-   * @param {string} email User email.
+   * GET a user's profile picture.
+   * @param {string} username User email.
    * @returns {image} 
    */
-   .get('/users/user/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
-    const query = req.params.email;
-    const user = await userRepository.findByEmail(query);
+   .get('/users/user/picture/:username', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.username;
+    const user = await userRepository.findByUsername(query);
     if (user != null){
       res.json(user.profile_picture);
     } else{
-      res.json({'message':'Invalid email!'})
+      res.json({'message':'Invalid username!'})
     }
   })
   //=========================================================================================================//
@@ -345,10 +418,121 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * GET All badges that belong to a brand.
+   * @param {string} brandname gym brand name.
+   * @returns List of badges that belong to brand.
+   */
+   .get('/brands/brand/badges/:brandname', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.brandname;
+    const brandBadges = await badgeRepository.findByBrand(query);
+    if (brandBadges != null){
+      res.json(brandBadges);
+    } else{
+      res.json({'message':'Invalid gym brand!'})
+    }
+  })
+  //=========================================================================================================//
+  /**
+   * POST - Check if two user's are friends.
+   * @param {string} user1email input of first user email
+   * @param {string} apikey user's api key
+   * @param {string} user2email input of second user email
+   * @returns {boolean} users are friends or not.
+   */
+   .post('/users/user/checkIfFriends',cors(corsOptions),async(req: any, res: any)=>{
+    try{
+      let query = req.body;
+      if (query.user1email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) && query.user2email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let user = await userRepository.findByEmail(query.user1email);
+        if (user != null && user.email == query.user1email){
+          if(user.apikey == query.apikey){
+            res.json(await friendRepository.checkIfFriends(query.user1email, query.user2email));
+          } else {
+            res.json({'success':false,'message':'Invalid email or apikey!'})
+          }
+        } else {
+          res.json({'success':false, 'message':'User does not exist!'})
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid emails entered!'}) 
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
+   * POST - Check if two user's are friends.
+   * @param {string} user1email input of first user email
+   * @param {string} apikey user's api key
+   * @param {string} user2email input of second user email
+   * @returns {boolean} users are friends or not.
+   */
+   .post('/users/user/checkIfPendingFriends',cors(corsOptions),async(req: any, res: any)=>{
+    try{
+      let query = req.body;
+      if (query.user1email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) && query.user2email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let user = await userRepository.findByEmail(query.user1email);
+        if (user != null && user.email == query.user1email){
+          if(user.apikey == query.apikey){
+            res.json(await friendRepository.checkIfPendingFriends(query.user1email, query.user2email));
+          } else {
+            res.json({'success':false,'message':'Invalid email or apikey!'})
+          }
+        } else {
+          res.json({'success':false, 'message':'User does not exist!'})
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid emails entered!'}) 
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+  //=========================================================================================================//
+  /**
+   * POST - returns suggestion on what badge the user should go try get next.
+   * @param {string} email input of user email
+   * @param {string} apikey user's api key.
+   * @returns A list of suggested badges for user.
+   */
+   .post('/users/user/suggestion',cors(corsOptions),async(req: any, res: any)=>{
+    try {
+      let query = req.body;
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let user = await userRepository.findByEmail(query.email);
+        if (user != null && user.email == query.email){
+          if(user.apikey == query.apikey){
+            let suggestedBadges = await userRepository.suggestBadges(user.email,user.gym_membership);
+            res.json(suggestedBadges);
+          } else {
+            res.json({'success':false,'message':'Invalid email or apikey!'})
+          }
+        } else {
+          res.json({'success':false, 'message':'User does not exist!'})
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid email entered!'})
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+  //=========================================================================================================//
+  /**
    * POST save a users claim for a badge to database.
    * @param {string} bid The badge ID of the badge.
    * @param {string} email The email of the user who claims they completed it.
-   * @param {string} password The password of the user.
+   * @param {string} apikey User's api key.
    * @param {string} input1 The first input 
    * @param {string} input2 The second input 
    * @param {string} input3 The third input 
@@ -357,7 +541,6 @@ const users = express.Router()
    */
   .post('/claims/claim', userpicture.single('proof') , cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
       let query = req.body;
       let file = req.file;
       const user = await userRepository.findByEmail(query.email);
@@ -365,7 +548,7 @@ const users = express.Router()
       const badge = await badgeRepository.findByBID(query.bid);
       if(badge != null && badge.b_id == query.bid){
         if (claim == null || claim.b_id != query.bid && claim.email != query.email){
-          if(bcrypt.compareSync(query.password, user.password)){
+          if(user.apikey == query.apikey){
             let newFileName = ``;
             if (file.mimetype == 'image/jpeg'){
               newFileName = `claims/${Date.now()}.jpg`;
@@ -399,7 +582,7 @@ const users = express.Router()
             blobStream.end(req.file.buffer);
           }
           else {
-            res.json({'success':false,'message':'Invalid email or password!'});
+            res.json({'success':false,'message':'Invalid email or apikey!'});
           } 
         } else {
           res.json({'success':false,'message':'Claim already exists!'});
@@ -443,27 +626,35 @@ const users = express.Router()
           result = await userRepository.findByEmail(uE);
         }
         if(result == null) {
-          res.status(404); 
+          // res.status(404); 
           res.json( { 'success': false, 'results':'invalid email or password'} );
         }
         else {
           if(result.length==0) {
-            res.status(404);
+            // res.status(404);
             res.json( { 'success': false, 'results':'invalid email or password'} );
           }
           else{
             let hashPass = result.password;
             if(!bcrypt.compareSync(uP, hashPass)) {
-              res.status(400);
+              // res.status(400);
               res.json( { 'success': false, 'results':"invalid password" } );
             }else{
-              const results = { 'success': true,'profile_picture': result.profile_picture };
+              let apikey = createAPIKey();
+              if (uT == "gym_owner"){
+                await ownerRepository.updateOwnerAPIKey(query.email,apikey);
+              } else if (uT == "gym_employee") {
+                await employeeRepository.updateEmployeeAPIKey(query.email,apikey);
+              } else {
+                await userRepository.updateUserAPIKey(query.email,apikey);
+              }
+              const results = { 'success': true,'username':result.username,'profile_picture': result.profile_picture,'apikey':apikey };
               res.json( results );
             }
           }
         }
       }else {
-        res.status(400);
+        // res.status(400);
         res.json(  { 'success': false, 'results':'missing email or password'} );
       }
     } catch (err) {
@@ -485,7 +676,7 @@ const users = express.Router()
    */
   .post('/users/user', cors(corsOptions), async (req: any, res: any) => {
     try {
-      if (req.body.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (req.body.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         const brand = await gymBrandRepository.findByBrandname(req.body.membership);
         if (brand != null && brand.gym_brandname == req.body.membership){
@@ -567,7 +758,7 @@ const users = express.Router()
    .post('/users/user/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         let user = await userRepository.findByEmail(query.email);
         if(user != null && user.email == query.email)
@@ -612,21 +803,95 @@ const users = express.Router()
    })
    //=========================================================================================================//
   /**
+   * POST - Get a user's non confidential information. This requires an authenticated user to send in their credentials.
+   * @param {string} email searcher email.
+   * @param {string} apikey searcher api key.
+   * @param {string} username target user's username.
+   * @returns Target users non confidential information.
+   */
+   .post('/users/user/getUser', cors(corsOptions), async (req: any, res: any) => {
+    try{
+      let query = req.body;
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let user = await userRepository.findByEmail(query.email);
+        if (user != null && user.email == query.email){
+          if(user.apikey == query.apikey){
+            let foundUser = await userRepository.findByUsername(query.username);
+            if (foundUser != null && foundUser.username == query.username){
+              let result = {
+                username:foundUser.username,
+                email:foundUser.email,
+                fullname:foundUser.fullname,
+                profile_picture:foundUser.profile_picture
+              }
+              res.json(result);
+            } else {  
+              res.json({'message':'User does not exist!'})
+            }
+          } else {
+            res.json({'message':'Incorrect email or apikey!'})
+          }
+        } else {
+          res.json({'message':'Email does not exist!'})
+        }
+      } else {
+        res.json({'message':'Invalid email!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
    * POST - Get users information.
    * @param {string} email user's email.
-   * @param {string} password user's password.
+   * @param {string} apikey User's api key
    * @returns Users information.
    */
    .post('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
       let query = req.body;
       const user = await userRepository.findByEmail(query.email);
-      if (user != null && bcrypt.compareSync(query.password, user.password)) {
+      if(user != null && user.apikey == query.apikey){
         res.json(user)
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
+   * POST - Check if user is subscribed to a gym.
+   * @param {string} email user's email.
+   * @param {string} apikey user's api key.
+   * @param {string} gid gym ID.
+   * @returns {boolean} true or false.
+   */
+   .post('/users/user/checkIfSubscribed', cors(corsOptions), async (req: any, res: any) => {
+    try{
+      let query = req.body;
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        let user = await userRepository.findByEmail(query.email);
+        if (user != null && user.email == query.email){
+          if(user.apikey == query.apikey){
+            res.json(await subscriptionRepository.checkIfSubscribed(query.email, query.gid));
+          } else {
+            res.json({'success':false,'message':'Invalid email or apikey!'})
+          }
+        } else {
+          res.json({'success':false, 'message':'User does not exist!'})
+        }
+      } else {
+        res.json({'success':false, 'message':'Invalid emails entered!'}) 
       }
     } catch (err) {
       const results = { 'success': false, 'results': err };
@@ -641,23 +906,22 @@ const users = express.Router()
    * @param {string} fullname The full name of the user.
    * @param {string} number The phone number of the user. 
    * @param {string} username The username the user.
-   * @param {string} password The password the user (NOT ecrypted).
+   * @param {string} apikey The api key of the user.
    * @param {string} membership The membership the user is connected with!
    * @returns Returns params of completed insertion.
    */
    .put('/users/user/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       const brand = await gymBrandRepository.findByBrandname(query.membership);
       if(brand != null && brand.gym_brandname == query.membership){
-        if (user != null && bcrypt.compareSync(query.password, user.password)) {
+        if(user != null && user.apikey == query.apikey){
           const result = await userRepository.updateUser(query.email,query.fullname,query.number,query.username,query.membership);
           res.json({'success': true});
         }
         else {
-          res.json({'message':'Invalid email or password!'})
+          res.json({'message':'Invalid email or apikey!'})
         }
       } else {
         res.json({'message':'Invalid gym brand!'})
@@ -672,7 +936,7 @@ const users = express.Router()
   /**
    * PUT update a gym user profile picture.
    * @param {string} email The email of the user.
-   * @param {string} password The password the user (NOT ecrypted).
+   * @param {string} apikey The api key of the user.
    * @param {file} profilepicture the picture.
    * @returns message informing successful update.
    */
@@ -680,14 +944,13 @@ const users = express.Router()
     try {
       const query = req.body;
       const file = req.file;
-      const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       let oldFileName = '';
       if (user.profile_picture != null && user.profile_picture.includes('/')){
         oldFileName = user.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -696,7 +959,7 @@ const users = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (bcrypt.compareSync(query.password, user.password)) {
+      if(user.apikey == query.apikey){
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let newFileName = ``;
         if (file.mimetype == 'image/jpeg'){
@@ -727,7 +990,7 @@ const users = express.Router()
         blobStream.end(req.file.buffer);
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -746,7 +1009,7 @@ const users = express.Router()
    .put('/users/user/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         const user = await userRepository.findByEmail(query.email);
         const otp = await userOTPRepository.findByEmail(query.email);
@@ -769,22 +1032,50 @@ const users = express.Router()
   })
   //=========================================================================================================//
   /**
+   * PUT - toggle notification setting.
+   * @param {string} email unique email used to delete the user.
+   * @param {string} apikey user's api key.
+   * @returns message confirming toggle.
+   */
+   .put('/users/user/notificationToggle', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      {
+        const user = await userRepository.findByEmail(query.email);
+        if(user != null && user.apikey == query.apikey){
+          await userRepository.notificationToggle(query.email);
+          res.json({'success': true});
+        }
+        else {
+          res.json({'message':'Invalid email or apikey!'})
+        }
+      } else {
+        res.json({'message':'Invalid email!'})
+      }
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+  //=========================================================================================================//
+  /**
    * DELETE - Delete a user.
    * @param {string} email unique email used to delete the user.
-   * @param {string} password user password.
+   * @param {string} apikey user's api key.
    * @returns message confirming deletion.
    */
   .delete('/users/delete', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      const bcrypt = require('bcryptjs')
       const user = await userRepository.findByEmail(query.email);
       let oldFileName = '';
       if (user != null && user.profile_picture != null && user.profile_picture != 'NONE' && user.profile_picture.includes('/')){
         oldFileName = user.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -793,7 +1084,7 @@ const users = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (user != null && bcrypt.compareSync(query.password, user.password)) {
+      if(user != null && user.apikey == query.apikey){
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await badgeOwnedRepository.deleteAllOwnedByEmail(user.email);
         result = await badgeClaimRepository.deleteAllClaimsByEmail(user.email);
@@ -802,7 +1093,7 @@ const users = express.Router()
         res.json({ 'success': true });
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     } catch (err) {
       const results = { success: false, results: err };
@@ -833,7 +1124,7 @@ const users = express.Router()
         // the friend has sent the user a request
         else if(b!=null){
           
-          if(b.isPending){
+          if(b.ispending==true){
             // set the pending status to false. the friend request was accepted
             let result = await friendRepository.updatePendingStatus(query.toEmail,query.fromEmail,false); 
             res.json({'success':true, 'results': 'request already exists, request was accepted'});    
@@ -862,12 +1153,13 @@ const users = express.Router()
   .post('/users/user/getFriends', cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      if(query.userEmail){
-
-          let result = await friendRepository.findFriends(query.userEmail);
-          res.json({'success' :true,'results': result});
+      if(query.userEmail && query.userEmail.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+        let result = await friendRepository.findFriends(query.userEmail);
+        res.json(result);
       }
-      else throw "missing email";
+      else{
+        res.json({'success':false,'message':'Invalid Email!'});
+      }
     } catch (err){
       const results = { success: false, results: err };
       console.error(err);
@@ -914,7 +1206,7 @@ const users = express.Router()
       res.json(results);
     }
   })
-  .get("/users/user/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
+  .get("/users/user/requests/getAllRequests", cors(corsOptions), async (req: any, res: any) => {
     try {
       let Requests = await friendRepository.findAll();
       res.json(Requests);
@@ -965,7 +1257,7 @@ const users = express.Router()
   /**
    * POST create a subscription relation. also checks for an existing subscription between the user and gym
    * @param {string} fromEmail the user making the subscription.
-   * @param {string} toEmail the user receiving the request.
+   * @param {string} gid gym id.
    * @returns message confirming creation.
    */
   .post('/users/user/createSubscription', cors(corsOptions), async (req: any, res: any) => {
@@ -1066,6 +1358,241 @@ const users = express.Router()
       else throw "missing email or gym";
     } catch (err) {
       const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+
+  //=========================================================================================================//
+  /**
+   * POST send a push notification to all the users subscribed to the given gym
+   * 
+   * */
+   .post('/users/user/SendSubscriberNotification', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.g_id  && query.pushMessage && query.pushTitle && query.isSilent!=null){
+        const tokens:string[] = [];
+        const emails:string[] = [];
+
+        let message_notification;
+        if(!query.isSilent){
+          message_notification = {
+            notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+        else{
+          message_notification = {
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+
+        let gymSubscribers = await subscriptionRepository.findBySubbed(query.g_id );
+        
+        let i = 0;
+        for(const trgt of gymSubscribers) {
+          
+          try{
+            let user = await userRepository.findByEmail(trgt.email);
+            console.log(user.pushkey)
+            if(user.pushkey!=null) {
+              tokens.push(user.pushkey)
+              emails.push(trgt)
+            }
+          } catch (err){
+            console.log(trgt+" is invalid");
+          }
+          
+          i++
+
+          if(i>=gymSubscribers.length){
+            if(tokens.length>0)
+            notificationRef.sendToDevice(tokens, message_notification, notification_options)
+         
+            res.json({'success' :true,'results': emails});
+          }
+        }
+        if(i===0) res.json({'success' :true,'results': "no users were notified"});
+     
+      }
+      else throw "malformed body";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST send a push notification to all the friends of the given user
+   * 
+   * */  
+
+
+   .post('/users/user/SendFriendsNotification', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+      if(query.userEmail && query.pushMessage && query.pushTitle && query.isSilent!=null){
+        const tokens:string[] = [];
+        const emails:string[] = [];
+
+        let message_notification;
+        if(!query.isSilent){
+          message_notification = {
+            notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+        else{
+          message_notification = {
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+
+        let userFriends = await friendRepository.findFriends(query.userEmail );
+        
+        let i = 0;
+        for(const trgt of userFriends) {
+          
+          try{
+            let user = await userRepository.findByEmail(trgt.email);
+            console.log(user.pushkey)
+            if(user.pushkey!=null) {
+              tokens.push(user.pushkey)
+              emails.push(trgt)
+            }
+          } catch (err){
+            console.log(trgt+" is invalid");
+          }
+          
+          i++
+
+          if(i>=userFriends.length){
+            if(tokens.length>0)
+            notificationRef.sendToDevice(tokens, message_notification, notification_options)
+         
+            res.json({'success' :true,'results': emails});
+          }
+        }
+        if(i===0) res.json({'success' :true,'results': "no users were notified"});
+     
+      }
+      else throw "malformed body";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  //=========================================================================================================//
+  /**
+   * POST send a push notification to all the users subscribed to the given gym
+   **/
+   .post('/users/user/SendGenericNotification', cors(corsOptions), async (req: any, res: any) => {
+    try {
+
+      let query = req.body;
+
+      if(query.pushMessage && query.pushTarget && query.pushTitle && query.isSilent!=null){
+        const tokens:string[] = [];
+        const emails:string[] = [];
+
+        let message_notification;
+        if(!query.isSilent){
+          message_notification = {
+            notification : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            },
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+        else{
+          message_notification = {
+            data : {
+              title: query.pushTitle,
+              body: query.pushMessage
+            }
+          }
+        }
+
+        let i = 0;
+        for(const trgt of query.pushTarget) {
+            try{
+              let user = await userRepository.findByEmail(trgt);
+              console.log(user.pushkey)
+              if(user.pushkey!=null) {
+                console.log("loop")
+                tokens.push(user.pushkey)
+                emails.push(trgt)
+              }
+            } catch (err){
+              console.log(trgt+" is invalid");
+            }
+            
+            i++
+
+            if(i>=query.pushTarget.length){
+              if(tokens.length>0)
+              notificationRef.sendToDevice(tokens, message_notification, notification_options)
+           
+              res.json({'success' :true,'results': emails});
+            }
+        };
+
+        if(i===0) res.json({'success' :true,'results': "no users were notified"});
+      }
+      else throw "malformed body";
+    } catch (err){
+      const results = { success: false, results: err };
+      console.error(err);
+      res.json(results);
+    }
+  })
+
+  .put('/users/user/pushToken', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      const query = req.body;
+      if (query.email && query.token)
+      {
+        const user = await userRepository.findByEmail(query.email);
+
+        await userRepository.updateUserPushToken(user.email, query.token);
+
+        res.json({ 'success': true, 'message': 'push token has been modified' });
+      }
+      else 
+        throw "malformed request body"
+
+    }catch (err) {
+      const results = { 'success': false, 'results': err };
       console.error(err);
       res.json(results);
     }

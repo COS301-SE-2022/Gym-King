@@ -16,11 +16,22 @@ const MyBadge: React.FC = () =>{
         let email=localStorage.getItem("email")
 
     
-    useIonViewDidEnter(()=>{
+    useIonViewDidEnter(async()=>{
         setLoading(true)
-        axios.get(process.env["REACT_APP_GYM_KING_API"]+` /users/owned/${email}`)
+        await axios(process.env["REACT_APP_GYM_KING_API"]+`/user/badges`,{
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            data: JSON.stringify({ 
+                email: email,
+                apikey:sessionStorage.getItem("key")
+            })
+        })
         .then(response =>response.data)
         .then(response =>{
+            console.log(response)
             let arr=[];
             for(let i=0; i<response.length;i++)
             {
@@ -79,52 +90,52 @@ const MyBadge: React.FC = () =>{
             <IonContent fullscreen class="MyBadgeContent" className='Content'>
                     <IonText className='PageTitle center'>My Badges</IonText>
 
-                    <IonButton color='warning' className='width80' onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
+                    <IonButton mode="ios" color='warning' className='width80 btn' onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
 
-                    <IonToolbar class="FilterBar" >
+                    <IonToolbar class="FilterBar" mode="ios">
                         <IonButtons slot='start' color="light">
-                            <IonButton id="sort-trigger" color="light">
-                                <IonIcon size='large' icon={swapVertical}></IonIcon>
+                            <IonButton mode="ios" id="sort-trigger" color="light">
+                                <IonIcon mode="ios" size='large' icon={swapVertical}></IonIcon>
                                 <IonLabel color="light" style={{"paddingLeft":"5%"}}>Sort</IonLabel>
                             </IonButton>
-                            <IonPopover  trigger='sort-trigger' triggerAction='click'>      
-                                            <IonItem onClick={e=>{setSort("AscName")}}>
+                            <IonPopover mode="ios" trigger='sort-trigger' triggerAction='click'>      
+                                            <IonItem onClick={e=>{setSort("AscName")}} mode="ios">
                                                 <IonIcon icon={arrowUp}></IonIcon>
                                                 <IonLabel>Name</IonLabel>
                                             </IonItem>
-                                            <IonItem onClick={e=>{setSort("DescName")}}>
+                                            <IonItem mode="ios" onClick={e=>{setSort("DescName")}}>
                                                 <IonIcon icon={arrowDown}></IonIcon>
                                                 <IonLabel>Name</IonLabel>
                                             </IonItem>
-                                            <IonItem onClick={e=>{setSort("AscQty")}}>
+                                            <IonItem mode="ios" onClick={e=>{setSort("AscQty")}}>
                                                 <IonIcon icon={arrowUp}></IonIcon>
                                                 <IonLabel>Quantity</IonLabel>
                                             </IonItem>
-                                            <IonItem onClick={e=>{setSort("DescQty")}}>
+                                            <IonItem mode="ios" onClick={e=>{setSort("DescQty")}}>
                                                 <IonIcon icon={arrowDown}></IonIcon>
                                                 <IonLabel>Quantity</IonLabel>
                                             </IonItem>
                             </IonPopover>
                         </IonButtons>
                         <IonButtons slot='secondary' >
-                            <IonButton id="filter-trigger"  color="light">
-                                <IonIcon size='large' icon={funnel} ></IonIcon>
+                            <IonButton id="filter-trigger"  color="light" mode="ios">
+                                <IonIcon mode="ios" size='large' icon={funnel} ></IonIcon>
                                 <IonLabel style={{"paddingLeft":"5%"}}>Filter</IonLabel>
                             </IonButton>
                         </IonButtons>
-                        <IonPopover trigger='filter-trigger' triggerAction='click'>
+                        <IonPopover trigger='filter-trigger' triggerAction='click' mode="ios">
                             {checkboxList.map(({ val, isChecked }, i) => (
-                                <IonItem key={i}>
+                                <IonItem key={i} mode="ios">
                                  <IonLabel>{val}</IonLabel>
-                                    <IonCheckbox slot="end" value={val} checked={isChecked} onIonChange={e=>{changeCheckbox(val,e.detail.checked)}}/>
+                                    <IonCheckbox mode="ios" slot="end" value={val} checked={isChecked} onIonChange={e=>{changeCheckbox(val,e.detail.checked)}}/>
                                  </IonItem>
                              ))}
                         </IonPopover>
                     </IonToolbar>
                     <MyBadgeGrid badges={badges} filters={checkboxList} sort={sort}></MyBadgeGrid>
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
-                        message={"Loading"}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
