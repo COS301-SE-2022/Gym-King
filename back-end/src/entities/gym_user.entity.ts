@@ -35,4 +35,10 @@ export class gym_user {
 
     @Column({length: 1024,nullable: true})
     pushkey:string
+
+    @Column({length: 64,default: null, nullable: true})
+    apikey: string
+
+    @Column({type: "boolean", default: true})
+    notificationtoggle: boolean
 }

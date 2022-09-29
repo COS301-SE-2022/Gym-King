@@ -17,7 +17,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @returns list of request that contain the given 'fromUser'
      */
     findBySender(email: string) {
-        return this.findBy({fromUser: email });
+        return this.findBy({fromuser: email });
     },
 
     /**
@@ -26,7 +26,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @returns list of request that contain the given 'toUser'
      */
     findByReceiver(email: string) {
-        return this.findBy({toUser: email });
+        return this.findBy({touser: email });
     },
 
     /**
@@ -36,8 +36,42 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @returns a single friend request
      */
     async findByFromTo(fromEmail: string, toEmail: string){
-        return this.findOneBy({ fromUser: fromEmail, toUser: toEmail });
+        return this.findOneBy({ fromuser: fromEmail, touser: toEmail });
     },
+
+    /**
+     * Check if two user's are friends.
+     * @param {string} user1email - the first user email.
+     * @param {string} user2email - the second user email.
+     * @returns {boolean} true or false.
+     */
+     async checkIfFriends(user1email: string, user2email: string){
+        let result1 = await this.findOneBy({ fromuser: user1email, touser: user2email, ispending: false});
+        let result2 = await this.findOneBy({ fromuser: user2email, touser: user1email, ispending: false });
+        if (result1 != null || result2 != null){
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     * Check if two user's are pending friends.
+     * @param {string} user1email - the first user email.
+     * @param {string} user2email - the second user email.
+     * @returns {boolean} true or false.
+     */
+ async checkIfPendingFriends(user1email: string, user2email: string){
+    let result1 = await this.findOneBy({ fromuser: user1email, touser: user2email, ispending: true});
+    let result2 = await this.findOneBy({ fromuser: user2email, touser: user1email, ispending: true});
+    if (result1 != null ){
+        return "incoming";
+    } else if ( result2 != null){
+        return "outgoing";
+    } else {
+        return "non";
+    }
+},
 
     /**
      * gets all the friends(not pending) for a specified user
@@ -47,25 +81,25 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
     async findFriends(userEmail: string){
 
 
-        let reqs = await this.findBy({ fromUser: userEmail});
+        let reqs = await this.findBy({ fromuser: userEmail});
 
         let ret=[];
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
             console.log(req)
-            if(req.isPending==false){
-                let user = await userRepository.findByEmail(req.toUser);
+            if(!req.ispending){
+                let user = await userRepository.findByEmail(req.touser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
         }
 
-        reqs =await this.findBy({ toUser: userEmail})
+        reqs =await this.findBy({ touser: userEmail})
 
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
             console.log(req)
-            if(req.isPending==false){
-                let user = await userRepository.findByEmail(req.fromUser);
+            if(!req.ispending){
+                let user = await userRepository.findByEmail(req.fromuser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
             
@@ -81,15 +115,15 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @returns list of received requests
      */
     async findReceivedRequests(userEmail: string){
-        let reqs = await this.findBy({ toUser: userEmail});
+        let reqs = await this.findBy({ touser: userEmail});
         
 
         let ret=[];
        
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
-            if(req.isPending==true){
-                let user = await userRepository.findByEmail(req.fromUser);
+            if(req.ispending){
+                let user = await userRepository.findByEmail(req.fromuser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
 
@@ -102,14 +136,14 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @returns list of sent requests
      */
      async findSentRequests(userEmail: string){
-        let reqs = await this.findBy({ fromUser: userEmail});
+        let reqs = await this.findBy({ fromuser: userEmail});
         
         let ret=[];
         
         for (let i = 0; i < reqs.length; i++) {
             const req = reqs[i];
-            if(req.isPending==true){
-                let user = await userRepository.findByEmail(req.toUser);
+            if(req.ispending){
+                let user = await userRepository.findByEmail(req.touser);
                 ret.push({email:user.email,username:user.username,fullname:user.fullname,profile_picture:user.profile_picture})
             }
 
@@ -125,7 +159,7 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      * @param status - the new status
      */
     async updatePendingStatus(fromEmail: string, toEmail: string, status: boolean) {
-        return await this.manager.update(friend, { fromUser: fromEmail, toUser: toEmail }, {isPending: status})
+        return this.manager.update(friend, { fromuser: fromEmail, touser: toEmail }, {ispending: status})
     },
 
 
@@ -144,9 +178,9 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
         let toUser = await userRepository.findByEmail(toEmail);
         let fromUser = await userRepository.findByEmail(fromEmail);
 
-        newRequest.fromUser = fromUser;
-        newRequest.toUser = toUser;
-        newRequest.isPending = true;
+        newRequest.fromuser = fromUser;
+        newRequest.touser = toUser;
+        newRequest.ispending = true;
 
         return this.manager.save(newRequest);
 
@@ -159,10 +193,10 @@ export const friendRepository = GymKingDataSource.getRepository(friend).extend({
      */
     deleteRequest(fromEmail: string, toEmail: string){
         try{
-            this.manager.delete(friend, {fromUser: fromEmail, toUser: toEmail})
+            this.manager.delete(friend, {fromuser: fromEmail, touser: toEmail})
         }
         catch(err){
-            this.manager.delete(friend, {fromUser: toEmail, toUser: fromEmail})
+            this.manager.delete(friend, {fromuser: toEmail, touser: fromEmail})
         }
     }
 })

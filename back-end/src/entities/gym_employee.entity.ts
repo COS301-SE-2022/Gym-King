@@ -24,4 +24,7 @@ export class gym_employee {
     @ManyToOne(() => gym, (gym) => gym.g_id,{ eager: true })
     @JoinColumn({name: "g_id"})
     g_id: gym
+
+    @Column({length: 64,default: null, nullable: true})
+    apikey: string
 }
