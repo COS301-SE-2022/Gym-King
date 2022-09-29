@@ -1,4 +1,4 @@
-import { IonPage, IonContent, IonImg, useIonViewDidEnter, useIonRouter} from '@ionic/react';
+import { IonPage, IonContent, IonImg } from '@ionic/react';
 import './splash-screen.css';
 //import auth0Client from '../Auth';
 import logo from './logo.png';
@@ -58,6 +58,7 @@ export const SplashPage: React.FC = () =>
         PushNotifications.removeAllDeliveredNotifications()
     })
 
+    // eslint-disable-next-line
     const getPermissons = () => {
 
         Geolocation.checkPermissions().then(
@@ -68,9 +69,9 @@ export const SplashPage: React.FC = () =>
         );    
           
     }
-    const router = useIonRouter();
-    useIonViewDidEnter(()=>{
-        getPermissons();
+    // const router = useIonRouter();
+    // useIonViewDidEnter(()=>{
+    //     getPermissons();
         // setTimeout(() => {
         //     if(localStorage.getItem("email")!=null && localStorage.getItem("password")!=null && localStorage.getItem("usertype")!=null)
         //     {
@@ -85,7 +86,7 @@ export const SplashPage: React.FC = () =>
 
         
         
-    })
+    //})
     // const navigate=()=>{
     //     let usertype=localStorage.getItem("usertype")
     //     if(usertype==="gym_user")

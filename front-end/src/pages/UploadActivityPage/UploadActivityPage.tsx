@@ -15,7 +15,9 @@ export type UploadActivityStates = {act?:any}
 const UploadActivityPage: React.FC = () =>{
         
         // STATES AND VARIABLES 
+        // eslint-disable-next-line
         const [isValid, setIsValid] = useState(false);
+        // eslint-disable-next-line
         const [submitted, setSubmitted] = useState(false);
         const [Icon,setIcon]=useState<string[]>([""])
         let email = localStorage.getItem("email") 
