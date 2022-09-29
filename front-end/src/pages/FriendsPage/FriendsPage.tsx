@@ -20,6 +20,8 @@ const FriendsPage: React.FC = () =>{
 
     useIonViewWillEnter(()=>{
         setLoading(true)
+        
+        console.log("ion page entered")
         //remove session storage
         sessionStorage.removeItem("friendUsername")
         sessionStorage.removeItem("friendEmail")
@@ -39,15 +41,17 @@ const FriendsPage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            if(response.success){
-                console.log(response)
-                setFriends(response)
-            }
+            
+            console.log(response)
+            setFriends(response)
+        
             setLoading(false)
         })
         .catch(err => {
             setLoading(false)
             console.log(err)
+            
+            setFriends([])
             
         })
 
