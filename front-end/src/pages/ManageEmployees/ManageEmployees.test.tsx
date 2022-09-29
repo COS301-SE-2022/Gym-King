@@ -6,6 +6,7 @@ import ManageEmployees from './ManageEmployees';
 /*
 */
 
+//Tests to see if the Page renders without crashing
 test('renders without crashing', async()=> {
   const {baseElement} = await render(<ManageEmployees />);
   expect(baseElement).toBeDefined();
