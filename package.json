@@ -60,6 +60,7 @@
     "@nxtend/ionic-react": "^13.0.0",
     "@teamhive/capacitor-video-recorder": "^5.0.0",
     "@tensorflow/tfjs": "^3.20.0",
+    "@tensorflow/tfjs-tflite": "0.0.1-alpha.8",
     "@testing-library/dom": "7.21.4",
     "@trapezedev/configure": "^5.0.3",
     "@types/express": "^4.17.13",

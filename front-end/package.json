@@ -16,6 +16,7 @@
     "@capacitor/status-bar": "1.0.8",
     "@teamhive/capacitor-video-recorder": "^5.0.0",
     "@tensorflow/tfjs": "^3.20.0",
+    "@tensorflow/tfjs-tflite": "0.0.1-alpha.8",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",

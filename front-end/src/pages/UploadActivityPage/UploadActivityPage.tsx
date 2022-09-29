@@ -6,12 +6,12 @@ import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
 import axios from "axios";
 import * as tf from "@tensorflow/tfjs"
+import * as tflite from "@tensorflow/tfjs-tflite"
 import NNAlert from '../../components/NN_outcome/NN_outcome';
 import {claimSchema} from '../../validation/UploadClaimValidation'
 import './index'
-import { LayersModel } from '@tensorflow/tfjs';
 import ActivityInputs from '../../components/activityInputs/ActivityInputs';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem} from '@capacitor/filesystem';
 interface InternalValues {
     file: any;
 }
@@ -26,6 +26,7 @@ const inputRefUploadVideo = useRef<HTMLInputElement>(null);
 const [award,setAward]=useState<boolean>(false)
 const [isValid, setIsValid] = useState(false);
 const [submitted, setSubmitted] = useState(false);
+const [reps_required,setRepsRequired] =useState(0)
 const [Icon,setIcon]=useState<string[]>([""])
 const [model,setModel]=useState<any>()  
 const [message,setMessage]=useState<string>("loading")
@@ -40,6 +41,7 @@ const [Alert,setAlert]=useState<boolean>(false)
 const [AI_enabled,setAI_enabled]=useState<string>("off")
 const [error_toast,setError_toast]=useState<boolean>(false)
 const [error_Mesg,setError_Mesg]=useState<string>("error")
+const [filename,setFilename]=useState<string>("")
 let email = localStorage.getItem("email") 
 localStorage.setItem( 'e1', "");
 localStorage.setItem( 'e2', "");
@@ -72,16 +74,18 @@ const SetAI_enabled=async(msg:string)=>
 }
 //METHODS     
 const loadModel =async() => {
-    if(model===undefined)
-    {
-    var new_model:LayersModel
     try{
 
         setMessage("Loading neural Network")
         setLoading(true)
-        console.log("loading model")
-        new_model = await tf.loadLayersModel('./assets/model/trained_modeltjs/model.json');
-        console.log("success")
+       // console.log("loading model")
+       const option={
+        numThreads:2,
+        enableProfiling:false,
+        maxProfilingBufferEntries:1024.
+       }
+        const new_model= await tflite.loadTFLiteModel('assets/model/tflite_model.tflite',option);
+        console.log(new_model)
         setLoading(false)
         setMessage("Loading")
         console.log(new_model)
@@ -89,16 +93,13 @@ const loadModel =async() => {
         
     }
     catch(e:any){
-        console.log(e.message)
-        console.log("Error")
+        console.log("erro loading model",e)
         setLoading(false)
         setError_Mesg("Device not AI compatible:turning AI settings off")
-        localStorage.setItem("AI_enabled","off")
         setError_toast(true)
         history.goBack()
         
     }
-}
 };
 
     
@@ -107,7 +108,8 @@ const categroize=async(images:ImageData[])=>{
     for(let i=0;i<images.length;i++)
     {
         let tensorImg=tf.browser.fromPixels(images[i]).resizeNearestNeighbor([300, 300]).div(tf.scalar(255)).expandDims();
-        let prediction= await model.predict(tensorImg).data();
+        let prediction= await model.predict(tensorImg).dataSync();
+        console.log(i,prediction)
         let index=0;
         let max=prediction[0]
         for(let i=1;i<prediction.length;i++)
@@ -118,8 +120,8 @@ const categroize=async(images:ImageData[])=>{
                 index=i;
             }
         }
-    console.log(categories[index])
-    predictions.push(categories[index])
+        console.log(categories[index])
+        predictions.push(categories[index])
     } 
     console.log(predictions)
     return predictions
@@ -145,20 +147,18 @@ const determineReps=async(predictions:string[])=>{
         console.log("rep_count",rep_count)
     
     //determine if badge should be awarded
-        let reps_needed=badgedescription.match(/\b\d+\b/g)?.map(Number)
-        if(reps_needed)
-        {
-        if(reps_needed[0]<=rep_count)
+        
+        if(reps_required<=rep_count)
         {
             console.log("congrats")
             await SetAward(true)
         }
         else{
-            await SetBadgeMessage("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
-            console.log("Isufficient reps. expected "+reps_needed +", but detected : "+rep_count)
+            await SetBadgeMessage("Isufficient reps. expected "+reps_required+", but detected : "+rep_count)
+            console.log("Isufficient reps. expected "+reps_required +", but detected : "+rep_count)
             await SetAward(false)
         }
-        }
+    
         
     
 }
@@ -170,14 +170,15 @@ const toBase64 =(file:File) => new Promise((resolve, reject) => {
 });
 
 const writeToFile=async()=>{
-    console.log('media/'+values.current.file.name)
-    var media:string=(await toBase64(values.current.file) as string)
-    await Filesystem.writeFile({
-        path: 'media/'+values.current.file.name,
-        data: media,
-        directory: Directory.Data
-      });
+   
+        var media=(await toBase64(values.current.file) as string)
+        console.log('base64',media)
+        await Filesystem.writeFile({
+            path: 'Phone/DCIM/Camera'+values.current.file.name,
+            data: media
+        });
 }
+
 const handleSubmit_AI = async (path:any) =>{
     
     console.log(values.current.file)
@@ -188,7 +189,7 @@ const handleSubmit_AI = async (path:any) =>{
     setMessage("Calculating")
     setLoading(true)
     console.log("extracting frames")
-    await VideoToFrames.getFrames('./media/'+values.current.file.name, VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
+    await VideoToFrames.getFrames('Phone/DCIM/Camera'+values.current.file.name, VideoToFramesMethod.totalFrames).then(async function (frame:ImageData[]) {
         console.log("running through neural network")
         console.log(frame)
         let predictions=await categroize(frame)
@@ -205,6 +206,7 @@ const reset= () => {
     setAlert(false)
 }
 const handleSubmit = async (e:any) =>{
+    await writeToFile()
     e.preventDefault();
     formdata={
         i1: e.target.i1.value,
@@ -242,6 +244,7 @@ const values =useRef<InternalValues>({
 });
 const onFileChange = (fileChangeEvent: any) => {
     values.current.file = fileChangeEvent.target.files[0];
+    setFilename(values.current.file.name)
     submitImage()
 };
 const submitImage = () =>{
@@ -294,6 +297,7 @@ useIonViewDidEnter(async()=>{
         .then(response =>{
         console.log("rsponse",response)
         setB_id(response.b_id)
+        setRepsRequired(response.requirement2)
         localStorage.setItem("activitytype", response.activitytype)
         setDescription(response.badgechallenge)
         setBadgename(response.badgename)
@@ -358,7 +362,8 @@ useIonViewDidEnter(async()=>{
                             <input ref={inputRefTakeVideo} onClick={()=>{console.log("hit")}}  type="file"className='HiddenInputFile'  name="video" accept="video/*" capture="environment" onChange={(ev) => onFileChange(ev)}/>
                             <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className="btnSubmit centerComp" color="warning">Upload Video</IonButton>  
                             <input ref={inputRefUploadVideo}  type="file" className='HiddenInputFile' accept=".mp4" onChange={(ev) => onFileChange(ev)} />
-                            <IonButton onClick={handleSubmit_AI } className="btnSubmit centerComp" color="warning">Submit</IonButton>  
+                            <IonText>{filename}</IonText> 
+                            <IonButton onClick={handleSubmit_AI } className="btnSubmit centerComp" color="warning">Submit</IonButton> 
                         </div>
                    ):(
                     <div>
@@ -381,6 +386,7 @@ useIonViewDidEnter(async()=>{
 
                             <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className="btnSubmit centerComp" color="warning">Upload Video</IonButton>  
                             <input ref={inputRefUploadVideo}  type="file" className='HiddenInputFile' accept=".mp4" onChange={(ev) => onFileChange(ev)} />
+                            <IonText>{filename}</IonText>
                         </IonRow>
                         </IonGrid>
                         <br></br>
@@ -402,7 +408,7 @@ useIonViewDidEnter(async()=>{
                         isOpen={error_toast}
                         onDidDismiss={() => setError_toast(false)}
                         message={error_Mesg}
-                        duration={1000}
+                        duration={5000}
                         color="danger"
                     />
                     <IonLoading 
