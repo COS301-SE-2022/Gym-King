@@ -25,7 +25,6 @@ const UploadActivityPage: React.FC = () =>{
         localStorage.setItem( 'e3', "");
         let formdata: any
         const [showToast1, setShowToast1] = useState(false);
-        const [b_id, setB_id] = useState('');
         const [badgename, setBadgename] = useState('');
         const [badgedescription, setDescription] = useState('');
         const [loading, setLoading] = useState<boolean>(false);
@@ -73,7 +72,6 @@ const UploadActivityPage: React.FC = () =>{
             .then(response =>response.data)
             .then(response =>{
                 console.log("rsponse",response)
-                setB_id(response.bid)
                 localStorage.setItem("activitytype", response.activitytype)
                 setDescription(response.badgechallenge)
                 setBadgename(response.badgename)
