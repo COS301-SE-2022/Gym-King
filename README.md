@@ -2,6 +2,10 @@
 
 <!-- PROJECT LOGO -->
 <!-- Gym King -->
+<div align="center"> 
+
+![GYM_KING_free-file_5](https://user-images.githubusercontent.com/92938217/195381250-76466f42-204a-4704-a6f2-5e186014d7ac.png)
+
 
 <!-- PROJECT SHIELDS -->
 <div align="center">
