@@ -1,5 +1,5 @@
 import React, { useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter, IonLoading, IonButton} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, useIonViewWillEnter, IonLoading, IonButton} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
 import { useHistory } from 'react-router-dom';

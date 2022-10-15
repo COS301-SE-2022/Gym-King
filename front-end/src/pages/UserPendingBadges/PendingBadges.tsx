@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter, IonList, IonCard} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter, IonList} from '@ionic/react';
 import React, {useState} from 'react'
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
