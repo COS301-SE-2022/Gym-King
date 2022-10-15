@@ -122,14 +122,14 @@ const FriendRequestList: React.FC<props> = () =>{
 
         return(
             <>
-            <IonList mode="ios">
+            <IonList mode="ios" className='transparentBack'>
                 {
                     requests?.map((el:any)=>{
-                        return (<IonItem  mode="ios" data-testid="aB" key={el.email} >
+                        return (<IonItem className='transparentBack' mode="ios" data-testid="aB" key={el.email} >
      
 
                                 <IonGrid>
-                                    <IonRow>
+                                    <IonRow style={{"padding":"0"}}>
                                         <IonCol size="2">
                                             <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
                                                 <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${el.profile_picture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
@@ -138,7 +138,7 @@ const FriendRequestList: React.FC<props> = () =>{
                                         <IonCol size="4">
                                             <IonLabel style={{"marginTop":"15%"}}>{el.username}</IonLabel>
                                         </IonCol>
-                                        <IonRow>
+                                        <IonRow style={{"padding":"0"}}> 
                                             <IonCol style={{"paddingLeft":"0", "marginTop":"2%"}}>
                                                 <IonButton color="warning" style={{"width":"90%", "float":"left"}} onClick={()=>confirmRequest(el.email)}>Confirm</IonButton>
                                             </IonCol>
@@ -146,7 +146,7 @@ const FriendRequestList: React.FC<props> = () =>{
                                                 <IonButton mode="ios" color="medium" style={{"width":"90%" , "float":"left"}} onClick={()=>deleteRequest(el.email)}>Delete</IonButton>
                                             </IonCol>
                                         </IonRow>
-                                        
+    
                                     </IonRow>
                                 </IonGrid>
                             </IonItem>)

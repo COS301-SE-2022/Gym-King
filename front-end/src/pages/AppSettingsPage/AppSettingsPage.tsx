@@ -19,7 +19,7 @@ const AppSettingsPage: React.FC = () =>{
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>App Settings</IonText>
+                    <IonText className='PageTitle center'>APP SETTINGS</IonText>
                     
                 </IonContent>
             </IonPage>

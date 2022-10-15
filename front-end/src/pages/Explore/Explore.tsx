@@ -204,7 +204,7 @@ const Explore: React.FC = () =>{
                 </IonHeader>
                 
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Explore</IonText>
+                    <IonText className='PageTitle center'>EXPLORE</IonText>
 
                     <IonGrid >
                         <IonRow>

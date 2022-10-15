@@ -198,7 +198,7 @@ export const ForgotPassword: React.FC = () =>{
                         <br></br>
 
                         <IonLabel className="smallHeading" position="floating">User type*</IonLabel>
-                        <IonSegment mode="ios" onIonChange={segmentChanged}  >
+                        <IonSegment mode="ios" onIonChange={segmentChanged} className="bottomRightShadow" >
                             <IonSegmentButton mode="ios" value="gym_user">
                                 <IonLabel>User</IonLabel>
                             </IonSegmentButton>

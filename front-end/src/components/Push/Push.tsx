@@ -143,13 +143,15 @@ const PushNotificationsContainer: React.FC = () => {
                 </IonHeader>
             <IonContent >
 
-                <IonText className='PageTitle center'>My Notifications</IonText>
+                <IonText className='PageTitle center' style={{"fontSize":"180%"}}>NOTIFICATIONS</IonText>
+                <IonButton mode="ios" className='centerComp width80' color="medium" onClick={clearAllNotifications}>Clear All</IonButton>
+
                 {notifications.length !== 0 &&
-                    <IonList mode="ios">
+                    <IonList mode="ios" className='transparentBack'>
   
                     {notifications.map((notif: any) =>
                         <IonItemSliding >
-                            <IonItem detail key={notif.id} mode="ios">
+                            <IonItem detail key={notif.id} mode="ios" className='transparentBack'>
                                 <IonLabel>                          
                                         <h3>{notif.title}</h3>
                                         <p>{notif.body}</p>
@@ -169,12 +171,6 @@ const PushNotificationsContainer: React.FC = () => {
                     </IonList>
                 }
             </IonContent>
-
-            <IonFooter>
-                <IonToolbar mode="ios">
-                    <IonButton color="danger" expand="full" onClick={clearAllNotifications}>Clear All</IonButton>
-                </IonToolbar>
-            </IonFooter>
             <IonToast
                 mode="ios"
                 isOpen={isToastOpen}
