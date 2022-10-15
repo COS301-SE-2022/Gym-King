@@ -28,6 +28,7 @@ const Explore: React.FC = () =>{
     const [gymAddress, setGymAddress] =useState("")
 
     //suggested badges
+    // eslint-disable-next-line 
     const [badgeSuggestions, setBadgeSuggestions] =useState(new Array())
     
 
