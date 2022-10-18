@@ -347,6 +347,14 @@ ion-card{
   letter-spacing: 2px;
   font-family: 'Russo One', sans-serif;
 }
+.gymTitle{
+  font-size: 180% !important;
+  margin-top:7%;
+  margin-bottom: 5%;
+  letter-spacing: 2px;
+  font-family: 'Comfortaa', cursive;
+  color: white !important;
+}
 
 .badge{
   font-size:700%;

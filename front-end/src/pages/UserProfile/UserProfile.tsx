@@ -88,11 +88,10 @@ const UserProfilePage: React.FC = () =>{
                 setNumBadges(response.length)
             })
             .catch(err => {
-                setLoading(false)
             })
     }
     const getNumberOfClaims = () =>{
-        setLoading(false)
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/claims`,{
             method: 'POST',
             headers: {
@@ -109,11 +108,11 @@ const UserProfilePage: React.FC = () =>{
                 setNumClaims(response.length)
             })
             .catch(err => {
-                setLoading(false)
             })
     }
 
     const getNumberofFriends = ()=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
             method: 'POST',
             headers: {
@@ -127,20 +126,18 @@ const UserProfilePage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            setLoading(false)
             console.log(response)
             setNumFriends(response.length)
         })
         .catch(err => {
-            setLoading(false)
             console.log(err)
             
         })
     }
 
     useIonViewDidEnter(()=>{
-        setPresentingElement(page.current); //for modal
         setLoading(true);
+        setPresentingElement(page.current); //for modal
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
@@ -160,17 +157,16 @@ const UserProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setProfilePicture(response.profile_picture)
                 sessionStorage.setItem("pp", response.profile_picture)
-
-                setLoading(false);
+                setLoading(true)
                 
             })
             .catch(err => {
-                setLoading(false)
             })
-        
+        setLoading(true)
         getNumberOfBadges()
         getNumberOfClaims()
         getNumberofFriends()
+        setLoading(false)
          // eslint-disable-next-line react-hooks/exhaustive-deps
 
     },[profilePicture])
@@ -466,7 +462,7 @@ const UserProfilePage: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        duration={2000}
+                        duration={1000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}
