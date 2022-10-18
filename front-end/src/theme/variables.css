@@ -246,12 +246,21 @@ ion-card{
 }
 
 .loginHeading{
-  font-size:200%;
+    font-size:200%;
     letter-spacing: 8px;
     font-family: 'Russo One', sans-serif !important;
     padding:5%;
     color:rgba(255, 255, 255, 0.342)  !important;
     text-shadow: 4px 4px 8px #321E93
+}
+
+.medHeading{
+  font-size:140%;
+  letter-spacing: 8px;
+  font-family: 'Russo One', sans-serif !important;
+  color:rgba(255, 255, 255, 0.342)  !important;
+  text-shadow: 4px 4px 8px #321E93;
+
 }
 .mediumHeading{
   font-family: 'Comfortaa', cursive;

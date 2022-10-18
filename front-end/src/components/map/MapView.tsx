@@ -1,5 +1,5 @@
-import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
-import React, {  useEffect, useState } from "react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonText, IonToast } from "@ionic/react";
+import React, {  useEffect, useRef, useState } from "react";
 import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { useHistory } from 'react-router-dom';
@@ -47,6 +47,16 @@ const MapView: React.FC = () =>{
 
     const [error, setError] = useState<LocationError>({showError: false});
     const [userLocation, setUserLoc] = useState([0,0]);
+
+    //Gym Modal
+    const gymModal = useRef<HTMLIonModalElement>(null);
+    const [isShowingGymModal, setIsShowingGymModal] = useState(false);
+    const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
+    const page = useRef(null);
+
+    useEffect(() => {
+        setPresentingElement(page.current);
+    }, []);
 
     // Gym Menu Vars -----------------------------------------------------------------------------------------------//
 
@@ -175,7 +185,7 @@ const MapView: React.FC = () =>{
     const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
         setGymData(activeGym);
-        setShowModal(true);
+        setIsShowingGymModal(true);
     }
 
     //=========================================================================================================//
@@ -527,6 +537,36 @@ const MapView: React.FC = () =>{
 
             
             </IonModal>   
+            <IonModal
+                mode="ios"
+                ref={gymModal}
+                trigger="open-modal"
+                isOpen={isShowingGymModal}
+                initialBreakpoint={0.25}
+                breakpoints={[0.0,0.25, 0.5, 0.75]}
+                backdropBreakpoint={0.5}
+            
+                presentingElement={presentingElement!}
+                onWillDismiss={()=>
+                {
+                    setIsShowingGymModal(false)
+                
+                }}
+
+            >
+                <IonContent color='secondary' ><br></br>
+                    <IonText className="inputHeading  center" style={{"marginTop":"4%"}}>{gymData.gym_name}</IonText> <br></br>
+                    <IonText className="center" style={{"padding":"3%"}}><i>{gymData.gym_address}</i></IonText> 
+                    <IonButton className=" width80" color="warning" onClick={()=>{
+                        sessionStorage.setItem('gym_name',gymData.gym_name);
+                        sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
+                        sessionStorage.setItem('gym_address',gymData.gym_address);
+                        sessionStorage.setItem('gid',gymData.g_id);
+                        setIsShowingGymModal(false);
+                        history.push("/GymPage");
+                    }}>View more details</IonButton>
+                </IonContent>
+            </IonModal>
             </IonContent>
         </>
     )

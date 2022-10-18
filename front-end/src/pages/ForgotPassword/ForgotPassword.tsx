@@ -186,7 +186,7 @@ export const ForgotPassword: React.FC = () =>{
                 </IonHeader>
                 <IonContent  fullscreen className='grad '>
                     <form className='forgotPasswordForm' onSubmit={handleSubmit}>
-                        <IonText className='center inputHeading'>Forgot Password</IonText> <br></br>
+                        <IonText className=' medHeading ' text-center>FORGOT PASSWORD</IonText><br></br><br></br>
 
                         <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
                         <IonInput className='textInput' name='email' type='text' required></IonInput>
