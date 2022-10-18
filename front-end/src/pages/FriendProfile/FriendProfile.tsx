@@ -87,7 +87,7 @@ const FriendProfile: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText color="light" className="PageTitle center un">{friendUsername}</IonText>
+                                                <IonText color="light" className=" center un">{friendUsername}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{friendFullname}</i>
@@ -102,7 +102,17 @@ const FriendProfile: React.FC = () =>{
                                 <IonCard className="profileCard" >
                                     <IonCardHeader className="inputHeading">{friendUsername}'s badges</IonCardHeader>
                                     <IonCardContent>
-                                        <FriendBadgeGrid badges={friendBadges} ></FriendBadgeGrid>
+                                        {
+                                            friendBadges.length ===0
+                                            &&
+                                            <IonText><i>No badges</i></IonText>
+                                        }
+                                        {
+                                            friendBadges.length !== 0
+                                            &&
+                                            <FriendBadgeGrid badges={friendBadges} ></FriendBadgeGrid>
+
+                                        }
                                     </IonCardContent>
                                 </IonCard>
                         </IonRow>
