@@ -318,14 +318,14 @@ const UserProfilePage: React.FC = () =>{
                         <IonRow >
                             <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
-                                    <IonRow>
+                                    <IonRow className="ion-justify-content-center" >
                                         <IonCol size='5'>
                                             <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
-                                        <IonCol size="7">
-                                            <IonRow>
-                                                <IonText color="light" className="PageTitle center un">{username}</IonText>
+                                        <IonCol size="7" >
+                                            <IonRow >
+                                                <IonText color="light" className=" center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name}</i>
@@ -397,8 +397,8 @@ const UserProfilePage: React.FC = () =>{
 
                     <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
-                        <IonHeader>
-                            <IonToolbar>
+                        <IonHeader >
+                            <IonToolbar color='secondary'>
                             <IonButtons slot="start">
                                 <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>

@@ -341,9 +341,11 @@ ion-card{
 }
 
 .un{
-  font-size: 5vw !important;
+  font-size: 180% !important;
+  margin-top:7%;
   margin-bottom: 5%;
-  font-family: 'Comfortaa', cursive;;
+  letter-spacing: 2px;
+  font-family: 'Russo One', sans-serif;
 }
 
 .badge{
