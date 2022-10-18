@@ -51,12 +51,7 @@ const MapView: React.FC = () =>{
     //Gym Modal
     const gymModal = useRef<HTMLIonModalElement>(null);
     const [isShowingGymModal, setIsShowingGymModal] = useState(false);
-    const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
-    const page = useRef(null);
 
-    useEffect(() => {
-        setPresentingElement(page.current);
-    }, []);
 
     // Gym Menu Vars -----------------------------------------------------------------------------------------------//
 
@@ -413,10 +408,19 @@ const MapView: React.FC = () =>{
     const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
         return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
     }
+
+    const toggleModal = ()=>{
+        if(isShowingGymModal)
+        {
+            setIsShowingGymModal(false)
+        }
+    }
     return (
         
         <>  
-            <IonContent  className='mainMap' >
+            <IonContent  className='mainMap' onClick={()=>{
+                toggleModal()
+            }} >
                 
             <GymSearchBar 
             
@@ -545,8 +549,9 @@ const MapView: React.FC = () =>{
                 initialBreakpoint={0.25}
                 breakpoints={[0.0,0.25, 0.5, 0.75]}
                 backdropBreakpoint={0.5}
+                
             
-                presentingElement={presentingElement!}
+                
                 onWillDismiss={()=>
                 {
                     setIsShowingGymModal(false)
