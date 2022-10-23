@@ -6,7 +6,6 @@
 
 ![GYM_KING_free-file_5](https://user-images.githubusercontent.com/92938217/195381250-76466f42-204a-4704-a6f2-5e186014d7ac.png)
 
-
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
@@ -42,6 +41,7 @@ Gym King is a collaborative project between the University of Pretoria's COS 301
 [Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9672739/Gym-King.Architecture.pdf) <br>
 [Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9673815/Gym-King.Technical.Installation.pdf) <br>
 [Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
+[Project Video](https://drive.google.com/file/d/1icwGYnwtdUM76qSIwrFUDrDexUh9pMKW/view?usp=sharing)
 
 <!-- Contributors -->
 ## Team Codebusters
