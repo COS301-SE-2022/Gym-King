@@ -39,20 +39,6 @@ Gym King is an application designed to give gym goers an extra motivatinal boost
 
 Gym King is a collaborative project between the University of Pretoria's COS 301 module team Codebusters and EPI-USE Labs. The Codebusters team members are Robyn Hancock, Jade Peche, Dylan Whiteford, Thivessh Jhugroo and Ryan Broemer. The EPI-USE members are Gianni Volpi, Egor Kharatyan and Marnes Prinsloo. 
 
-## Basic Commands
-```sh
-yarn run start
-```
-```sh
-yarn run build
-```
-```sh
-yarn run test
-```
-```sh
-yarn run lint
-```
-
 ## Documentation
 [SRS](https://github.com/COS301-SE-2022/Gym-King/files/9673688/Gym-King.SRS.pdf) <br>
 [Coding  Standards](https://github.com/COS301-SE-2022/Gym-King/files/9672720/Gym-King.Coding.Standards.pdf) <br>
