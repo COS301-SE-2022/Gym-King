@@ -171,7 +171,7 @@ ion-popever div #ion-react-wrapper{
   background: transparent !important;
 }
 .transparentBack{
-  --ion-item-background:#transparent;
+  --ion-item-background:transparent;
 }
 .Content
 {
