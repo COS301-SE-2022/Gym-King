@@ -413,14 +413,15 @@ useIonViewDidEnter(async()=>{
                         </IonGrid>
                         <IonGrid className='centerLeft grid'>
                         <IonRow className='left topMargin'>
-                            <IonButton onClick={()=>{ inputRefTakeVideo.current?.click()  }} className="btnSubmit centerComp" color="warning">Take Video</IonButton>  
+                            <IonButton  mode="ios" onClick={()=>{ inputRefTakeVideo.current?.click()  }} className="btnSubmit centerComp" color="warning">Take Video</IonButton>  
                             <input ref={inputRefTakeVideo} onClick={()=>{console.log("hit")}}  type="file"className='HiddenInputFile'  name="video" accept="video/*" capture="environment" onChange={(ev) => onFileChange(ev)}/>
 
-                            <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className="btnSubmit centerComp" color="warning">Upload Video</IonButton>  
+                            <IonButton  mode="ios" onClick={()=>{inputRefUploadVideo.current?.click() }} className="btnSubmit centerComp" color="warning">Upload Video</IonButton>  
                             <input ref={inputRefUploadVideo}  type="file" className='HiddenInputFile' accept=".mp4" onChange={(ev) => onFileChange(ev)} />
-                            <IonText>{filename}</IonText>
+                            
                         </IonRow>
                         </IonGrid>
+                        <IonText>{filename}</IonText>
                         <br></br>
                         <IonButton mode="ios" className="btnSubmit centerComp btn" type='submit' color="warning">SUBMIT</IonButton>
                     </form> 
