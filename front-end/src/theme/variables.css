@@ -151,6 +151,13 @@ http://ionicframework.com/docs/theming/ */
     margin-left: 10%;
     margin-right:10%;
 }
+.popover-content{
+  border:none;
+}
+
+ion-popever div #ion-react-wrapper{
+  background-color: transparent !important;
+}
 
 .btn{
   font-family: 'Comfortaa', cursive;

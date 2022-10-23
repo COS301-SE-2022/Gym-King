@@ -10,8 +10,8 @@ test('renders without crashing', async() => {
 
 test('correctly displays labels', async () => {
   const {baseElement} =await render(<Contact handleChange={undefined} next={undefined} prev={undefined}/>);
-  expect(baseElement).toHaveTextContent("Email*");
-  expect(baseElement).toHaveTextContent("Phone Number*");
+  expect(baseElement).toHaveTextContent("Email");
+  expect(baseElement).toHaveTextContent("Phone Number");
 });
 
 ////INTEGRATION TESTS ////////

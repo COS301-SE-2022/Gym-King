@@ -490,7 +490,7 @@ const MapView: React.FC = () =>{
                     <img id = "btnIcon" alt="" src={recenter} ></img>
                 </IonButton>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
-                <img src={location} width={50} height={50} alt='' />
+                <img  src={location} width={50} height={50} alt='' />
                 </Overlay>      
                 {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string; gym_name:string}) => {
                     return (
