@@ -61,9 +61,6 @@ yarn run lint
 [Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9673815/Gym-King.Technical.Installation.pdf) <br>
 [Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
 
-## Github Project Board
-[Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)
-
 <!-- Contributors -->
 ## Team Codebusters
 ### Robyn Hancock
