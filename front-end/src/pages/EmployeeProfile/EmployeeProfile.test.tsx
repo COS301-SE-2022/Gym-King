@@ -6,6 +6,7 @@ import EmployeeProfilePage from './EmployeeProfile';
 /*
 */
 
+//tests to see if the EmployeeProfile page renders without crashing
 test('renders without crashing', async() => {
   const {baseElement } =await render(<EmployeeProfilePage/>);
   expect(baseElement).toBeDefined();
@@ -14,6 +15,8 @@ test('renders without crashing', async() => {
 
 
 ////////// INTEGRATION TESTS //////////
+
+//tests the connection to the API
 describe('Testing connection to api', () => {
 
   it('should load employee data',  () => {

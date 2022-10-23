@@ -2,6 +2,10 @@
 
 <!-- PROJECT LOGO -->
 <!-- Gym King -->
+<div align="center"> 
+
+![GYM_KING_free-file_5](https://user-images.githubusercontent.com/92938217/195381250-76466f42-204a-4704-a6f2-5e186014d7ac.png)
+
 
 <!-- PROJECT SHIELDS -->
 <div align="center">
@@ -50,17 +54,18 @@ yarn run lint
 ```
 
 ## Documentation
-[SRS](https://github.com/COS301-SE-2022/Gym-King/files/9214442/Gym.King.-SRS.-.Demo.3.pdf) <br>
-[Coding  Standards](https://github.com/COS301-SE-2022/Gym-King/files/9213631/Gym.King.-.Coding.Standards.-.Demo.3.pdf) <br>
-[User Manual](https://github.com/COS301-SE-2022/Gym-King/files/9213640/Gym.King.-.User.Manual.-.Demo.3.pdf) <br> 
-[Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9213638/Gym.King.-.Architectural.Design.-.Demo.3.pdf) <br>
-[Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9213653/Gym.King.-.Technical.Installation.Manual.-.Demo.3.pdf)
-
+[SRS](https://github.com/COS301-SE-2022/Gym-King/files/9673688/Gym-King.SRS.pdf) <br>
+[Coding  Standards](https://github.com/COS301-SE-2022/Gym-King/files/9672720/Gym-King.Coding.Standards.pdf) <br>
+[User Manual](https://github.com/COS301-SE-2022/Gym-King/files/9672734/Gym-King.User.Manual.pdf) <br>
+[Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9672739/Gym-King.Architecture.pdf) <br>
+[Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9673815/Gym-King.Technical.Installation.pdf) <br>
+[Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
 
 ## Demo Links
 [DEMO 1](https://drive.google.com/drive/folders/132bKBFuXsvhc-b2iAB62nvvUncE5EgON?usp=sharing) <br>
 [DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing) <br>
-[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing)
+[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing) <br>
+[DEMO 4](https://drive.google.com/drive/folders/1RPw-w63NyvPK7CqI_FjRLAhPyyxJ8Fdk?usp=sharing)
 
 ## Github Project Board
 [Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)

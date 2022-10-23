@@ -2,7 +2,7 @@ jest.setTimeout(25000)
 import { render } from '@testing-library/react';
 import ARPage from './ARPage';
 
-
+///Tests to see if the page renders without crashing
 test('renders without crashing', async() => {
     const { baseElement } =await render(<ARPage />);
     expect(baseElement).toBeDefined();

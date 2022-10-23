@@ -11,7 +11,7 @@ test('renders without crashing', async() => {
 
 
 ////////// INTEGRATION TESTS //////////
-
+///Tests the connection to the API and ensures that the correct information is retrieved
 describe('Testing connection to api', () => {
 
   it('should load gym data',  () => {

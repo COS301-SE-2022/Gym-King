@@ -19,7 +19,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns list of subsriptions that contain the given 'fromUser'
      */
     async findBySubscriber(email: string) {
-        return this.findBy({fromUser: email });
+        return this.findBy({fromuser: email });
     },
 
     /**
@@ -28,9 +28,36 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns list of subsribers
      */
     async findBySubbed(gid: string){
-        return this.findBy({toGym: gid });
+
+        let reqs = await this.findBy({ togym: gid});
+
+        let ret=[];
+        for (let i = 0; i < reqs.length; i++) {
+            const req = reqs[i];
+            console.log(req)
+
+            let user = await userRepository.findByEmail(req.fromuser);
+            ret.push({email:user.email})
+            
+        }
+
+        return ret;
     },
 
+    /**
+     * Checks if user is subscribed to a gym.
+     * @param {string} email the from User's email
+     * @param {string} gid gym's ID
+     * @returns {boolean}
+     */
+     async checkIfSubscribed(email: string, gid: string) {
+        let result = await this.findOneBy({fromuser: email, togym: gid});
+        if (result != null){
+            return true;
+        } else {
+            return false;
+        }
+    },
 
     /**
      * creates a new subsription relation between a user and a gym
@@ -44,8 +71,8 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
         let fromUser = await userRepository.findByEmail(fromEmail);
         let toGym = await gymRepository.findByGID(toGymID);
 
-        newSub.fromUser = fromUser;
-        newSub.toGym = toGym;
+        newSub.fromuser = fromUser;
+        newSub.togym = toGym;
 
         return this.manager.save(newSub);
 
@@ -58,7 +85,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns success status
      */
     async removeSubsription(fromEmail: string, toGymID: string){
-        return this.manager.delete(subscription, {fromUser: fromEmail, toGym: toGymID})
+        return this.manager.delete(subscription, {fromuser: fromEmail, togym: toGymID})
     },
 
     /**
@@ -68,7 +95,7 @@ export const subscriptionRepository = GymKingDataSource.getRepository(subscripti
      * @returns a subsriber and subscribe-ee
      */
     async findByFromTo(fromEmail: string, toGymID: string){
-        return this.findOneBy({ fromUser: fromEmail, toGym: toGymID });
+        return this.findOneBy({ fromuser: fromEmail, togym: toGymID });
     },
 
 

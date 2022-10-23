@@ -105,16 +105,24 @@ const employees = express.Router()
   })
   //=========================================================================================================//
   /**
-   * GET - return claim of a user and a badge.
+   * POST - return claim of a user and a badge.
+   * @param {string} empEmail employee email.
+   * @param {string} apikey employee api key.
    * @param {string} bid badge ID used to find claim.
    * @param {string} email email used to find claim.
    * @returns A claim made by user for badge.
    */
-   .get("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
+   .post("/claims/claim/getClaim", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.query;
-      let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
-      res.json(result);
+      let query = req.body;
+      const employee = await employeeRepository.findByEmail(query.empEmail);
+      if (employee != null && employee.apikey == query.apikey) {
+        let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -124,22 +132,24 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * GET a employees profile picture.
-   * @param {string} email employee email.
+   * @param {string} username employee email.
    * @returns {image} 
    */
-   .get('/employees/employee/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
-    const query = req.params.email;
-    const user = await employeeRepository.findByEmail(query);
-    if (user != null){
-      res.json(user.profile_picture);
+   .get('/employees/employee/picture/:username', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.username;
+    const employee = await employeeRepository.findByUsername(query);
+    if (employee != null){
+      res.json(employee.profile_picture);
     } else{
-      res.json({'message':'Invalid email!'})
+      res.json({'message':'Invalid username!'})
     }
   })
   //=========================================================================================================//
   /**
    * POST - Insert an employee.
-   * @param {string} email email.
+   * @param {string} ownerEmail owner email.
+   * @param {string} apikey owner api key.
+   * @param {string} email employee email.
    * @param {string} fullname The full name of employee.
    * @param {string} number phone number.
    * @param {string} username username.
@@ -150,10 +160,16 @@ const employees = express.Router()
    .post("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) && query.ownerEmail.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
-        let result = await employeeRepository.saveEmployee(query.email,query.fullname,query.number,query.username,query.password,query.gid);
-        res.json({'success':true});
+        const owner = await ownerRepository.findByEmail(query.ownerEmail);
+        if (owner != null && owner.apikey == query.apikey) {
+          let result = await employeeRepository.saveEmployee(query.email,query.fullname,query.number,query.username,query.password,query.gid);
+          res.json({'success':true});
+        }
+        else {
+          res.json({'message':'Invalid email or apikey!'})
+        }
       } else {
         res.json({'success':false, 'message':'Invalid email entered!'})
       }
@@ -166,6 +182,8 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * POST - Insert a badge into the database.
+   * @param {string} email employee or owner email.
+   * @param {string} apikey employee api key.
    * @param {string} gid gym ID for badge.
    * @param {string} badgename badge name.
    * @param {string} badgedescription badge description.
@@ -181,9 +199,16 @@ const employees = express.Router()
   .post("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let ID = createID(3);
-      let result = await badgeRepository.saveBadge(ID,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
-      res.json(result);
+      let employee = await employeeRepository.findByEmail(query.email)
+      let owner = await ownerRepository.findByEmail(query.email)
+      if (employee != null && employee.apikey == query.apikey || owner != null && owner.apikey == query.apikey) {
+        let ID = createID(3);
+        let result = await badgeRepository.saveBadge(ID,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
+        res.json(result);
+      }
+      else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -199,7 +224,7 @@ const employees = express.Router()
    .post('/employees/employee/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         let employeee = await employeeRepository.findByEmail(query.email);
         if(employeee != null && employeee.email == query.email)
@@ -246,19 +271,18 @@ const employees = express.Router()
   /**
    * POST - Get an employee's information.
    * @param {string} email employee's email.
-   * @param {string} password employee's password.
+   * @param {string} apikey employee's api key.
    * @returns employee information.
    */
    .post('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
       let query = req.body;
       const employee = await employeeRepository.findByEmail(query.email);
-      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && employee.apikey == query.apikey) {
         res.json(employee)
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     } catch (err) {
       const results = { 'success': false, 'results': err };
@@ -277,7 +301,7 @@ const employees = express.Router()
    .put('/employees/employee/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         const employee = await employeeRepository.findByEmail(query.email);
         const otp = await employeeOTPRepository.findByEmail(query.email);
@@ -305,20 +329,19 @@ const employees = express.Router()
    * @param {string} fullname The full name of the employee.
    * @param {string} number The phone number of the employee. 
    * @param {string} username The username the employee.
-   * @param {string} password The password the employee (NOT ecrypted).
+   * @param {string} apikey The api key the employee.
    * @returns Returns params of completed insertion.
    */
    .put('/employees/employee/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
-      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && employee.apikey == query.apikey) {
         const result = await employeeRepository.updateEmployee(query.email,query.fullname,query.number,query.username);
         res.json({'success':true});
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -330,7 +353,7 @@ const employees = express.Router()
   /**
    * PUT update a employee user profile picture.
    * @param {string} email The email of the employee.
-   * @param {string} password The password the employee (NOT ecrypted).
+   * @param {string} apikey The api key of the employee (NOT ecrypted).
    * @param {file} profilepicture the picture.
    * @returns message informing successful update.
    */
@@ -338,14 +361,13 @@ const employees = express.Router()
     try {
       const query = req.body;
       const file = req.file;
-      const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.email);
       let oldFileName = '';
       if (employee.profile_picture != null && employee.profile_picture.includes('/')){
         oldFileName = employee.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -354,7 +376,7 @@ const employees = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (employee != null && bcrypt.compareSync(query.password, employee.password)) {
+      if (employee != null && employee.apikey == query.apikey) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let newFileName = ``;
         if (file.mimetype == 'image/jpeg'){
@@ -385,7 +407,7 @@ const employees = express.Router()
         blobStream.end(req.file.buffer);
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -396,6 +418,8 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * PUT - Update accepted badge_claim to badge_owned.
+   * @param {string} empEmail employee email.
+   * @param {string} apikey employee api key.
    * @param {string} bid badge ID used to find badge.
    * @param {string} email email used to find the user.
    * @returns The badge_owned inserted or error message.
@@ -403,36 +427,41 @@ const employees = express.Router()
   .put("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
+      let employee = await employeeRepository.findByEmail(query.empEmail);
       let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
-      const ret = result;
-      if (ret != null && ret.email == query.email && ret.b_id.b_id == query.bid){
-        let oldFileName = '';
-        if (ret.proof != null && ret.proof.includes('/')){
-          oldFileName = ret.proof.split('/');
-          if (oldFileName.length == 5){
-            oldFileName = oldFileName[4];
-            oldFileName = oldFileName.replace('%2F','/')
+      if (employee != null && employee.apikey == query.apikey) {
+        const ret = result;
+        if (ret != null && ret.email == query.email && ret.b_id.b_id == query.bid){
+          let oldFileName = '';
+          if (ret.proof != null && ret.proof.includes('/')){
+            oldFileName = ret.proof.split('/');
+            if (oldFileName.length == 5){
+              oldFileName = oldFileName[4];
+              oldFileName = oldFileName.replace(/%2F/g,'/')
+            }
+            else{
+              oldFileName = 'empty';
+            }
           }
-          else{
+          else {
             oldFileName = 'empty';
           }
+          await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+          result = await badgeClaimRepository.deleteClaim(ret.b_id.b_id, ret.email);
+          result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id.b_id,ret.email);
+          if (result != null) {
+            result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id.b_id,ret.email,ret.input1,ret.input2,ret.input3);
+          } else {
+            result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
+          }
+          res.json({'success':true});
         }
         else {
-          oldFileName = 'empty';
+          res.json({'message': 'Claim does not exist.'})
         }
-        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
-        result = await badgeClaimRepository.deleteClaim(ret.b_id.b_id, ret.email);
-        result = await badgeOwnedRepository.findByBIDandEmail(ret.b_id.b_id,ret.email);
-        if (result != null) {
-          result = await badgeOwnedRepository.updateByBIDandEmail(ret.b_id.b_id,ret.email,ret.input1,ret.input2,ret.input3);
-        } else {
-          result = await badgeOwnedRepository.saveOwned(ret.b_id.b_id,ret.email,ret.username,ret.input1,ret.input2,ret.input3);
-        }
-        res.json({'success':true});
-      }
-      else {
-        res.status(404).json({'message': 'Claim does not exist.'})
-      }
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      } 
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -442,6 +471,8 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * PUT - Update a badge.
+   * @param {string} email employee or owner email.
+   * @param {string} apikey employee api key.
    * @param {string} bid badge ID used to find badge.
    * @param {string} gid gym ID of the badge.
    * @param {string} badgename edited badgename.
@@ -458,8 +489,14 @@ const employees = express.Router()
   .put("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
-      res.json({'success':true});
+      let employee = await employeeRepository.findByEmail(query.email);
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (employee != null && employee.apikey == query.apikey || owner != null && owner.apikey == query.apikey) {
+        let result = await badgeRepository.updateBadge(query.bid,query.gid,query.badgename,query.badgedescription,query.badgechallenge,query.activitytype,query.requirement1,query.requirement2,query.requirement3,query.badgeicon,query.tags);
+        res.json({'success':true});
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -469,16 +506,24 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * DELETE - Delete a badge.
+   * @param {string} email employee email.
+   * @param {string} apikey employee api key.
    * @param {string} bid badge ID used to find badge.
    * @returns Message confirming Deletion.
    */
   .delete("/badges/badge", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await badgeClaimRepository.deleteAllClaimsByBID(query.bid);
-      result = await badgeOwnedRepository.deleteAllOwnedByBID(query.bid);
-      result = await badgeRepository.deleteBadge(query.bid);
-      res.json({'success':true});
+      let employee = await employeeRepository.findByEmail(query.email);
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (employee != null && employee.apikey == query.apikey || owner != null && owner.apikey == query.apikey) {
+        let result = await badgeClaimRepository.deleteAllClaimsByBID(query.bid);
+        result = await badgeOwnedRepository.deleteAllOwnedByBID(query.bid);
+        result = await badgeRepository.deleteBadge(query.bid);
+        res.json({'success':true});
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -488,6 +533,8 @@ const employees = express.Router()
   //=========================================================================================================//
   /**
    * DELETE - Delete a claim.
+   * @param {string} empEmail employee email.
+   * @param {string} apikey employee api key.
    * @param {string} bid unique bid used to delete the claim.
    * @param {string} email unique email used to delete the claim.
    * @returns message confirming deletion.
@@ -495,28 +542,35 @@ const employees = express.Router()
   .delete("/claims/claim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let claim = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
-      if (claim != null && claim.email == query.email && claim.b_id.b_id == query.bid){
-        let oldFileName = '';
-        if (claim.proof != null && claim.proof.includes('/')){
-          oldFileName = claim.proof.split('/');
-          if (oldFileName.length == 5){
-            oldFileName = oldFileName[4];
-            oldFileName = oldFileName.replace('%2F','/')
+      let employee = await employeeRepository.findByEmail(query.empEmail);
+      console.log(employee);
+      console.log(query);
+      if (employee != null && employee.apikey == query.apikey) {
+        let claim = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+        if (claim != null && claim.email == query.email && claim.b_id.b_id == query.bid){
+          let oldFileName = '';
+          if (claim.proof != null && claim.proof.includes('/')){
+            oldFileName = claim.proof.split('/');
+            if (oldFileName.length == 5){
+              oldFileName = oldFileName[4];
+              oldFileName = oldFileName.replace(/%2F/g,'/')
+            }
+            else{
+              oldFileName = 'empty';
+            }
           }
-          else{
+          else {
             oldFileName = 'empty';
           }
+          await storageRef.file(oldFileName).delete({ignoreNotFound: true});
+          await badgeClaimRepository.deleteClaim(query.bid,query.email);
+          res.json({'success':true})
         }
-        else {
-          oldFileName = 'empty';
+        else{
+          res.json({'message':'Invalid email or badge ID!'})
         }
-        await storageRef.file(oldFileName).delete({ignoreNotFound: true});
-        await badgeClaimRepository.deleteClaim(query.bid,query.email);
-        res.json({'success':true})
-      }
-      else{
-        res.json({'message':'Invalid email or badge ID!'})
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
       }
     } catch (err) {
       const results = { success: false, results: err };
@@ -528,14 +582,13 @@ const employees = express.Router()
   /**
    * DELETE - Delete an employee.
    * @param {string} owneremail owner email.
-   * @param {string} ownerpassword owner password.
+   * @param {string} apikey owner's api key.
    * @param {string} employeeemail employee email.
    * @returns message confirming deletion.
    */
    .delete("/employees/employee", cors(corsOptions), async (req: any, res: any) => {
      try {
       let query = req.body;
-      const bcrypt = require('bcryptjs')
       const employee = await employeeRepository.findByEmail(query.employeeemail);
       const owner = await ownerRepository.findByEmail(query.owneremail);
       let oldFileName = '';
@@ -543,7 +596,7 @@ const employees = express.Router()
         oldFileName = employee.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -552,7 +605,7 @@ const employees = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (owner != null && bcrypt.compareSync(query.ownerpassword, owner.password)) {
+      if (owner != null && owner.apikey == query.apikey) {
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await employeeOTPRepository.deleteEmployeeOTP(employee.email);
         result = await employeeRepository.deleteEmployee(employee.email);
@@ -560,7 +613,7 @@ const employees = express.Router()
         res.json(results);
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
      } catch (err) {
        const results = { success: false, results: err };

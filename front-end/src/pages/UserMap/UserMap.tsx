@@ -12,7 +12,6 @@ const UserMap: React.FC = () => {
                      {'caption':'Friends','icon':'people','route':'/FriendsPage'},
                      {'caption':'Gyms','icon':'barbell','route':'/MyGyms'},
                      {'caption':'Notifications','icon':'mail','route':'/Notifications'},
-                     {'caption':'Leaderboard','icon':'podium','route':'/Leaderboard'},
                      {'caption':'Settings','icon':'cog','route':'/Settings'}] 
 
   return (

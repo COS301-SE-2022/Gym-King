@@ -92,15 +92,21 @@ const owners = express.Router()
   .options("*", cors(corsOptions))
   //=========================================================================================================//
   /**
-   * GET - get all employees who fall under an owner of gym.
+   * POST - get all employees who fall under an owner of gym.
    * @param {string} email email of the owner.
+   * @param {string} apikey api key of the owner.
    * @returns List of all employees who work for a gym owned by owner.
    */
-   .get("/owners/employees/:email", cors(corsOptions), async (req: any, res: any) => {
+   .post("/owners/employees/", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.params.email;
-      let result = await ownerRepository.findEmployeesByOwnerEmail(query);
-      res.json(result);
+      let query = req.body;
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (owner != null && owner.apikey == query.apikey){
+        let result = await ownerRepository.findEmployeesByOwnerEmail(query.email);
+        res.json(result);
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -109,15 +115,21 @@ const owners = express.Router()
   })
   //=========================================================================================================//
   /**
-   * GET - gets all gyms owned by a owner.
+   * POST - gets all gyms owned by a owner.
    * @param {string} email email of the owner.
+   * @param {string} apikey api key of the owner.
    * @returns List of all gyms that the owner owns.
    */
-  .get("/gyms/owned/:email", cors(corsOptions), async (req: any, res: any) => {
+  .post("/gyms/owned/getGyms", cors(corsOptions), async (req: any, res: any) => {
     try {
-      let query = req.params.email;
-      let result = await gymOwnedRepository.findGymsByEmail(query);
-      res.json(result);
+      let query = req.body;
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (owner != null && owner.apikey == query.apikey){
+        let result = await gymOwnedRepository.findGymsByEmail(query.email);
+        res.json(result);
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -127,16 +139,16 @@ const owners = express.Router()
   //=========================================================================================================//
   /**
    * GET a owners profile picture.
-   * @param {string} email employee email.
+   * @param {string} username owner username.
    * @returns {image} 
    */
-   .get('/owners/owner/picture/:email', cors(corsOptions), async(req: any, res: any)=>{
-    const query = req.params.email;
-    const owner = await ownerRepository.findByEmail(query);
+   .get('/owners/owner/picture/:username', cors(corsOptions), async(req: any, res: any)=>{
+    const query = req.params.username;
+    const owner = await ownerRepository.findByUsername(query);
     if (owner != null){
       res.json(owner.profile_picture);
     } else{
-      res.json({'message':'Invalid email!'})
+      res.json({'message':'Invalid username!'})
     }
   })
   //=========================================================================================================//
@@ -144,13 +156,20 @@ const owners = express.Router()
    * POST - Insert that a owner owns a gym.
    * @param {string} gid gym ID of the gym.
    * @param {string} email email of the owner.
+   * @param {string} apikey apikey of the owner.
    * @returns message confirming the insertion.
    */
   .post("/gyms/owned", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let result = await gymOwnedRepository.saveOwned(query.gid,query.email);
-      res.json(result);
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (owner != null && owner.apikey == query.apikey){
+        let result = await gymOwnedRepository.saveOwned(query.gid,query.email);
+        console.log(result);
+        res.json(result);
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -160,6 +179,8 @@ const owners = express.Router()
   //=========================================================================================================//
   /**
    * POST - Insert that a gym into database.
+   * @param {string} email email of the owner.
+   * @param {string} apikey apikey of the owner.
    * @param {string} gymName gym brand name.
    * @param {string} gymBrandName gym brand name.
    * @param {string} gymAddress gym address.
@@ -170,9 +191,14 @@ const owners = express.Router()
   .post("/gyms/gym", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      let ID = createID(4);
-      let result = await gymRepository.saveGym(ID,query.gymName,query.gymBrandName,query.gymAddress,query.gymCoordLat,query.gymCoordLong);
-      res.json(result);
+      let owner = await ownerRepository.findByEmail(query.email);
+      if (owner != null && owner.apikey == query.apikey){
+        let ID = createID(4);
+        let result = await gymRepository.saveGym(ID,query.gymName,query.gymBrandName,query.gymAddress,query.gymCoordLat,query.gymCoordLong);
+        res.json(result);
+      } else {
+        res.json({'message':'Invalid email or apikey!'})
+      }
     } catch (err) {
       const results = { success: false, results: err };
       console.error(err);
@@ -198,7 +224,7 @@ const owners = express.Router()
   })
   //=========================================================================================================//
   /**
-   * POST - Insert that a gym owner into database.
+   * POST - Insert a gym owner into database.
    * @param {string} email owner email.
    * @param {string} fullname owner full name.
    * @param {string} number owner number.
@@ -209,7 +235,7 @@ const owners = express.Router()
   .post("/owners/owner", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         let result = await ownerRepository.saveOwner(query.email,query.fullname,query.number,query.username,query.password);
         res.json({'success':true});
@@ -231,7 +257,7 @@ const owners = express.Router()
    .post('/owners/owner/OTP', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         let owner = await ownerRepository.findByEmail(query.email);
         if(owner != null && owner.email == query.email)
@@ -278,19 +304,18 @@ const owners = express.Router()
   /**
    * POST - Get an owner's information.
    * @param {string} email owner's email.
-   * @param {string} password owner's password.
+   * @param {string} apikey owner's api key.
    * @returns owner information.
    */
    .post('/owners/owner/info', cors(corsOptions), async (req: any, res: any) => {
     try {
-      const bcrypt = require('bcryptjs')
       let query = req.body;
       const owner = await ownerRepository.findByEmail(query.email);
-      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
+      if(owner != null && owner.apikey == query.apikey){
         res.json(owner)
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     } catch (err) {
       const results = { 'success': false, 'results': err };
@@ -302,7 +327,7 @@ const owners = express.Router()
   /**
    * PUT update a owner user profile picture.
    * @param {string} email The email of the owner.
-   * @param {string} password The password the owner (NOT ecrypted).
+   * @param {string} apikey The api key the owner.
    * @param {file} profilepicture the picture.
    * @returns message informing successful update.
    */
@@ -310,14 +335,13 @@ const owners = express.Router()
     try {
       const query = req.body;
       const file = req.file;
-      const bcrypt = require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email);
       let oldFileName = '';
       if (owner.profile_picture != null && owner.profile_picture.includes('/')){
         oldFileName = owner.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -326,7 +350,7 @@ const owners = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
+      if(owner != null && owner.apikey == query.apikey){
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let newFileName = ``;
         if (file.mimetype == 'image/jpeg'){
@@ -357,7 +381,7 @@ const owners = express.Router()
         blobStream.end(req.file.buffer);
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -369,7 +393,7 @@ const owners = express.Router()
   /**
    * PUT update a brand logo picture.
    * @param {string} email The email of the owner.
-   * @param {string} password The password the owner (NOT ecrypted).
+   * @param {string} apikey The api key of the owner.
    * @param {string} brandname The name of the brand.
    * @param {file} logo the picture.
    * @returns message informing successful update.
@@ -378,7 +402,6 @@ const owners = express.Router()
     try {
       const query = req.body;
       const file = req.file;
-      const bcrypt = require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email);
       const brand = await gymBrandRepository.findByBrandname(query.brandname);
       let oldFileName = '';
@@ -387,7 +410,7 @@ const owners = express.Router()
           oldFileName = brand.gym_logo.split('/');
           if (oldFileName.length == 5){
             oldFileName = oldFileName[4];
-            oldFileName = oldFileName.replace('%2F','/')
+            oldFileName = oldFileName.replace(/%2F/g,'/')
           }
           else{
             oldFileName = 'empty';
@@ -396,7 +419,7 @@ const owners = express.Router()
         else {
           oldFileName = 'empty';
         }
-        if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
+        if(owner != null && owner.apikey == query.apikey){
           await storageRef.file(oldFileName).delete({ignoreNotFound: true});
           let newFileName = ``;
           if (file.mimetype == 'image/jpeg'){
@@ -427,7 +450,7 @@ const owners = express.Router()
           blobStream.end(req.file.buffer);
         }
         else {
-          res.json({'message':'Invalid email or password!'})
+          res.json({'message':'Invalid email or apikey!'})
         }
       } else {
         res.json({'message':'Brand does not exist!'})
@@ -445,20 +468,19 @@ const owners = express.Router()
    * @param {string} fullname The full name of the owner.
    * @param {string} number The phone number of the owner. 
    * @param {string} username The username the owner.
-   * @param {string} password The password the owner (NOT ecrypted).
+   * @param {string} apikey The api key of the owner.
    * @returns Returns params of completed insertion.
    */
    .put('/owners/owner/info', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      const bcrypt = require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email);
-      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
+      if(owner != null && owner.apikey == query.apikey){
         const result = await ownerRepository.updateOwner(query.email,query.fullname,query.number,query.username);
         res.json({'success':true});
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     }catch (err) {
       const results = { 'success': false, 'results': err };
@@ -469,6 +491,8 @@ const owners = express.Router()
   //=========================================================================================================//
   /**
    * put - update a gym.
+   * @param {string} email The email of the owner.
+   * @param {string} apikey The api key of the owner.
    * @param {string} gid gym id
    * @param {string} gymName gym brand name.
    * @param {string} gymBrandName gym brand name.
@@ -482,13 +506,19 @@ const owners = express.Router()
    .use(bodyParser.raw())
    .put("/gyms/gym/info", cors(corsOptions), async (req: any, res: any) => {
      try {
-       let query = req.body;
-       let result = await gymRepository.updateGym(query.gid, query.gymName, query.gymBrandName, query.gymAddress,query.gymCoordLat, query.gymCoordLong)
-        res.json({'success':true});
-     } catch (err) {
-       const results = { success: false, results: err };
-       console.error(err);
-       res.json(results);
+        let query = req.body;
+        const owner = await ownerRepository.findByEmail(query.email);
+        if(owner != null && owner.apikey == query.apikey){
+          let result = await gymRepository.updateGym(query.gid, query.gymName, query.gymBrandName, query.gymAddress,query.gymCoordLat, query.gymCoordLong)
+          res.json({'success':true});
+        }
+        else {
+          res.json({'message':'Invalid email or apikey!'})
+        }
+      } catch (err) {
+        const results = { success: false, results: err };
+        console.error(err);
+        res.json(results);
      }
    })
   //=========================================================================================================//
@@ -502,7 +532,7 @@ const owners = express.Router()
    .put('/owners/owner/password', cors(corsOptions), async (req: any, res: any) => {
     try {
       const query = req.body;
-      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+      if (query.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
       {
         const owner = await ownerRepository.findByEmail(query.email);
         const otp = await ownerOTPRepository.findByEmail(query.email);
@@ -527,7 +557,7 @@ const owners = express.Router()
   /**
    * DELETE - Delete a gym.
    * @param {string} email unique owner email used to delete the gym.
-   * @param {string} password owner password.
+   * @param {string} apikey owner's api key.
    * @param {string} gid gym id
    * @returns message confirming deletion.
    */
@@ -536,9 +566,8 @@ const owners = express.Router()
   .delete("/owner/delete/gym",cors(corsOptions),async(req:any,res:any)=>{
     try{
       let query=req.body;
-      const bcrypt=require('bcryptjs')
       const owner = await ownerRepository.findByEmail(query.email)
-      if(owner != null && bcrypt.compareSync(query.password,owner.password)) {
+      if(owner != null && owner.apikey == query.apikey){
         let result;
         result=await badgeRepository.findByGID(query.gid);
         let badges=result;
@@ -553,7 +582,7 @@ const owners = express.Router()
         res.json({'success':true})
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     }
     catch (err) 
@@ -567,20 +596,19 @@ const owners = express.Router()
   /**
    * DELETE - Delete an owner.
    * @param {string} email unique email used to delete the owner.
-   * @param {string} password owner password.
+   * @param {string} apikey owner's api key.
    * @returns message confirming deletion.
    */
    .delete('/owners/delete', cors(corsOptions), async (req: any, res: any) => {
      try {
        let query = req.body;
-       const bcrypt = require('bcryptjs')
        const owner = await ownerRepository.findByEmail(query.email);
        let oldFileName = '';
       if (owner != null && owner.profile_picture != null && owner.profile_picture.includes('/')){
         oldFileName = owner.profile_picture.split('/');
         if (oldFileName.length == 5){
           oldFileName = oldFileName[4];
-          oldFileName = oldFileName.replace('%2F','/')
+          oldFileName = oldFileName.replace(/%2F/g,'/')
         }
         else{
           oldFileName = 'empty';
@@ -589,7 +617,7 @@ const owners = express.Router()
       else {
         oldFileName = 'empty';
       }
-      if (owner != null && bcrypt.compareSync(query.password, owner.password)) {
+      if(owner != null && owner.apikey == query.apikey){
         await storageRef.file(oldFileName).delete({ignoreNotFound: true});
         let result = await gymOwnedRepository.deleteAllByEmail(owner.email);
         result = await ownerOTPRepository.deleteOwnerOTP(owner.email);
@@ -597,7 +625,7 @@ const owners = express.Router()
         res.json({ 'success': true });
       }
       else {
-        res.json({'message':'Invalid email or password!'})
+        res.json({'message':'Invalid email or apikey!'})
       }
     } catch (err) {
       const results = { success: false, results: err };

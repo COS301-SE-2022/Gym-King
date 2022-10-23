@@ -2,7 +2,7 @@ jest.setTimeout(25000)
 import { render } from '@testing-library/react';
 import GymOwnerViewBadge from './GymOwnerViewBadge'
 
-//render test withou crahing
+//render test withou crashing
 test('renders without crashing', async() => {
     const { baseElement } =await render(<GymOwnerViewBadge />);
     expect(baseElement).toBeDefined();
@@ -11,6 +11,8 @@ test('renders without crashing', async() => {
 
 
 ////////// INTEGRATION TESTS //////////
+
+//tests the connection with the API can ensures that the API returns the correct information
 describe('Testing connection to api', () => {
     test("API fetch badges",async()=>{
         var email="u20519517@tuks.co.za"
