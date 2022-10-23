@@ -61,12 +61,6 @@ yarn run lint
 [Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9673815/Gym-King.Technical.Installation.pdf) <br>
 [Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
 
-## Demo Links
-[DEMO 1](https://drive.google.com/drive/folders/132bKBFuXsvhc-b2iAB62nvvUncE5EgON?usp=sharing) <br>
-[DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing) <br>
-[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing) <br>
-[DEMO 4](https://drive.google.com/drive/folders/1RPw-w63NyvPK7CqI_FjRLAhPyyxJ8Fdk?usp=sharing)
-
 ## Github Project Board
 [Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)
 
