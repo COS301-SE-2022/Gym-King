@@ -53,7 +53,7 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                             
                 </IonGrid>
             </IonCard>
-            <IonPopover mode="ios"  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+            <IonPopover style={{"background":"transparent"}} mode="ios"  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
               
                 <AR  rank={prop.badgeRank} emblem={prop.badgeEmblem}></AR>
                         

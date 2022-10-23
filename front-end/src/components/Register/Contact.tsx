@@ -60,10 +60,10 @@ export const Contact: React.FC<props> = (props) => {
     };
         return(
             <form className='registerForm'  onSubmit={next} >
-                <IonText className='center inputHeading'>Register</IonText>
+                <IonText className='center loginHeading'>REGISTER</IonText>
                 <br></br>
 
-                <IonText className="smallHeading">Email*</IonText>
+                <IonText className="smallHeading">Email</IonText>
                 <IonInput name='email' type='text' className='textInput' required  value={sessionStorage.getItem('regEmail')!}></IonInput>
                 {errors.email!=="" && (
                     <>
@@ -72,7 +72,7 @@ export const Contact: React.FC<props> = (props) => {
                 )}
                 <br></br>
 
-                <IonText className="smallHeading">Phone Number*</IonText>
+                <IonText className="smallHeading">Phone Number</IonText>
                 <IonInput name='number' type='number' className='textInput' required value={sessionStorage.getItem('regNumber')!}></IonInput>
                 {errors.phone!=="" && (
                     <>
@@ -80,14 +80,14 @@ export const Contact: React.FC<props> = (props) => {
                     </>
                 )}
                 
-
+                <br></br>
                 <IonGrid>
                     <IonRow>
                         <IonCol size='6'>
-                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >Previous</IonButton>
+                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >PREV</IonButton>
                         </IonCol>
                         <IonCol size='6'>
-                            <IonButton mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Next</IonButton>
+                            <IonButton mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>NEXT</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

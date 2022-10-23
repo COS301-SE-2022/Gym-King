@@ -59,10 +59,10 @@ export const Identifications: React.FC<props> = (props) => {
 
     return (
         <form className='registerForm' onSubmit={next}>
-            <IonText className='center inputHeading'>Register</IonText>
-            <br></br>
+            <IonText className='center loginHeading'>REGISTER</IonText>
+            <br></br><br></br>
 
-            <IonText className="smallHeading">Full Name*</IonText>
+            <IonText className="smallHeading">Full Name</IonText>
             <IonInput name='name' type='text' className='textInput form-group' required value={sessionStorage.getItem('regFullname')} ></IonInput>
             {errors.name!=="" && (
                 <>
@@ -72,7 +72,7 @@ export const Identifications: React.FC<props> = (props) => {
             <br></br>
 
 
-            <IonText className="smallHeading">Username*</IonText>
+            <IonText className="smallHeading">Username</IonText>
             <IonInput name='username' type='text' className='textInput' required value={sessionStorage.getItem('regUsername')} ></IonInput>
             {errors.username!=="" && (
                 <>
@@ -80,7 +80,7 @@ export const Identifications: React.FC<props> = (props) => {
                 </>
             )}
             <br></br>
-            <IonButton mode="ios" type="submit" color="warning" className=" btnLogin ion-margin-top" >Next</IonButton>
+            <IonButton mode="ios" type="submit" color="warning" className=" btnLogin ion-margin-top" >NEXT</IonButton>
             <br></br> <br></br>
             <div className='center'>
                 <IonText className="linkLabel">Already have an account?</IonText><button  onClick= {() =>{props.history.go(-1)}}  color="secondary" className='linkLabel puesdorHref'>Login</button>

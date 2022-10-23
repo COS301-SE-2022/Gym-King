@@ -165,7 +165,7 @@ const NotFriendProfile: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText color="light" className="PageTitle center un">{username}</IonText>
+                                                <IonText color="light" className=" center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{fullname}</i>

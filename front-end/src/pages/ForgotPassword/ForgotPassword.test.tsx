@@ -12,9 +12,9 @@ test('renders without crashing', async () => {
 
     test('correctly displays captions',  async() => {
       const {baseElement} =  await render(<ForgotPassword />);
-      expect (baseElement).toHaveTextContent("Forgot Password");
-      expect (baseElement).toHaveTextContent("Email*");
-      expect (baseElement).toHaveTextContent("User type*");
+      expect (baseElement).toHaveTextContent("FORGOT PASSWORD");
+      expect (baseElement).toHaveTextContent("Email");
+      expect (baseElement).toHaveTextContent("User type");
       expect (baseElement).toHaveTextContent("Send OTP");
       expect (baseElement).toHaveTextContent("Back to Login");
     }); 

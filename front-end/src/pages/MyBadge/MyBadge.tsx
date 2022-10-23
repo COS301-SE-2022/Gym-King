@@ -1,4 +1,4 @@
-import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox, useIonViewDidEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonPage, IonHeader, IonText, IonToolbar, IonButtons, IonButton, IonIcon, IonLabel, IonPopover, IonItem, IonCheckbox, useIonViewDidEnter, IonLoading, IonList} from '@ionic/react';
 import { arrowDown, arrowUp, funnel, swapVertical } from 'ionicons/icons';
 import React, { useState } from 'react';
 import MyBadgeGrid from '../../components/MyBadgeGrid/MyBadgeGrid';
@@ -86,20 +86,21 @@ const MyBadge: React.FC = () =>{
             <IonHeader>
                 <ToolBar menu={false}></ToolBar>
             </IonHeader>
-            <br></br>
             <IonContent fullscreen class="MyBadgeContent" className='Content'>
-                    <IonText className='PageTitle center'>My Badges</IonText>
+                    
+                    <IonText className='PageTitle center'>MY BADGES</IonText>                    
 
                     <IonButton mode="ios" color='warning' className='width80 btn' onClick={goToPendingBadges}>View Pending badges</IonButton><br></br><br></br>
 
-                    <IonToolbar class="FilterBar" mode="ios">
-                        <IonButtons slot='start' color="light">
+                    <IonToolbar class="FilterBar" mode="ios" color="primary">
+                        <IonButtons slot='start' color="primary">
                             <IonButton mode="ios" id="sort-trigger" color="light">
                                 <IonIcon mode="ios" size='large' icon={swapVertical}></IonIcon>
                                 <IonLabel color="light" style={{"paddingLeft":"5%"}}>Sort</IonLabel>
                             </IonButton>
-                            <IonPopover mode="ios" trigger='sort-trigger' triggerAction='click'>      
-                                            <IonItem onClick={e=>{setSort("AscName")}} mode="ios">
+                            <IonPopover color='primary' mode="ios" trigger='sort-trigger' triggerAction='click'>      
+                                        <IonList className='transparentBack'>
+                                            <IonItem className="transparentBack" onClick={e=>{setSort("AscName")}} mode="ios">
                                                 <IonIcon icon={arrowUp}></IonIcon>
                                                 <IonLabel>Name</IonLabel>
                                             </IonItem>
@@ -115,6 +116,7 @@ const MyBadge: React.FC = () =>{
                                                 <IonIcon icon={arrowDown}></IonIcon>
                                                 <IonLabel>Quantity</IonLabel>
                                             </IonItem>
+                                        </IonList>
                             </IonPopover>
                         </IonButtons>
                         <IonButtons slot='secondary' >

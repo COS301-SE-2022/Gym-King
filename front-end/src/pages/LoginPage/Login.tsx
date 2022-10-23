@@ -142,10 +142,10 @@ export const Login: React.FC = () =>{
                 </IonHeader>
                 <IonContent  fullscreen className='grad loginPage' >
                     <form onSubmit={handleSubmit} method="POST" className='loginForm' >
-                        <IonText className='center inputHeading'>Login</IonText>
+                        <IonText className='center loginHeading'>LOGIN</IonText>
                             <br></br><br></br>
-                            <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
-                            <IonInput className='textInput' name='email' type='text' required></IonInput>
+                            <IonLabel className="smallHeading" position="floating">Email</IonLabel>
+                            <IonInput mode="ios" className='textInput' name='email' type='text' required></IonInput>
                             {errors.email!=="" && (
                                 <>
                                 <IonLabel className="errText" style={{"color":"darkorange"}}>{errors.email}</IonLabel><br></br>
@@ -154,20 +154,20 @@ export const Login: React.FC = () =>{
                             <br></br>
 
 
-                            <IonLabel className="smallHeading" position="floating">Password*</IonLabel>
+                            <IonLabel className="smallHeading" position="floating">Password</IonLabel>
                             <IonInput className='textInput' name='userPassword' type='password' required ></IonInput>
                             <br></br>
 
                             <IonLabel className="smallHeading" position="floating">User type</IonLabel>
-                            <IonSegment mode="ios" onIonChange={segmentChanged} >
-                                <IonSegmentButton value="gym_user">
-                                    <IonLabel>User</IonLabel>
+                            <IonSegment mode="ios" onIonChange={segmentChanged} className="bottomRightShadow" >
+                                <IonSegmentButton value="gym_user" >
+                                    <IonLabel style={{"fontSize":"90%" }}>User</IonLabel>
                                 </IonSegmentButton>
                                 <IonSegmentButton value="gym_employee">
-                                    <IonLabel>Employee</IonLabel>
+                                    <IonLabel style={{"fontSize":"90%"}}>Employee</IonLabel>
                                 </IonSegmentButton>
                                 <IonSegmentButton value="gym_owner">
-                                    <IonLabel>Owner</IonLabel>
+                                    <IonLabel style={{"fontSize":"90W%"}}>Owner</IonLabel>
                                 </IonSegmentButton>
                             </IonSegment>
                             {errors.usertype!=="" && (
@@ -177,7 +177,7 @@ export const Login: React.FC = () =>{
                             )}
 
                             <br></br>
-                            <IonButton mode='ios' color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">Login</IonButton>
+                            <IonButton mode='ios' color="warning" className=" btnLogin ion-margin-top" type="submit" expand="block">LOGIN</IonButton>
                             <br></br>
                             <div className='center'>
                                 <IonText className="linkLabel">Don't have an account?</IonText><button  onClick= {() =>{history.push("/Register")}}  color="secondary" className='linkLabel puesdorHref'>Register</button>

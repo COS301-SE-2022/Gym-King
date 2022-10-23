@@ -24,7 +24,7 @@ const AppSettingsPage: React.FC = () =>{
                 </IonHeader>
                 <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>App Settings</IonText>
+                    <IonText className='PageTitle center'>APP SETTINGS</IonText>
                     <IonText className='inputHeading leftMargin'>AI:</IonText> <br></br><br></br>
                     <SegmentButton  list={['on', 'off']} val={localStorage.getItem('AI_enabled')} chosenValue={setAI_Enabled}></SegmentButton><br></br><br></br>
 
