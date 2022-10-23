@@ -13,7 +13,7 @@ export const NNAlert=(props:{award:boolean,show:boolean,message:string,reset:any
                     message={props.message}
                     buttons={[{text:'YES',
                                 cssClass:"alert-button-yes",
-                                handler:()=>props.reset}]}
+                                handler:()=>props.submitClaim()}]}
                 />)
                 :(
                     <IonAlert
@@ -23,7 +23,7 @@ export const NNAlert=(props:{award:boolean,show:boolean,message:string,reset:any
                     message={props.message}
                     buttons={[
                         {text:'close',handler:()=>props.reset()},
-                        {text:'send to Employee',cssClass:"alert-button-yes",handler:()=>props.submitClaim}]}></IonAlert>
+                        {text:'send to Employee',cssClass:"alert-button-yes",handler:()=>props.submitClaim()}]}/>
                 )
                 }
             </div> 

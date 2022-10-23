@@ -6,25 +6,25 @@ import { useHistory } from 'react-router-dom';
 import BadgeImage from '../../components/BadgeImage/BadgeImage';
 import axios from "axios";
 import * as tf from "@tensorflow/tfjs"
-import * as tflite from "@tensorflow/tfjs-tflite"
 import NNAlert from '../../components/NN_outcome/NN_outcome';
-import {claimSchema} from '../../validation/UploadClaimValidation'
 import './index'
 import ActivityInputs from '../../components/activityInputs/ActivityInputs';
-import { Directory, Filesystem} from '@capacitor/filesystem';
 interface InternalValues {
     file: any;
 }
 
 export type UploadActivityStates = {act?:any}
 
-let categories=['BenchPress_down','BenchPress_up', 'PullUp_down', 'PullUp_up',  'PushUp_down',  'PushUp_up','SitUp_up', 'SitUp_down']
+let ai_supported_activites=["pullup","pushup","situp","benchpress"]
+let categories=['down',  'up']
 const UploadActivityPage: React.FC = () =>{
 const inputRefTakeVideo = useRef<HTMLInputElement>(null);
 const inputRefUploadVideo = useRef<HTMLInputElement>(null);
  //HOOKS AND VARAIBES
 const [award,setAward]=useState<boolean>(false)
+ // eslint-disable-next-line
 const [isValid, setIsValid] = useState(false);
+ // eslint-disable-next-line
 const [submitted, setSubmitted] = useState(false);
 const [reps_required,setRepsRequired] =useState(0)
 const [Icon,setIcon]=useState<string[]>([""])
@@ -42,6 +42,8 @@ const [AI_enabled,setAI_enabled]=useState<string>("off")
 const [error_toast,setError_toast]=useState<boolean>(false)
 const [error_Mesg,setError_Mesg]=useState<string>("error")
 const [filename,setFilename]=useState<string>("")
+const [ai_supported,set_supported]=useState<boolean>(false)
+const [repCount,setRepCount]=useState<number>(0)
 let email = localStorage.getItem("email") 
 localStorage.setItem( 'e1', "");
 localStorage.setItem( 'e2', "");
@@ -51,6 +53,12 @@ let history=useHistory()
 
 
 //CUSTOM HOOKS- fro sequential  execution
+const SetRepCount=async(num:number)=>
+{
+    setRepCount(()=>{
+        return num
+    })
+}     
 const SetAward=async(value:boolean)=>
 {
     setAward(()=>
@@ -73,23 +81,41 @@ const SetAI_enabled=async(msg:string)=>
     })
 }
 //METHODS     
-const loadModel =async() => {
+const loadModel =async(name:string) => {
     try{
 
+        console.log("passed in parameter",name)
         setMessage("Loading neural Network")
         setLoading(true)
-       // console.log("loading model")
-       const option={
-        numThreads:2,
-        enableProfiling:false,
-        maxProfilingBufferEntries:1024.
-       }
-        const new_model= await tflite.loadTFLiteModel('assets/model/tflite_model.tflite',option);
-        console.log(new_model)
-        setLoading(false)
-        setMessage("Loading")
-        console.log(new_model)
-        setModel(new_model)
+        console.log("loading model")
+        console.log("badgename:",name)
+        let _activity=name.replaceAll(" ","").replaceAll("-","").toLowerCase();
+        console.log("activity:",_activity)
+        let ai=false;
+        let activity=""
+        
+        for(let i=0;i<ai_supported_activites.length;i++){
+            console.log("match for",ai_supported_activites[i])
+            if(_activity.includes(ai_supported_activites[i]))
+            {
+               set_supported(true)
+               activity=ai_supported_activites[i]
+               ai=true
+            }
+        }
+        if(ai)
+        {
+            const new_model= await tf.loadLayersModel("./assets/model/"+activity+"/model.json");
+            console.log(new_model)
+            setLoading(false)
+            setMessage("Loading")
+            console.log(new_model)
+            setModel(new_model)
+        }
+        else{
+            setError_Mesg("No Ai model available")
+            setError_toast(true)
+        }
         
     }
     catch(e:any){
@@ -111,15 +137,12 @@ const categroize=async(images:ImageData[])=>{
         let prediction= await model.predict(tensorImg).dataSync();
         console.log(i,prediction)
         let index=0;
-        let max=prediction[0]
-        for(let i=1;i<prediction.length;i++)
+        let probability=prediction[0]
+        if(probability>0.5)
         {
-            if(prediction[i]>max)
-            {
-                max=prediction[i];
-                index=i;
-            }
-        }
+            console.log(probability);
+            index=1;
+        }    
         console.log(categories[index])
         predictions.push(categories[index])
     } 
@@ -134,10 +157,10 @@ const determineReps=async(predictions:string[])=>{
     */
         let rep_count=0;
         let current_position=predictions[0];
-        let activity=badgename.replaceAll(" ","").replaceAll("-","").toUpperCase();
+        
         for(let i=0 ;i<predictions.length;i++)
         {
-        if(current_position!==predictions[i]&& activity.includes(predictions[i].replace("_","")[0]))
+        if(current_position!==predictions[i])
         {
             rep_count=rep_count+1;
             current_position=predictions[i]
@@ -145,7 +168,7 @@ const determineReps=async(predictions:string[])=>{
         }
         rep_count=Math.ceil(rep_count/2)
         console.log("rep_count",rep_count)
-    
+        SetRepCount(rep_count)
     //determine if badge should be awarded
         
         if(reps_required<=rep_count)
@@ -164,29 +187,11 @@ const determineReps=async(predictions:string[])=>{
         
     
 }
-const toBase64 =(file:File) => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-});
-
-const writeToFile=async()=>{
-   
-        var media=(await toBase64(values.current.file) as string)
-        console.log('base64',media)
-       let result= await Filesystem.writeFile({
-            path: values.current.file.name,
-            data: media,
-            directory:Directory.Data
-        });
-        console.log(result)
-}
 
 const handleSubmit_AI = async () =>{
     
     console.log(values.current.file)
-    await writeToFile()
+    //await writeToFile()
     //  await sendClaim();
     // saveImage(values.current.file)
    console.log("model:",model)
@@ -213,7 +218,6 @@ const reset= () => {
     history.goBack()
 }
 const handleSubmit = async (e:any) =>{
-    await writeToFile()
     e.preventDefault();
     formdata={
         i1: e.target.i1.value,
@@ -228,17 +232,9 @@ const handleSubmit = async (e:any) =>{
         localStorage.setItem( 'e2', "This field is required");
     if(formdata.i3 == null)
         localStorage.setItem( 'e3', "This field is required");
-
-    const isValid = await claimSchema.isValid(formdata);
-    setSubmitted(true);
-    if(isValid)
-    {
-        setIsValid(true);
         //handle post request 
+        //const isValid = await claimSchema.isValid(formdata);
         sendClaim();
-       
-    }
-    
 }
 
 const updateInputs = (e:any) =>{
@@ -280,8 +276,35 @@ const sendClaim=()=>{
     })
     .then(response =>response.data)
     .then(response =>{
-        setLoading(fail)
+        setLoading(false)
         //console.log(response);
+        setShowToast1(true);
+        sessionStorage.removeItem("badgeid")
+        history.goBack();
+    })
+    .catch(err => {
+        setLoading(false)
+        console.log(err)
+    }) 
+}
+const sendAIClaim=()=>{
+    setLoading(true)
+    let formData = new FormData();
+        formData.append("bid", b_id)
+        formData.append("email", email!)
+        formData.append( "apikey", sessionStorage.getItem("key")!)
+        formData.append("input1","AI counted reps:"+ repCount.toString())
+        formData.append("input2", "")
+        formData.append("input3", "")
+        formData.append('proof', values.current.file, values.current.file.name);
+        console.log(formData);
+    axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim`,{
+        "method":"POST",
+        data: formData
+    })
+    .then(response =>response.data)
+    .then(response =>{
+        setLoading(false)
         setShowToast1(true);
         sessionStorage.removeItem("badgeid")
         history.goBack();
@@ -294,19 +317,18 @@ const sendClaim=()=>{
 //ON ION ENTER      
 useIonViewDidEnter(async()=>{
     await SetAI_enabled(localStorage.getItem("AI_enabled") as string)
-
-    if(localStorage.getItem("AI_enabled")==="on")
-        {await loadModel()}
+    let bname=""
     let badgeId= sessionStorage.getItem("badgeid");
     setLoading(true)
-    axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
+    await axios.get(process.env["REACT_APP_GYM_KING_API"]+`/badges/badge/${badgeId}`)
         .then(response =>response.data)
         .then(response =>{
-        console.log("rsponse",response)
+        console.log("response",response)
         setB_id(response.b_id)
         setRepsRequired(response.requirement2)
         localStorage.setItem("activitytype", response.activitytype)
         setDescription(response.badgechallenge)
+        bname=response.badgename
         setBadgename(response.badgename)
         setLoading(false)
         setIcon(response.badgeicon.split("_"))
@@ -338,6 +360,9 @@ useIonViewDidEnter(async()=>{
         console.log(err)
         setLoading(false)
     })
+    
+    if(localStorage.getItem("AI_enabled")==="on")
+        {await loadModel(bname)}
 })
 
    
@@ -363,7 +388,7 @@ useIonViewDidEnter(async()=>{
                     </IonGrid>
                     <IonText className='PageTitle center'>{badgename}</IonText>
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
-                   {AI_enabled==="on"?(
+                   {AI_enabled==="on" && ai_supported?(
                         <div>
                             <IonButton onClick={()=>{ inputRefTakeVideo.current?.click()  }} className="btnSubmit centerComp" color="warning">Take Video</IonButton>  
                             <input ref={inputRefTakeVideo} onClick={()=>{console.log("hit")}}  type="file"className='HiddenInputFile'  name="video" accept="video/*" capture="environment" onChange={(ev) => onFileChange(ev)}/>
@@ -419,6 +444,7 @@ useIonViewDidEnter(async()=>{
                         color="danger"
                     />
                     <IonLoading 
+                        mode="ios"
                         isOpen={loading}
                         message={message}
                         spinner={"circles"}
@@ -426,7 +452,7 @@ useIonViewDidEnter(async()=>{
                         cssClass={"spinner"}
                         
                     />
-                    <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} submitClaim={sendClaim}></NNAlert>
+                    <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} submitClaim={sendAIClaim}></NNAlert>
                 </IonContent>
             </IonPage>
         )
