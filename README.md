@@ -99,3 +99,5 @@ A student at the University of Pretoria, currently studying for a BSc in Compute
   [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logoColor=white)](https://github.com/Thivesshj) 
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logoColor=white)](https://www.linkedin.com/in/thivessh-jhugroo-879a3b1b6/)
 </div>
+
+[For more information, Click Here](https://github.com/COS301-SE-2022/Gym-King/wiki)
