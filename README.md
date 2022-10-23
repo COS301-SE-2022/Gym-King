@@ -63,7 +63,7 @@ I am a BSC-CS student at the University of Pretoria. I was drawn to IT at a youn
 <div align="left">
   
   [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logoColor=white)](https://github.com/DYL-WF) 
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logoColor=white)]
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logoColor=white)](www.linkedin.com/in/whiteford-dyl)
 </div>
 
 ### Jade Peche
