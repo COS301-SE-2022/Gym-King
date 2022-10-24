@@ -3,7 +3,19 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Roboto+Flex:opsz@8..144&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
 
+/* font-family: 'Libre Baskerville', serif; */
+/*font-family: 'MuseoModerno', cursive;*/
+/* font-family: 'Inter', sans-serif;*/
+/* font-family: 'Montserrat', sans-serif;*/
+/* font-family: 'Russo One', sans-serif; */
+/*font-family: 'League Gothic', sanS */
 :root {
    /** primary **/
 	--ion-color-primary: #321E93;
@@ -66,7 +78,28 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-darkorange: darkorange;
 
+  --ion-font-family: 'Comfortaa', cursive ;
+}
 
+
+
+.libre{
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size:120%;
+}
+
+.museo{
+  font-family: 'MuseoModerno', cursive;
+  font-size:190%;
+}
+
+.ion-toolbar{
+  height:7%;
+}
+
+.ion-header{
+  height:7% !important;
 }
 
  /*
@@ -118,6 +151,13 @@ http://ionicframework.com/docs/theming/ */
     margin-left: 10%;
     margin-right:10%;
 }
+.popover-content{
+  border:none;
+}
+
+ion-popever div #ion-react-wrapper{
+  background-color: transparent !important;
+}
 
 .btn{
   font-family: 'Comfortaa', cursive;
@@ -127,6 +167,12 @@ http://ionicframework.com/docs/theming/ */
   background-color: #873CFF;
 }
 
+.item-native{
+  background: transparent !important;
+}
+.transparentBack{
+  --ion-item-background:#transparent;
+}
 .Content
 {
     padding:5em;
@@ -139,6 +185,8 @@ ion-button{
   width:80%;
   margin-left: 10%;
   margin-right:10%;
+  box-shadow: 5px 25px 20px -15px rgb(25 10 143 / 50%);
+
 }
 
 
@@ -148,10 +196,14 @@ ion-button{
 }
 .PageTitle
 {
-    font-size:2em;
-    font-family: '', cursive;
+    font-size:250%;
+    letter-spacing: 7px;
+    font-family: 'Russo One', sans-serif !important;
     padding:5%;
+    color:rgba(255, 255, 255, 0.342)  !important;
+    text-shadow: 4px 4px 8px #321E93;
 }
+
 .PageTitleNoPadding
 {
     font-size:2em;
@@ -168,6 +220,7 @@ ion-card{
   border-radius: 10px;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 40px rgba(25, 10, 143, 0.6);
+  height:fit-content;
 }
 
 .searchbar-input-container{
@@ -180,13 +233,41 @@ ion-card{
 }
 .textInput{
   background-color: rgba(255,255,255,0.07);
-  border-radius: 7%;
-  padding:2%;
+  border-radius: 13px !important;
+  
+}
+
+.btnLogin{
+  opacity:80%;
+
 }
 
 .inputHeading{
   font-family: 'Comfortaa', cursive;
   font-size:22px;
+}
+
+.bottomRightShadow{
+  box-shadow: 10px 10px 10px -10px rgb(25 10 143 / 40%);
+
+}
+
+.loginHeading{
+    font-size:200%;
+    letter-spacing: 8px;
+    font-family: 'Russo One', sans-serif !important;
+    padding:5%;
+    color:rgba(255, 255, 255, 0.342)  !important;
+    text-shadow: 4px 4px 8px #321E93
+}
+
+.medHeading{
+  font-size:140%;
+  letter-spacing: 8px;
+  font-family: 'Russo One', sans-serif !important;
+  color:rgba(255, 255, 255, 0.342)  !important;
+  text-shadow: 4px 4px 8px #321E93;
+
 }
 .mediumHeading{
   font-family: 'Comfortaa', cursive;
@@ -194,7 +275,7 @@ ion-card{
 }
 .smallHeading{
   font-family: 'Comfortaa', cursive;
-  font-size:16px;
+  font-size:115%;
   margin-bottom: 20px;
 }
 .subheading{
@@ -238,13 +319,15 @@ ion-card{
     width:75%;
 }
 .linkLabel{
-  font-size: 12px;
+  font-size: 70%;
   font-weight: 10;
+  font-family: 'Comfortaa', cursive;
 }
 .link{
   font-size:12px;
   font-weight: bold;
 }
+
 
 .center {
     display: flex;
@@ -265,9 +348,19 @@ ion-card{
 }
 
 .un{
-  font-size: 5vw !important;
+  font-size: 180% !important;
+  margin-top:7%;
   margin-bottom: 5%;
-  font-family: 'Comfortaa', cursive;;
+  letter-spacing: 2px;
+  font-family: 'Russo One', sans-serif;
+}
+.gymTitle{
+  font-size: 180% !important;
+  margin-top:7%;
+  margin-bottom: 5%;
+  letter-spacing: 2px;
+  font-family: 'Comfortaa', cursive;
+  color: white !important;
 }
 
 .badge{

@@ -18,7 +18,7 @@ export class DropDown extends React.Component<DropDownProps, DropDownStates>{
     render(){
         const {list} = this.props;
         return(
-                <IonSelect mode="ios" class="textInput dropDown textInputs shadow"   onIonChange={this.onChange}>
+                <IonSelect mode="ios" class="textInput dropDown textInputs shadow" style={{"padding":"5%"}}  onIonChange={this.onChange}>
                     {
                         list?.map(el =>{
                             return (<IonSelectOption  value ={el} key={el} >{el}</IonSelectOption>)
