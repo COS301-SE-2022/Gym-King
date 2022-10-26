@@ -13,7 +13,6 @@ const GymOwnerPage: React.FC = () =>{
                 <ToolBar menu={true} ></ToolBar>
             </IonHeader>
             <BurgerMenu listItems={Menulist}></BurgerMenu>
-            <br></br>
             <IonContent fullscreen className ='Content' id="mainBurger">
                 <IonText className='PageTitle center'>Owner Page</IonText>
                 <IonButton mode="ios" className='width80 centerComp' routerLink='/ManageGyms' routerDirection="forward" color="warning">Manage Gyms</IonButton>

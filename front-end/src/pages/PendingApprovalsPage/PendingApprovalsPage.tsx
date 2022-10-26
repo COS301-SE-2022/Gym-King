@@ -79,7 +79,6 @@ const PendingApprovalsPage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Pending Approvals</IonText>
                     

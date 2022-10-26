@@ -308,9 +308,9 @@ const UserProfilePage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <IonContent>
+                <IonContent >
                     <br></br>
-                    <IonGrid>
+                    <IonGrid style={{"width":"95%"}}>
                         <IonRow >
                             <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
