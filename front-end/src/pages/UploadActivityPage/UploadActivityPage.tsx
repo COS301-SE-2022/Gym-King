@@ -373,7 +373,6 @@ useIonViewDidEnter(async()=>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonGrid  className="ion-align-items-center">
                         <IonRow className="ion-align-items-center">

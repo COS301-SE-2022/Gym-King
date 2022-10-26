@@ -434,7 +434,6 @@ import { onlyLettersAndSpaces } from '../../utils/validation';
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Creating Badge</IonText>
                     <form onSubmit={handleSubmit} >
