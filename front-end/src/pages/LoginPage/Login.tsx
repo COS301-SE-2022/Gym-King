@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import './Login.css';
 import axios from "axios";
 import { validEmail } from '../../utils/validation';
+import { register } from '../../components/Push/Push';
 
 export const Login: React.FC = () =>{
     
@@ -100,6 +101,7 @@ export const Login: React.FC = () =>{
         let usertype=localStorage.getItem("usertype")
         if(usertype==="gym_user")
         {
+            register();
             history.push("/userMap")
         }
         else if(usertype==="gym_owner")

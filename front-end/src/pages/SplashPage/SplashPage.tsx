@@ -5,6 +5,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { PushNotifications, PushNotificationSchema, DeliveredNotifications, ActionPerformed } from '@capacitor/push-notifications';
 import { useHistory } from 'react-router';
 import axios from "axios";
+import { register } from '../../components/Push/Push';
 
 export const SplashPage: React.FC = () =>
 {
@@ -75,6 +76,7 @@ export const SplashPage: React.FC = () =>
         if(usertype==="gym_user")
         {
             history.push("/userMap")
+            register()
         }
         else if(usertype==="gym_owner")
         {
@@ -142,7 +144,9 @@ export const SplashPage: React.FC = () =>
         {
           localStorage.setItem("AI_enabled","off")
         }
-        navigate();
+        setTimeout(() => {
+            navigate();
+          }, 2000);
     })
         
         
