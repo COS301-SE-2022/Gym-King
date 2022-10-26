@@ -13,6 +13,13 @@ platforms:
       - file: AndroidManifest.xml
         target: manifest
         inject: <uses-feature android:name="android.hardware.location.gps" />
+     
+      - file: AndroidManifest.xml
+        target: manifest/application
+        attrs: 
+          android:usesCleartextTraffic: "true"
+      
+    
 
       - file: AndroidManifest.xml
         target: manifest
@@ -43,10 +50,6 @@ platforms:
                   keyPassword System.getenv("SIGNING_KEY_PASSWORD")
                 }
               }
-            
-
-          
-
   ios:
     incrementVersionCode: true
     targets:

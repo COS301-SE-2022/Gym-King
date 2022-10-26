@@ -1,12 +1,10 @@
 import { IonPage, IonContent, IonImg, useIonViewDidEnter } from '@ionic/react';
 import './splash-screen.css';
-//import auth0Client from '../Auth';
 import logo from './logo.png';
 import { Geolocation } from '@capacitor/geolocation';
 import { PushNotifications, PushNotificationSchema, DeliveredNotifications, ActionPerformed } from '@capacitor/push-notifications';
 import { useHistory } from 'react-router';
-
-
+import axios from "axios";
 
 export const SplashPage: React.FC = () =>
 {
@@ -30,6 +28,7 @@ export const SplashPage: React.FC = () =>
         }
     );
     
+
     PushNotifications.addListener('pushNotificationActionPerformed',
     (actionPerformed: ActionPerformed) => {
         let n = { id: actionPerformed.notification.id, title: actionPerformed.notification.data.title, body: actionPerformed.notification.data.body, type: 'foreground' }
@@ -71,30 +70,82 @@ export const SplashPage: React.FC = () =>
         );    
           
     }
-    // const router = useIonRouter();
+    const navigate=()=>{
+        let usertype=localStorage.getItem("usertype")
+        if(usertype==="gym_user")
+        {
+            history.push("/userMap")
+        }
+        else if(usertype==="gym_owner")
+        {
+            history.push("/GymOwnerPage")
+        }
+        else if(usertype==="gym_employee"){
+            history.push("/EmployeeHome")
+        }
+        else{
+
+            history.push("/Login")
+        }
+    }
+    
     useIonViewDidEnter(()=>{
         getPermissons();
-        setTimeout(() => {
-            history.push("/Login");
-          }, 3000);
+        
+        // get the stored user details if any
+        var storeEmail = localStorage.getItem("email")
+        var storePassword = localStorage.getItem("password")
+        var storeUserType = localStorage.getItem("usertype")
+
+        if(storeEmail !=null && storePassword !=null && storeUserType !=null ){
+            axios.post(`${process.env["REACT_APP_GYM_KING_API"]}/users/login`, 
+                {
+                    email: storeEmail,
+                    password: storePassword,
+                    usertype: storeUserType
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response =>response.data)
+                .then(response =>{
+                    console.log(response)
+                    
+                    if(response.success){
+                        sessionStorage.setItem("key", response.apikey)
+
+                    localStorage.setItem("email", localStorage.getItem("email")!)
+                    localStorage.setItem("username", response.username)
+                    localStorage.setItem("password", localStorage.getItem("password")!)
+                    localStorage.setItem("usertype",localStorage.getItem("usertype")!)
+                    localStorage.setItem("profile_picture", response.profile_picture)
+                    localStorage.setItem("pp", response.profile_picture)
+
+                    
+                    }else{
+                        
+                        localStorage.setItem("usertype","")   
+                    }
+
+                    
+                })
+                .catch(err => {
+                    localStorage.setItem("usertype","")  
+                    console.log("error while attempting to login in user")
+                })
+            }
+
+        if(localStorage.getItem("AI_enabled")!=null)
+        {
+          localStorage.setItem("AI_enabled","off")
+        }
+        navigate();
     })
         
         
-    //})
-    // const navigate=()=>{
-    //     let usertype=localStorage.getItem("usertype")
-    //     if(usertype==="gym_user")
-    //     {
-    //         router.push("userMap");
-    //     }
-    //     else if(usertype==="gym_owner")
-    //     {
-    //         router.push("GymOwnerPage");
-    //     }
-    //     else{
-    //         router.push("EmployeeHome");
-    //     }
-    // }
     return (
         <IonPage>
             <IonContent fullscreen className='splash'>
@@ -104,64 +155,6 @@ export const SplashPage: React.FC = () =>
     )
 }    
 
-
-/*function LoadingMessage()
-{
-    return(
-        <div classname="splash-screen"> 
-            Wait a moment for the app to load 
-            <div classname="loading-dot">.</div>
-        </div>
-    );
-}
-
-/*function SplashPage()
-{
-    return <div>
-        <LoadingMessage />
-    </div>
-}*/
-
-/*function SplashPage(WrappedComponent)
-{
-    return class extends Component
-    {
-        constructor(props)
-        {
-            super(props);
-            this.state = {
-                loading: true,
-            };
-        }
-    }
-
-    async componentDidMount()
-    {
-        try
-        {
-            await auth0Client.loadSession();
-            setTimeout(() => {
-                this.setState({
-                    loading: false,
-                });
-            }, 1500)
-        }
-        catch (err)
-        {
-            console.log(err);
-            this.setState({
-                loading: false, 
-            });
-        }
-    }
-
-    render()
-    {
-        if(this.state.loading)
-            return LoadingMessage();
-        return <WrappedComponent{...this.props}/>;
-    }
-};*/
 
 
 export default SplashPage;
