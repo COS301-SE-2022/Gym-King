@@ -22,7 +22,6 @@ const AppSettingsPage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>APP SETTINGS</IonText>
                     <IonText className='inputHeading leftMargin'>Automated Workout Review</IonText> <br></br><br></br>

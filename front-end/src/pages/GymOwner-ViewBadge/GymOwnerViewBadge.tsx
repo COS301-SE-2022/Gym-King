@@ -61,13 +61,13 @@ const GymOwnerViewBadge: React.FC = () =>{
                     <IonText className='PageTitle center'>My Badges</IonText>
                     <IonButton mode="ios" routerLink='/CreateBadge' routerDirection='forward' color="warning">CREATE BADGE</IonButton>
                     <br></br><br></br>
-                    <IonAccordionGroup mode="ios">
+                    <IonAccordionGroup mode="ios" className="transparentBack">
                     {badgeList.map(el => 
-                        <IonAccordion key={el.GymID} value={el.GymID}>
-                            <IonItem slot="header">
+                        <IonAccordion key={el.GymID} value={el.GymID} className="transparentBack">
+                            <IonItem slot="header" className="transparentBack">
                                 <IonLabel>{el.GymName}</IonLabel>
                              </IonItem>
-                             <IonList slot="content">
+                             <IonList slot="content" className="transparentBack">
                                <GymOwnerViewBadgeGrid gymID={el.GymID} ></GymOwnerViewBadgeGrid>
                             </IonList>
                         </IonAccordion>
