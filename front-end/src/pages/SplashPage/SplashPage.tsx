@@ -85,7 +85,7 @@ export const SplashPage: React.FC = () =>
         }
         else{
 
-            history.push("/EmployeeHome")
+            history.push("/Login")
         }
     }
     
@@ -124,14 +124,13 @@ export const SplashPage: React.FC = () =>
                     localStorage.setItem("profile_picture", response.profile_picture)
                     localStorage.setItem("pp", response.profile_picture)
 
-                
-                    navigate();
+                    
                     }else{
                         
                         localStorage.setItem("usertype","")   
                     }
 
-                    navigate();
+                    
                 })
                 .catch(err => {
                     localStorage.setItem("usertype","")  
@@ -143,9 +142,7 @@ export const SplashPage: React.FC = () =>
         {
           localStorage.setItem("AI_enabled","off")
         }
-        setTimeout(() => {
-            history.push("/Login");
-          }, 3000);
+        navigate();
     })
         
         
