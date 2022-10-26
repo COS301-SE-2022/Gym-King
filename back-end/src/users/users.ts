@@ -869,6 +869,33 @@ const users = express.Router()
    })
    //=========================================================================================================//
   /**
+   * POST - Get user's notification status.
+   * @param {string} email user's email.
+   * @param {string} apikey User's api key
+   * @returns status true or false.
+   */
+   .post('/users/user/getNotificationStatus', cors(corsOptions), async (req: any, res: any) => {
+    try {
+      let query = req.body;
+      if (query.email != null && query.apikey != null){
+        const user = await userRepository.findByEmail(query.email);
+        if(user != null && user.apikey == query.apikey){
+          res.json({status: user.notificationtoggle})
+        }
+        else {
+          res.json({'message':'Invalid email or apikey!'})
+        }
+      } else {
+        res.json({'message':'Invalid parameters!'})
+      }
+    } catch (err) {
+      const results = { 'success': false, 'results': err };
+      console.error(err);
+      res.json(results);
+    }
+   })
+   //=========================================================================================================//
+  /**
    * POST - Check if user is subscribed to a gym.
    * @param {string} email user's email.
    * @param {string} apikey user's api key.
