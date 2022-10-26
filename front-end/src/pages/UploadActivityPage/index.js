@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 'use strict';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,7 +15,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
+            // eslint-disable-next-line
             if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            // eslint-disable-next-line
             if (y = 0, t) op = [0, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
@@ -41,7 +44,9 @@ var VideoToFramesMethod;
 (function (VideoToFramesMethod) {
     VideoToFramesMethod[VideoToFramesMethod["fps"] = 0] = "fps";
     VideoToFramesMethod[VideoToFramesMethod["totalFrames"] = 1] = "totalFrames";
+    // eslint-disable-next-line
 })(VideoToFramesMethod || (VideoToFramesMethod = {}));
+// eslint-disable-next-line
 var VideoToFrames = (function () {
     function VideoToFrames() {
     }
@@ -58,8 +63,10 @@ var VideoToFrames = (function () {
             var that = _this;
             video.addEventListener('loadeddata', function () {
                 return __awaiter(this, void 0, void 0, function () {
+                    // eslint-disable-next-line
                     var totalFrames, time, _a, _b, _c;
                     return __generator(this, function (_d) {
+                        // eslint-disable-next-line
                         switch (_d.label) {
                             case 0:
                                 canvas.width = video.videoWidth;
@@ -71,6 +78,7 @@ var VideoToFrames = (function () {
                                 }
                                 time = 0;
                                 _d.label = 1;
+                                break;
                             case 1:
                                 if (!(time < duration))
                                     return [3 /*break*/, 4];
@@ -79,6 +87,7 @@ var VideoToFrames = (function () {
                             case 2:
                                 _b.apply(_a, [_d.sent()]);
                                 _d.label = 3;
+                                break;
                             case 3:
                                 time += duration / totalFrames;
                                 return [3 /*break*/, 1];
@@ -110,4 +119,3 @@ var VideoToFrames = (function () {
     };
     return VideoToFrames;
 }());
-//# sourceMappingURL=index.js.map
