@@ -92,7 +92,7 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
         .then(response =>response.data)
         .then(response =>{
             localStorage.setItem("claimAccepted", "true")
-            sendNotifications
+            sendNotifications()
             setLoading(false)
             props.history.goBack()
 
