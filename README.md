@@ -6,7 +6,6 @@
 
 ![GYM_KING_free-file_5](https://user-images.githubusercontent.com/92938217/195381250-76466f42-204a-4704-a6f2-5e186014d7ac.png)
 
-
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
@@ -30,28 +29,10 @@
 
 # About
 ## Gym King - Codebusters
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/92938217/188442468-c3e5085f-6838-40b2-8187-0fad4300546d.jpg" align="center" height="150px" />
-  <img src="https://user-images.githubusercontent.com/92938217/188444931-66ffa168-5839-411d-9907-0af707e60883.jpg" align="center" height="150px" />
-</p>
 
 Gym King is an application designed to give gym goers an extra motivatinal boost. Gym King will allow gym users to improve their workout and earn badges for doing so. The application achieves this using a combination of Artifical Intelligence, Augmented Reality and Open Source Technologies. 
 
 Gym King is a collaborative project between the University of Pretoria's COS 301 module team Codebusters and EPI-USE Labs. The Codebusters team members are Robyn Hancock, Jade Peche, Dylan Whiteford, Thivessh Jhugroo and Ryan Broemer. The EPI-USE members are Gianni Volpi, Egor Kharatyan and Marnes Prinsloo. 
-
-## Basic Commands
-```sh
-yarn run start
-```
-```sh
-yarn run build
-```
-```sh
-yarn run test
-```
-```sh
-yarn run lint
-```
 
 ## Documentation
 [SRS](https://github.com/COS301-SE-2022/Gym-King/files/9673688/Gym-King.SRS.pdf) <br>
@@ -60,15 +41,7 @@ yarn run lint
 [Architectural Design](https://github.com/COS301-SE-2022/Gym-King/files/9672739/Gym-King.Architecture.pdf) <br>
 [Technical Installation Manual](https://github.com/COS301-SE-2022/Gym-King/files/9673815/Gym-King.Technical.Installation.pdf) <br>
 [Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
-
-## Demo Links
-[DEMO 1](https://drive.google.com/drive/folders/132bKBFuXsvhc-b2iAB62nvvUncE5EgON?usp=sharing) <br>
-[DEMO 2](https://drive.google.com/drive/folders/1xwkz5ILz3gKwC0BIc-FstbQfio3efHb4?usp=sharing) <br>
-[DEMO 3](https://drive.google.com/drive/folders/1RB-gCoTrTGDnzlQOKOn8-D6DXzlrymCa?usp=sharing) <br>
-[DEMO 4](https://drive.google.com/drive/folders/1RPw-w63NyvPK7CqI_FjRLAhPyyxJ8Fdk?usp=sharing)
-
-## Github Project Board
-[Project Board](https://github.com/COS301-SE-2022/Gym-King/projects/1)
+[Project Video](https://drive.google.com/file/d/1icwGYnwtdUM76qSIwrFUDrDexUh9pMKW/view?usp=sharing)
 
 <!-- Contributors -->
 ## Team Codebusters
@@ -90,7 +63,7 @@ I am a BSC-CS student at the University of Pretoria. I was drawn to IT at a youn
 <div align="left">
   
   [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logoColor=white)](https://github.com/DYL-WF) 
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logoColor=white)]
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logoColor=white)](https://www.linkedin.com/in/whiteford-dyl/)
 </div>
 
 ### Jade Peche
@@ -122,3 +95,5 @@ A student at the University of Pretoria, currently studying for a BSc in Compute
   [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logoColor=white)](https://github.com/Thivesshj) 
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logoColor=white)](https://www.linkedin.com/in/thivessh-jhugroo-879a3b1b6/)
 </div>
+
+[For more information, Click Here](https://github.com/COS301-SE-2022/Gym-King/wiki)
