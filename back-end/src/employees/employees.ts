@@ -115,13 +115,17 @@ const employees = express.Router()
    .post("/claims/claim/getClaim", cors(corsOptions), async (req: any, res: any) => {
     try {
       let query = req.body;
-      const employee = await employeeRepository.findByEmail(query.empEmail);
-      if (employee != null && employee.apikey == query.apikey) {
-        let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
-        res.json(result);
-      }
-      else {
-        res.json({'message':'Invalid email or apikey!'})
+      if (query.empEmail != null && query.apikey != null && query.bid != null && query.email != null){
+        const employee = await employeeRepository.findByEmail(query.empEmail);
+        if (employee != null && employee.apikey == query.apikey) {
+          let result = await badgeClaimRepository.findByBIDandEmail(query.bid, query.email);
+          res.json(result);
+        }
+        else {
+          res.json({'message':'Invalid email or apikey!'})
+        }
+      } else {
+        res.json({'message':'Missing parameters!'})
       }
     } catch (err) {
       const results = { success: false, results: err };
