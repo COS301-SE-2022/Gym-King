@@ -1,4 +1,4 @@
-import { IonCard, IonCardTitle, IonGrid, IonPopover, IonRow, IonText} from '@ionic/react';
+import { IonCard, IonCardTitle, IonContent, IonGrid, IonModal, IonPopover, IonRow, IonText} from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AR from '../../AR/AR';
@@ -7,21 +7,22 @@ import BadgeImage from '../../BadgeImage/BadgeImage';
 import './MyBadgeCard.css'
 
 export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string,badgeRank:string})=>{
-    const popover = useRef<HTMLIonPopoverElement>(null);
-    const [popoverOpen, setPopoverOpen]  = useState(false);
     let history=useHistory();
+    const gymModal = useRef<HTMLIonModalElement>(null);
+    const [isShowingGymModal, setIsShowingGymModal] = useState(false);
 
     const next =()=>{
         if(prop.qty===0)
         {
             console.log(prop.id)
             sessionStorage.setItem("badgeid",prop.id);
-            setPopoverOpen(false);
+            setIsShowingGymModal(false);
             history.push("/UploadActivity")
         }
         else
         {
-            setPopoverOpen(true)
+            
+            setIsShowingGymModal(true)
         }
     }
 
@@ -55,11 +56,30 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                             
                 </IonGrid>
             </IonCard>
-            <IonPopover style={{"background":"transparent"}} mode="ios"  ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-              
+            
+          <IonModal
+                mode="ios"
+                ref={gymModal}
+                trigger="open-modal"
+                isOpen={isShowingGymModal}
+                initialBreakpoint={0.25}
+                breakpoints={[0.0,0.25, 0.5, 0.75]}
+                backdropBreakpoint={0.5}
+                
+            
+                
+                onWillDismiss={()=>
+                {
+                    setIsShowingGymModal(false)
+                
+                }}
+
+            >
+                <IonContent color='secondary' ><br></br>
                 <AR  rank={prop.badgeRank} emblem={prop.badgeEmblem}></AR>
-                        
-          </IonPopover>
+
+                </IonContent>
+            </IonModal>
             </div>
         )
         

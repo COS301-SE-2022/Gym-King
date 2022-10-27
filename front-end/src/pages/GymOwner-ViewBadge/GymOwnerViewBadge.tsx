@@ -56,7 +56,7 @@ const GymOwnerViewBadge: React.FC = () =>{
             <IonHeader>
                 <ToolBar></ToolBar>
             </IonHeader>
-            <IonContent fullscreen className='Content'>
+            <IonContent fullscreen className='Content' onClick={()=>{}}>
                     <IonText className='PageTitle center'>My Badges</IonText>
                     <IonButton mode="ios" routerLink='/CreateBadge' routerDirection='forward' color="warning">CREATE BADGE</IonButton>
                     <br></br><br></br>
