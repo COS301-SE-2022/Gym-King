@@ -26,6 +26,48 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
     //    FUNCTIONS
     //=================================================================================================
 
+    /**
+     * @brief ! - sends a push notification to the user who earned the badge an their friends
+     */
+    async function sendNotifications() {
+        // api call to notify accepted friend request
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendGenericNotification`,{
+            "method":"POST",
+
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            data:{ 
+                pushTarget: [props.userID],
+                pushTitle:  "You've earned the a badge!",
+                pushMessage: props.badgename ,
+                isSilent: false
+            }
+        })
+        .then(response =>response.data)
+        .catch(err => {console.log(err)}) 
+
+        // api call to notify subscribers
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/SendFriendsNotification`,{
+            "method":"POST",
+
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            data:{ 
+                userEmail: props.userID,
+                pushTitle:  props.username + " has earned a badge",
+                pushMessage: props.badgename,
+                isSilent: true
+            }
+        })
+        .then(response =>response.data)
+        .catch(err => {console.log(err)}) 
+
+
+    } 
 
     /** 
      * @brief ! - makes a call to add a badge from the badge_claim table to the badge_owned table
@@ -50,6 +92,7 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
         .then(response =>response.data)
         .then(response =>{
             localStorage.setItem("claimAccepted", "true")
+            sendNotifications()
             setLoading(false)
             props.history.goBack()
 

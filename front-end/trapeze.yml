@@ -18,6 +18,12 @@ platforms:
         target: manifest/application
         attrs: 
           android:usesCleartextTraffic: "true"
+
+               
+      - file: AndroidManifest.xml
+        target: manifest/application/activity
+        attrs: 
+          android:screenOrientation: "portrait"
       
     
 
@@ -27,29 +33,7 @@ platforms:
           <queries>
             <package android:name="com.google.ar.core" />
           </queries>
-    gradle:  
-      - file: app/build.gradle
-        target: 
-          android:
-            signingConfigs:
-        replace: 
-          signingConfigs: |
-              {
-                release {
-                  def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
-                  def allFilesFromDir = new File(tmpFilePath).listFiles()
-
-                  if (allFilesFromDir != null) {
-                    def keystoreFile = allFilesFromDir.first()
-                    keystoreFile.renameTo("keystore/Gym-King.jks")
-                  }
-
-                  storeFile = file("keystore/Gym-King.jks")
-                  storePassword System.getenv("SIGNING_STORE_PASSWORD")
-                  keyAlias System.getenv("SIGNING_KEY_ALIAS")
-                  keyPassword System.getenv("SIGNING_KEY_PASSWORD")
-                }
-              }
+    
   ios:
     incrementVersionCode: true
     targets:
