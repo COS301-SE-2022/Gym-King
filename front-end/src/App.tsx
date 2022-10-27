@@ -62,6 +62,7 @@ import FriendRequests from './pages/FriendRequests/FriendRequests';
 import Explore from './pages/Explore/Explore';
 import PushNotificationsContainer from './components/Push/Push';
 import MyGyms from './pages/MyGyms/MyGyms';
+import ViewAR from './pages/ViewAR/ViewAR';
 /*develop*/
 
 
@@ -194,6 +195,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path='/MyGyms'>
           <MyGyms></MyGyms>
+        </Route>
+        <Route exact path='/ViewAR'>
+          <ViewAR></ViewAR>
         </Route>
 
       </IonRouterOutlet>
