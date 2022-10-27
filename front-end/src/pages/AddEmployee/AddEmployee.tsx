@@ -171,7 +171,6 @@ export const AddEmployee: React.FC = () =>{
                 <IonHeader>
                     <ToolBar ></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content' >
                     <form onSubmit={handleSubmit} >
                         <IonText className='PageTitle center'>Add Employee</IonText>

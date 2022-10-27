@@ -91,7 +91,6 @@ const ManageEmployees: React.FC = () =>{
             <IonHeader>
                 <ToolBar menu={false}></ToolBar>
             </IonHeader>
-            <br></br>
             <IonContent fullscreen className='Content'>
                 <IonText className='PageTitle center'>My Employees</IonText>
                 <IonButton mode="ios" routerLink='/AddEmployee' routerDirection="forward" color="warning">Add Employee</IonButton>

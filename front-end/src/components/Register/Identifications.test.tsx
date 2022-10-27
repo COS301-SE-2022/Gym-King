@@ -10,6 +10,6 @@ test('renders without crashing', async() => {
 
 test('correctly displays labels', async () => {
   const {baseElement} = await render(<Identifications handleChange={undefined} next={undefined} history={undefined}/>);
-  expect (baseElement).toHaveTextContent("Full Name*");
-  expect (baseElement).toHaveTextContent("Username*");
+  expect (baseElement).toHaveTextContent("Full Name");
+  expect (baseElement).toHaveTextContent("Username");
 });

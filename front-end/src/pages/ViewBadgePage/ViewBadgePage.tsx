@@ -44,7 +44,6 @@ const ViewBadgePage: React.FC = () =>{
             <IonHeader>
                 <ToolBar></ToolBar>
             </IonHeader>
-            <br></br>
             <IonContent fullscreen className='Content' id="main">
                     <IonText className='PageTitle center'>View Badges</IonText>
                     <IonGrid>

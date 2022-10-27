@@ -63,26 +63,33 @@ const AR: React.FC<ARInputProps> = ( inp ) => {
         const embID:string[] = ["bicep","clean","cycle","dumbell","gym","pullup","run", "situp","treadmill"];
         // valid ranks
         const rankID:string[] = ["b","s","g"];
-
+        console.log(inp.emblem)
+        console.log(inp.rank)
         // return value
         let valid = false;
 
-        // loop thrugh all valid emblems and compare with inp.emblem
-        embID.forEach(element => {
-            inp.emblem === element ? valid = true : valid=false
-        });
+        // loop thrugh all valid emblems and compare with inp.emble
 
+        for(const s of embID){
+            if (inp.emblem === s) valid = true
+
+        }
         //return false if no match was found
         if(!valid) return false
 
         
+        console.log(inp.emblem)
+        console.log(inp.rank)
+
         // loop thrugh all valid ranks and compare with inp.ranks
         valid = false
-        rankID.forEach(element => {
-            inp.rank === element ? valid = true : valid =false
-        });
+        for(const s of rankID) {
+            
+            if (inp.rank === s) valid = true
+        };
 
         return valid
+        
     }
 
     //=========================================================================================================//

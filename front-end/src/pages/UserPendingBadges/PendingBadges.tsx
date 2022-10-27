@@ -1,4 +1,4 @@
-import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, IonLoading, useIonViewDidEnter, IonList} from '@ionic/react';
 import React, {useState} from 'react'
 import PendingBadgeItem from '../../components/PendingBadgeItem/PendingBadgeItem';
 import { ToolBar } from '../../components/toolbar/Toolbar';
@@ -45,17 +45,19 @@ const PendingBadgesPage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Pending Badges</IonText>
-                    
-                    {
-                        
-                        claims.length!==0 && claims?.map(el =>{
+
+                        <IonList mode="ios" className='transparentBack'>
+                        {
                             
-                            return ( <PendingBadgeItem badgeName={el.b_id.badgename} key={el.email + el.b_id} badgeIcon={el.b_id.badgeicon}></PendingBadgeItem>)
-                        }) 
-                    }
+                            claims.length!==0 && claims?.map(el =>{
+                                
+                                return ( <PendingBadgeItem badgeName={el.b_id.badgename} key={el.email + el.b_id} badgeIcon={el.b_id.badgeicon}></PendingBadgeItem>)
+                            }) 
+                        }
+                        </IonList>
+                    
                     
                     <IonLoading 
                         mode="ios"

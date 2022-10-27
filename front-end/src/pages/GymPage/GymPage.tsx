@@ -11,7 +11,7 @@ const GymPage: React.FC = () =>{
 
     let gid = sessionStorage.getItem("gid");
     let gname = sessionStorage.getItem("gym_name")
-    let gbrandname = sessionStorage.getItem("gym_brandname");
+    //let gbrandname = sessionStorage.getItem("gym_brandname");
     let gaddress = sessionStorage.getItem("gym_address");
     let history=useHistory()
 
@@ -151,8 +151,8 @@ const GymPage: React.FC = () =>{
             
             <IonContent fullscreen className ='Content' id="main" >
                 <IonCard className="glass gym centerComp" style={{"marginTop":"5%"}}>
-                    <IonCardTitle className='center PageTitle'>{gbrandname +", "+ gname}</IonCardTitle>
-                    <IonCardSubtitle color="light" className='center subheading'>{gaddress}</IonCardSubtitle>
+                    <IonCardTitle className='centerComp gymTitle'>{gname}</IonCardTitle>
+                    <IonCardSubtitle color="light" className='center subheading'><i>{gaddress}</i></IonCardSubtitle>
                     {
                         !subscribed
                         &&

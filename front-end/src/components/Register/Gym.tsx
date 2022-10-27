@@ -51,20 +51,20 @@ export const Gym: React.FC<props>  = (props) =>{
         return(
             <>
             <form className='registerForm' onSubmit={next}>
-                <IonText className='center inputHeading'>Register</IonText>
+                <IonText className='center loginHeading'>REGISTER</IonText>
                 <br></br>
 
-                <IonText className="smallHeading">Please select your gym*</IonText>
+                <IonText className="smallHeading">Please select your gym</IonText>
                 <DropDown list={gymBrands} chosenValue={chosenValue}></DropDown>
 
     
                 <IonGrid>
                     <IonRow>
                         <IonCol size='6'>
-                            <IonButton color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >Previous</IonButton>
+                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev} >PREV</IonButton>
                         </IonCol>
                         <IonCol size='6'>
-                            <IonButton color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Register</IonButton>
+                            <IonButton mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>REG</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

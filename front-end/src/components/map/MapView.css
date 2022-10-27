@@ -43,6 +43,7 @@ main {
 
 .mainMap {
     --overflow: hidden !important;
+    background-color: #321E93;
 }
 
 

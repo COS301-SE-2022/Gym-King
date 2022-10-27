@@ -20,10 +20,10 @@ const FriendsList: React.FC<props> = (props) =>{
 
         return(
             
-            <IonList mode="ios">
+            <IonList mode="ios" className='transparentBack'>
                 {
                     props.friendsList.map((el:any)=>{
-                        return (<IonItem mode="ios" button detail  onClick={()=>viewFriendProfile(el)} data-testid="aB" key={el.email}>
+                        return (<IonItem className='transparentBack' mode="ios" button detail  onClick={()=>viewFriendProfile(el)} data-testid="aB" key={el.email}>
                                 <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
                                     <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${el.profile_picture})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                                 </IonAvatar>
