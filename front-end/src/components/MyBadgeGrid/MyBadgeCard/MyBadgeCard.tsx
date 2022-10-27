@@ -1,4 +1,4 @@
-import { IonCard, IonCardTitle, IonContent, IonGrid, IonModal, IonPopover, IonRow, IonText} from '@ionic/react';
+import { IonCard, IonCardTitle, IonContent, IonGrid, IonModal, IonRow, IonText} from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AR from '../../AR/AR';

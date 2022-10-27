@@ -1,5 +1,5 @@
 'use strict';
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+let __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments)).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
+let __generator = (__generator) || function (thisArg, body) {
+    let _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
     return { next: verb(0), "throw": verb(1), "return": verb(2) };
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
@@ -37,12 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 /**
  * @type {{ fps?: any; totalFrames?: any; }}
  */
-var VideoToFramesMethod;
+let VideoToFramesMethod;
 (function (VideoToFramesMethod) {
     VideoToFramesMethod[VideoToFramesMethod["fps"] = 0] = "fps";
     VideoToFramesMethod[VideoToFramesMethod["totalFrames"] = 1] = "totalFrames";
 })(VideoToFramesMethod || (VideoToFramesMethod = {}));
-var VideoToFrames = (function () {
+let VideoToFrames = (function () {
     function VideoToFrames() {
     }
     VideoToFrames.getFrames = function (videoUrl, amount, type) {
