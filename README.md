@@ -43,6 +43,10 @@ Gym King is a collaborative project between the University of Pretoria's COS 301
 [Testing Policy](https://github.com/COS301-SE-2022/Gym-King/files/9672748/Gym-King.Testing.Policy.pdf) <br>
 [Project Video](https://drive.google.com/file/d/1icwGYnwtdUM76qSIwrFUDrDexUh9pMKW/view?usp=sharing)
 
+<!-- Android APK -->
+## Android APK
+https://drive.google.com/file/d/1Cc9vwVD0GDOXvm248sNP7h_LeON9lgFs/view?usp=sharing
+
 <!-- Contributors -->
 ## Team Codebusters
 ### Robyn Hancock
