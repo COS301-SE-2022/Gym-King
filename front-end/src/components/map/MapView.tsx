@@ -114,6 +114,8 @@ const MapView: React.FC = () =>{
         // display nearby gyms
         else
             getNearbyGyms()
+
+            console.log(gymsInSearchTab)
         
     }
     
@@ -428,6 +430,7 @@ const MapView: React.FC = () =>{
                 nearByCallBack = {() =>{
                         setShowModal(false);
                         getNearbyGyms()
+                        console.log(gymsInSearchTab)
                     }
                 }
                 searchCallBack = {(searchQuery:string) => {

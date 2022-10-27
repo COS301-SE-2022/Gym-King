@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonAvatar, IonImg, IonHeader, IonText, IonRow,
+import { IonContent, IonItem, IonLabel,  IonSearchbar, IonModal, IonList, IonHeader, IonText, IonRow,
 } from '@ionic/react';
 
 export const GymSearchBar=(props:{
@@ -15,10 +15,12 @@ export const GymSearchBar=(props:{
     const [isShowing, setIsShowing] = useState(false);
     const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
     const [searchTabHeading, setSearchTabHeading] = useState("Gyms Near You")
+    
 
     useEffect(() => {
       setPresentingElement(page.current);
-    }, []);
+      console.log(props.gyms)
+    }, [props.gyms]);
   
     return (
         <>
@@ -76,6 +78,7 @@ export const GymSearchBar=(props:{
             initialBreakpoint={0.25}
             breakpoints={[0.0,0.25, 0.5, 0.75]}
             backdropBreakpoint={0.5}
+            backdropDismiss={true}
         
             presentingElement={presentingElement!}
             onWillDismiss={()=>{
@@ -97,14 +100,14 @@ export const GymSearchBar=(props:{
 
           >
             <IonContent color='secondary' >
-              <br></br><IonHeader className="inputHeading ion-padding">{searchTabHeading}</IonHeader> <br></br>
+              <br></br><IonHeader className="inputHeading ion-padding" style={{"fontSize":"30px"}}>{searchTabHeading}</IonHeader> <br></br>
               <IonList mode="ios">
 
               {  
               props.gyms.map((item: {
                 key:string; 
                 gid:string; 
-                gym_logo:string; 
+                gym_brandname:string; 
                 gym_name:string;
                 gym_address:string; 
                 gym_coord_lat:number; 
@@ -121,9 +124,6 @@ export const GymSearchBar=(props:{
                           }}
                           key={item.gid}
                           >
-                                <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
-                                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${item.gym_logo})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
-                                </IonAvatar>
                                 <IonLabel mode="ios">
                                   <IonRow>
                                     <IonText className={"mediumHeading"}>{item.gym_name}</IonText>
