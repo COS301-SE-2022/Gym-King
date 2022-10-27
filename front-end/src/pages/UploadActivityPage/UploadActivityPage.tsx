@@ -427,9 +427,9 @@ useIonViewDidEnter(async()=>{
                     </form> 
                     </div>
                    )
-
+                   
                    }
-                    
+                    <br></br><br></br><br></br>
                     <IonToast
                         isOpen={showToast1}
                         onDidDismiss={() => setShowToast1(false)}
@@ -454,6 +454,7 @@ useIonViewDidEnter(async()=>{
                         
                     />
                     <NNAlert award={award} show={Alert} reset={reset} message={badgeMessage} submitClaim={sendAIClaim}></NNAlert>
+                    
                 </IonContent>
             </IonPage>
         )
