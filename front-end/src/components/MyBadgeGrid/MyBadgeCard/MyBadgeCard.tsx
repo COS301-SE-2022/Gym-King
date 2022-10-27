@@ -1,4 +1,4 @@
-import { IonCard, IonCardTitle, IonGrid, IonPopover, IonRow} from '@ionic/react';
+import { IonCard, IonCardTitle, IonGrid, IonPopover, IonRow, IonText} from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AR from '../../AR/AR';
@@ -31,22 +31,24 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
                 mode="ios"
                 data-testid="viewbadgegrid"
                 className="ViewBadgeCard"  
-                style={{ padding : 0}} 
+                style={{"height":"fit-content"}} 
                 onClick={next}
                 >
                 <IonGrid class="ViewBadgeGrid" >
-                    <IonRow class="ViewBadgeImage">
+                    <IonRow class="ViewBadgeImage centerComp">
                         <BadgeImage BadgeEmblem={prop.badgeEmblem} Badgerank={prop.badgeRank}  idEmblem="badgeOver" idRank="badgeUnder"></BadgeImage>
                     </IonRow>
-                    <IonRow class='BadgeDetails'>
+                    <br></br>
+                    <IonRow className='BadgeDetails centerComp' style={{"width":"80%"}}>
+        
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
                                     {prop.name}
                         </IonCardTitle>
                         {
                             prop.qty>0 &&
-                            <IonCardTitle style={{width:100}}  class='ViewBadgeTitle' className='center ion-text-center'>
-                                QTY:{prop.qty}
-                            </IonCardTitle>
+                            <IonText style={{width:100}}  class='ViewBadgeTitle' className='center ion-text-center'>
+                                <i>QTY:{prop.qty}</i>
+                            </IonText>
                         }
                         
                     </IonRow>

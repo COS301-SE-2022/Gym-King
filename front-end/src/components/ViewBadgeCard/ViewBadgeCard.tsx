@@ -15,13 +15,14 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 mode="ios"
                 data-testid="viewbadgegrid"
                 className="ViewBadgeCard glass"  
-                style={{ padding : 0}} 
+                style={{ "height":"fit-content"}} 
                 onClick={ () =>{setPopoverOpen(true)} }>
-                <IonGrid class="ViewBadgeGrid" >
-                    <IonRow class="ViewBadgeImage">
+                <IonGrid className="ViewBadgeGrid " >
+                    <IonRow class="ViewBadgeImage centerComp">
                             <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.BadgeRank} idEmblem="badgeOver" idRank="badgeUnder"></BadgeImage>
                     </IonRow>
-                    <IonRow class='BadgeDetails'>
+                    <br></br>
+                    <IonRow class='BadgeDetails centerComp' style={{"width":"80%"}} >
                         <IonCardTitle style={{width:100}} class='ViewBadgeTitle' className='center ion-text-center'>
                                     {props.BadgeTitle}
                             </IonCardTitle>
