@@ -1,4 +1,4 @@
-import { IonCard, IonCardTitle, IonContent, IonGrid, IonModal, IonRow, IonText} from '@ionic/react';
+import { IonActionSheet, IonCard, IonCardTitle, IonContent, IonGrid, IonModal, IonRow, IonText} from '@ionic/react';
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AR from '../../AR/AR';
@@ -10,19 +10,21 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
     let history=useHistory();
     const gymModal = useRef<HTMLIonModalElement>(null);
     const [isShowingGymModal, setIsShowingGymModal] = useState(false);
+    const [showActionSheet, setShowActionSheet] = useState<boolean>(false);
+
 
     const next =()=>{
         if(prop.qty===0)
         {
             console.log(prop.id)
             sessionStorage.setItem("badgeid",prop.id);
-            setIsShowingGymModal(false);
+            setShowActionSheet(false);
             history.push("/UploadActivity")
         }
         else
         {
             
-            setIsShowingGymModal(true)
+            setShowActionSheet(true)
         }
     }
 
@@ -80,6 +82,30 @@ export const MyBadgeCard=(prop:{id:any,name:string,qty:number,badgeEmblem:string
 
                 </IonContent>
             </IonModal>
+
+            <IonActionSheet
+                mode="ios"
+               isOpen={showActionSheet}
+               onDidDismiss={()=>setShowActionSheet(false)}
+               cssClass="my-custom-class"
+               
+               buttons={[
+                {
+                   text: 'View AR Model',
+                   id: 'viewAR',
+                   handler: () => {
+                    sessionStorage.setItem("selectedBE", prop.badgeEmblem)
+                    sessionStorage.setItem("selectedBR", prop.badgeRank)
+                    history.push("/ViewAR")
+                   }
+                 },{ 
+                   text: 'Cancel',
+                   role: 'cancel',
+                   handler: () => {
+                     console.log('Cancel clicked');
+                   }
+                 }]}>
+           </IonActionSheet>
             </div>
         )
         
