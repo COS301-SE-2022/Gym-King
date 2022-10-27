@@ -65,7 +65,7 @@ export const BadgeImage=(props:{Badgerank:string,BadgeEmblem:string,idRank:strin
    
     return (
         <div>
-            <img  id={props.idEmblem} src={emblem} alt = ''/>  
+            <img className="badgeImage"  id={props.idEmblem} src={emblem} alt = ''/>  
             <img id={props.idRank} src={rank} alt = ''/>  
         </div>
     );}

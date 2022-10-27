@@ -1,9 +1,71 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, IonList, IonItemSliding, IonItemOption, IonItemOptions, IonFooter, IonButton, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonList, IonItemSliding, IonItemOption, IonItemOptions, IonButton } from '@ionic/react';
 import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 import axios from "axios";
 import ToolBar from '../toolbar/Toolbar';
+
+// const [isToastOpen, setIsToastOpen] = useState(false);
+// const [toastMeassage , setToastMessage] = useState("")
+
+// const showToast = async (msg: string) => {
+//     setIsToastOpen(true)
+//     setToastMessage(msg)
+// }
+
+export const register = () => {
+    const hasRegistered = sessionStorage.getItem("hasRegistered");
+    if(hasRegistered==null || hasRegistered!=="true"){
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register();
+
+        // On success, we should be able to receive notifications
+        PushNotifications.addListener('registration',
+            (token: Token) => {
+                
+                // Post the push key to the API
+
+                axios.put(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/pushToken`, 
+                {
+                    email: localStorage.getItem("email"),
+                    token: token.value,
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })            
+                .then(response =>response.data)
+                .then(response =>{
+                    if(response.success){
+                        console.log(response)
+                        //showToast('Push registration success');
+                    }else{
+                        
+                        console.log(response.success)
+                        console.log(response.results)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+        );
+
+        // Some issue with our setup and push will not work
+        PushNotifications.addListener('registrationError',
+            (error: any) => {
+               // showToast('Error on registration: ' + JSON.stringify(error));
+                sessionStorage.setItem("hasRegistered","false")
+            }
+        );
+        sessionStorage.setItem("hasRegistered","true")
+    }
+    
+
+}
+
 
 const PushNotificationsContainer: React.FC = () => {
     let nullEntry: any[] = []
@@ -36,10 +98,10 @@ const PushNotificationsContainer: React.FC = () => {
             if (res.receive !== 'granted') {
               PushNotifications.requestPermissions().then((res) => {
                 if (res.receive === 'denied') {
-                  showToast('Push Notification permission denied');
+                  //showToast('Push Notification permission denied');
                 }
                 else {
-                  showToast('Push Notification permission granted');
+                  //showToast('Push Notification permission granted');
                   register();
                 }
               });
@@ -49,8 +111,6 @@ const PushNotificationsContainer: React.FC = () => {
             }
           });
     }
-    const userEmail = localStorage.getItem("email")
-
     validteRegister()
 
     useEffect(() => {
@@ -75,66 +135,6 @@ const PushNotificationsContainer: React.FC = () => {
             clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
         }
     },[setnotifications])
-    
-    const register = () => {
-        const hasRegistered = sessionStorage.getItem("hasRegistered");
-        if(hasRegistered==null || hasRegistered!=="true"){
-            // Register with Apple / Google to receive push via APNS/FCM
-            PushNotifications.register();
-
-            // On success, we should be able to receive notifications
-            PushNotifications.addListener('registration',
-                (token: Token) => {
-                    
-                    // Post the push key to the API
-
-                    axios.put(`${process.env["REACT_APP_GYM_KING_API"]}/users/user/pushToken`, 
-                    {
-                        email: userEmail,
-                        token: token.value,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                        }
-                    })            
-                    .then(response =>response.data)
-                    .then(response =>{
-                        if(response.success){
-                            console.log(response)
-                            showToast('Push registration success');
-                        }else{
-                            
-                            console.log(response.success)
-                            console.log(response.results)
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                }
-            );
-
-            // Some issue with our setup and push will not work
-            PushNotifications.addListener('registrationError',
-                (error: any) => {
-                    showToast('Error on registration: ' + JSON.stringify(error));
-                }
-            );
-            sessionStorage.setItem("hasRegistered","true")
-        }
-        
-
-    }
-
-    const showToast = async (msg: string) => {
-        setIsToastOpen(true)
-        setToastMessage(msg)
-    }
-
-    const [isToastOpen, setIsToastOpen] = useState(false);
-    const [toastMeassage , setToastMessage] = useState("")
 
     return (
         <IonPage color='#220FE' >           
@@ -143,13 +143,15 @@ const PushNotificationsContainer: React.FC = () => {
                 </IonHeader>
             <IonContent >
 
-                <IonText className='PageTitle center'>My Notifications</IonText>
+                <IonText className='PageTitle center' style={{"fontSize":"180%"}}>NOTIFICATIONS</IonText>
+                <IonButton mode="ios" className='centerComp width80' color='warning' onClick={clearAllNotifications}>Clear All</IonButton>
+
                 {notifications.length !== 0 &&
-                    <IonList mode="ios">
+                    <IonList mode="ios" className='transparentBack'>
   
                     {notifications.map((notif: any) =>
                         <IonItemSliding >
-                            <IonItem detail key={notif.id} mode="ios">
+                            <IonItem detail key={notif.id} mode="ios" className='transparentBack'>
                                 <IonLabel>                          
                                         <h3>{notif.title}</h3>
                                         <p>{notif.body}</p>
@@ -169,22 +171,15 @@ const PushNotificationsContainer: React.FC = () => {
                     </IonList>
                 }
             </IonContent>
-
-            <IonFooter>
-                <IonToolbar mode="ios">
-                    <IonButton color="danger" expand="full" onClick={clearAllNotifications}>Clear All</IonButton>
-                </IonToolbar>
-            </IonFooter>
-            <IonToast
+            {/* <IonToast
                 mode="ios"
                 isOpen={isToastOpen}
                 onDidDismiss={() => setIsToastOpen(false)}
                 message={toastMeassage}
                 duration={1000}
                 color="danger"
-                />
+                /> */}
         </IonPage >
     )
 }
-
 export default PushNotificationsContainer;
