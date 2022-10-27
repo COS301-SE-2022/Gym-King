@@ -67,7 +67,9 @@ const GymOwnerViewBadge: React.FC = () =>{
                                 <IonLabel>{el.GymName}</IonLabel>
                              </IonItem>
                              <IonList slot="content" className="transparentBack">
-                               <GymOwnerViewBadgeGrid gymID={el.GymID} ></GymOwnerViewBadgeGrid>
+                                    <GymOwnerViewBadgeGrid gymID={el.GymID} ></GymOwnerViewBadgeGrid>
+
+                               
                             </IonList>
                         </IonAccordion>
                     )}
@@ -82,6 +84,9 @@ const GymOwnerViewBadge: React.FC = () =>{
                         cssClass={"spinner"}
                         
                     />
+
+                
+                    
             </IonContent>
         </IonPage>
     )

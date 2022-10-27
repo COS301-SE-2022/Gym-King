@@ -1,15 +1,15 @@
-import { IonButton, IonCard, IonCardTitle, IonContent, IonGrid,IonModal, IonRow} from '@ionic/react';
-import { useRef, useState } from 'react';
+import { IonActionSheet, IonCard, IonCardTitle, IonGrid, IonRow} from '@ionic/react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import AR from '../AR/AR';
 import BadgeImage from '../BadgeImage/BadgeImage';
 import './ViewBadgeCard.css'
 
 export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID:string;BadgeImg:number;BadgeRank:string;BadgeEmblem:string })=>{
     let history=useHistory();
 
-    const gymModal = useRef<HTMLIonModalElement>(null);
-    const [isShowingGymModal, setIsShowingGymModal] = useState(false);
+
+    const [showActionSheet, setShowActionSheet] = useState<boolean>(false);
+
     
     return(
         <div>
@@ -18,7 +18,7 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 data-testid="viewbadgegrid"
                 className="ViewBadgeCard glass"  
                 style={{ "height":"fit-content"}} 
-                onClick={ () =>{setIsShowingGymModal(true)} }>
+                onClick={ () =>{setShowActionSheet(true)} }>
                 <IonGrid className="ViewBadgeGrid " >
                     <IonRow class="ViewBadgeImage centerComp">
                             <BadgeImage BadgeEmblem={props.BadgeEmblem} Badgerank={props.BadgeRank} idEmblem="badgeOver" idRank="badgeUnder"></BadgeImage>
@@ -32,31 +32,38 @@ export const ViewBadgeCard=(props: { BadgeTitle:String;BadgeDesc?:String;BadgeID
                 </IonGrid>
             </IonCard>
 
-          <IonModal
-                mode="ios"
-                ref={gymModal}
-                trigger="open-modal"
-                isOpen={isShowingGymModal}
-                initialBreakpoint={0.25}
-                breakpoints={[0.0,0.25, 0.5, 0.75]}
-                backdropBreakpoint={0.5}
-                
-            
-                
-                onWillDismiss={()=>
-                {
-                    setIsShowingGymModal(false)
-                
-                }}
 
-            >
-                <IonContent color='secondary' ><br></br>
-                    <IonButton mode="ios" className="centerComp" style={{"width":"80%"}} onClick={()=>{sessionStorage.setItem("badgeid",props.BadgeID);setIsShowingGymModal(false);history.push("/UploadActivity")}}>Apply for badge</IonButton>
-                    <div onClick={()=>{setIsShowingGymModal(false)}}>
-                        <AR  rank={props.BadgeRank} emblem={props.BadgeEmblem}></AR>
-                    </div>
-                </IonContent>
-            </IonModal>
+
+            <IonActionSheet
+                mode="ios"
+               isOpen={showActionSheet}
+               onDidDismiss={()=>setShowActionSheet(false)}
+               cssClass="my-custom-class"
+               
+               buttons={[{
+                  
+                   text: 'Apply for badge',
+                   id:'btnApply',
+                   handler: () => {
+                        sessionStorage.setItem("badgeid",props.BadgeID);
+                        history.push("/UploadActivity")
+                   }
+                 },{
+                   text: 'View AR Model',
+                   id: 'viewAR',
+                   handler: () => {
+                    sessionStorage.setItem("selectedBE", props.BadgeEmblem)
+                    sessionStorage.setItem("selectedBR", props.BadgeRank)
+                    history.push("/ViewAR")
+                   }
+                 },{ 
+                   text: 'Cancel',
+                   role: 'cancel',
+                   handler: () => {
+                     console.log('Cancel clicked');
+                   }
+                 }]}>
+           </IonActionSheet>
             
         </div>
         )

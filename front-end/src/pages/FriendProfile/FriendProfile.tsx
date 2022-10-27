@@ -127,7 +127,7 @@ const FriendProfile: React.FC = () =>{
                                                     friendBadges.map((el:any)=>{
                                                         return(
                                                         <IonSlide  key={el.b_id} style={{"padding":"10%", "height":"fit-content"}}>
-                                                            <MyBadgeCard key={el.b_id.b_id} id={el.b_id.b_id} name={el.badgename} qty={0} badgeEmblem={el.b_id.badgeicon.split("_")[1]} badgeRank={el.b_id.badgeicon.split("_")[0]}></MyBadgeCard>
+                                                            <MyBadgeCard key={el.b_id.b_id} id={el.b_id.b_id} name={el.b_id.badgename} qty={0} badgeEmblem={el.b_id.badgeicon.split("_")[1]} badgeRank={el.b_id.badgeicon.split("_")[0]}></MyBadgeCard>
                                                             
                                                         </IonSlide>)
                                                     })
