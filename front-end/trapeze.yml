@@ -18,6 +18,12 @@ platforms:
         target: manifest/application
         attrs: 
           android:usesCleartextTraffic: "true"
+
+               
+      - file: AndroidManifest.xml
+        target: manifest/application/activity
+        attrs: 
+          android:screenOrientation: "portrait"
       
     
 

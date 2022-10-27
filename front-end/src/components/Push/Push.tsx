@@ -146,7 +146,7 @@ const PushNotificationsContainer: React.FC = () => {
             <IonContent >
 
                 <IonText className='PageTitle center' style={{"fontSize":"180%"}}>NOTIFICATIONS</IonText>
-                <IonButton mode="ios" className='centerComp width80' color="medium" onClick={clearAllNotifications}>Clear All</IonButton>
+                <IonButton mode="ios" className='centerComp width80' color='warning' onClick={clearAllNotifications}>Clear All</IonButton>
 
                 {notifications.length !== 0 &&
                     <IonList mode="ios" className='transparentBack'>

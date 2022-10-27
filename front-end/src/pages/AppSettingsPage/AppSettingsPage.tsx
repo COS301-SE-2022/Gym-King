@@ -101,7 +101,7 @@ const AppSettingsPage: React.FC = () =>{
                 </IonHeader>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>APP SETTINGS</IonText>
-                    <IonText className='inputHeading leftMargin'>Automated Workout Review</IonText> <br></br><br></br>
+                    <IonText className='inputHeading leftMargin'>Workout Review</IonText> <br></br><br></br>
                     <div className='centerComp' style={{"width":"80%", "fontSize":"80%"}}>
                         <IonText ><i>We have and Artificial Inteligence engine that reviews the proof that you upload for a badge and either accepts or reject this. Turn this off if you would rather have an employee review you.</i></IonText>
                     </div><br></br>
