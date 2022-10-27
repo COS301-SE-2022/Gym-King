@@ -373,6 +373,7 @@ useIonViewDidEnter(async()=>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
+                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonGrid  className="ion-align-items-center">
                         <IonRow className="ion-align-items-center">
@@ -389,9 +390,9 @@ useIonViewDidEnter(async()=>{
                     <IonText className='SmallDescription center'>{badgedescription}</IonText> <br></br>
                    {AI_enabled==="on" && ai_supported?(
                         <div>
-                            <IonButton onClick={()=>{ inputRefTakeVideo.current?.click()  }} className="width80 centerComp" color="primary">Take Video</IonButton>  
+                            <IonButton onClick={()=>{ inputRefTakeVideo.current?.click()  }} className=" centerComp" color="primary">Take Video</IonButton>  
                             <input ref={inputRefTakeVideo} onClick={()=>{console.log("hit")}}  type="file"className='HiddenInputFile'  name="video" accept="video/*" capture="environment" onChange={(ev) => onFileChange(ev)}/>
-                            <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className="width80 centerComp" color="primary">Upload Video</IonButton>  
+                            <IonButton onClick={()=>{inputRefUploadVideo.current?.click() }} className=" centerComp" color="primary">Upload Video</IonButton>  
                             <input ref={inputRefUploadVideo}  type="file" className='HiddenInputFile' accept=".mp4" onChange={(ev) => onFileChange(ev)} />
                             <IonText>{filename}</IonText> 
                             <IonButton onClick={handleSubmit_AI } className="btnSubmit centerComp" color="warning">Submit</IonButton> 
@@ -407,7 +408,7 @@ useIonViewDidEnter(async()=>{
                         }
                         <IonGrid className='centerLeft grid'>
                             <IonRow className='left topMargin'>
-                                <IonText className='Subheading'>Proof:</IonText>
+                                <IonText className='Subheading'>Proof</IonText>
                             </IonRow>
                         </IonGrid>
                         <IonGrid className='centerLeft grid'>
@@ -424,7 +425,6 @@ useIonViewDidEnter(async()=>{
                         <br></br>
                         <IonButton mode="ios" className="btnSubmit centerComp btn" type='submit' color="warning">SUBMIT</IonButton>
                     </form> 
-                    <br></br><br></br>
                     </div>
                    )
 

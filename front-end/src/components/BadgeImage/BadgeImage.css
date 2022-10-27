@@ -1,14 +1,13 @@
 #badgeOver{ 
-  height: 90px;
-  width: 75px !important;
+  height: 50%;
+  width: 75% !important;
   position: absolute!important;
   top:7% !important;
   left:13% !important;
   z-index:1 !important;
 }
 #badgeUnder{
-  height:100px;
-  width: 130px !important;
+  height:130%;
 }
 #pendingEmblem{
     height: 30px;
