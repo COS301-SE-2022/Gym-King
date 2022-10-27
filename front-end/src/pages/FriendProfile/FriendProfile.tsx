@@ -2,9 +2,7 @@ import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCa
 import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
-import FriendBadgeGrid from '../../components/FriendBadgeGrid/FriendBadgeGrid';
 import { useHistory } from 'react-router-dom';
-import BadgeSuggestions from '../../components/BadgeSuggestions/BadgeSuggestions';
 import MyBadgeCard from '../../components/MyBadgeGrid/MyBadgeCard/MyBadgeCard';
 
 
