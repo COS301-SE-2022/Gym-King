@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonToast, IonList, IonItemSliding, IonItemOption, IonItemOptions, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonItem, IonLabel, IonText, IonList, IonItemSliding, IonItemOption, IonItemOptions, IonButton } from '@ionic/react';
 import { PushNotifications, Token} from '@capacitor/push-notifications';
 
 import axios from "axios";
@@ -111,8 +111,6 @@ const PushNotificationsContainer: React.FC = () => {
             }
           });
     }
-    const userEmail = 
-
     validteRegister()
 
     useEffect(() => {
