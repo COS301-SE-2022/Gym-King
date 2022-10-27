@@ -15,7 +15,7 @@ interface InternalValues {
 
 export type UploadActivityStates = {act?:any}
 
-let ai_supported_activites=["pullup","pushup","situp","benchpress"]
+let ai_supported_activites=["pushup","benchpress"]
 let categories=['down',  'up']
 const UploadActivityPage: React.FC = () =>{
 const inputRefTakeVideo = useRef<HTMLInputElement>(null);
