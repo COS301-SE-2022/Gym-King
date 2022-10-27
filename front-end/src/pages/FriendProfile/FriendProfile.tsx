@@ -45,7 +45,7 @@ const FriendProfile: React.FC = () =>{
                 console.log(err)
             })
         
-    
+            console.log(friendBadges);
         },[])
 
         const removeFriend = () =>{

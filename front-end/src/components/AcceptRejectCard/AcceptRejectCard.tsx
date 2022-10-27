@@ -4,7 +4,7 @@
 */
 
 import {IonAvatar, IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonImg, IonLoading, IonRow, IonText, IonToast} from '@ionic/react';
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './AcceptRejectCard.css'
 import ActivityList from '../ActivityList/ActivityList';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +21,11 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
     const [showAccepted, setShowAccepted] = useState(false);
     const [showRejected, setShowRejected] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [proof, setProof]=useState("");
+
+    useEffect(()=>{
+        setProof(props.proof);
+    },[props.proof])
 
     //=================================================================================================
     //    FUNCTIONS
@@ -163,8 +168,9 @@ export const AcceptRejectCard: React.FC<props> = (props) =>{
                     <br></br><br></br>
                     <IonText className='Subheading'>Proof:</IonText>
                     <IonCard className='justify'>
-                        <IonCardContent mode="ios">
-                            <IonImg src={props.proof}></IonImg> 
+                        <IonCardContent mode="ios" style={{"height":"10em"}}>
+                            <img alt="" src={proof} ></img> 
+                           
                         </IonCardContent>
                     </IonCard>
                     <IonGrid>

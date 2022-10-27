@@ -112,7 +112,7 @@ const AppSettingsPage: React.FC = () =>{
                             <SegmentButton list={['On', 'Off']} val={localStorage.getItem('AI_enabled')} chosenValue={setAI_Enabled}></SegmentButton><br></br><br></br>
 
                             <IonText className='inputHeading leftMargin'>Push Notificiations</IonText> <br></br><br></br>
-                            <SegmentButton  list={['on', 'off']} val={localStorage.getItem('Push_enabled')} onChangeCallBack ={setPush_Enabled }></SegmentButton><br></br><br></br>
+                            <SegmentButton  list={['On', 'Off']} val={localStorage.getItem('Push_enabled')} onChangeCallBack ={setPush_Enabled }></SegmentButton><br></br><br></br>
                         </>
                     }
                     
