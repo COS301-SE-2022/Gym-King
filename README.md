@@ -45,7 +45,7 @@ Gym King is a collaborative project between the University of Pretoria's COS 301
 
 <!-- Android APK -->
 ## Android APK
-https://drive.google.com/file/d/1Cc9vwVD0GDOXvm248sNP7h_LeON9lgFs/view?usp=sharing
+https://drive.google.com/file/d/1uZmtJfzfqhJ5EsFj00AfYsGqWWlH1cpB/view?usp=sharing
 
 <!-- Contributors -->
 ## Team Codebusters
