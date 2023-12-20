@@ -28,7 +28,7 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
-        axios.post(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim/getClaim`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim/getClaim`,{
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -36,7 +36,7 @@ export const AcceptRejectPage: React.FC = () =>{
             },
             data: { 
                 empEmail: localStorage.getItem("email"),
-                apikey: localStorage.getItem("key"),
+                apikey: sessionStorage.getItem("key"),
                 bid:badgeId,
                 email:email
             }

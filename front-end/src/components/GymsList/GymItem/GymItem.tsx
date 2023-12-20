@@ -26,7 +26,6 @@ const GymsList: React.FC<props> = (props) =>{
                 setGymBrandName(response.gym_brandname)
                 setGymName(response.gym_name)
                 setGymAddress(response.gym_address)
-                setGymProfile("")
             })
             .catch(err => {
                 console.log(err)

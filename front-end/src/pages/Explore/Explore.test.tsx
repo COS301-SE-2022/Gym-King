@@ -14,7 +14,7 @@ test('renders without crashing', async () => {
     test('correctly displays captions',  async() => {
       const {baseElement} =  await render(<Explore />);
       expect (baseElement).toHaveTextContent("Find Users");
-      expect (baseElement).toHaveTextContent("Explore");
+      expect (baseElement).toHaveTextContent("EXPLORE");
       expect (baseElement).toHaveTextContent("Find Gyms");
       expect (baseElement).toHaveTextContent("Suggested Badges");
     }); 

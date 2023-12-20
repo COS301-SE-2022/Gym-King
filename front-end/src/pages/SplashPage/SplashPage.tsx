@@ -74,6 +74,10 @@ export const SplashPage: React.FC = () =>
     // const router = useIonRouter();
     useIonViewDidEnter(()=>{
         getPermissons();
+        if(localStorage.getItem("AI_enabled")!=null)
+        {
+          localStorage.setItem("AI_enabled","off")
+        }
         setTimeout(() => {
             history.push("/Login");
           }, 3000);
