@@ -28,7 +28,7 @@ export const AcceptRejectPage: React.FC = () =>{
     //GET THE CLAIM 
     useIonViewDidEnter(()=>{
         setLoading(true);
-        axios.post(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim/getClaim`,{
+        axios(process.env["REACT_APP_GYM_KING_API"]+`/claims/claim/getClaim`,{
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -36,7 +36,7 @@ export const AcceptRejectPage: React.FC = () =>{
             },
             data: { 
                 empEmail: localStorage.getItem("email"),
-                apikey: localStorage.getItem("key"),
+                apikey: sessionStorage.getItem("key"),
                 bid:badgeId,
                 email:email
             }
@@ -82,9 +82,8 @@ export const AcceptRejectPage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>Accept/Reject</IonText>
+                    <IonText className='PageTitle center' >Accept / Reject</IonText>
                     <AcceptRejectCard proof={proof} userID={email} username={username} badgeId={badgeId} badgename={badgename} badgechallenge={badgechallenge}i1={i1} i2={i2} i3={i3} activitytype={activitytype} history={history} profile={profile!}></AcceptRejectCard>
 <br></br><br></br>
                     <IonLoading 

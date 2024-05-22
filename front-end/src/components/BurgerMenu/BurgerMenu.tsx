@@ -11,24 +11,24 @@ export const BurgerMenu=(props:{listItems:any[]})=>{
         return(
                 <IonMenu  side="start" menuId="first" contentId='mainBurger' >
                     
-                    <IonHeader>
-                        <IonToolbar color="primary" mode="ios">
+                    <IonHeader style={{"height":"7%"}}>
+                        <IonToolbar color="primary" mode="ios" style={{"height":"100%"}}>
                             <IonTitle>Menu</IonTitle>
                         </IonToolbar>
                      </IonHeader>
-                    <IonContent className='mainMap'>
-                        <IonList  mode="ios">
+                    <IonContent className='mainMap' color="secondary">
+                        <IonList  mode="ios" color='primary'>
                         <IonMenuToggle  auto-hide="false" >
                             {props.listItems.map((el:any)=>
                            
-                            <IonItem  mode="ios" button routerLink={el.route} routerDirection="forward" key={Math.random()}>
+                            <IonItem color="secondary" mode="ios" button routerLink={el.route} routerDirection="forward" key={Math.random()}>
                                 
                                 <IonIcon mode='ios' icon={el.icon} ></IonIcon>
                                 <IonLabel style={{"paddingLeft":"3%"}}>{el.caption}</IonLabel>
                             </IonItem>
                             )}
                             <div id="logout-button">
-                            <IonItem  mode="ios" button onClick={()=>{
+                            <IonItem  color="secondary" mode="ios" button onClick={()=>{
                                                         localStorage.removeItem("email")
                                                         localStorage.removeItem("username")
                                                         localStorage.removeItem("password")

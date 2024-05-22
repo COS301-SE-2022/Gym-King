@@ -10,7 +10,7 @@ const GymsList: React.FC<props> = (props) =>{
         
         return(
             
-            <IonList mode="ios">
+            <IonList mode="ios" className='transparentBack'>
                 {
                     props.gymsList?.map((el:any)=>{
                         return (<GymItem gymId={el.togym} key={el.togym}></GymItem>)

@@ -1,5 +1,5 @@
-import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonToast } from "@ionic/react";
-import React, {  useEffect, useState } from "react";
+import { createAnimation, IonButton,  IonButtons,  IonCard,  IonCardContent,  IonCardHeader,  IonCardTitle,  IonContent,  IonLoading, IonModal, IonText, IonToast } from "@ionic/react";
+import React, {  useEffect, useRef, useState } from "react";
 import { Geolocation } from '@capacitor/geolocation';
 import { Map ,Overlay} from 'pigeon-maps';
 import { useHistory } from 'react-router-dom';
@@ -47,6 +47,11 @@ const MapView: React.FC = () =>{
 
     const [error, setError] = useState<LocationError>({showError: false});
     const [userLocation, setUserLoc] = useState([0,0]);
+
+    //Gym Modal
+    const gymModal = useRef<HTMLIonModalElement>(null);
+    const [isShowingGymModal, setIsShowingGymModal] = useState(false);
+
 
     // Gym Menu Vars -----------------------------------------------------------------------------------------------//
 
@@ -109,6 +114,8 @@ const MapView: React.FC = () =>{
         // display nearby gyms
         else
             getNearbyGyms()
+
+            console.log(gymsInSearchTab)
         
     }
     
@@ -175,7 +182,7 @@ const MapView: React.FC = () =>{
     const gymButtonClick=async (activeGym:any)=>{
         // Set Pop Menus data
         setGymData(activeGym);
-        setShowModal(true);
+        setIsShowingGymModal(true);
     }
 
     //=========================================================================================================//
@@ -403,10 +410,19 @@ const MapView: React.FC = () =>{
     const mapTiler =(x: number, y: number, z: number, dpr?: number)=> {
         return `https://api.maptiler.com/maps/voyager/${z}/${x}/${y}.png?key=GhihzGjr8MhyL7bhR5fv`
     }
+
+    const toggleModal = ()=>{
+        if(isShowingGymModal)
+        {
+            setIsShowingGymModal(false)
+        }
+    }
     return (
         
         <>  
-            <IonContent  className='mainMap' >
+            <IonContent  className='mainMap' onClick={()=>{
+                toggleModal()
+            }} >
                 
             <GymSearchBar 
             
@@ -414,6 +430,7 @@ const MapView: React.FC = () =>{
                 nearByCallBack = {() =>{
                         setShowModal(false);
                         getNearbyGyms()
+                        console.log(gymsInSearchTab)
                     }
                 }
                 searchCallBack = {(searchQuery:string) => {
@@ -476,7 +493,7 @@ const MapView: React.FC = () =>{
                     <img id = "btnIcon" alt="" src={recenter} ></img>
                 </IonButton>
                 <Overlay anchor={[userLocation[0],userLocation[1]]} offset={[25,30]} >
-                <img src={location} width={50} height={50} alt='' />
+                <img  src={location} width={50} height={50} alt='' />
                 </Overlay>      
                 {gymsInView.map((item: {key:string; gid:string; gym_coord_lat: number; gym_coord_long: number;gym_brandname:string; gym_name:string}) => {
                     return (
@@ -527,6 +544,37 @@ const MapView: React.FC = () =>{
 
             
             </IonModal>   
+            <IonModal
+                mode="ios"
+                ref={gymModal}
+                trigger="open-modal"
+                isOpen={isShowingGymModal}
+                initialBreakpoint={0.25}
+                breakpoints={[0.0,0.25, 0.5, 0.75]}
+                backdropBreakpoint={0.5}
+                
+            
+                
+                onWillDismiss={()=>
+                {
+                    setIsShowingGymModal(false)
+                
+                }}
+
+            >
+                <IonContent color='secondary' ><br></br>
+                    <IonText className="inputHeading  center" style={{"marginTop":"4%"}}>{gymData.gym_name}</IonText> <br></br>
+                    <IonText className="center" style={{"padding":"3%"}}><i>{gymData.gym_address}</i></IonText> 
+                    <IonButton className=" width80" color="warning" onClick={()=>{
+                        sessionStorage.setItem('gym_name',gymData.gym_name);
+                        sessionStorage.setItem('gym_brandname',gymData.gym_brandname);
+                        sessionStorage.setItem('gym_address',gymData.gym_address);
+                        sessionStorage.setItem('gid',gymData.g_id);
+                        setIsShowingGymModal(false);
+                        history.push("/GymPage");
+                    }}>View more details</IonButton>
+                </IonContent>
+            </IonModal>
             </IonContent>
         </>
     )

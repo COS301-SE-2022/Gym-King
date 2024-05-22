@@ -37,5 +37,11 @@
 }
 
 .logo{
-    margin-top: 30%;
+    width: fit-content;   
+    height: fit-content;
+    margin-left: 25%;
+    top: 50%;
+    margin-right: 25%;
+    margin-top: 25%;
+    margin-bottom: 25%;
 }

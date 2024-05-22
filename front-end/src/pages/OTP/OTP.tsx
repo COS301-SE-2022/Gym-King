@@ -57,7 +57,7 @@ export const OTP: React.FC = () =>{
                 </IonHeader>
                 <IonContent  fullscreen className='grad loginPage'>
                     <form className='otpForm'>
-                        <IonText className='center inputHeading'>Enter OTP</IonText> <br></br>
+                        <IonText className='center medHeading' >ENTER OTP</IonText> <br></br>
 
                         <IonText className='moreInfo center'>We've sent an OTP to your email address. Enter it in below to reset your password.</IonText>
                             <br></br><br></br>
@@ -67,7 +67,7 @@ export const OTP: React.FC = () =>{
                                 numInputs={6}
                                 separator={<span></span>}
                                 inputStyle={{  
-                                    width: '35px',  
+                                    width: '2em',  
                                     height: '35px',  
                                     marginRight: '12px', 
                                     fontSize: '1rem',  
@@ -94,7 +94,7 @@ export const OTP: React.FC = () =>{
                             <br></br>
                             <IonButton mode="ios" onClick={verifyOTP} color="warning" className=" btnLogin ion-margin-top" type="button" expand="block">Next</IonButton>
                             <br></br>
-                            <button  onClick= {() =>{history.goBack()}} id = "center" color="secondary" className='puesdorHref centerBtn'>Back</button>
+                            <button  onClick= {() =>{history.push("/ForgotPassword")}} id = "center" color="secondary" className='puesdorHref centerBtn'>Back</button>
                     </form>
                 </IonContent>
 

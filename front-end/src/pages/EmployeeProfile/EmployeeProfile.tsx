@@ -242,18 +242,18 @@ const EmployeeProfilePage: React.FC = () =>{
                 </IonHeader>
                 <IonContent>
                     <br></br>
-                    <IonGrid>
-                        <IonRow>
-                            <IonCard mode="ios" className="profileCard" style={{"paddingBottom":"2em"}}>
+                    <IonGrid style={{"width":"95%"}}>
+                    <IonRow >
+                            <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
-                                    <IonRow>
+                                    <IonRow className="ion-justify-content-center" >
                                         <IonCol size='5'>
-                                            <IonImg   style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
+                                            <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
-                                        <IonCol size="7">
-                                            <IonRow>
-                                                <IonText className="PageTitle center un">{username}</IonText>
+                                        <IonCol size="7" >
+                                            <IonRow >
+                                                <IonText color="light" className=" center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name}</i>
@@ -278,7 +278,7 @@ const EmployeeProfilePage: React.FC = () =>{
                                                 <IonCol><IonText>{phone}</IonText></IonCol>
                                             </IonRow>
                                             <IonRow>
-                                                <IonButton id="open-modal" expand="block">Edit Details</IonButton>
+                                                <IonButton mode="ios" id="open-modal" expand="block">Edit Details</IonButton>
                                             </IonRow>
                                         </IonGrid>
                                     </IonCardContent>
@@ -300,7 +300,7 @@ const EmployeeProfilePage: React.FC = () =>{
                     <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
                         <IonHeader>
-                            <IonToolbar>
+                            <IonToolbar color="secondary">
                             <IonButtons slot="start">
                                 <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>

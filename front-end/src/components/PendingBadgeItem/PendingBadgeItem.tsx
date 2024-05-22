@@ -13,7 +13,7 @@ export class PendingBadgeItem extends React.Component<props>{
     render(){
         //console.log(this.userId);
         return(
-            <IonItem class='btnApproval' mode="ios">
+            <IonItem class='transparentBack' mode="ios">
                 <BadgeImage BadgeEmblem={this.props.badgeIcon.split("_")[1]} Badgerank={this.props.badgeIcon.split("_")[0]} idEmblem="pendingEmblem" idRank="pendingRank"></BadgeImage>
                 <IonLabel>{this.props.badgeName}</IonLabel>
             </IonItem>

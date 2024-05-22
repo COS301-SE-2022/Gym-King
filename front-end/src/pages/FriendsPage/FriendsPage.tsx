@@ -1,5 +1,5 @@
 import React, { useState} from 'react'
-import {IonContent, IonText, IonPage, IonHeader, IonItem, IonLabel, useIonViewWillEnter, IonLoading} from '@ionic/react';
+import {IonContent, IonText, IonPage, IonHeader, useIonViewWillEnter, IonLoading, IonButton} from '@ionic/react';
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import FriendsList from '../../components/FriendsList/FriendsList';
 import { useHistory } from 'react-router-dom';
@@ -64,18 +64,15 @@ const FriendsPage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>My Friends</IonText>
+                    <IonText className='PageTitle center'>MY FRIENDS</IonText>
                     {
                         numFriendRequests!==0 
                         &&
-                        <IonItem mode="ios" button detail class='btnApproval' onClick={goToFriendRequests} >
-                            <IonLabel>Friend Requests</IonLabel>
-                        </IonItem>
+                        <IonButton mode="ios" color='warning' className='width80 btn'  onClick={goToFriendRequests}>View Friend Requests</IonButton>
                     }
+                    <br></br><br></br>
 
-                    <IonText className="inputHeading">All Friends</IonText>
                     <FriendsList friendsList={friends}></FriendsList>
                     
 

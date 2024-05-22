@@ -57,6 +57,7 @@ export const ForgotPassword: React.FC = () =>{
             email: e.target.email.value.trim(),
             usertype: userType
         };
+        console.log(formData)
         sessionStorage.setItem("enteredEmail", formData.email)
         sessionStorage.setItem("enteredUserType", formData.usertype)
         
@@ -186,9 +187,9 @@ export const ForgotPassword: React.FC = () =>{
                 </IonHeader>
                 <IonContent  fullscreen className='grad '>
                     <form className='forgotPasswordForm' onSubmit={handleSubmit}>
-                        <IonText className='center inputHeading'>Forgot Password</IonText> <br></br>
+                        <IonText className=' medHeading ' text-center>FORGOT PASSWORD</IonText><br></br><br></br>
 
-                        <IonLabel className="smallHeading" position="floating">Email*</IonLabel>
+                        <IonLabel className="smallHeading" position="floating">Email</IonLabel>
                         <IonInput className='textInput' name='email' type='text' required></IonInput>
                         {errors.email!=="" && (
                                 <>
@@ -197,8 +198,8 @@ export const ForgotPassword: React.FC = () =>{
                         )}
                         <br></br>
 
-                        <IonLabel className="smallHeading" position="floating">User type*</IonLabel>
-                        <IonSegment mode="ios" onIonChange={segmentChanged}  >
+                        <IonLabel className="smallHeading" position="floating">User type</IonLabel>
+                        <IonSegment mode="ios" onIonChange={segmentChanged} className="bottomRightShadow" >
                             <IonSegmentButton mode="ios" value="gym_user">
                                 <IonLabel>User</IonLabel>
                             </IonSegmentButton>
