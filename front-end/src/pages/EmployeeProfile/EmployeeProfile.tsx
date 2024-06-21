@@ -242,7 +242,7 @@ const EmployeeProfilePage: React.FC = () =>{
                 </IonHeader>
                 <IonContent>
                     <br></br>
-                    <IonGrid>
+                    <IonGrid style={{"width":"95%"}}>
                         <IonRow>
                             <IonCard mode="ios" className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>

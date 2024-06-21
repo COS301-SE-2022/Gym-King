@@ -88,11 +88,10 @@ const UserProfilePage: React.FC = () =>{
                 setNumBadges(response.length)
             })
             .catch(err => {
-                setLoading(false)
             })
     }
     const getNumberOfClaims = () =>{
-        setLoading(false)
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/claims`,{
             method: 'POST',
             headers: {
@@ -109,11 +108,11 @@ const UserProfilePage: React.FC = () =>{
                 setNumClaims(response.length)
             })
             .catch(err => {
-                setLoading(false)
             })
     }
 
     const getNumberofFriends = ()=>{
+        setLoading(true)
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/getFriends`,{
             method: 'POST',
             headers: {
@@ -127,20 +126,18 @@ const UserProfilePage: React.FC = () =>{
         })
         .then(response =>response.data)
         .then(response =>{
-            setLoading(false)
             console.log(response)
             setNumFriends(response.length)
         })
         .catch(err => {
-            setLoading(false)
             console.log(err)
             
         })
     }
 
     useIonViewDidEnter(()=>{
-        setPresentingElement(page.current); //for modal
         setLoading(true);
+        setPresentingElement(page.current); //for modal
         axios(process.env["REACT_APP_GYM_KING_API"]+`/users/user/info`,{
                 method: 'POST',
                 headers: {
@@ -160,17 +157,16 @@ const UserProfilePage: React.FC = () =>{
                 setUsername(response.username);
                 setProfilePicture(response.profile_picture)
                 sessionStorage.setItem("pp", response.profile_picture)
-
-                setLoading(false);
+                setLoading(true)
                 
             })
             .catch(err => {
-                setLoading(false)
             })
-        
+        setLoading(true)
         getNumberOfBadges()
         getNumberOfClaims()
         getNumberofFriends()
+        setLoading(false)
          // eslint-disable-next-line react-hooks/exhaustive-deps
 
     },[profilePicture])
@@ -312,20 +308,20 @@ const UserProfilePage: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <IonContent>
+                <IonContent >
                     <br></br>
-                    <IonGrid>
+                    <IonGrid style={{"width":"95%"}}>
                         <IonRow >
                             <IonCard className="profileCard" style={{"paddingBottom":"2em"}}>
                                 <IonGrid>
-                                    <IonRow>
+                                    <IonRow className="ion-justify-content-center" >
                                         <IonCol size='5'>
                                             <IonImg  style={{"position":"absolute","overflow":"hidden","borderRadius":"50%","backgroundImage":`url(${profilePicture})`}} alt="" className="userImage centerComp contain"  ></IonImg>
                                             <input style={{"position":"absolute", "opacity":"0%"}} className="userImage centerComp" type="file" accept=".jpg, .png" onChange={(ev) => onFileChange(ev)} />
                                         </IonCol>
-                                        <IonCol size="7">
-                                            <IonRow>
-                                                <IonText color="light" className="PageTitle center un">{username}</IonText>
+                                        <IonCol size="7" >
+                                            <IonRow >
+                                                <IonText color="light" className=" center un">{username}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{name}</i>
@@ -397,8 +393,8 @@ const UserProfilePage: React.FC = () =>{
 
                     <IonModal mode="ios" ref={modal} trigger="open-modal" presentingElement={presentingElement!}>
                         
-                        <IonHeader>
-                            <IonToolbar>
+                        <IonHeader >
+                            <IonToolbar color='secondary'>
                             <IonButtons slot="start">
                                 <IonButton mode="ios" color="light" onClick={dismiss}>Close</IonButton>
                             </IonButtons>
@@ -466,7 +462,7 @@ const UserProfilePage: React.FC = () =>{
                     <IonLoading 
                         mode="ios"
                         isOpen={loading}
-                        duration={2000}
+                        duration={1000}
                         spinner={"circles"}
                         onDidDismiss={() => setLoading(false)}
                         cssClass={"spinner"}

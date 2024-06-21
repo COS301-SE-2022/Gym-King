@@ -60,10 +60,10 @@ export const Password: React.FC<props> = (props) =>{
 
         return(
             <form className='registerForm' onSubmit={next}>
-                <IonText className='center inputHeading'>Register</IonText>
+                <IonText className='center loginHeading'>REGISTER</IonText>
                 <br></br>
 
-                <IonText className="smallHeading">Password*</IonText>
+                <IonText className="smallHeading">Password</IonText>
                 <IonInput name='pwd' type='password' className='textInput' required ></IonInput>
                 {errors.password!=="" && (
                     <>
@@ -72,7 +72,7 @@ export const Password: React.FC<props> = (props) =>{
                 )}
                 <br></br>
 
-                <IonText className="smallHeading">Confirm Password*</IonText>
+                <IonText className="smallHeading">Confirm Password</IonText>
                 <IonInput name='confirmPwd' type='password' className='textInput' required ></IonInput>
                 {errors.confirmPassword!=="" && (
                     <>
@@ -84,10 +84,10 @@ export const Password: React.FC<props> = (props) =>{
                 <IonGrid>
                     <IonRow>
                         <IonCol size='6'>
-                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev}  >Previous</IonButton>
+                            <IonButton mode="ios" color="primary" className=" btnLogin ion-margin-top" style={{"width":"100%", "margin":"0"}} onClick={prev}  >PREV</IonButton>
                         </IonCol>
                         <IonCol size='6'>
-                            <IonButton  mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>Next</IonButton>
+                            <IonButton  mode="ios" color="warning" className=" btnLogin ion-margin-top" type="submit" style={{"width":"100%", "margin":"0"}}>NEXT</IonButton>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

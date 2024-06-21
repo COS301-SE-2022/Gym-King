@@ -22,8 +22,9 @@
     height: 4em;
     justify-content: left;
     display: flexbox;
-
+    margin:0;
 }
+
 
 
 .unameCol

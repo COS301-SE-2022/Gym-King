@@ -237,7 +237,6 @@ const EditBadge: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>Edit Badge</IonText>
                     <form onSubmit={handleSubmit} >

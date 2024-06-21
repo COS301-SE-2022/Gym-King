@@ -50,9 +50,8 @@ const MyGyms: React.FC = () =>{
                 <IonHeader>
                     <ToolBar></ToolBar>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
-                    <IonText className='PageTitle center'>My Gyms</IonText>
+                    <IonText className='PageTitle center'>MY GYMS</IonText>
                     <GymsList gymsList={gyms} ></GymsList>
                     
 

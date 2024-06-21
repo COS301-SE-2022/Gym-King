@@ -6,7 +6,7 @@ ion-content {
     --background: linear-gradient(to bottom right, #321E93, #a974ff) no-repeat center/cover fixed;
 }
 .loginForm{
-    height:475px;
+    height:max-content;
     width:75%;
     background-color: rgba(255,255,255,0.13);
     position:absolute;
@@ -21,7 +21,6 @@ ion-content {
 
 .loginForm *{
     color:#ffffff;
-    letter-spacing: 0.5px;
     outline:none;
     border:none;
 }
@@ -31,10 +30,6 @@ ion-input{
     background-color: rgba(255,255,255,0.07)
 }
 
-.btnLogin{
-    opacity:80%;
-    
-}
 
 .puesdorHref {
     background: none!important;
@@ -44,6 +39,7 @@ ion-input{
     /*input has OS specific font-family*/
     text-decoration: underline;
     cursor: pointer;
+    font-family: 'Comfortaa', cursive;
   }
 
   .centerBtn {

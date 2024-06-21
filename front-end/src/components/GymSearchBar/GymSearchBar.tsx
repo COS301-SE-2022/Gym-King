@@ -104,7 +104,7 @@ export const GymSearchBar=(props:{
               props.gyms.map((item: {
                 key:string; 
                 gid:string; 
-                gym_icon:string; 
+                gym_logo:string; 
                 gym_name:string;
                 gym_address:string; 
                 gym_coord_lat:number; 
@@ -122,7 +122,7 @@ export const GymSearchBar=(props:{
                           key={item.gid}
                           >
                                 <IonAvatar style={{"marginRight":"1em", "marginBottom":"3%"}}>
-                                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${item.gym_icon})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
+                                    <IonImg  style={{"position":"absolute","overflow":"hidden","marginTop":"6px","borderRadius":"50%","backgroundImage":`url(${item.gym_logo})`}} alt="" className="toolbarImage  contain "  ></IonImg>                        
                                 </IonAvatar>
                                 <IonLabel mode="ios">
                                   <IonRow>

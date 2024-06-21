@@ -10,5 +10,5 @@ test('renders without crashing', async()=> {
 
 test('correctly displays labels', async () => {
   const{baseElement} =await render(<Password handleChange={undefined} next={undefined} prev={undefined}/>);
-  expect(baseElement).toHaveTextContent("Password*");
+  expect(baseElement).toHaveTextContent("Password");
 });

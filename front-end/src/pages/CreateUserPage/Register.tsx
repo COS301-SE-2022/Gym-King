@@ -18,7 +18,6 @@ import { useHistory } from 'react-router-dom';
             <IonPage color='#220FE' >
                 <IonHeader>
                 </IonHeader>
-                <br></br>
                 <IonContent fullscreen className='Content'>
 
                     <RegisterForm history={history} /*showSuccessToast={setShowSuccessToast(true)} showError1Toast={setShowError1Toast(true)} showError2Toast={setShowError1Toast(true)}*/></RegisterForm>

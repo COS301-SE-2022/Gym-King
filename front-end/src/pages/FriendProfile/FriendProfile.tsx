@@ -1,9 +1,9 @@
-import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton, IonToast, IonLoading} from '@ionic/react';
-import React, {useState} from 'react'
+import { IonContent, IonText, IonPage, IonHeader, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardContent, IonImg, useIonViewWillEnter, IonButton, IonToast, IonLoading, IonSlides, IonSlide} from '@ionic/react';
+import React, {useRef, useState} from 'react'
 import { ToolBar } from '../../components/toolbar/Toolbar';
 import axios from "axios";
-import FriendBadgeGrid from '../../components/FriendBadgeGrid/FriendBadgeGrid';
 import { useHistory } from 'react-router-dom';
+import MyBadgeCard from '../../components/MyBadgeGrid/MyBadgeCard/MyBadgeCard';
 
 
 const FriendProfile: React.FC = () =>{
@@ -18,6 +18,12 @@ const FriendProfile: React.FC = () =>{
         const [friendBadges, setFriendBadges] = useState([])
         const [showRemoveFriend, setShowRemoveFriend] = useState(false);
         const [loading, setLoading] = useState<boolean>(false);
+        const slides = useRef<any>(null);
+        const slideOpts = {
+            initialSlide: 0,
+            speed: 400,
+        
+        };
 
 
         useIonViewWillEnter(async ()=>{
@@ -87,7 +93,7 @@ const FriendProfile: React.FC = () =>{
                                         </IonCol>
                                         <IonCol size="7">
                                             <IonRow>
-                                                <IonText color="light" className="PageTitle center un">{friendUsername}</IonText>
+                                                <IonText color="light" className=" center un">{friendUsername}</IonText>
                                             </IonRow>
                                             <IonRow>
                                                 <i className="center">{friendFullname}</i>
@@ -102,7 +108,33 @@ const FriendProfile: React.FC = () =>{
                                 <IonCard className="profileCard" >
                                     <IonCardHeader className="inputHeading">{friendUsername}'s badges</IonCardHeader>
                                     <IonCardContent>
-                                        <FriendBadgeGrid badges={friendBadges} ></FriendBadgeGrid>
+                                        {
+                                            friendBadges.length ===0
+                                            &&
+                                            <IonText><i>No badges</i></IonText>
+                                        }
+                                        {
+                                            friendBadges.length !== 0
+                                            &&
+                                            <IonSlides
+                                                mode="ios"
+                                                ref={slides}
+                                                options={slideOpts}
+                                                pager={true}
+                                                style={{"height":"fit-content"}}>
+                                                {
+                                                    
+                                                    friendBadges.map((el:any)=>{
+                                                        return(
+                                                        <IonSlide  key={el.b_id} style={{"padding":"10%", "height":"fit-content"}}>
+                                                            <MyBadgeCard key={el.b_id.b_id} id={el.b_id.b_id} name={el.badgename} qty={0} badgeEmblem={el.b_id.badgeicon.split("_")[1]} badgeRank={el.b_id.badgeicon.split("_")[0]}></MyBadgeCard>
+                                                            
+                                                        </IonSlide>)
+                                                    })
+                                                }
+                                                
+                                            </IonSlides>
+                                        }
                                     </IonCardContent>
                                 </IonCard>
                         </IonRow>

@@ -103,7 +103,6 @@ const ManageGyms: React.FC = () =>{
             <IonHeader>
                 <ToolBar menu={false}></ToolBar>
             </IonHeader>
-            <br></br>
             <IonContent fullscreen className='Content'>
                     <IonText className='PageTitle center'>My Gyms</IonText>
                     <IonButton mode="ios" className='centerComp' routerLink='/AddGym' routerDirection="forward" color="warning">ADD GYM</IonButton><br></br><br></br>

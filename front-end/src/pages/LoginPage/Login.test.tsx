@@ -11,8 +11,8 @@ test('renders without crashing', async () => {
 
 test('correctly displays labels', async () => {
   const {baseElement} =await render(<Login />);
-  expect (baseElement).toHaveTextContent("Email*");
-  expect (baseElement).toHaveTextContent("Password*");
+  expect (baseElement).toHaveTextContent("Email");
+  expect (baseElement).toHaveTextContent("Password");
 });
 
 
